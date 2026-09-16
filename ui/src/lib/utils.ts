@@ -102,6 +102,50 @@ function toNumberOrUndefined(value: unknown): number | undefined {
     return Number.isNaN(parsed) ? undefined : parsed;
 }
 
+export function getDisturbanceIndex(
+    wayProps: Record<string, any> | undefined,
+    criteriaHour: number,
+): number | undefined {
+    if (!wayProps) return undefined;
+    const speedP75 = Number(wayProps.speed_p75);
+    if (isNaN(speedP75) || speedP75 <= 0) return undefined;
+
+    const hourlySpeedMedian =
+        wayProps.hour_speed_median?.[criteriaHour] ??
+        wayProps.hour_speed_median?.[String(criteriaHour)];
+
+    if (hourlySpeedMedian === undefined || hourlySpeedMedian === null) {
+        return undefined;
+    }
+
+    const speedMedian = Number(hourlySpeedMedian);
+    if (isNaN(speedMedian)) return undefined;
+
+    return (speedMedian - speedP75) / speedP75;
+}
+
+export type DICategory = {
+    label: string;
+    color: string;
+    rangeLabel: string;
+};
+
+export const DISTURBANCE_INDEX_CATEGORIES: DICategory[] = [
+    { label: "Much faster", color: "#0B3C5D", rangeLabel: "≥ +20%" },
+    { label: "Faster", color: "#328CC1", rangeLabel: "+5% to +20%" },
+    { label: "Regular speed", color: "#2ECC71", rangeLabel: "-5% to +5%" },
+    { label: "Slower", color: "#E67E22", rangeLabel: "-20% to -5%" },
+    { label: "Much slower", color: "#E74C3C", rangeLabel: "< -20%" },
+];
+
+export function getDisturbanceIndexCategory(di: number): DICategory {
+    if (di >= 0.2) return DISTURBANCE_INDEX_CATEGORIES[0];
+    if (di > 0.05) return DISTURBANCE_INDEX_CATEGORIES[1];
+    if (di >= -0.05) return DISTURBANCE_INDEX_CATEGORIES[2];
+    if (di >= -0.2) return DISTURBANCE_INDEX_CATEGORIES[3];
+    return DISTURBANCE_INDEX_CATEGORIES[4];
+}
+
 export function getWayMetricValue(
     wayProps: Record<string, any> | undefined,
     criteriaHour: number,
@@ -114,11 +158,29 @@ export function getWayMetricValue(
     if (lineWeightBy === "lanes") {
         return toNumberOrUndefined(wayProps?.n_lanes_circulation_direction);
     }
-    if (lineWeightBy === "speed_min") {
+    if (
+        lineWeightBy === "speed_avg_min" ||
+        lineWeightBy === "speed_avg_max" ||
+        lineWeightBy === "speed_min" ||
+        lineWeightBy === "speed_max"
+    ) {
         return toNumberOrUndefined(wayProps?.speed_avg);
     }
-    if (lineWeightBy === "speed_max") {
-        return toNumberOrUndefined(wayProps?.speed_avg);
+    if (
+        lineWeightBy === "speed_median_min" ||
+        lineWeightBy === "speed_median_max"
+    ) {
+        return toNumberOrUndefined(wayProps?.speed_median);
+    }
+    if (
+        lineWeightBy === "speed_p75_min" ||
+        lineWeightBy === "speed_p75_max"
+    ) {
+        return toNumberOrUndefined(wayProps?.speed_p75);
+    }
+    if (lineWeightBy === "disturbance_index") {
+        const di = getDisturbanceIndex(wayProps, criteriaHour);
+        return di !== undefined ? Math.abs(di) : undefined;
     }
     if (lineWeightBy === "demand") {
         return toNumberOrUndefined(wayProps?.demand);
@@ -151,7 +213,12 @@ export function getLineWeight(
             geoData.metadata.data_census.lanes_length?.p95,
         );
     }
-    if (lineWeightBy === "speed_min") {
+    if (
+        lineWeightBy === "speed_avg_min" ||
+        lineWeightBy === "speed_min" ||
+        lineWeightBy === "speed_median_min" ||
+        lineWeightBy === "speed_p75_min"
+    ) {
         return getFrequencyWeightedLineWidth(
             value,
             geoData.metadata.data_census.speed_avg_length?.p5,
@@ -162,12 +229,20 @@ export function getLineWeight(
             true,
         );
     }
-    if (lineWeightBy === "speed_max") {
+    if (
+        lineWeightBy === "speed_avg_max" ||
+        lineWeightBy === "speed_max" ||
+        lineWeightBy === "speed_median_max" ||
+        lineWeightBy === "speed_p75_max"
+    ) {
         return getFrequencyWeightedLineWidth(
             value,
             geoData.metadata.data_census.speed_avg_length?.p5,
             geoData.metadata.data_census.speed_avg_length?.p95,
         );
+    }
+    if (lineWeightBy === "disturbance_index") {
+        return getFrequencyWeightedLineWidth(value, 0, 0.4, 2.5, 7, 3.5);
     }
     if (lineWeightBy === "demand") {
         return getFrequencyWeightedLineWidth(

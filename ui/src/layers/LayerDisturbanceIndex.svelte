@@ -1,7 +1,7 @@
 <script lang="ts">
     import { untrack } from "svelte";
     import * as L from "leaflet";
-    import { COLOR_GRADIENT_RED, COLOR_GRAY } from "../data";
+    import { COLOR_GRAY } from "../data";
     import type { GeoPrioritisation } from "../types/GeoPrioritisation";
     import type { LineWeightMetric } from "../types/LineWeightMetric";
     import type { Feature } from "geojson";
@@ -10,6 +10,11 @@
         handleWayMouseOut,
         handleWayMouseOver,
     } from "../lib/layerInteractions";
+    import {
+        getDisturbanceIndex,
+        getDisturbanceIndexCategory,
+        getLineWeight,
+    } from "../lib/utils";
 
     let {
         map,
@@ -36,18 +41,19 @@
     let currentLayer: L.Layer | null = $state(null);
     let wayLayerMap: Map<string, L.Path> = new Map();
 
-    import { getColorFromGradient, getLineWeight } from "../lib/utils";
-
-    function formatSpeedLabel(wayId: string): string {
-        const speed = geoData.wayData[wayId]?.speed_avg;
-        const speedValue = Number(speed);
-        if (isNaN(speedValue)) return "Avg speed: n/a";
-        return `Avg speed: ${speedValue.toFixed(1)} km/h`;
+    function formatDILabel(wayId: string): string {
+        const props = geoData.wayData[wayId];
+        const di = getDisturbanceIndex(props, criteriaHour);
+        if (di === undefined) return "Disturbance Index: n/a";
+        const cat = getDisturbanceIndexCategory(di);
+        const percentStr = (di * 100).toFixed(1);
+        const sign = di > 0 ? "+" : "";
+        return `Disturbance Index: ${sign}${percentStr}% (${cat.label})`;
     }
 
-    function getSpeedStyle(wayId: string): L.PathOptions {
+    function getDIStyle(wayId: string): L.PathOptions {
         const props = geoData.wayData[wayId];
-        const speed_avg = props?.speed_avg;
+        const di = getDisturbanceIndex(props, criteriaHour);
         let color = COLOR_GRAY;
         const weight = getLineWeight(
             geoData,
@@ -55,18 +61,8 @@
             criteriaHour,
             lineWeightBy,
         );
-        if (
-            speed_avg !== undefined &&
-            speed_avg !== null &&
-            !isNaN(Number(speed_avg))
-        ) {
-            const speedValue = Number(speed_avg);
-            color = getColorFromGradient(
-                speedValue,
-                geoData.metadata.data_census.speed_avg_length?.p5 || 0,
-                geoData.metadata.data_census.speed_avg_length?.p95 || 1,
-                COLOR_GRADIENT_RED.slice().reverse(),
-            );
+        if (di !== undefined) {
+            color = getDisturbanceIndexCategory(di).color;
         }
         return {
             color,
@@ -79,7 +75,7 @@
 
         wayLayerMap = new Map();
 
-        // Filter out features with no speed data
+        // Filter out features with no valid Disturbance Index data
         const filteredFeatures = geoData.features.filter(
             (feature: Feature | undefined) => {
                 const wayId = feature?.properties?.way_osm_id;
@@ -91,11 +87,8 @@
                 ) {
                     return false;
                 }
-                return (
-                    props?.speed_avg !== undefined &&
-                    props?.speed_avg !== null &&
-                    !isNaN(Number(props?.speed_avg))
-                );
+                const di = getDisturbanceIndex(props, criteriaHour);
+                return di !== undefined;
             },
         );
         const visibleWayIds = filteredFeatures
@@ -104,7 +97,7 @@
 
         // Create and add new layer to map
         const newLayer = L.geoJSON(
-            // Order by speed_avg asc, to plot higher speeds on top
+            // Order by DI ascending, so lower DI (more disturbed/slower) renders on top
             filteredFeatures.sort((a, b) => {
                 const propsA = a.properties?.way_osm_id
                     ? geoData.wayData[a.properties.way_osm_id]
@@ -112,19 +105,21 @@
                 const propsB = b.properties?.way_osm_id
                     ? geoData.wayData[b.properties.way_osm_id]
                     : null;
-                return (propsA?.speed_avg || 0) - (propsB?.speed_avg || 0);
+                const diA = getDisturbanceIndex(propsA, criteriaHour) ?? 0;
+                const diB = getDisturbanceIndex(propsB, criteriaHour) ?? 0;
+                return diA - diB;
             }),
             {
                 style: (feature: Feature | undefined) => {
                     const wayId = feature?.properties?.way_osm_id;
                     if (!wayId) return {};
-                    return getSpeedStyle(wayId);
+                    return getDIStyle(wayId);
                 },
                 onEachFeature: (feature, layer) => {
                     const wayId = feature.properties?.way_osm_id;
                     if (wayId) wayLayerMap.set(wayId, layer as L.Path);
                     if (wayId) {
-                        bindWayValueTooltip(layer, formatSpeedLabel(wayId));
+                        bindWayValueTooltip(layer, formatDILabel(wayId));
                     }
                     layer.on("click", (e) => {
                         L.DomEvent.stopPropagation(e);
@@ -138,7 +133,7 @@
                             layer,
                             wayId,
                             selectedWayId,
-                            getSpeedStyle,
+                            getDIStyle,
                         );
                     });
                 },
@@ -178,7 +173,7 @@
                 path.setStyle({ weight: 7, color: "#FFD4B8", opacity: 1 });
                 path.bringToFront();
             } else {
-                path.setStyle(getSpeedStyle(wayId));
+                path.setStyle(getDIStyle(wayId));
             }
         });
     });

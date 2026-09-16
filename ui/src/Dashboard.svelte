@@ -13,6 +13,9 @@
     import LayerNumberOfLanes from "./layers/LayerNumberOfLanes.svelte";
     import LayerParkingLanes from "./layers/LayerParkingLanes.svelte";
     import LayerRTSpeed from "./layers/LayerRTSpeed.svelte";
+    import LayerRTSpeedMedian from "./layers/LayerRTSpeedMedian.svelte";
+    import LayerRTSpeedP75 from "./layers/LayerRTSpeedP75.svelte";
+    import LayerDisturbanceIndex from "./layers/LayerDisturbanceIndex.svelte";
     import LayerDemand from "./layers/LayerDemand.svelte";
     import LayerBoundaries from "./layers/LayerBoundaries.svelte";
     import DataCensusTable from "./components/DataCensusTable.svelte";
@@ -42,6 +45,7 @@
         COLOR_GRADIENT_RED,
     } from "./data";
     import Spinner from "$lib/components/ui/spinner/spinner.svelte";
+    import { DISTURBANCE_INDEX_CATEGORIES } from "./lib/utils";
 
     // Map
     let { map, light_mode = $bindable() }: { map: L.Map; light_mode: boolean } =
@@ -58,7 +62,10 @@
         FREQUENCY,
         N_LANES,
         PARKING_LANES,
-        RT_SPEED,
+        RT_SPEED_AVG,
+        RT_SPEED_MEDIAN,
+        RT_SPEED_P75,
+        DISTURBANCE_INDEX,
         DEMAND,
     }
 
@@ -109,12 +116,32 @@
         ];
         if (display_rt) {
             options.push({
-                value: "speed_min",
-                label: "Speed (slower roads thicker)",
+                value: "speed_avg_min",
+                label: "Average speed (slower roads thicker)",
             });
             options.push({
-                value: "speed_max",
-                label: "Speed (faster roads thicker)",
+                value: "speed_avg_max",
+                label: "Average speed (faster roads thicker)",
+            });
+            options.push({
+                value: "speed_median_min",
+                label: "Median speed (slower roads thicker)",
+            });
+            options.push({
+                value: "speed_median_max",
+                label: "Median speed (faster roads thicker)",
+            });
+            options.push({
+                value: "speed_p75_min",
+                label: "P75 speed (slower roads thicker)",
+            });
+            options.push({
+                value: "speed_p75_max",
+                label: "P75 speed (faster roads thicker)",
+            });
+            options.push({
+                value: "disturbance_index",
+                label: "Disturbance index (|DI| thicker)",
             });
         }
         if (display_demand) {
@@ -254,7 +281,7 @@
             criteria_n_lanes_parking_enabled = false;
             criteria_avg_speed_enabled = display_rt;
             criteria_demand_enabled = display_demand;
-            line_weight_by = "frequency";
+            line_weight_by = "speed_p75_min";
             active_layer = DisplayOptions.PRIORITISATION;
             open_accordion = DisplayOptions.PRIORITISATION.toString();
 
@@ -319,7 +346,7 @@
 
     $effect(() => {
         if (lineWeightOptions.find((o) => o.value === line_weight_by)) return;
-        line_weight_by = "frequency";
+        line_weight_by = "speed_p75_min";
     });
 
     const routeOptions = $derived.by(() => {
@@ -1321,7 +1348,7 @@
                 -->
 
                 {#if display_rt}
-                    <Accordion.Item value={DisplayOptions.RT_SPEED.toString()}>
+                    <Accordion.Item value={DisplayOptions.RT_SPEED_AVG.toString()}>
                         <Accordion.Trigger
                             class="text-sm font-medium hover:no-underline"
                             >Average speed</Accordion.Trigger
@@ -1372,6 +1399,143 @@
                                         census_2_label="Frequency"
                                     />
                                 {/if}
+                            </div>
+                        </Accordion.Content>
+                    </Accordion.Item>
+
+                    <Accordion.Item value={DisplayOptions.RT_SPEED_MEDIAN.toString()}>
+                        <Accordion.Trigger
+                            class="text-sm font-medium hover:no-underline"
+                            >Median speed</Accordion.Trigger
+                        >
+                        <Accordion.Content>
+                            <div
+                                class="text-xs text-muted-foreground space-y-3 pt-2"
+                            >
+                                <p>
+                                    Median speed computed based on GTFS-RT updates, considering the distance traversed along the route geometry and the time between consecutive updates.
+                                </p>
+                                <p>
+                                    Road segments with bus service are colored
+                                    by the median speed measured (for the full
+                                    days of the real-time data collection
+                                    interval), from the <span
+                                        style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
+                                        class="font-bold"
+                                        >P5 ({geoData.metadata.data_census.speed_avg_length?.p5?.toFixed(
+                                            2,
+                                        )})</span
+                                    >
+                                    to the
+                                    <span
+                                        style="color: {COLOR_GRADIENT_RED.slice().reverse()[
+                                            COLOR_GRADIENT_RED.length - 1
+                                        ]}"
+                                        class="bg-black/50 font-bold px-1 rounded"
+                                        >P95 ({geoData.metadata.data_census.speed_avg_length?.p95?.toFixed(
+                                            2,
+                                        )})</span
+                                    > values (km/h).
+                                </p>
+                                {#if geoData.metadata.data_census.speed_avg_length}
+                                    <DataCensusTable
+                                        census_1={geoData.metadata.data_census
+                                            .speed_avg_length}
+                                        census_2={geoData.metadata.data_census
+                                            .speed_avg_frequency}
+                                        census_1_label="Length"
+                                        census_2_label="Frequency"
+                                    />
+                                {/if}
+                            </div>
+                        </Accordion.Content>
+                    </Accordion.Item>
+
+                    <Accordion.Item value={DisplayOptions.RT_SPEED_P75.toString()}>
+                        <Accordion.Trigger
+                            class="text-sm font-medium hover:no-underline"
+                            >P75 speed</Accordion.Trigger
+                        >
+                        <Accordion.Content>
+                            <div
+                                class="text-xs text-muted-foreground space-y-3 pt-2"
+                            >
+                                <p>
+                                    75th percentile speed computed based on GTFS-RT updates, considering the distance traversed along the route geometry and the time between consecutive updates.
+                                </p>
+                                <p>
+                                    Road segments with bus service are colored
+                                    by the 75th percentile speed measured (for the full
+                                    days of the real-time data collection
+                                    interval), from the <span
+                                        style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
+                                        class="font-bold"
+                                        >P5 ({geoData.metadata.data_census.speed_avg_length?.p5?.toFixed(
+                                            2,
+                                        )})</span
+                                    >
+                                    to the
+                                    <span
+                                        style="color: {COLOR_GRADIENT_RED.slice().reverse()[
+                                            COLOR_GRADIENT_RED.length - 1
+                                        ]}"
+                                        class="bg-black/50 font-bold px-1 rounded"
+                                        >P95 ({geoData.metadata.data_census.speed_avg_length?.p95?.toFixed(
+                                            2,
+                                        )})</span
+                                    > values (km/h).
+                                </p>
+                                {#if geoData.metadata.data_census.speed_avg_length}
+                                    <DataCensusTable
+                                        census_1={geoData.metadata.data_census
+                                            .speed_avg_length}
+                                        census_2={geoData.metadata.data_census
+                                            .speed_avg_frequency}
+                                        census_1_label="Length"
+                                        census_2_label="Frequency"
+                                    />
+                                {/if}
+                            </div>
+                        </Accordion.Content>
+                    </Accordion.Item>
+
+                    <Accordion.Item value={DisplayOptions.DISTURBANCE_INDEX.toString()}>
+                        <Accordion.Trigger
+                            class="text-sm font-medium hover:no-underline"
+                            >Disturbance index</Accordion.Trigger
+                        >
+                        <Accordion.Content>
+                            <div
+                                class="text-xs text-muted-foreground space-y-3 pt-2"
+                            >
+                                <p>
+                                    Disturbance Index (<span class="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">DI</span>) measures the relative difference between hourly median speed (at <span class="font-semibold">{criteria_hour.toString().padStart(2, "0")}:00</span>) and baseline 75th percentile speed (<span class="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">speed_P75</span>):
+                                </p>
+                                <div class="bg-muted/50 p-2 rounded text-center font-mono text-xs my-2">
+                                    DI = (speed_median - speed_P75) / speed_P75
+                                </div>
+                                <div class="flex items-center gap-2 pt-1">
+                                    <span
+                                        >Disturbance Index for <Input
+                                            type="number"
+                                            class="w-16 h-7 inline-block mx-1 px-2 text-center"
+                                            bind:value={criteria_hour}
+                                            min="0"
+                                            max="23"
+                                        />:00 hour</span
+                                    >
+                                </div>
+                                <div class="space-y-1.5 pt-1">
+                                    {#each DISTURBANCE_INDEX_CATEGORIES as cat}
+                                        <div class="flex items-center justify-between text-xs">
+                                            <div class="flex items-center gap-2">
+                                                <span class="w-3 h-3 rounded-sm inline-block" style="background-color: {cat.color}"></span>
+                                                <span class="font-medium text-foreground">{cat.label}</span>
+                                            </div>
+                                            <span class="text-muted-foreground font-mono">{cat.rangeLabel}</span>
+                                        </div>
+                                    {/each}
+                                </div>
                             </div>
                         </Accordion.Content>
                     </Accordion.Item>
@@ -1635,7 +1799,7 @@
                     Only segments with ≥ 1 parking lane shown.
                 </p>
             </div>
-        {:else if active_layer === DisplayOptions.RT_SPEED}
+        {:else if active_layer === DisplayOptions.RT_SPEED_AVG}
             <div class="mb-2">
                 <p class="mb-2 text-foreground font-semibold">
                     Average speed <span
@@ -1666,6 +1830,89 @@
                                     .p95,
                             )}</span
                     >
+                </div>
+            </div>
+        {:else if active_layer === DisplayOptions.RT_SPEED_MEDIAN}
+            <div class="mb-2">
+                <p class="mb-2 text-foreground font-semibold">
+                    Median speed <span
+                        class="text-muted-foreground font-normal">(km/h)</span
+                    >
+                </p>
+                <div class="flex gap-2 items-center">
+                    <span
+                        class="min-w-[40px] text-right text-xs text-muted-foreground"
+                        >{geoData?.metadata.data_census.speed_avg_length?.p5 &&
+                            Math.floor(
+                                geoData.metadata.data_census.speed_avg_length
+                                    .p5,
+                            )}</span
+                    >
+                    <div
+                        class="flex-1 h-3 rounded border"
+                        style="background: linear-gradient(to right, {COLOR_GRADIENT_RED.slice()
+                            .reverse()
+                            .map((c) => c)
+                            .join(', ')});"
+                    ></div>
+                    <span
+                        class="min-w-[40px] text-left text-xs text-muted-foreground"
+                        >{geoData?.metadata.data_census.speed_avg_length?.p95 &&
+                            Math.ceil(
+                                geoData.metadata.data_census.speed_avg_length
+                                    .p95,
+                            )}</span
+                    >
+                </div>
+            </div>
+        {:else if active_layer === DisplayOptions.RT_SPEED_P75}
+            <div class="mb-2">
+                <p class="mb-2 text-foreground font-semibold">
+                    P75 speed <span
+                        class="text-muted-foreground font-normal">(km/h)</span
+                    >
+                </p>
+                <div class="flex gap-2 items-center">
+                    <span
+                        class="min-w-[40px] text-right text-xs text-muted-foreground"
+                        >{geoData?.metadata.data_census.speed_avg_length?.p5 &&
+                            Math.floor(
+                                geoData.metadata.data_census.speed_avg_length
+                                    .p5,
+                            )}</span
+                    >
+                    <div
+                        class="flex-1 h-3 rounded border"
+                        style="background: linear-gradient(to right, {COLOR_GRADIENT_RED.slice()
+                            .reverse()
+                            .map((c) => c)
+                            .join(', ')});"
+                    ></div>
+                    <span
+                        class="min-w-[40px] text-left text-xs text-muted-foreground"
+                        >{geoData?.metadata.data_census.speed_avg_length?.p95 &&
+                            Math.ceil(
+                                geoData.metadata.data_census.speed_avg_length
+                                    .p95,
+                            )}</span
+                    >
+                </div>
+            </div>
+        {:else if active_layer === DisplayOptions.DISTURBANCE_INDEX}
+            <div class="mb-2">
+                <p class="mb-2 text-foreground font-semibold">
+                    Disturbance Index <span class="text-muted-foreground font-normal">({criteria_hour.toString().padStart(2, "0")}:00)</span>
+                </p>
+                <div class="space-y-1 mt-2">
+                    {#each DISTURBANCE_INDEX_CATEGORIES as cat}
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-sm inline-block" style="background-color: {cat.color}"></span>
+                                <span class="text-foreground">{cat.label}</span>
+                            </div>
+                            <span class="text-muted-foreground font-mono">{cat.rangeLabel}</span>
+                        </div>
+                    {/each}
                 </div>
             </div>
         {:else if active_layer === DisplayOptions.DEMAND}
@@ -1807,8 +2054,44 @@
             onLayerCreate={handleLayerCreate}
             onVisibleWayIdsChange={handleVisibleWayIdsChange}
         />
-    {:else if active_layer === DisplayOptions.RT_SPEED}
+    {:else if active_layer === DisplayOptions.RT_SPEED_AVG}
         <LayerRTSpeed
+            {map}
+            {geoData}
+            criteriaHour={criteria_hour}
+            lineWeightBy={line_weight_by}
+            {selectedWayId}
+            selectedShapeId={selected_shape_id}
+            onWaySelect={(id) => (selectedWayId = id)}
+            onLayerCreate={handleLayerCreate}
+            onVisibleWayIdsChange={handleVisibleWayIdsChange}
+        />
+    {:else if active_layer === DisplayOptions.RT_SPEED_MEDIAN}
+        <LayerRTSpeedMedian
+            {map}
+            {geoData}
+            criteriaHour={criteria_hour}
+            lineWeightBy={line_weight_by}
+            {selectedWayId}
+            selectedShapeId={selected_shape_id}
+            onWaySelect={(id) => (selectedWayId = id)}
+            onLayerCreate={handleLayerCreate}
+            onVisibleWayIdsChange={handleVisibleWayIdsChange}
+        />
+    {:else if active_layer === DisplayOptions.RT_SPEED_P75}
+        <LayerRTSpeedP75
+            {map}
+            {geoData}
+            criteriaHour={criteria_hour}
+            lineWeightBy={line_weight_by}
+            {selectedWayId}
+            selectedShapeId={selected_shape_id}
+            onWaySelect={(id) => (selectedWayId = id)}
+            onLayerCreate={handleLayerCreate}
+            onVisibleWayIdsChange={handleVisibleWayIdsChange}
+        />
+    {:else if active_layer === DisplayOptions.DISTURBANCE_INDEX}
+        <LayerDisturbanceIndex
             {map}
             {geoData}
             criteriaHour={criteria_hour}

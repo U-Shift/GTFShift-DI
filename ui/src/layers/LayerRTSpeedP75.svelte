@@ -39,15 +39,15 @@
     import { getColorFromGradient, getLineWeight } from "../lib/utils";
 
     function formatSpeedLabel(wayId: string): string {
-        const speed = geoData.wayData[wayId]?.speed_avg;
+        const speed = geoData.wayData[wayId]?.speed_p75;
         const speedValue = Number(speed);
-        if (isNaN(speedValue)) return "Avg speed: n/a";
-        return `Avg speed: ${speedValue.toFixed(1)} km/h`;
+        if (isNaN(speedValue)) return "P75 speed: n/a";
+        return `P75 speed: ${speedValue.toFixed(1)} km/h`;
     }
 
     function getSpeedStyle(wayId: string): L.PathOptions {
         const props = geoData.wayData[wayId];
-        const speed_avg = props?.speed_avg;
+        const speed_p75 = props?.speed_p75;
         let color = COLOR_GRAY;
         const weight = getLineWeight(
             geoData,
@@ -56,11 +56,11 @@
             lineWeightBy,
         );
         if (
-            speed_avg !== undefined &&
-            speed_avg !== null &&
-            !isNaN(Number(speed_avg))
+            speed_p75 !== undefined &&
+            speed_p75 !== null &&
+            !isNaN(Number(speed_p75))
         ) {
-            const speedValue = Number(speed_avg);
+            const speedValue = Number(speed_p75);
             color = getColorFromGradient(
                 speedValue,
                 geoData.metadata.data_census.speed_avg_length?.p5 || 0,
@@ -79,7 +79,7 @@
 
         wayLayerMap = new Map();
 
-        // Filter out features with no speed data
+        // Filter out features with no P75 speed data
         const filteredFeatures = geoData.features.filter(
             (feature: Feature | undefined) => {
                 const wayId = feature?.properties?.way_osm_id;
@@ -92,9 +92,9 @@
                     return false;
                 }
                 return (
-                    props?.speed_avg !== undefined &&
-                    props?.speed_avg !== null &&
-                    !isNaN(Number(props?.speed_avg))
+                    props?.speed_p75 !== undefined &&
+                    props?.speed_p75 !== null &&
+                    !isNaN(Number(props?.speed_p75))
                 );
             },
         );
@@ -104,7 +104,7 @@
 
         // Create and add new layer to map
         const newLayer = L.geoJSON(
-            // Order by speed_avg asc, to plot higher speeds on top
+            // Order by speed_p75 asc, to plot higher speeds on top
             filteredFeatures.sort((a, b) => {
                 const propsA = a.properties?.way_osm_id
                     ? geoData.wayData[a.properties.way_osm_id]
@@ -112,7 +112,7 @@
                 const propsB = b.properties?.way_osm_id
                     ? geoData.wayData[b.properties.way_osm_id]
                     : null;
-                return (propsA?.speed_avg || 0) - (propsB?.speed_avg || 0);
+                return (propsA?.speed_p75 || 0) - (propsB?.speed_p75 || 0);
             }),
             {
                 style: (feature: Feature | undefined) => {

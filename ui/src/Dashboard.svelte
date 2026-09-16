@@ -382,7 +382,7 @@
             </Tooltip.Provider>
         </div>
         <p class="text-sm text-muted-foreground">
-            Bus lane prioritisation tool
+            Bus lane prioritisation tool<br /><b>TML edition</b>
         </p>
         {#if loading}
             <p

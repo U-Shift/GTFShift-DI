@@ -1,7 +1,12 @@
 <script lang="ts">
     import { Button } from "$lib/components/ui/button/index.js";
     import * as Tooltip from "$lib/components/ui/tooltip/index.js";
-    import { getColorFromGradient } from "$lib/utils.js";
+    import {
+        getColorFromGradient,
+        getDisturbanceIndex,
+        getDisturbanceIndexCategory,
+        DISTURBANCE_INDEX_CATEGORIES,
+    } from "$lib/utils.js";
     import { COLOR_GRADIENT, COLOR_GRADIENT_RED, COLOR_TEAL } from "../data.js";
     import type { GeoPrioritisation } from "../types/GeoPrioritisation";
 
@@ -63,6 +68,39 @@
             </section>
 
             <div class="grid grid-cols-2 gap-3">
+                <!-- Disturbance Index Card -->
+                {#if display_rt}
+                    <div
+                        class="p-3 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 flex flex-col justify-between shadow-sm overflow-hidden relative"
+                    >
+                        {#if true}
+                            {@const di = getDisturbanceIndex(way, criteria_hour)}
+                            {@const cat = di != null ? getDisturbanceIndexCategory(di) : null}
+                            <p
+                                class="text-[10px] font-bold uppercase text-muted-foreground mb-1"
+                            >
+                                Disturbance Index ({criteria_hour}:00)
+                            </p>
+                            <p class="text-lg font-bold">
+                                {#if di != null}
+                                    {di > 0 ? "+" : ""}{(di * 100).toFixed(1)}<span class="text-[10px] font-normal">%</span>
+                                {:else}
+                                    N/A
+                                {/if}
+                            </p>
+                            <p class="text-[10px] text-muted-foreground truncate">
+                                {cat ? cat.label : "Relative to P75 speed"}
+                            </p>
+                            {#if cat}
+                                <div
+                                    class="absolute bottom-0 left-0 right-0 h-[3px] rounded-b-xl"
+                                    style="background-color: {cat.color}"
+                                ></div>
+                            {/if}
+                        {/if}
+                    </div>
+                {/if}
+
                 <!-- Bus Frequency Card -->
                 <div
                     class="p-3 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 flex flex-col justify-between shadow-sm overflow-hidden relative"
@@ -451,6 +489,160 @@
                                 </Tooltip.Root>
                             </Tooltip.Provider>
                         {/each}
+                    </div>
+                </section>
+            {/if}
+
+            <!-- 24h Disturbance Index Section -->
+            {#if display_rt && way.speed_p75 != null && way.hour_speed_median && Object.values(way.hour_speed_median)?.some((v) => v != null)}
+                {@const hourDis = Array.from({ length: 24 }, (_, i) => getDisturbanceIndex(way, i))}
+                {@const validDis = hourDis.filter((v) => v != null) as number[]}
+                {@const maxAbsDi = Math.max(0.25, ...validDis.map((v) => Math.abs(v)))}
+                {@const currentHourDi = getDisturbanceIndex(way, criteria_hour)}
+                <section
+                    class="space-y-3 p-4 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50"
+                >
+                    <div class="flex items-center justify-between">
+                        <h5 class="text-sm font-bold flex items-center gap-2">
+                            <i class="fas fa-gauge-high text-primary/70"></i>
+                            24h Disturbance Index
+                        </h5>
+                        {#if currentHourDi != null}
+                            {@const cat = getDisturbanceIndexCategory(currentHourDi)}
+                            <span
+                                class="text-[10px] font-mono font-bold px-2 py-0.5 rounded text-white shadow-xs"
+                                style="background-color: {cat.color};"
+                                title="DI at {criteria_hour}:00 ({cat.label})"
+                            >
+                                {criteria_hour}:00 {currentHourDi > 0 ? "+" : ""}{(currentHourDi * 100).toFixed(1)}%
+                            </span>
+                        {/if}
+                    </div>
+
+                    <!-- Diverging bar chart (positive values go up, negative values go down) -->
+                    <div
+                        class="flex items-center gap-[2px] h-28 border-l border-b border-muted-foreground/30 px-1 relative bg-muted/10 rounded-sm"
+                    >
+                        <!-- Center dashed zero baseline -->
+                        <div
+                            class="absolute left-0 right-0 top-1/2 -translate-y-1/2 border-t border-dashed border-muted-foreground/40 pointer-events-none z-0"
+                        ></div>
+                        <span
+                            class="absolute right-1 top-1/2 -translate-y-1/2 text-[8px] font-mono text-muted-foreground/50 pointer-events-none select-none z-0"
+                        >
+                            0%
+                        </span>
+
+                        {#each Array(24) as _, i}
+                            {@const di = hourDis[i]}
+                            {@const isSelectedHour = i === criteria_hour}
+                            <div
+                                class="flex-1 h-full flex flex-col relative group z-10 {isSelectedHour ? 'bg-primary/5 rounded-sm' : ''}"
+                            >
+                                <!-- Top half: positive values (faster than baseline) -->
+                                <div class="flex-1 flex items-end justify-center">
+                                    {#if di != null && di > 0}
+                                        {@const cat = getDisturbanceIndexCategory(di)}
+                                        {@const barHeight = Math.min(Math.max((di / maxAbsDi) * 100, 5), 100)}
+                                        <div
+                                            class="w-full rounded-t-[1px] transition-all group-hover:brightness-110"
+                                            style="height: {barHeight}%; background-color: {cat.color};"
+                                        ></div>
+                                    {/if}
+                                </div>
+
+                                <!-- Bottom half: negative values (slower than baseline) -->
+                                <div class="flex-1 flex items-start justify-center">
+                                    {#if di != null && di < 0}
+                                        {@const cat = getDisturbanceIndexCategory(di)}
+                                        {@const barHeight = Math.min(Math.max((Math.abs(di) / maxAbsDi) * 100, 5), 100)}
+                                        <div
+                                            class="w-full rounded-b-[1px] transition-all group-hover:brightness-110"
+                                            style="height: {barHeight}%; background-color: {cat.color};"
+                                        ></div>
+                                    {/if}
+                                </div>
+
+                                <!-- Tooltip on hover -->
+                                <div
+                                    class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-30 shadow-md"
+                                >
+                                    {#if di != null}
+                                        {@const cat = getDisturbanceIndexCategory(di)}
+                                        {i}:00: {di > 0 ? "+" : ""}{(di * 100).toFixed(1)}% ({cat.label})
+                                    {:else}
+                                        {i}:00: no data
+                                    {/if}
+                                </div>
+                            </div>
+                        {/each}
+                    </div>
+
+                    <div
+                        class="flex justify-between text-[9px] text-muted-foreground font-mono uppercase tracking-tighter mt-1"
+                    >
+                        <span>0h</span>
+                        <span>6h</span>
+                        <span>12h</span>
+                        <span>18h</span>
+                        <span>23h</span>
+                    </div>
+
+                    <!-- Category legend chips -->
+                    <div class="flex flex-wrap items-center justify-between gap-1 pt-1 border-t border-border/40 text-[9px]">
+                        {#each DISTURBANCE_INDEX_CATEGORIES as cat}
+                            <div class="flex items-center gap-1">
+                                <span class="w-2 h-2 rounded-xs inline-block" style="background-color: {cat.color}"></span>
+                                <span class="text-muted-foreground">{cat.label}</span>
+                            </div>
+                        {/each}
+                    </div>
+
+                    <!-- Hourly table -->
+                    <div class="overflow-x-auto pt-1">
+                        <table
+                            class="w-full min-w-[860px] border-separate border-spacing-x-[2px] border-spacing-y-1"
+                        >
+                            <tbody>
+                                <tr>
+                                    <th
+                                        class="text-[9px] font-mono font-semibold text-muted-foreground text-left px-2 py-1"
+                                    >
+                                        Metric\Hour
+                                    </th>
+                                    {#each Array(24) as _, i}
+                                        <th
+                                            class="text-[9px] font-mono font-semibold text-muted-foreground text-center px-1 py-1"
+                                        >
+                                            {i}h
+                                        </th>
+                                    {/each}
+                                </tr>
+                                <tr>
+                                    <th
+                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap"
+                                    >
+                                        Disturbance Index
+                                    </th>
+                                    {#each Array(24) as _, i}
+                                        {@const di = hourDis[i]}
+                                        <td
+                                            class="text-[10px] font-mono font-medium text-center px-1 py-1 rounded bg-background/70 border border-border/30 {i === criteria_hour ? 'ring-1 ring-primary font-bold' : ''}"
+                                            title="{i}:00 DI"
+                                        >
+                                            {#if di != null}
+                                                {@const cat = getDisturbanceIndexCategory(di)}
+                                                <span style="color: {cat.color};">
+                                                    {di > 0 ? "+" : ""}{(di * 100).toFixed(0)}%
+                                                </span>
+                                            {:else}
+                                                <span class="text-muted-foreground/60">-</span>
+                                            {/if}
+                                        </td>
+                                    {/each}
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </section>
             {/if}

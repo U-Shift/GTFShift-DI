@@ -5,6 +5,7 @@
         getColorFromGradient,
         getDisturbanceIndex,
         getDisturbanceIndexCategory,
+        getDisturbanceIndexCategories,
         DISTURBANCE_INDEX_CATEGORIES,
     } from "$lib/utils.js";
     import { COLOR_GRADIENT, COLOR_GRADIENT_RED, COLOR_TEAL } from "../data.js";
@@ -16,12 +17,16 @@
         geoData,
         criteria_hour,
         display_rt,
+        di_threshold_low = 0.05,
+        di_threshold_high = 0.2,
     }: {
         selectedWayId: string | undefined;
         selected_shape_id: string | undefined;
         geoData: GeoPrioritisation | null;
         criteria_hour: number;
         display_rt: boolean;
+        di_threshold_low?: number;
+        di_threshold_high?: number;
     } = $props();
 </script>
 
@@ -80,7 +85,11 @@
                             )}
                             {@const cat =
                                 di != null
-                                    ? getDisturbanceIndexCategory(di)
+                                    ? getDisturbanceIndexCategory(
+                                          di,
+                                          di_threshold_low,
+                                          di_threshold_high,
+                                      )
                                     : null}
                             <p
                                 class="text-[10px] font-bold uppercase text-muted-foreground mb-1"
@@ -528,7 +537,11 @@
                         </h5>
                         {#if currentHourDi != null}
                             {@const cat =
-                                getDisturbanceIndexCategory(currentHourDi)}
+                                getDisturbanceIndexCategory(
+                                    currentHourDi,
+                                    di_threshold_low,
+                                    di_threshold_high,
+                                )}
                             <div
                                 class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-muted/80 text-foreground border border-border/60 shadow-xs relative overflow-hidden"
                                 title="DI at {criteria_hour}:00 ({cat.label})"
@@ -576,7 +589,11 @@
                                 >
                                     {#if di != null && di > 0}
                                         {@const cat =
-                                            getDisturbanceIndexCategory(di)}
+                                            getDisturbanceIndexCategory(
+                                                di,
+                                                di_threshold_low,
+                                                di_threshold_high,
+                                            )}
                                         {@const barHeight = Math.min(
                                             Math.max((di / maxAbsDi) * 100, 5),
                                             100,
@@ -594,7 +611,11 @@
                                 >
                                     {#if di != null && di < 0}
                                         {@const cat =
-                                            getDisturbanceIndexCategory(di)}
+                                            getDisturbanceIndexCategory(
+                                                di,
+                                                di_threshold_low,
+                                                di_threshold_high,
+                                            )}
                                         {@const barHeight = Math.min(
                                             Math.max(
                                                 (Math.abs(di) / maxAbsDi) * 100,
@@ -615,7 +636,11 @@
                                 >
                                     {#if di != null}
                                         {@const cat =
-                                            getDisturbanceIndexCategory(di)}
+                                            getDisturbanceIndexCategory(
+                                                di,
+                                                di_threshold_low,
+                                                di_threshold_high,
+                                            )}
                                         {i}:00: {di > 0 ? "+" : ""}{(
                                             di * 100
                                         ).toFixed(1)}% ({cat.label})
@@ -641,7 +666,7 @@
                     <div
                         class="flex flex-wrap items-center justify-between gap-1 pt-1 border-t border-border/40 text-[9px]"
                     >
-                        {#each DISTURBANCE_INDEX_CATEGORIES as cat}
+                        {#each getDisturbanceIndexCategories(di_threshold_low, di_threshold_high) as cat}
                             <div class="flex items-center gap-1">
                                 <span
                                     class="w-2 h-2 rounded-xs inline-block"

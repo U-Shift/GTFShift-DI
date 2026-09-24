@@ -48,6 +48,7 @@
     import {
         DISTURBANCE_INDEX_CATEGORIES,
         getDisturbanceIndex,
+        getDisturbanceIndexCategories,
         computeWeightedStatistics,
     } from "./lib/utils";
 
@@ -185,6 +186,25 @@
             census_length,
             census_freq,
         };
+    });
+
+    let di_threshold_low: number = $state(5);
+    let di_threshold_high: number = $state(20);
+    let di_thresholds_auto: boolean = $state(true);
+
+    // Auto-calibrate thresholds based on census percentiles (length-weighted)
+    $effect(() => {
+        if (!di_thresholds_auto || !disturbance_index_census) return;
+        const census = disturbance_index_census.census_length;
+        if (!census) return;
+
+        // Low threshold: magnitude around median/P75 (e.g. boundary of mild disturbance)
+        // High threshold: magnitude around P25 (e.g. boundary of severe disturbance)
+        const autoLow = Math.max(1, Math.min(15, Math.round(Math.abs(census.p75) * 100) || Math.round(Math.abs(census.median) * 100) || 5));
+        const autoHigh = Math.max(autoLow + 2, Math.min(50, Math.round(Math.abs(census.p25) * 100) || 20));
+
+        di_threshold_low = autoLow;
+        di_threshold_high = autoHigh;
     });
 
     let action_hide_form: boolean = $state(false);
@@ -1077,8 +1097,55 @@
                                         />:00 hour</span
                                     >
                                 </div>
+
+                                <div class="p-2.5 bg-muted/30 rounded-lg border border-border/40 space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-medium text-foreground text-xs">Disturbance Thresholds</span>
+                                        <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-muted-foreground">
+                                            <Switch
+                                                checked={di_thresholds_auto}
+                                                onCheckedChange={(v: boolean) => (di_thresholds_auto = v)}
+                                                class="scale-75"
+                                            />
+                                            Auto (percentiles)
+                                        </label>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2 pt-0.5">
+                                        <div>
+                                            <span class="text-[10px] text-muted-foreground block mb-0.5">Regular tolerance (±%)</span>
+                                            <div class="flex items-center gap-1">
+                                                <span class="text-xs text-muted-foreground">±</span>
+                                                <Input
+                                                    type="number"
+                                                    class="h-7 text-xs text-center"
+                                                    bind:value={di_threshold_low}
+                                                    min="1"
+                                                    max="50"
+                                                    oninput={() => (di_thresholds_auto = false)}
+                                                />
+                                                <span class="text-xs text-muted-foreground">%</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <span class="text-[10px] text-muted-foreground block mb-0.5">Severe cutoff (±%)</span>
+                                            <div class="flex items-center gap-1">
+                                                <span class="text-xs text-muted-foreground">±</span>
+                                                <Input
+                                                    type="number"
+                                                    class="h-7 text-xs text-center"
+                                                    bind:value={di_threshold_high}
+                                                    min="2"
+                                                    max="90"
+                                                    oninput={() => (di_thresholds_auto = false)}
+                                                />
+                                                <span class="text-xs text-muted-foreground">%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="space-y-1.5 pt-1">
-                                    {#each DISTURBANCE_INDEX_CATEGORIES as cat}
+                                    {#each getDisturbanceIndexCategories(di_threshold_low / 100, di_threshold_high / 100) as cat}
                                         <div class="flex items-center justify-between text-xs">
                                             <div class="flex items-center gap-2">
                                                 <span class="w-3 h-3 rounded-sm inline-block" style="background-color: {cat.color}"></span>
@@ -1717,6 +1784,8 @@
     {geoData}
     {criteria_hour}
     {display_rt}
+    di_threshold_low={di_threshold_low / 100}
+    di_threshold_high={di_threshold_high / 100}
 />
 
 <!-- Route Details Panel (shown when a shape is selected and no way is selected) -->
@@ -1904,7 +1973,7 @@
                     Disturbance Index <span class="text-muted-foreground font-normal">({criteria_hour.toString().padStart(2, "0")}:00)</span>
                 </p>
                 <div class="space-y-1 mt-2">
-                    {#each DISTURBANCE_INDEX_CATEGORIES as cat}
+                    {#each getDisturbanceIndexCategories(di_threshold_low / 100, di_threshold_high / 100) as cat}
                         <div class="flex items-center justify-between text-xs">
                             <div class="flex items-center gap-2">
                                 <span class="w-3 h-3 rounded-sm inline-block" style="background-color: {cat.color}"></span>
@@ -2098,6 +2167,8 @@
             {geoData}
             criteriaHour={criteria_hour}
             lineWeightBy={line_weight_by}
+            diThresholdLow={di_threshold_low / 100}
+            diThresholdHigh={di_threshold_high / 100}
             {selectedWayId}
             selectedShapeId={selected_shape_id}
             onWaySelect={(id) => (selectedWayId = id)}

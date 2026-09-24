@@ -21,6 +21,8 @@
         geoData,
         criteriaHour,
         lineWeightBy = "frequency",
+        diThresholdLow = 0.05,
+        diThresholdHigh = 0.2,
         selectedWayId = undefined,
         selectedShapeId = undefined,
         onLayerCreate = (layer) => {},
@@ -31,6 +33,8 @@
         geoData: GeoPrioritisation;
         criteriaHour: number;
         lineWeightBy: LineWeightMetric;
+        diThresholdLow?: number;
+        diThresholdHigh?: number;
         selectedWayId: string | undefined;
         selectedShapeId: string | undefined;
         onLayerCreate: (layer: L.Layer) => void;
@@ -45,7 +49,7 @@
         const props = geoData.wayData[wayId];
         const di = getDisturbanceIndex(props, criteriaHour);
         if (di === undefined) return "Disturbance Index: n/a";
-        const cat = getDisturbanceIndexCategory(di);
+        const cat = getDisturbanceIndexCategory(di, diThresholdLow, diThresholdHigh);
         const percentStr = (di * 100).toFixed(1);
         const sign = di > 0 ? "+" : "";
         return `Disturbance Index: ${sign}${percentStr}% (${cat.label})`;
@@ -62,7 +66,7 @@
             lineWeightBy,
         );
         if (di !== undefined) {
-            color = getDisturbanceIndexCategory(di).color;
+            color = getDisturbanceIndexCategory(di, diThresholdLow, diThresholdHigh).color;
         }
         return {
             color,

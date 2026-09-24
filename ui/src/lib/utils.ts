@@ -130,20 +130,34 @@ export type DICategory = {
     rangeLabel: string;
 };
 
-export const DISTURBANCE_INDEX_CATEGORIES: DICategory[] = [
-    { label: "Much faster", color: "#0B3C5D", rangeLabel: "≥ +20%" },
-    { label: "Faster", color: "#328CC1", rangeLabel: "+5% to +20%" },
-    { label: "Regular speed", color: "#2ECC71", rangeLabel: "-5% to +5%" },
-    { label: "Slower", color: "#E67E22", rangeLabel: "-20% to -5%" },
-    { label: "Much slower", color: "#E74C3C", rangeLabel: "< -20%" },
-];
+export function getDisturbanceIndexCategories(
+    low = 0.05,
+    high = 0.2,
+): DICategory[] {
+    const lowPct = (low * 100).toFixed(0);
+    const highPct = (high * 100).toFixed(0);
+    return [
+        { label: "Much faster", color: "#0B3C5D", rangeLabel: `≥ +${highPct}%` },
+        { label: "Faster", color: "#328CC1", rangeLabel: `+${lowPct}% to +${highPct}%` },
+        { label: "Regular speed", color: "#2ECC71", rangeLabel: `-${lowPct}% to +${lowPct}%` },
+        { label: "Slower", color: "#E67E22", rangeLabel: `-${highPct}% to -${lowPct}%` },
+        { label: "Much slower", color: "#E74C3C", rangeLabel: `< -${highPct}%` },
+    ];
+}
 
-export function getDisturbanceIndexCategory(di: number): DICategory {
-    if (di >= 0.2) return DISTURBANCE_INDEX_CATEGORIES[0];
-    if (di > 0.05) return DISTURBANCE_INDEX_CATEGORIES[1];
-    if (di >= -0.05) return DISTURBANCE_INDEX_CATEGORIES[2];
-    if (di >= -0.2) return DISTURBANCE_INDEX_CATEGORIES[3];
-    return DISTURBANCE_INDEX_CATEGORIES[4];
+export const DISTURBANCE_INDEX_CATEGORIES: DICategory[] = getDisturbanceIndexCategories(0.05, 0.2);
+
+export function getDisturbanceIndexCategory(
+    di: number,
+    low = 0.05,
+    high = 0.2,
+): DICategory {
+    const cats = getDisturbanceIndexCategories(low, high);
+    if (di >= high) return cats[0];
+    if (di > low) return cats[1];
+    if (di >= -low) return cats[2];
+    if (di >= -high) return cats[3];
+    return cats[4];
 }
 
 export function getWayMetricValue(

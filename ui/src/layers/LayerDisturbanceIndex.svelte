@@ -26,6 +26,8 @@
         diThresholdLow = 0.05,
         diThresholdHigh = 0.2,
         diPaletteMode = "categorized",
+        diFilterMode = "all",
+        diFilterCount = 10,
         selectedWayId = undefined,
         selectedShapeId = undefined,
         onLayerCreate = (layer) => {},
@@ -39,6 +41,8 @@
         diThresholdLow?: number;
         diThresholdHigh?: number;
         diPaletteMode?: "categorized" | "diverging";
+        diFilterMode?: "all" | "worst" | "best";
+        diFilterCount?: number;
         selectedWayId: string | undefined;
         selectedShapeId: string | undefined;
         onLayerCreate: (layer: L.Layer) => void;
@@ -90,7 +94,7 @@
         wayLayerMap = new Map();
 
         // Filter out features with no valid Disturbance Index data
-        const filteredFeatures = geoData.features.filter(
+        let filteredFeatures = geoData.features.filter(
             (feature: Feature | undefined) => {
                 const wayId = feature?.properties?.way_osm_id;
                 const props = wayId ? geoData.wayData[wayId] : undefined;
@@ -105,24 +109,34 @@
                 return di !== undefined;
             },
         );
+
+        // Sort ascending by DI (lowest DI = worst/most disturbed first)
+        filteredFeatures.sort((a, b) => {
+            const propsA = a.properties?.way_osm_id
+                ? geoData.wayData[a.properties.way_osm_id]
+                : null;
+            const propsB = b.properties?.way_osm_id
+                ? geoData.wayData[b.properties.way_osm_id]
+                : null;
+            const diA = getDisturbanceIndex(propsA, criteriaHour) ?? 0;
+            const diB = getDisturbanceIndex(propsB, criteriaHour) ?? 0;
+            return diA - diB;
+        });
+
+        // Apply Top X worst or best filter if requested
+        if (diFilterMode === "worst") {
+            filteredFeatures = filteredFeatures.slice(0, diFilterCount);
+        } else if (diFilterMode === "best") {
+            filteredFeatures = filteredFeatures.slice(Math.max(0, filteredFeatures.length - diFilterCount));
+        }
+
         const visibleWayIds = filteredFeatures
             .map((feature) => feature?.properties?.way_osm_id)
             .filter((wayId): wayId is string => !!wayId);
 
         // Create and add new layer to map
         const newLayer = L.geoJSON(
-            // Order by DI ascending, so lower DI (more disturbed/slower) renders on top
-            filteredFeatures.sort((a, b) => {
-                const propsA = a.properties?.way_osm_id
-                    ? geoData.wayData[a.properties.way_osm_id]
-                    : null;
-                const propsB = b.properties?.way_osm_id
-                    ? geoData.wayData[b.properties.way_osm_id]
-                    : null;
-                const diA = getDisturbanceIndex(propsA, criteriaHour) ?? 0;
-                const diB = getDisturbanceIndex(propsB, criteriaHour) ?? 0;
-                return diA - diB;
-            }),
+            filteredFeatures,
             {
                 style: (feature: Feature | undefined) => {
                     const wayId = feature?.properties?.way_osm_id;

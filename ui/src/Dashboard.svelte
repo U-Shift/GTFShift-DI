@@ -193,20 +193,40 @@
     let di_threshold_high: number = $state(20);
     let di_thresholds_auto: boolean = $state(true);
     let di_palette_mode: "categorized" | "diverging" = $state("categorized");
+    let di_filter_mode: "all" | "worst" | "best" = $state("all");
+    let di_filter_count: number = $state(150);
+    let di_filter_count_auto: boolean = $state(true);
 
-    // Auto-calibrate thresholds based on census percentiles (length-weighted)
+    // Auto-calibrate thresholds and filter count based on census
     $effect(() => {
-        if (!di_thresholds_auto || !disturbance_index_census) return;
+        if (!disturbance_index_census) return;
         const census = disturbance_index_census.census_length;
         if (!census) return;
 
-        // Low threshold: magnitude around median/P75 (e.g. boundary of mild disturbance)
-        // High threshold: magnitude around P25 (e.g. boundary of severe disturbance)
-        const autoLow = Math.max(1, Math.min(15, Math.round(Math.abs(census.p75) * 100) || Math.round(Math.abs(census.median) * 100) || 5));
-        const autoHigh = Math.max(autoLow + 2, Math.min(50, Math.round(Math.abs(census.p25) * 100) || 20));
+        if (di_filter_count_auto && census.n) {
+            di_filter_count = Math.max(1, Math.round(census.n * 0.05));
+        }
 
-        di_threshold_low = autoLow;
-        di_threshold_high = autoHigh;
+        if (di_thresholds_auto) {
+            // Low threshold: magnitude around median/P75 (e.g. boundary of mild disturbance)
+            // High threshold: magnitude around P25 (e.g. boundary of severe disturbance)
+            const autoLow = Math.max(
+                1,
+                Math.min(
+                    15,
+                    Math.round(Math.abs(census.p75) * 100) ||
+                        Math.round(Math.abs(census.median) * 100) ||
+                        5,
+                ),
+            );
+            const autoHigh = Math.max(
+                autoLow + 2,
+                Math.min(50, Math.round(Math.abs(census.p25) * 100) || 20),
+            );
+
+            di_threshold_low = autoLow;
+            di_threshold_high = autoHigh;
+        }
     });
 
     let action_hide_form: boolean = $state(false);
@@ -1063,7 +1083,9 @@
                 class="w-full"
             >
                 {#if display_rt}
-                    <Accordion.Item value={DisplayOptions.DISTURBANCE_INDEX.toString()}>
+                    <Accordion.Item
+                        value={DisplayOptions.DISTURBANCE_INDEX.toString()}
+                    >
                         <Accordion.Trigger
                             class="text-sm font-medium hover:no-underline"
                             >Disturbance index</Accordion.Trigger
@@ -1073,17 +1095,48 @@
                                 class="text-xs text-muted-foreground space-y-3 pt-2"
                             >
                                 <p>
-                                    Disturbance Index (<span class="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">DI</span>) measures the relative difference between hourly median speed (at <span class="font-semibold">{criteria_hour.toString().padStart(2, "0")}:00</span>) and baseline 75th percentile speed (<span class="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">speed_P75</span>):
+                                    Disturbance Index (<span
+                                        class="font-mono bg-muted px-1.5 py-0.5 rounded text-xs"
+                                        >DI</span
+                                    >) measures the relative difference between
+                                    hourly median speed (at
+                                    <span class="font-semibold"
+                                        >{criteria_hour
+                                            .toString()
+                                            .padStart(2, "0")}:00</span
+                                    >) and baseline 75th percentile speed (<span
+                                        class="font-mono bg-muted px-1.5 py-0.5 rounded text-xs"
+                                        >speed_P75</span
+                                    >):
                                 </p>
-                                <div class="bg-muted/40 p-2.5 rounded-lg border border-border/40 text-center my-2 flex items-center justify-center gap-2 select-none">
-                                    <span class="font-serif italic font-medium text-sm text-foreground">DI<sub>{criteria_hour}h</sub></span>
-                                    <span class="text-sm font-normal text-muted-foreground">=</span>
-                                    <div class="inline-flex flex-col items-center justify-center text-xs">
-                                        <span class="font-serif italic pb-0.5 px-1.5 text-foreground">
-                                            v&#772;<sub>median,{criteria_hour}h</sub> &minus; v<sub>P75</sub>
+                                <div
+                                    class="bg-muted/40 p-2.5 rounded-lg border border-border/40 text-center my-2 flex items-center justify-center gap-2 select-none"
+                                >
+                                    <span
+                                        class="font-serif italic font-medium text-sm text-foreground"
+                                        >DI<sub>{criteria_hour}h</sub></span
+                                    >
+                                    <span
+                                        class="text-sm font-normal text-muted-foreground"
+                                        >=</span
+                                    >
+                                    <div
+                                        class="inline-flex flex-col items-center justify-center text-xs"
+                                    >
+                                        <span
+                                            class="font-serif italic pb-0.5 px-1.5 text-foreground"
+                                        >
+                                            v&#772;<sub
+                                                >median,{criteria_hour}h</sub
+                                            >
+                                            &minus; v<sub>P75</sub>
                                         </span>
-                                        <span class="w-full border-t border-foreground/60"></span>
-                                        <span class="font-serif italic pt-0.5 px-1.5 text-foreground">
+                                        <span
+                                            class="w-full border-t border-foreground/60"
+                                        ></span>
+                                        <span
+                                            class="font-serif italic pt-0.5 px-1.5 text-foreground"
+                                        >
                                             v<sub>P75</sub>
                                         </span>
                                     </div>
@@ -1127,48 +1180,163 @@
                                     </button>
                                 </div>
 
+                                <div
+                                    class="p-2.5 bg-muted/30 rounded-lg border border-border/40 space-y-2"
+                                >
+                                    <div
+                                        class="flex items-center justify-between"
+                                    >
+                                        <span
+                                            class="font-medium text-foreground text-xs"
+                                            >Filter Performers</span
+                                        >
+                                        {#if di_filter_mode !== "all"}
+                                            <div
+                                                class="flex items-center gap-1"
+                                            >
+                                                <span
+                                                    class="text-[11px] text-muted-foreground"
+                                                    >Top</span
+                                                >
+                                                <Input
+                                                    type="number"
+                                                    class="w-16 h-6 text-xs text-center px-1"
+                                                    bind:value={di_filter_count}
+                                                    min="1"
+                                                    max={disturbance_index_census?.census_length?.n || 5000}
+                                                    oninput={() =>
+                                                        (di_filter_count_auto =
+                                                            false)}
+                                                />
+                                            </div>
+                                        {/if}
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-1 p-0.5 bg-muted/60 rounded-md border border-border/40 w-full"
+                                    >
+                                        <button
+                                            type="button"
+                                            class="flex-1 py-1 px-2 rounded text-xs font-medium transition-all text-center cursor-pointer {di_filter_mode ===
+                                            'all'
+                                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                                            onclick={() =>
+                                                (di_filter_mode = "all")}
+                                        >
+                                            All
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="flex-1 py-1 px-2 rounded text-xs font-medium transition-all text-center cursor-pointer {di_filter_mode ===
+                                            'worst'
+                                                ? 'bg-background text-destructive shadow-xs font-semibold'
+                                                : 'text-muted-foreground hover:text-destructive hover:bg-background/30'}"
+                                            onclick={() =>
+                                                (di_filter_mode = "worst")}
+                                            title="Filter slowest roads relative to baseline"
+                                        >
+                                            Worst {di_filter_count}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="flex-1 py-1 px-2 rounded text-xs font-medium transition-all text-center cursor-pointer {di_filter_mode ===
+                                            'best'
+                                                ? 'bg-background text-teal-600 dark:text-teal-400 shadow-xs font-semibold'
+                                                : 'text-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 hover:bg-background/30'}"
+                                            onclick={() =>
+                                                (di_filter_mode = "best")}
+                                            title="Filter fastest roads relative to baseline"
+                                        >
+                                            Best {di_filter_count}
+                                        </button>
+                                    </div>
+                                </div>
+
                                 {#if di_palette_mode === "categorized"}
-                                    <div class="p-2.5 bg-muted/30 rounded-lg border border-border/40 space-y-2">
-                                        <div class="flex items-center justify-between">
-                                            <span class="font-medium text-foreground text-xs">Disturbance Thresholds</span>
-                                            <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-muted-foreground">
+                                    <div
+                                        class="p-2.5 bg-muted/30 rounded-lg border border-border/40 space-y-2"
+                                    >
+                                        <div
+                                            class="flex items-center justify-between"
+                                        >
+                                            <span
+                                                class="font-medium text-foreground text-xs"
+                                                >Disturbance Thresholds</span
+                                            >
+                                            <label
+                                                class="flex items-center gap-1.5 cursor-pointer text-[11px] text-muted-foreground"
+                                            >
                                                 <Switch
                                                     checked={di_thresholds_auto}
-                                                    onCheckedChange={(v: boolean) => (di_thresholds_auto = v)}
+                                                    onCheckedChange={(
+                                                        v: boolean,
+                                                    ) =>
+                                                        (di_thresholds_auto =
+                                                            v)}
                                                     class="scale-75"
                                                 />
                                                 Auto (percentiles)
                                             </label>
                                         </div>
-                                        <div class="grid grid-cols-2 gap-2 pt-0.5">
+                                        <div
+                                            class="grid grid-cols-2 gap-2 pt-0.5"
+                                        >
                                             <div>
-                                                <span class="text-[10px] text-muted-foreground block mb-0.5">Regular tolerance (±%)</span>
-                                                <div class="flex items-center gap-1">
-                                                    <span class="text-xs text-muted-foreground">±</span>
+                                                <span
+                                                    class="text-[10px] text-muted-foreground block mb-0.5"
+                                                    >Regular tolerance (±%)</span
+                                                >
+                                                <div
+                                                    class="flex items-center gap-1"
+                                                >
+                                                    <span
+                                                        class="text-xs text-muted-foreground"
+                                                        >±</span
+                                                    >
                                                     <Input
                                                         type="number"
                                                         class="h-7 text-xs text-center"
-                                                        bind:value={di_threshold_low}
+                                                        bind:value={
+                                                            di_threshold_low
+                                                        }
                                                         min="1"
                                                         max="50"
-                                                        oninput={() => (di_thresholds_auto = false)}
+                                                        oninput={() =>
+                                                            (di_thresholds_auto = false)}
                                                     />
-                                                    <span class="text-xs text-muted-foreground">%</span>
+                                                    <span
+                                                        class="text-xs text-muted-foreground"
+                                                        >%</span
+                                                    >
                                                 </div>
                                             </div>
                                             <div>
-                                                <span class="text-[10px] text-muted-foreground block mb-0.5">Severe cutoff (±%)</span>
-                                                <div class="flex items-center gap-1">
-                                                    <span class="text-xs text-muted-foreground">±</span>
+                                                <span
+                                                    class="text-[10px] text-muted-foreground block mb-0.5"
+                                                    >Severe cutoff (±%)</span
+                                                >
+                                                <div
+                                                    class="flex items-center gap-1"
+                                                >
+                                                    <span
+                                                        class="text-xs text-muted-foreground"
+                                                        >±</span
+                                                    >
                                                     <Input
                                                         type="number"
                                                         class="h-7 text-xs text-center"
-                                                        bind:value={di_threshold_high}
+                                                        bind:value={
+                                                            di_threshold_high
+                                                        }
                                                         min="2"
                                                         max="90"
-                                                        oninput={() => (di_thresholds_auto = false)}
+                                                        oninput={() =>
+                                                            (di_thresholds_auto = false)}
                                                     />
-                                                    <span class="text-xs text-muted-foreground">%</span>
+                                                    <span
+                                                        class="text-xs text-muted-foreground"
+                                                        >%</span
+                                                    >
                                                 </div>
                                             </div>
                                         </div>
@@ -1176,30 +1344,59 @@
 
                                     <div class="space-y-1.5 pt-1">
                                         {#each getDisturbanceIndexCategories(di_threshold_low / 100, di_threshold_high / 100) as cat}
-                                            <div class="flex items-center justify-between text-xs">
-                                                <div class="flex items-center gap-2">
-                                                    <span class="w-3 h-3 rounded-sm inline-block" style="background-color: {cat.color}"></span>
-                                                    <span class="font-medium text-foreground">{cat.label}</span>
+                                            <div
+                                                class="flex items-center justify-between text-xs"
+                                            >
+                                                <div
+                                                    class="flex items-center gap-2"
+                                                >
+                                                    <span
+                                                        class="w-3 h-3 rounded-sm inline-block"
+                                                        style="background-color: {cat.color}"
+                                                    ></span>
+                                                    <span
+                                                        class="font-medium text-foreground"
+                                                        >{cat.label}</span
+                                                    >
                                                 </div>
-                                                <span class="text-muted-foreground font-mono">{cat.rangeLabel}</span>
+                                                <span
+                                                    class="text-muted-foreground font-mono"
+                                                    >{cat.rangeLabel}</span
+                                                >
                                             </div>
                                         {/each}
                                     </div>
                                 {:else}
                                     <div class="space-y-2 pt-1">
-                                        <div class="flex justify-between items-center text-[11px] text-muted-foreground">
+                                        <div
+                                            class="flex justify-between items-center text-[11px] text-muted-foreground"
+                                        >
                                             <span>Slower (Brown)</span>
                                             <span>Baseline (0%)</span>
                                             <span>Faster (Teal)</span>
                                         </div>
                                         <div
                                             class="w-full h-3.5 rounded border border-border/40 shadow-2xs"
-                                            style="background: linear-gradient(to right, {COLOR_GRADIENT_DIVERGING_BRBG.join(', ')});"
+                                            style="background: linear-gradient(to right, {COLOR_GRADIENT_DIVERGING_BRBG.join(
+                                                ', ',
+                                            )});"
                                         ></div>
-                                        <div class="flex justify-between items-center text-xs font-mono text-muted-foreground">
-                                            <span>&le; -{Math.max(di_threshold_high, 25)}%</span>
+                                        <div
+                                            class="flex justify-between items-center text-xs font-mono text-muted-foreground"
+                                        >
+                                            <span
+                                                >&le; -{Math.max(
+                                                    di_threshold_high,
+                                                    25,
+                                                )}%</span
+                                            >
                                             <span>0%</span>
-                                            <span>&ge; +{Math.max(di_threshold_high, 25)}%</span>
+                                            <span
+                                                >&ge; +{Math.max(
+                                                    di_threshold_high,
+                                                    25,
+                                                )}%</span
+                                            >
                                         </div>
                                     </div>
                                 {/if}
@@ -1618,20 +1815,21 @@
 
                                 {#if selected_speed_metric === "avg"}
                                     <p>
-                                        Speed computed based on GTFS-RT updates with <a
+                                        Speed computed based on GTFS-RT updates
+                                        with <a
                                             href="https://u-shift.github.io/GTFShift/reference/rt_average_speed.html"
                                             target="_blank"
                                             class="bg-muted px-1.5 py-0.5 rounded text-xs font-mono hover:underline"
                                             >GTFShift::rt_average_speed()</a
-                                        >, considering the distance traversed along
-                                        the route geometry and the time between
-                                        consecutive updates.
+                                        >, considering the distance traversed
+                                        along the route geometry and the time
+                                        between consecutive updates.
                                     </p>
                                     <p>
-                                        Road segments with bus service are colored
-                                        by the average speed measured (for the full
-                                        days of the real-time data collection
-                                        interval), from the <span
+                                        Road segments with bus service are
+                                        colored by the average speed measured
+                                        (for the full days of the real-time data
+                                        collection interval), from the <span
                                             style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
                                             class="font-bold"
                                             >P5 ({geoData.metadata.data_census.speed_avg_length?.p5?.toFixed(
@@ -1651,13 +1849,16 @@
                                     </p>
                                 {:else if selected_speed_metric === "median"}
                                     <p>
-                                        Median speed computed based on GTFS-RT updates, considering the distance traversed along the route geometry and the time between consecutive updates.
+                                        Median speed computed based on GTFS-RT
+                                        updates, considering the distance
+                                        traversed along the route geometry and
+                                        the time between consecutive updates.
                                     </p>
                                     <p>
-                                        Road segments with bus service are colored
-                                        by the median speed measured (for the full
-                                        days of the real-time data collection
-                                        interval), from the <span
+                                        Road segments with bus service are
+                                        colored by the median speed measured
+                                        (for the full days of the real-time data
+                                        collection interval), from the <span
                                             style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
                                             class="font-bold"
                                             >P5 ({geoData.metadata.data_census.speed_avg_length?.p5?.toFixed(
@@ -1677,13 +1878,18 @@
                                     </p>
                                 {:else if selected_speed_metric === "p75"}
                                     <p>
-                                        75th percentile speed computed based on GTFS-RT updates, considering the distance traversed along the route geometry and the time between consecutive updates.
+                                        75th percentile speed computed based on
+                                        GTFS-RT updates, considering the
+                                        distance traversed along the route
+                                        geometry and the time between
+                                        consecutive updates.
                                     </p>
                                     <p>
-                                        Road segments with bus service are colored
-                                        by the 75th percentile speed measured (for the full
-                                        days of the real-time data collection
-                                        interval), from the <span
+                                        Road segments with bus service are
+                                        colored by the 75th percentile speed
+                                        measured (for the full days of the
+                                        real-time data collection interval),
+                                        from the <span
                                             style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
                                             class="font-bold"
                                             >P5 ({geoData.metadata.data_census.speed_avg_length?.p5?.toFixed(
@@ -1987,7 +2193,8 @@
                         : selected_speed_metric === "median"
                           ? "Median speed"
                           : "P75 speed"}
-                    <span class="text-muted-foreground font-normal">(km/h)</span>
+                    <span class="text-muted-foreground font-normal">(km/h)</span
+                    >
                 </p>
                 <div class="flex gap-2 items-center">
                     <span
@@ -2017,36 +2224,68 @@
             </div>
         {:else if active_layer === DisplayOptions.DISTURBANCE_INDEX}
             <div class="mb-2">
-                <p class="mb-2 text-foreground font-semibold">
-                    Disturbance Index <span class="text-muted-foreground font-normal">({criteria_hour.toString().padStart(2, "0")}:00)</span>
-                </p>
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-foreground font-semibold">
+                        Disturbance Index <span
+                            class="text-muted-foreground font-normal"
+                            >({criteria_hour
+                                .toString()
+                                .padStart(2, "0")}:00)</span
+                        >
+                    </p>
+                    {#if di_filter_mode !== "all"}
+                        <span
+                            class="text-[10px] font-medium px-1.5 py-0.5 rounded bg-muted text-foreground border border-border/40 capitalize"
+                        >
+                            {di_filter_mode}
+                            {di_filter_count}
+                        </span>
+                    {/if}
+                </div>
                 {#if di_palette_mode === "categorized"}
                     <div class="space-y-1 mt-2">
                         {#each getDisturbanceIndexCategories(di_threshold_low / 100, di_threshold_high / 100) as cat}
-                            <div class="flex items-center justify-between text-xs">
+                            <div
+                                class="flex items-center justify-between text-xs"
+                            >
                                 <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-sm inline-block" style="background-color: {cat.color}"></span>
-                                    <span class="text-foreground">{cat.label}</span>
+                                    <span
+                                        class="w-3 h-3 rounded-sm inline-block"
+                                        style="background-color: {cat.color}"
+                                    ></span>
+                                    <span class="text-foreground"
+                                        >{cat.label}</span
+                                    >
                                 </div>
-                                <span class="text-muted-foreground font-mono">{cat.rangeLabel}</span>
+                                <span class="text-muted-foreground font-mono"
+                                    >{cat.rangeLabel}</span
+                                >
                             </div>
                         {/each}
                     </div>
                 {:else}
                     <div class="mt-2 space-y-1">
                         <div class="flex gap-2 items-center">
-                            <span class="min-w-[40px] text-right text-xs font-mono text-muted-foreground">
+                            <span
+                                class="min-w-[40px] text-right text-xs font-mono text-muted-foreground"
+                            >
                                 -{Math.max(di_threshold_high, 25)}%
                             </span>
                             <div
                                 class="flex-1 h-3 rounded border border-border/40"
-                                style="background: linear-gradient(to right, {COLOR_GRADIENT_DIVERGING_BRBG.join(', ')});"
+                                style="background: linear-gradient(to right, {COLOR_GRADIENT_DIVERGING_BRBG.join(
+                                    ', ',
+                                )});"
                             ></div>
-                            <span class="min-w-[40px] text-left text-xs font-mono text-muted-foreground">
+                            <span
+                                class="min-w-[40px] text-left text-xs font-mono text-muted-foreground"
+                            >
                                 +{Math.max(di_threshold_high, 25)}%
                             </span>
                         </div>
-                        <div class="flex justify-between items-center text-[10px] text-muted-foreground px-1">
+                        <div
+                            class="flex justify-between items-center text-[10px] text-muted-foreground px-1"
+                        >
                             <span>Slower</span>
                             <span>0% (Baseline)</span>
                             <span>Faster</span>
@@ -2240,6 +2479,8 @@
             diThresholdLow={di_threshold_low / 100}
             diThresholdHigh={di_threshold_high / 100}
             diPaletteMode={di_palette_mode}
+            diFilterMode={di_filter_mode}
+            diFilterCount={di_filter_count}
             {selectedWayId}
             selectedShapeId={selected_shape_id}
             onWaySelect={(id) => (selectedWayId = id)}

@@ -391,6 +391,7 @@ export function computeWeightedStatistics(
     }
 
     return {
+        n: valid.length,
         min,
         max,
         p5,

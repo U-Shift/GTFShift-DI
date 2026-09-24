@@ -1,6 +1,7 @@
 import type { Feature } from "geojson";
 
 export interface StatisticsBundle {
+    n?: number;
     min: number;
     max: number;
     p5: number;

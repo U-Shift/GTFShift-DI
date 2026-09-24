@@ -5,6 +5,7 @@
     import * as Tooltip from "$lib/components/ui/tooltip/index.js";
     import type { GeoPrioritisation } from "../types/GeoPrioritisation";
     import { Button } from "$lib/components/ui/button/index.js";
+    import { getDisturbanceIndex } from "../lib/utils";
 
     let {
         open = $bindable(false),
@@ -37,12 +38,14 @@
                 .filter((wayId) => !!geoData.wayData[wayId])
                 .map((wayId: string) => {
                     const wayData = geoData.wayData[wayId];
+                    const di = getDisturbanceIndex(wayData, hour);
                     return {
                         properties: {
                             way_osm_id: wayId,
                             ...wayData,
                             frequency: wayData.hour_frequency?.[hour],
                             route_names: wayData.routes?.join(", ") || "",
+                            disturbance_index: di,
                         },
                     } as unknown as Feature;
                 });
@@ -187,6 +190,13 @@
                                                 >(nr measurements)</small
                                             ></ThSort
                                         >
+                                        <ThSort
+                                            {table}
+                                            field={(r) =>
+                                                r.properties.disturbance_index ??
+                                                -999}
+                                            >DI <small>(%)</small></ThSort
+                                        >
                                     {/if}
                                     {#if demand_data}
                                         <ThSort
@@ -295,6 +305,11 @@
                                             <td class="px-4 py-2"
                                                 >{row.properties
                                                     .speed_count}</td
+                                            >
+                                            <td class="px-4 py-2"
+                                                >{row.properties.disturbance_index !== undefined
+                                                    ? `${row.properties.disturbance_index > 0 ? "+" : ""}${(row.properties.disturbance_index * 100).toFixed(1)}%`
+                                                    : "-"}</td
                                             >
                                         {/if}
                                         {#if demand_data}

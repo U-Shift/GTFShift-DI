@@ -1513,8 +1513,18 @@
                                 <p>
                                     Disturbance Index (<span class="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">DI</span>) measures the relative difference between hourly median speed (at <span class="font-semibold">{criteria_hour.toString().padStart(2, "0")}:00</span>) and baseline 75th percentile speed (<span class="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">speed_P75</span>):
                                 </p>
-                                <div class="bg-muted/50 p-2 rounded text-center font-mono text-xs my-2">
-                                    DI = (speed_median - speed_P75) / speed_P75
+                                <div class="bg-muted/40 p-2.5 rounded-lg border border-border/40 text-center my-2 flex items-center justify-center gap-2 select-none">
+                                    <span class="font-serif italic font-medium text-sm text-foreground">DI<sub>{criteria_hour}h</sub></span>
+                                    <span class="text-sm font-normal text-muted-foreground">=</span>
+                                    <div class="inline-flex flex-col items-center justify-center text-xs">
+                                        <span class="font-serif italic pb-0.5 px-1.5 text-foreground">
+                                            v&#772;<sub>median,{criteria_hour}h</sub> &minus; v<sub>P75</sub>
+                                        </span>
+                                        <span class="w-full border-t border-foreground/60"></span>
+                                        <span class="font-serif italic pt-0.5 px-1.5 text-foreground">
+                                            v<sub>P75</sub>
+                                        </span>
+                                    </div>
                                 </div>
                                 <div class="flex items-center gap-2 pt-1">
                                     <span

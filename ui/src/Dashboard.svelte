@@ -284,8 +284,11 @@
             criteria_avg_speed_enabled = display_rt;
             criteria_demand_enabled = display_demand;
             line_weight_by = "speed_p75_min";
-            active_layer = DisplayOptions.PRIORITISATION;
-            open_accordion = DisplayOptions.PRIORITISATION.toString();
+            const defaultLayer = display_rt
+                ? DisplayOptions.DISTURBANCE_INDEX
+                : DisplayOptions.PRIORITISATION;
+            active_layer = defaultLayer;
+            open_accordion = defaultLayer.toString();
 
             console.log("Loaded GeoJSON for layer:", selected_layer.id);
         } catch (error) {
@@ -1001,6 +1004,59 @@
                 }}
                 class="w-full"
             >
+                {#if display_rt}
+                    <Accordion.Item value={DisplayOptions.DISTURBANCE_INDEX.toString()}>
+                        <Accordion.Trigger
+                            class="text-sm font-medium hover:no-underline"
+                            >Disturbance index</Accordion.Trigger
+                        >
+                        <Accordion.Content>
+                            <div
+                                class="text-xs text-muted-foreground space-y-3 pt-2"
+                            >
+                                <p>
+                                    Disturbance Index (<span class="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">DI</span>) measures the relative difference between hourly median speed (at <span class="font-semibold">{criteria_hour.toString().padStart(2, "0")}:00</span>) and baseline 75th percentile speed (<span class="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">speed_P75</span>):
+                                </p>
+                                <div class="bg-muted/40 p-2.5 rounded-lg border border-border/40 text-center my-2 flex items-center justify-center gap-2 select-none">
+                                    <span class="font-serif italic font-medium text-sm text-foreground">DI<sub>{criteria_hour}h</sub></span>
+                                    <span class="text-sm font-normal text-muted-foreground">=</span>
+                                    <div class="inline-flex flex-col items-center justify-center text-xs">
+                                        <span class="font-serif italic pb-0.5 px-1.5 text-foreground">
+                                            v&#772;<sub>median,{criteria_hour}h</sub> &minus; v<sub>P75</sub>
+                                        </span>
+                                        <span class="w-full border-t border-foreground/60"></span>
+                                        <span class="font-serif italic pt-0.5 px-1.5 text-foreground">
+                                            v<sub>P75</sub>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 pt-1">
+                                    <span
+                                        >Disturbance Index for <Input
+                                            type="number"
+                                            class="w-16 h-7 inline-block mx-1 px-2 text-center"
+                                            bind:value={criteria_hour}
+                                            min="0"
+                                            max="23"
+                                        />:00 hour</span
+                                    >
+                                </div>
+                                <div class="space-y-1.5 pt-1">
+                                    {#each DISTURBANCE_INDEX_CATEGORIES as cat}
+                                        <div class="flex items-center justify-between text-xs">
+                                            <div class="flex items-center gap-2">
+                                                <span class="w-3 h-3 rounded-sm inline-block" style="background-color: {cat.color}"></span>
+                                                <span class="font-medium text-foreground">{cat.label}</span>
+                                            </div>
+                                            <span class="text-muted-foreground font-mono">{cat.rangeLabel}</span>
+                                        </div>
+                                    {/each}
+                                </div>
+                            </div>
+                        </Accordion.Content>
+                    </Accordion.Item>
+                {/if}
+
                 <Accordion.Item
                     value={DisplayOptions.PRIORITISATION.toString()}
                 >
@@ -1497,57 +1553,6 @@
                                         census_2_label="Frequency"
                                     />
                                 {/if}
-                            </div>
-                        </Accordion.Content>
-                    </Accordion.Item>
-
-                    <Accordion.Item value={DisplayOptions.DISTURBANCE_INDEX.toString()}>
-                        <Accordion.Trigger
-                            class="text-sm font-medium hover:no-underline"
-                            >Disturbance index</Accordion.Trigger
-                        >
-                        <Accordion.Content>
-                            <div
-                                class="text-xs text-muted-foreground space-y-3 pt-2"
-                            >
-                                <p>
-                                    Disturbance Index (<span class="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">DI</span>) measures the relative difference between hourly median speed (at <span class="font-semibold">{criteria_hour.toString().padStart(2, "0")}:00</span>) and baseline 75th percentile speed (<span class="font-mono bg-muted px-1.5 py-0.5 rounded text-xs">speed_P75</span>):
-                                </p>
-                                <div class="bg-muted/40 p-2.5 rounded-lg border border-border/40 text-center my-2 flex items-center justify-center gap-2 select-none">
-                                    <span class="font-serif italic font-medium text-sm text-foreground">DI<sub>{criteria_hour}h</sub></span>
-                                    <span class="text-sm font-normal text-muted-foreground">=</span>
-                                    <div class="inline-flex flex-col items-center justify-center text-xs">
-                                        <span class="font-serif italic pb-0.5 px-1.5 text-foreground">
-                                            v&#772;<sub>median,{criteria_hour}h</sub> &minus; v<sub>P75</sub>
-                                        </span>
-                                        <span class="w-full border-t border-foreground/60"></span>
-                                        <span class="font-serif italic pt-0.5 px-1.5 text-foreground">
-                                            v<sub>P75</sub>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-2 pt-1">
-                                    <span
-                                        >Disturbance Index for <Input
-                                            type="number"
-                                            class="w-16 h-7 inline-block mx-1 px-2 text-center"
-                                            bind:value={criteria_hour}
-                                            min="0"
-                                            max="23"
-                                        />:00 hour</span
-                                    >
-                                </div>
-                                <div class="space-y-1.5 pt-1">
-                                    {#each DISTURBANCE_INDEX_CATEGORIES as cat}
-                                        <div class="flex items-center justify-between text-xs">
-                                            <div class="flex items-center gap-2">
-                                                <span class="w-3 h-3 rounded-sm inline-block" style="background-color: {cat.color}"></span>
-                                                <span class="font-medium text-foreground">{cat.label}</span>
-                                            </div>
-                                            <span class="text-muted-foreground font-mono">{cat.rangeLabel}</span>
-                                        </div>
-                                    {/each}
-                                </div>
                             </div>
                         </Accordion.Content>
                     </Accordion.Item>

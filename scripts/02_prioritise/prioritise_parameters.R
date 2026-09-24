@@ -70,7 +70,7 @@ regions <- bind_rows(
       list(key = "network", value = "Carris Metropolitana", key_exact = TRUE)
     ))),
     rt_interval = "13-30/04/2026 (Business Days)",
-    rt_collection = I(list("data/cmet_20260413_220260430_business/updates.csv")),
+    rt_collection = I(list("../../GTFShift-web/scripts/data/cmet_20260413_220260430_business/updates.csv")),
     # rt_collection_manipulate = I(list(function(df) {
     geofabrik_region = "europe/portugal"
   )
@@ -91,19 +91,19 @@ regions <- bind_rows(
     ))),
     rt_interval = "13-30/04/2026 (Business Days)",
     rt_collection = I(list(as.character(list.files(
-      "data/cmet_20260413_220260430_business_a1/processing_speed_shape_distance_2",
+      "../../GTFShift-web/scripts/data/cmet_20260413_220260430_business_a1/processing_speed_shape_distance_2",
       pattern = "^updates_with_speed_.*\\.csv$",
       full.names = TRUE
     )))),
     rt_collection_manipulate = "rt_collection_speed_from_shape_distance_progression",
     rt_collection_manipulate_extra_params = I(list(list(
-      osm_shapes_length_file = "data/cmet_20260413_220260430_business_a1/processing_speed_shape_distance_2/osm_shapes_linestring.gpkg",
+      osm_shapes_length_file = "../../GTFShift-web/scripts/data/cmet_20260413_220260430_business_a1/processing_speed_shape_distance_2/osm_shapes_linestring.gpkg",
       gtfs_url = "https://files.mobilitydatabase.org/mdb-2027/mdb-2027-202604110055/mdb-2027-202604110055.zip", # MobilityDatabase Snapshot for 11/04/2026
       gtfs_date = "2026-04-13",
       gtfs_manipulate = "manipulate_carris_met_area_1"
     ))),
     rt_collection_per_hour = TRUE,
-    demand_for_route = I(list("data/demand/cm_demand_20260520.csv")),
+    demand_for_route = I(list("../../GTFShift-web/scripts/data/demand/cm_demand_20260520.csv")),
     demand_notes = "Demand by route, obtained from <a href='https://api.carrismetropolitana.pt/v2/metrics/demand/by_line/' target='_blank'>Carris Metropolitana API</a> for same representative day as transit services analysed. Segment aggregation considers the sum of all passengers that board each route that passes through the segment for that day, regardless of the direction of travel or stop they boarded or alighted.",
     geofabrik_region = "europe/portugal",
     metric_crs = 3763
@@ -125,19 +125,19 @@ regions <- bind_rows(
     ))),
     rt_interval = "13-30/04/2026 (Business Days)",
     rt_collection = I(list(as.character(list.files(
-      "data/cmet_20260413_220260430_business_a2/processing_speed_shape_distance_2",
+      "../../GTFShift-web/scripts/data/cmet_20260413_220260430_business_a2/processing_speed_shape_distance_2",
       pattern = "^updates_with_speed_.*\\.csv$",
       full.names = TRUE
     )))),
     rt_collection_manipulate = "rt_collection_speed_from_shape_distance_progression",
     rt_collection_manipulate_extra_params = I(list(list(
-      osm_shapes_length_file = "data/cmet_20260413_220260430_business_a2/processing_speed_shape_distance_2/osm_shapes_linestring.gpkg",
+      osm_shapes_length_file = "../../GTFShift-web/scripts/data/cmet_20260413_220260430_business_a2/processing_speed_shape_distance_2/osm_shapes_linestring.gpkg",
       gtfs_url = "https://files.mobilitydatabase.org/mdb-2027/mdb-2027-202604110055/mdb-2027-202604110055.zip", # MobilityDatabase Snapshot for 11/04/2026
       gtfs_date = "2026-04-13",
       gtfs_manipulate = "manipulate_carris_met_area_2"
     ))),
     rt_collection_per_hour = TRUE,
-    demand_for_route = I(list("data/demand/cm_demand_20260520.csv")),
+    demand_for_route = I(list("../../GTFShift-web/scripts/data/demand/cm_demand_20260520.csv")),
     demand_notes = "Demand by route, obtained from <a href='https://api.carrismetropolitana.pt/v2/metrics/demand/by_line/' target='_blank'>Carris Metropolitana API</a> for same representative day as transit services analysed. Segment aggregation considers the sum of all passengers that board each route that passes through the segment for that day, regardless of the direction of travel or stop they boarded or alighted.",
     geofabrik_region = "europe/portugal",
     metric_crs = 3763
@@ -159,19 +159,19 @@ regions <- bind_rows(
     ))),
     rt_interval = "13-30/04/2026 (Business Days)",
     rt_collection = I(list(as.character(list.files(
-      "data/cmet_20260413_220260430_business_a3/processing_speed_shape_distance_2",
+      "../../GTFShift-web/scripts/data/cmet_20260413_220260430_business_a3/processing_speed_shape_distance_2",
       pattern = "^updates_with_speed_.*\\.csv$",
       full.names = TRUE
     )))),
     rt_collection_manipulate = "rt_collection_speed_from_shape_distance_progression",
     rt_collection_manipulate_extra_params = I(list(list(
-      osm_shapes_length_file = "data/cmet_20260413_220260430_business_a3/processing_speed_shape_distance_2/osm_shapes_linestring.gpkg",
+      osm_shapes_length_file = "../../GTFShift-web/scripts/data/cmet_20260413_220260430_business_a3/processing_speed_shape_distance_2/osm_shapes_linestring.gpkg",
       gtfs_url = "https://files.mobilitydatabase.org/mdb-2027/mdb-2027-202604110055/mdb-2027-202604110055.zip", # MobilityDatabase Snapshot for 11/04/2026
       gtfs_date = "2026-04-13",
       gtfs_manipulate = "manipulate_carris_met_area_3"
     ))),
     rt_collection_per_hour = TRUE,
-    demand_for_route = I(list("data/demand/cm_demand_20260520.csv")),
+    demand_for_route = I(list("../../GTFShift-web/scripts/data/demand/cm_demand_20260520.csv")),
     demand_notes = "Demand by route, obtained from <a href='https://api.carrismetropolitana.pt/v2/metrics/demand/by_line/' target='_blank'>Carris Metropolitana API</a> for same representative day as transit services analysed. Segment aggregation considers the sum of all passengers that board each route that passes through the segment for that day, regardless of the direction of travel or stop they boarded or alighted.",
     geofabrik_region = "europe/portugal",
     metric_crs = 3763
@@ -192,19 +192,19 @@ regions <- bind_rows(
       list(key = "network", value = "Carris Metropolitana", key_exact = TRUE)
     ))),
     rt_collection = I(list(as.character(list.files(
-      "data/cmet_20260413_220260430_business_a4/processing_speed_shape_distance_2",
+      "../../GTFShift-web/scripts/data/cmet_20260413_220260430_business_a4/processing_speed_shape_distance_2",
       pattern = "^updates_with_speed_.*\\.csv$",
       full.names = TRUE
     )))),
     rt_collection_manipulate = "rt_collection_speed_from_shape_distance_progression",
     rt_collection_manipulate_extra_params = I(list(list(
-      osm_shapes_length_file = "data/cmet_20260413_220260430_business_a4/processing_speed_shape_distance_2/osm_shapes_linestring.gpkg",
+      osm_shapes_length_file = "../../GTFShift-web/scripts/data/cmet_20260413_220260430_business_a4/processing_speed_shape_distance_2/osm_shapes_linestring.gpkg",
       gtfs_url = "https://files.mobilitydatabase.org/mdb-2027/mdb-2027-202604110055/mdb-2027-202604110055.zip", # MobilityDatabase Snapshot for 11/04/2026
       gtfs_date = NA,
       gtfs_manipulate = "manipulate_carris_met_area_4"
     ))),
     rt_collection_per_hour = TRUE,
-    demand_for_route = I(list("data/demand/cm_demand_20260520.csv")),
+    demand_for_route = I(list("../../GTFShift-web/scripts/data/demand/cm_demand_20260520.csv")),
     demand_notes = "Demand by route, obtained from <a href='https://api.carrismetropolitana.pt/v2/metrics/demand/by_line/' target='_blank'>Carris Metropolitana API</a> for same representative day as transit services analysed. Segment aggregation considers the sum of all passengers that board each route that passes through the segment for that day, regardless of the direction of travel or stop they boarded or alighted.",
     geofabrik_region = "europe/portugal",
     metric_crs = 3763

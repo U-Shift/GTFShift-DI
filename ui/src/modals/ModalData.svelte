@@ -168,6 +168,20 @@
                                         <ThSort
                                             {table}
                                             field={(r) =>
+                                                r.properties.speed_median}
+                                            >Median speed <small>(km/h)</small
+                                            ></ThSort
+                                        >
+                                        <ThSort
+                                            {table}
+                                            field={(r) =>
+                                                r.properties.speed_p75}
+                                            >P75 speed <small>(km/h)</small
+                                            ></ThSort
+                                        >
+                                        <ThSort
+                                            {table}
+                                            field={(r) =>
                                                 r.properties.speed_count}
                                             >Speed count <small
                                                 >(nr measurements)</small
@@ -265,6 +279,16 @@
                                         {#if rt_data}
                                             <td class="px-4 py-2"
                                                 >{row.properties.speed_avg?.toFixed(
+                                                    1,
+                                                ) || "-"}</td
+                                            >
+                                            <td class="px-4 py-2"
+                                                >{row.properties.speed_median?.toFixed(
+                                                    1,
+                                                ) || "-"}</td
+                                            >
+                                            <td class="px-4 py-2"
+                                                >{row.properties.speed_p75?.toFixed(
                                                     1,
                                                 ) || "-"}</td
                                             >

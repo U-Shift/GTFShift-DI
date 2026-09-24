@@ -152,44 +152,110 @@
                     {/if}
                 </div>
 
-                <!-- Average Speed Card -->
-                {#if way.speed_avg}
+                <!-- Speed Card (100% width with 3 metrics) -->
+                {#if way.speed_avg != null || way.speed_median != null || way.speed_p75 != null}
                     <div
-                        class="p-3 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 flex flex-col justify-between shadow-sm overflow-hidden relative"
+                        class="col-span-2 p-3 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 flex flex-col justify-between shadow-sm overflow-hidden relative"
                     >
                         {#if true}
-                            {@const speed = way.speed_avg}
                             {@const speedCensus =
                                 geoData.metadata.data_census.speed_avg_length}
-                            {@const speedColor = speedCensus
+                            {@const avgColor = speedCensus && way.speed_avg != null
                                 ? getColorFromGradient(
-                                      speed,
+                                      way.speed_avg,
                                       speedCensus.p5,
                                       speedCensus.p95,
                                       COLOR_GRADIENT_RED.slice().reverse(),
                                   )
                                 : null}
-                            <p
-                                class="text-[10px] font-bold uppercase text-muted-foreground mb-1"
-                            >
-                                Avg Speed
-                            </p>
-                            <p class="text-lg font-bold">
-                                {typeof speed === "number"
-                                    ? speed.toFixed(1)
-                                    : Number(speed).toFixed(1)}
-                                <span class="text-[10px] font-normal">km/h</span
+                            {@const medianColor = speedCensus && way.speed_median != null
+                                ? getColorFromGradient(
+                                      way.speed_median,
+                                      speedCensus.p5,
+                                      speedCensus.p95,
+                                      COLOR_GRADIENT_RED.slice().reverse(),
+                                  )
+                                : null}
+                            {@const p75Color = speedCensus && way.speed_p75 != null
+                                ? getColorFromGradient(
+                                      way.speed_p75,
+                                      speedCensus.p5,
+                                      speedCensus.p95,
+                                      COLOR_GRADIENT_RED.slice().reverse(),
+                                  )
+                                : null}
+                            <div class="flex items-center justify-between mb-2">
+                                <p
+                                    class="text-[10px] font-bold uppercase text-muted-foreground"
                                 >
-                            </p>
-                            <p class="text-[10px] text-muted-foreground">
-                                For whole RT data collection interval
-                            </p>
-                            {#if speedColor}
-                                <div
-                                    class="absolute bottom-0 left-0 right-0 h-[3px] rounded-b-xl"
-                                    style="background-color: {speedColor}"
-                                ></div>
-                            {/if}
+                                    Speed <span class="text-[9px] font-normal normal-case">(km/h)</span>
+                                </p>
+                                <p class="text-[10px] text-muted-foreground">
+                                    Whole RT collection interval
+                                </p>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-2">
+                                <div class="bg-background/50 rounded-lg p-2 border border-border/30 relative overflow-hidden">
+                                    <p class="text-[10px] font-medium text-muted-foreground mb-0.5">
+                                        Average
+                                    </p>
+                                    <p class="text-base font-bold">
+                                        {way.speed_avg != null
+                                            ? (typeof way.speed_avg === "number"
+                                                ? way.speed_avg.toFixed(1)
+                                                : Number(way.speed_avg).toFixed(1))
+                                            : "-"}
+                                        <span class="text-[9px] font-normal text-muted-foreground">km/h</span>
+                                    </p>
+                                    {#if avgColor}
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 h-[2.5px]"
+                                            style="background-color: {avgColor}"
+                                        ></div>
+                                    {/if}
+                                </div>
+
+                                <div class="bg-background/50 rounded-lg p-2 border border-border/30 relative overflow-hidden">
+                                    <p class="text-[10px] font-medium text-muted-foreground mb-0.5">
+                                        Median
+                                    </p>
+                                    <p class="text-base font-bold">
+                                        {way.speed_median != null
+                                            ? (typeof way.speed_median === "number"
+                                                ? way.speed_median.toFixed(1)
+                                                : Number(way.speed_median).toFixed(1))
+                                            : "-"}
+                                        <span class="text-[9px] font-normal text-muted-foreground">km/h</span>
+                                    </p>
+                                    {#if medianColor}
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 h-[2.5px]"
+                                            style="background-color: {medianColor}"
+                                        ></div>
+                                    {/if}
+                                </div>
+
+                                <div class="bg-background/50 rounded-lg p-2 border border-border/30 relative overflow-hidden">
+                                    <p class="text-[10px] font-medium text-muted-foreground mb-0.5">
+                                        P75
+                                    </p>
+                                    <p class="text-base font-bold">
+                                        {way.speed_p75 != null
+                                            ? (typeof way.speed_p75 === "number"
+                                                ? way.speed_p75.toFixed(1)
+                                                : Number(way.speed_p75).toFixed(1))
+                                            : "-"}
+                                        <span class="text-[9px] font-normal text-muted-foreground">km/h</span>
+                                    </p>
+                                    {#if p75Color}
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 h-[2.5px]"
+                                            style="background-color: {p75Color}"
+                                        ></div>
+                                    {/if}
+                                </div>
+                            </div>
                         {/if}
                     </div>
                 {/if}
@@ -408,13 +474,13 @@
                 </div>
             </section>
 
-            {#if display_rt && way.hour_speed_avg && Object.values(way.hour_speed_avg)?.some((v) => v != null)}
+            {#if display_rt && ((way.hour_speed_avg && Object.values(way.hour_speed_avg)?.some((v) => v != null)) || (way.hour_speed_median && Object.values(way.hour_speed_median)?.some((v) => v != null)) || (way.hour_speed_p75 && Object.values(way.hour_speed_p75)?.some((v) => v != null)))}
                 <section
                     class="space-y-3 p-4 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50"
                 >
                     <h5 class="text-sm font-bold flex items-center gap-2">
                         <i class="fas fa-chart-bar text-primary/70"></i>
-                        24h Average Speed
+                        24h Speed
                     </h5>
                     <div
                         class="flex items-end gap-[2px] h-24 pt-2 border-l border-b border-muted-foreground/30 px-1"
@@ -518,6 +584,25 @@
                                             {medianSpeed == null || typeof medianSpeed !== "number"
                                                 ? (medianSpeed != null && !isNaN(Number(medianSpeed)) ? Number(medianSpeed).toFixed(1) : "-")
                                                 : medianSpeed.toFixed(1)}
+                                        </td>
+                                    {/each}
+                                </tr>
+                                <tr>
+                                    <th
+                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap"
+                                    >
+                                        P75 speed (km/h)
+                                    </th>
+                                    {#each Array(24) as _, i}
+                                        {@const p75Speed =
+                                            way.hour_speed_p75?.[i]}
+                                        <td
+                                            class="text-[10px] font-medium text-center px-1 py-1 rounded bg-background/70 border border-border/30"
+                                            title="{i}:00 hour_speed_p75"
+                                        >
+                                            {p75Speed == null || typeof p75Speed !== "number"
+                                                ? (p75Speed != null && !isNaN(Number(p75Speed)) ? Number(p75Speed).toFixed(1) : "-")
+                                                : p75Speed.toFixed(1)}
                                         </td>
                                     {/each}
                                 </tr>

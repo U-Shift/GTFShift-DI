@@ -62,12 +62,13 @@
         FREQUENCY,
         N_LANES,
         PARKING_LANES,
-        RT_SPEED_AVG,
-        RT_SPEED_MEDIAN,
-        RT_SPEED_P75,
+        RT_SPEED,
         DISTURBANCE_INDEX,
         DEMAND,
     }
+
+    type SpeedMetric = "avg" | "median" | "p75";
+    let selected_speed_metric: SpeedMetric = $state("avg");
 
     let region: DataRegion | undefined = $state(undefined);
     let selected_layer: RegionLayer | undefined = $state(undefined);
@@ -207,6 +208,7 @@
 
         active_layer = undefined;
         open_accordion = undefined;
+        selected_speed_metric = "avg";
         selected_shape_id = "all";
         visible_way_ids = [];
         geoData = null;
@@ -1348,143 +1350,143 @@
                 -->
 
                 {#if display_rt}
-                    <Accordion.Item value={DisplayOptions.RT_SPEED_AVG.toString()}>
+                    <Accordion.Item value={DisplayOptions.RT_SPEED.toString()}>
                         <Accordion.Trigger
                             class="text-sm font-medium hover:no-underline"
-                            >Average speed</Accordion.Trigger
+                            >Speed</Accordion.Trigger
                         >
                         <Accordion.Content>
                             <div
                                 class="text-xs text-muted-foreground space-y-3 pt-2"
                             >
-                                <p>
-                                    Speed computed based on GTFS-RT updates with <a
-                                        href="https://u-shift.github.io/GTFShift/reference/rt_average_speed.html"
-                                        target="_blank"
-                                        class="bg-muted px-1.5 py-0.5 rounded text-xs font-mono hover:underline"
-                                        >GTFShift::rt_average_speed()</a
-                                    >, considering the distance traversed along
-                                    the route geometry and the time between
-                                    consecutive updates.
-                                </p>
-                                <p>
-                                    Road segments with bus service are colored
-                                    by the average speed measured (for the full
-                                    days of the real-time data collection
-                                    interval), from the <span
-                                        style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
-                                        class="font-bold"
-                                        >P5 ({geoData.metadata.data_census.speed_avg_length?.p5?.toFixed(
-                                            2,
-                                        )})</span
+                                <div
+                                    class="flex items-center gap-1 p-1 bg-muted/70 rounded-full border border-border/40 w-full"
+                                >
+                                    <button
+                                        type="button"
+                                        class="flex-1 py-1 px-2.5 rounded-full text-xs font-medium transition-all text-center cursor-pointer {selected_speed_metric ===
+                                        'avg'
+                                            ? 'bg-background text-foreground shadow-xs font-semibold'
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-background/40'}"
+                                        onclick={() =>
+                                            (selected_speed_metric = "avg")}
+                                        title="Average (mean) speed"
                                     >
-                                    to the
-                                    <span
-                                        style="color: {COLOR_GRADIENT_RED.slice().reverse()[
-                                            COLOR_GRADIENT_RED.length - 1
-                                        ]}"
-                                        class="bg-black/50 font-bold px-1 rounded"
-                                        >P95 ({geoData.metadata.data_census.speed_avg_length?.p95?.toFixed(
-                                            2,
-                                        )})</span
-                                    > values (km/h).
-                                </p>
-                                {#if geoData.metadata.data_census.speed_avg_length}
-                                    <DataCensusTable
-                                        census_1={geoData.metadata.data_census
-                                            .speed_avg_length}
-                                        census_2={geoData.metadata.data_census
-                                            .speed_avg_frequency}
-                                        census_1_label="Length"
-                                        census_2_label="Frequency"
-                                    />
-                                {/if}
-                            </div>
-                        </Accordion.Content>
-                    </Accordion.Item>
+                                        Average
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="flex-1 py-1 px-2.5 rounded-full text-xs font-medium transition-all text-center cursor-pointer {selected_speed_metric ===
+                                        'median'
+                                            ? 'bg-background text-foreground shadow-xs font-semibold'
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-background/40'}"
+                                        onclick={() =>
+                                            (selected_speed_metric = "median")}
+                                        title="Median speed"
+                                    >
+                                        Median
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="flex-1 py-1 px-2.5 rounded-full text-xs font-medium transition-all text-center cursor-pointer {selected_speed_metric ===
+                                        'p75'
+                                            ? 'bg-background text-foreground shadow-xs font-semibold'
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-background/40'}"
+                                        onclick={() =>
+                                            (selected_speed_metric = "p75")}
+                                        title="75th percentile speed"
+                                    >
+                                        P75
+                                    </button>
+                                </div>
 
-                    <Accordion.Item value={DisplayOptions.RT_SPEED_MEDIAN.toString()}>
-                        <Accordion.Trigger
-                            class="text-sm font-medium hover:no-underline"
-                            >Median speed</Accordion.Trigger
-                        >
-                        <Accordion.Content>
-                            <div
-                                class="text-xs text-muted-foreground space-y-3 pt-2"
-                            >
-                                <p>
-                                    Median speed computed based on GTFS-RT updates, considering the distance traversed along the route geometry and the time between consecutive updates.
-                                </p>
-                                <p>
-                                    Road segments with bus service are colored
-                                    by the median speed measured (for the full
-                                    days of the real-time data collection
-                                    interval), from the <span
-                                        style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
-                                        class="font-bold"
-                                        >P5 ({geoData.metadata.data_census.speed_avg_length?.p5?.toFixed(
-                                            2,
-                                        )})</span
-                                    >
-                                    to the
-                                    <span
-                                        style="color: {COLOR_GRADIENT_RED.slice().reverse()[
-                                            COLOR_GRADIENT_RED.length - 1
-                                        ]}"
-                                        class="bg-black/50 font-bold px-1 rounded"
-                                        >P95 ({geoData.metadata.data_census.speed_avg_length?.p95?.toFixed(
-                                            2,
-                                        )})</span
-                                    > values (km/h).
-                                </p>
-                                {#if geoData.metadata.data_census.speed_avg_length}
-                                    <DataCensusTable
-                                        census_1={geoData.metadata.data_census
-                                            .speed_avg_length}
-                                        census_2={geoData.metadata.data_census
-                                            .speed_avg_frequency}
-                                        census_1_label="Length"
-                                        census_2_label="Frequency"
-                                    />
+                                {#if selected_speed_metric === "avg"}
+                                    <p>
+                                        Speed computed based on GTFS-RT updates with <a
+                                            href="https://u-shift.github.io/GTFShift/reference/rt_average_speed.html"
+                                            target="_blank"
+                                            class="bg-muted px-1.5 py-0.5 rounded text-xs font-mono hover:underline"
+                                            >GTFShift::rt_average_speed()</a
+                                        >, considering the distance traversed along
+                                        the route geometry and the time between
+                                        consecutive updates.
+                                    </p>
+                                    <p>
+                                        Road segments with bus service are colored
+                                        by the average speed measured (for the full
+                                        days of the real-time data collection
+                                        interval), from the <span
+                                            style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
+                                            class="font-bold"
+                                            >P5 ({geoData.metadata.data_census.speed_avg_length?.p5?.toFixed(
+                                                2,
+                                            )})</span
+                                        >
+                                        to the
+                                        <span
+                                            style="color: {COLOR_GRADIENT_RED.slice().reverse()[
+                                                COLOR_GRADIENT_RED.length - 1
+                                            ]}"
+                                            class="bg-black/50 font-bold px-1 rounded"
+                                            >P95 ({geoData.metadata.data_census.speed_avg_length?.p95?.toFixed(
+                                                2,
+                                            )})</span
+                                        > values (km/h).
+                                    </p>
+                                {:else if selected_speed_metric === "median"}
+                                    <p>
+                                        Median speed computed based on GTFS-RT updates, considering the distance traversed along the route geometry and the time between consecutive updates.
+                                    </p>
+                                    <p>
+                                        Road segments with bus service are colored
+                                        by the median speed measured (for the full
+                                        days of the real-time data collection
+                                        interval), from the <span
+                                            style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
+                                            class="font-bold"
+                                            >P5 ({geoData.metadata.data_census.speed_avg_length?.p5?.toFixed(
+                                                2,
+                                            )})</span
+                                        >
+                                        to the
+                                        <span
+                                            style="color: {COLOR_GRADIENT_RED.slice().reverse()[
+                                                COLOR_GRADIENT_RED.length - 1
+                                            ]}"
+                                            class="bg-black/50 font-bold px-1 rounded"
+                                            >P95 ({geoData.metadata.data_census.speed_avg_length?.p95?.toFixed(
+                                                2,
+                                            )})</span
+                                        > values (km/h).
+                                    </p>
+                                {:else if selected_speed_metric === "p75"}
+                                    <p>
+                                        75th percentile speed computed based on GTFS-RT updates, considering the distance traversed along the route geometry and the time between consecutive updates.
+                                    </p>
+                                    <p>
+                                        Road segments with bus service are colored
+                                        by the 75th percentile speed measured (for the full
+                                        days of the real-time data collection
+                                        interval), from the <span
+                                            style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
+                                            class="font-bold"
+                                            >P5 ({geoData.metadata.data_census.speed_avg_length?.p5?.toFixed(
+                                                2,
+                                            )})</span
+                                        >
+                                        to the
+                                        <span
+                                            style="color: {COLOR_GRADIENT_RED.slice().reverse()[
+                                                COLOR_GRADIENT_RED.length - 1
+                                            ]}"
+                                            class="bg-black/50 font-bold px-1 rounded"
+                                            >P95 ({geoData.metadata.data_census.speed_avg_length?.p95?.toFixed(
+                                                2,
+                                            )})</span
+                                        > values (km/h).
+                                    </p>
                                 {/if}
-                            </div>
-                        </Accordion.Content>
-                    </Accordion.Item>
 
-                    <Accordion.Item value={DisplayOptions.RT_SPEED_P75.toString()}>
-                        <Accordion.Trigger
-                            class="text-sm font-medium hover:no-underline"
-                            >P75 speed</Accordion.Trigger
-                        >
-                        <Accordion.Content>
-                            <div
-                                class="text-xs text-muted-foreground space-y-3 pt-2"
-                            >
-                                <p>
-                                    75th percentile speed computed based on GTFS-RT updates, considering the distance traversed along the route geometry and the time between consecutive updates.
-                                </p>
-                                <p>
-                                    Road segments with bus service are colored
-                                    by the 75th percentile speed measured (for the full
-                                    days of the real-time data collection
-                                    interval), from the <span
-                                        style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
-                                        class="font-bold"
-                                        >P5 ({geoData.metadata.data_census.speed_avg_length?.p5?.toFixed(
-                                            2,
-                                        )})</span
-                                    >
-                                    to the
-                                    <span
-                                        style="color: {COLOR_GRADIENT_RED.slice().reverse()[
-                                            COLOR_GRADIENT_RED.length - 1
-                                        ]}"
-                                        class="bg-black/50 font-bold px-1 rounded"
-                                        >P95 ({geoData.metadata.data_census.speed_avg_length?.p95?.toFixed(
-                                            2,
-                                        )})</span
-                                    > values (km/h).
-                                </p>
                                 {#if geoData.metadata.data_census.speed_avg_length}
                                     <DataCensusTable
                                         census_1={geoData.metadata.data_census
@@ -1612,6 +1614,7 @@
                     geoData = null;
                     active_layer = undefined;
                     open_accordion = undefined;
+                    selected_speed_metric = "avg";
                     selected_shape_id = "all";
                     selectedWayId = undefined;
                     action_modal_about_open = false;
@@ -1799,78 +1802,15 @@
                     Only segments with ≥ 1 parking lane shown.
                 </p>
             </div>
-        {:else if active_layer === DisplayOptions.RT_SPEED_AVG}
+        {:else if active_layer === DisplayOptions.RT_SPEED}
             <div class="mb-2">
                 <p class="mb-2 text-foreground font-semibold">
-                    Average speed <span
-                        class="text-muted-foreground font-normal">(km/h)</span
-                    >
-                </p>
-                <div class="flex gap-2 items-center">
-                    <span
-                        class="min-w-[40px] text-right text-xs text-muted-foreground"
-                        >{geoData?.metadata.data_census.speed_avg_length?.p5 &&
-                            Math.floor(
-                                geoData.metadata.data_census.speed_avg_length
-                                    .p5,
-                            )}</span
-                    >
-                    <div
-                        class="flex-1 h-3 rounded border"
-                        style="background: linear-gradient(to right, {COLOR_GRADIENT_RED.slice()
-                            .reverse()
-                            .map((c) => c)
-                            .join(', ')});"
-                    ></div>
-                    <span
-                        class="min-w-[40px] text-left text-xs text-muted-foreground"
-                        >{geoData?.metadata.data_census.speed_avg_length?.p95 &&
-                            Math.ceil(
-                                geoData.metadata.data_census.speed_avg_length
-                                    .p95,
-                            )}</span
-                    >
-                </div>
-            </div>
-        {:else if active_layer === DisplayOptions.RT_SPEED_MEDIAN}
-            <div class="mb-2">
-                <p class="mb-2 text-foreground font-semibold">
-                    Median speed <span
-                        class="text-muted-foreground font-normal">(km/h)</span
-                    >
-                </p>
-                <div class="flex gap-2 items-center">
-                    <span
-                        class="min-w-[40px] text-right text-xs text-muted-foreground"
-                        >{geoData?.metadata.data_census.speed_avg_length?.p5 &&
-                            Math.floor(
-                                geoData.metadata.data_census.speed_avg_length
-                                    .p5,
-                            )}</span
-                    >
-                    <div
-                        class="flex-1 h-3 rounded border"
-                        style="background: linear-gradient(to right, {COLOR_GRADIENT_RED.slice()
-                            .reverse()
-                            .map((c) => c)
-                            .join(', ')});"
-                    ></div>
-                    <span
-                        class="min-w-[40px] text-left text-xs text-muted-foreground"
-                        >{geoData?.metadata.data_census.speed_avg_length?.p95 &&
-                            Math.ceil(
-                                geoData.metadata.data_census.speed_avg_length
-                                    .p95,
-                            )}</span
-                    >
-                </div>
-            </div>
-        {:else if active_layer === DisplayOptions.RT_SPEED_P75}
-            <div class="mb-2">
-                <p class="mb-2 text-foreground font-semibold">
-                    P75 speed <span
-                        class="text-muted-foreground font-normal">(km/h)</span
-                    >
+                    {selected_speed_metric === "avg"
+                        ? "Average speed"
+                        : selected_speed_metric === "median"
+                          ? "Median speed"
+                          : "P75 speed"}
+                    <span class="text-muted-foreground font-normal">(km/h)</span>
                 </p>
                 <div class="flex gap-2 items-center">
                     <span
@@ -2054,42 +1994,44 @@
             onLayerCreate={handleLayerCreate}
             onVisibleWayIdsChange={handleVisibleWayIdsChange}
         />
-    {:else if active_layer === DisplayOptions.RT_SPEED_AVG}
-        <LayerRTSpeed
-            {map}
-            {geoData}
-            criteriaHour={criteria_hour}
-            lineWeightBy={line_weight_by}
-            {selectedWayId}
-            selectedShapeId={selected_shape_id}
-            onWaySelect={(id) => (selectedWayId = id)}
-            onLayerCreate={handleLayerCreate}
-            onVisibleWayIdsChange={handleVisibleWayIdsChange}
-        />
-    {:else if active_layer === DisplayOptions.RT_SPEED_MEDIAN}
-        <LayerRTSpeedMedian
-            {map}
-            {geoData}
-            criteriaHour={criteria_hour}
-            lineWeightBy={line_weight_by}
-            {selectedWayId}
-            selectedShapeId={selected_shape_id}
-            onWaySelect={(id) => (selectedWayId = id)}
-            onLayerCreate={handleLayerCreate}
-            onVisibleWayIdsChange={handleVisibleWayIdsChange}
-        />
-    {:else if active_layer === DisplayOptions.RT_SPEED_P75}
-        <LayerRTSpeedP75
-            {map}
-            {geoData}
-            criteriaHour={criteria_hour}
-            lineWeightBy={line_weight_by}
-            {selectedWayId}
-            selectedShapeId={selected_shape_id}
-            onWaySelect={(id) => (selectedWayId = id)}
-            onLayerCreate={handleLayerCreate}
-            onVisibleWayIdsChange={handleVisibleWayIdsChange}
-        />
+    {:else if active_layer === DisplayOptions.RT_SPEED}
+        {#if selected_speed_metric === "avg"}
+            <LayerRTSpeed
+                {map}
+                {geoData}
+                criteriaHour={criteria_hour}
+                lineWeightBy={line_weight_by}
+                {selectedWayId}
+                selectedShapeId={selected_shape_id}
+                onWaySelect={(id) => (selectedWayId = id)}
+                onLayerCreate={handleLayerCreate}
+                onVisibleWayIdsChange={handleVisibleWayIdsChange}
+            />
+        {:else if selected_speed_metric === "median"}
+            <LayerRTSpeedMedian
+                {map}
+                {geoData}
+                criteriaHour={criteria_hour}
+                lineWeightBy={line_weight_by}
+                {selectedWayId}
+                selectedShapeId={selected_shape_id}
+                onWaySelect={(id) => (selectedWayId = id)}
+                onLayerCreate={handleLayerCreate}
+                onVisibleWayIdsChange={handleVisibleWayIdsChange}
+            />
+        {:else if selected_speed_metric === "p75"}
+            <LayerRTSpeedP75
+                {map}
+                {geoData}
+                criteriaHour={criteria_hour}
+                lineWeightBy={line_weight_by}
+                {selectedWayId}
+                selectedShapeId={selected_shape_id}
+                onWaySelect={(id) => (selectedWayId = id)}
+                onLayerCreate={handleLayerCreate}
+                onVisibleWayIdsChange={handleVisibleWayIdsChange}
+            />
+        {/if}
     {:else if active_layer === DisplayOptions.DISTURBANCE_INDEX}
         <LayerDisturbanceIndex
             {map}

@@ -61,6 +61,53 @@ export function getColorFromGradient(
     return rgbToHex(r, g, b);
 }
 
+/**
+ * Interpolates color from a diverging color palette centered at 0.
+ * Left half represents negative values (from -maxAbs to 0).
+ * Center represents 0.
+ * Right half represents positive values (from 0 to +maxAbs).
+ */
+export function getDivergingColor(
+    value: number | string | undefined | null,
+    maxAbs: number,
+    gradient: string[],
+): string {
+    if (!gradient || gradient.length === 0) return "#808080";
+    const v = typeof value === "number" ? value : parseFloat(String(value));
+    if (isNaN(v)) return "#808080";
+    if (maxAbs <= 0) return gradient[Math.floor(gradient.length / 2)];
+
+    // Map [-maxAbs, maxAbs] to [0, 1]
+    const clampedRatio = Math.max(-1, Math.min(1, v / maxAbs));
+    const percent = (clampedRatio + 1) / 2;
+
+    const index = percent * (gradient.length - 1);
+    const lowIndex = Math.floor(index);
+    const highIndex = Math.ceil(index);
+    const fraction = index - lowIndex;
+
+    const hexToRgb = (hex: string) => {
+        if (!hex || typeof hex !== "string" || hex[0] !== "#") return [0, 0, 0];
+        const r = parseInt(hex.substring(1, 3), 16);
+        const g = parseInt(hex.substring(3, 5), 16);
+        const b = parseInt(hex.substring(5, 7), 16);
+        return [isNaN(r) ? 0 : r, isNaN(g) ? 0 : g, isNaN(b) ? 0 : b];
+    };
+
+    const rgbToHex = (r: number, g: number, b: number) => {
+        return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+    };
+
+    const color1 = hexToRgb(gradient[lowIndex]);
+    const color2 = hexToRgb(gradient[highIndex]);
+
+    const r = Math.round(color1[0] + (color2[0] - color1[0]) * fraction);
+    const g = Math.round(color1[1] + (color2[1] - color1[1]) * fraction);
+    const b = Math.round(color1[2] + (color2[2] - color1[2]) * fraction);
+
+    return rgbToHex(r, g, b);
+}
+
 export function getWayHourlyFrequency(
     wayProps:
         | {

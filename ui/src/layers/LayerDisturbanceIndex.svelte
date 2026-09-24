@@ -13,8 +13,10 @@
     import {
         getDisturbanceIndex,
         getDisturbanceIndexCategory,
+        getDivergingColor,
         getLineWeight,
     } from "../lib/utils";
+    import { COLOR_GRADIENT_DIVERGING_BRBG } from "../data";
 
     let {
         map,
@@ -23,6 +25,7 @@
         lineWeightBy = "frequency",
         diThresholdLow = 0.05,
         diThresholdHigh = 0.2,
+        diPaletteMode = "categorized",
         selectedWayId = undefined,
         selectedShapeId = undefined,
         onLayerCreate = (layer) => {},
@@ -35,6 +38,7 @@
         lineWeightBy: LineWeightMetric;
         diThresholdLow?: number;
         diThresholdHigh?: number;
+        diPaletteMode?: "categorized" | "diverging";
         selectedWayId: string | undefined;
         selectedShapeId: string | undefined;
         onLayerCreate: (layer: L.Layer) => void;
@@ -66,7 +70,13 @@
             lineWeightBy,
         );
         if (di !== undefined) {
-            color = getDisturbanceIndexCategory(di, diThresholdLow, diThresholdHigh).color;
+            if (diPaletteMode === "diverging") {
+                // Symmetrical diverging ramp centered at 0, using diThresholdHigh as the full saturation scale
+                const maxRange = Math.max(diThresholdHigh, 0.25);
+                color = getDivergingColor(di, maxRange, COLOR_GRADIENT_DIVERGING_BRBG);
+            } else {
+                color = getDisturbanceIndexCategory(di, diThresholdLow, diThresholdHigh).color;
+            }
         }
         return {
             color,

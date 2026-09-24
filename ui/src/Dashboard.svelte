@@ -43,6 +43,7 @@
         COLOR_RED,
         COLOR_GRADIENT,
         COLOR_GRADIENT_RED,
+        COLOR_GRADIENT_DIVERGING_BRBG,
     } from "./data";
     import Spinner from "$lib/components/ui/spinner/spinner.svelte";
     import {
@@ -191,6 +192,7 @@
     let di_threshold_low: number = $state(5);
     let di_threshold_high: number = $state(20);
     let di_thresholds_auto: boolean = $state(true);
+    let di_palette_mode: "categorized" | "diverging" = $state("categorized");
 
     // Auto-calibrate thresholds based on census percentiles (length-weighted)
     $effect(() => {
@@ -1098,63 +1100,109 @@
                                     >
                                 </div>
 
-                                <div class="p-2.5 bg-muted/30 rounded-lg border border-border/40 space-y-2">
-                                    <div class="flex items-center justify-between">
-                                        <span class="font-medium text-foreground text-xs">Disturbance Thresholds</span>
-                                        <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-muted-foreground">
-                                            <Switch
-                                                checked={di_thresholds_auto}
-                                                onCheckedChange={(v: boolean) => (di_thresholds_auto = v)}
-                                                class="scale-75"
-                                            />
-                                            Auto (percentiles)
-                                        </label>
-                                    </div>
-                                    <div class="grid grid-cols-2 gap-2 pt-0.5">
-                                        <div>
-                                            <span class="text-[10px] text-muted-foreground block mb-0.5">Regular tolerance (±%)</span>
-                                            <div class="flex items-center gap-1">
-                                                <span class="text-xs text-muted-foreground">±</span>
-                                                <Input
-                                                    type="number"
-                                                    class="h-7 text-xs text-center"
-                                                    bind:value={di_threshold_low}
-                                                    min="1"
-                                                    max="50"
-                                                    oninput={() => (di_thresholds_auto = false)}
-                                                />
-                                                <span class="text-xs text-muted-foreground">%</span>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <span class="text-[10px] text-muted-foreground block mb-0.5">Severe cutoff (±%)</span>
-                                            <div class="flex items-center gap-1">
-                                                <span class="text-xs text-muted-foreground">±</span>
-                                                <Input
-                                                    type="number"
-                                                    class="h-7 text-xs text-center"
-                                                    bind:value={di_threshold_high}
-                                                    min="2"
-                                                    max="90"
-                                                    oninput={() => (di_thresholds_auto = false)}
-                                                />
-                                                <span class="text-xs text-muted-foreground">%</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div
+                                    class="flex items-center gap-1 p-1 bg-muted/70 rounded-full border border-border/40 w-full"
+                                >
+                                    <button
+                                        type="button"
+                                        class="flex-1 py-1 px-2.5 rounded-full text-xs font-medium transition-all text-center cursor-pointer {di_palette_mode ===
+                                        'categorized'
+                                            ? 'bg-background text-foreground shadow-xs font-semibold'
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-background/40'}"
+                                        onclick={() =>
+                                            (di_palette_mode = "categorized")}
+                                    >
+                                        Categorized
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="flex-1 py-1 px-2.5 rounded-full text-xs font-medium transition-all text-center cursor-pointer {di_palette_mode ===
+                                        'diverging'
+                                            ? 'bg-background text-foreground shadow-xs font-semibold'
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-background/40'}"
+                                        onclick={() =>
+                                            (di_palette_mode = "diverging")}
+                                    >
+                                        Diverging
+                                    </button>
                                 </div>
 
-                                <div class="space-y-1.5 pt-1">
-                                    {#each getDisturbanceIndexCategories(di_threshold_low / 100, di_threshold_high / 100) as cat}
-                                        <div class="flex items-center justify-between text-xs">
-                                            <div class="flex items-center gap-2">
-                                                <span class="w-3 h-3 rounded-sm inline-block" style="background-color: {cat.color}"></span>
-                                                <span class="font-medium text-foreground">{cat.label}</span>
-                                            </div>
-                                            <span class="text-muted-foreground font-mono">{cat.rangeLabel}</span>
+                                {#if di_palette_mode === "categorized"}
+                                    <div class="p-2.5 bg-muted/30 rounded-lg border border-border/40 space-y-2">
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-medium text-foreground text-xs">Disturbance Thresholds</span>
+                                            <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-muted-foreground">
+                                                <Switch
+                                                    checked={di_thresholds_auto}
+                                                    onCheckedChange={(v: boolean) => (di_thresholds_auto = v)}
+                                                    class="scale-75"
+                                                />
+                                                Auto (percentiles)
+                                            </label>
                                         </div>
-                                    {/each}
-                                </div>
+                                        <div class="grid grid-cols-2 gap-2 pt-0.5">
+                                            <div>
+                                                <span class="text-[10px] text-muted-foreground block mb-0.5">Regular tolerance (±%)</span>
+                                                <div class="flex items-center gap-1">
+                                                    <span class="text-xs text-muted-foreground">±</span>
+                                                    <Input
+                                                        type="number"
+                                                        class="h-7 text-xs text-center"
+                                                        bind:value={di_threshold_low}
+                                                        min="1"
+                                                        max="50"
+                                                        oninput={() => (di_thresholds_auto = false)}
+                                                    />
+                                                    <span class="text-xs text-muted-foreground">%</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <span class="text-[10px] text-muted-foreground block mb-0.5">Severe cutoff (±%)</span>
+                                                <div class="flex items-center gap-1">
+                                                    <span class="text-xs text-muted-foreground">±</span>
+                                                    <Input
+                                                        type="number"
+                                                        class="h-7 text-xs text-center"
+                                                        bind:value={di_threshold_high}
+                                                        min="2"
+                                                        max="90"
+                                                        oninput={() => (di_thresholds_auto = false)}
+                                                    />
+                                                    <span class="text-xs text-muted-foreground">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-1.5 pt-1">
+                                        {#each getDisturbanceIndexCategories(di_threshold_low / 100, di_threshold_high / 100) as cat}
+                                            <div class="flex items-center justify-between text-xs">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="w-3 h-3 rounded-sm inline-block" style="background-color: {cat.color}"></span>
+                                                    <span class="font-medium text-foreground">{cat.label}</span>
+                                                </div>
+                                                <span class="text-muted-foreground font-mono">{cat.rangeLabel}</span>
+                                            </div>
+                                        {/each}
+                                    </div>
+                                {:else}
+                                    <div class="space-y-2 pt-1">
+                                        <div class="flex justify-between items-center text-[11px] text-muted-foreground">
+                                            <span>Slower (Brown)</span>
+                                            <span>Baseline (0%)</span>
+                                            <span>Faster (Teal)</span>
+                                        </div>
+                                        <div
+                                            class="w-full h-3.5 rounded border border-border/40 shadow-2xs"
+                                            style="background: linear-gradient(to right, {COLOR_GRADIENT_DIVERGING_BRBG.join(', ')});"
+                                        ></div>
+                                        <div class="flex justify-between items-center text-xs font-mono text-muted-foreground">
+                                            <span>&le; -{Math.max(di_threshold_high, 25)}%</span>
+                                            <span>0%</span>
+                                            <span>&ge; +{Math.max(di_threshold_high, 25)}%</span>
+                                        </div>
+                                    </div>
+                                {/if}
 
                                 {#if disturbance_index_census}
                                     <DataCensusTable
@@ -1972,17 +2020,39 @@
                 <p class="mb-2 text-foreground font-semibold">
                     Disturbance Index <span class="text-muted-foreground font-normal">({criteria_hour.toString().padStart(2, "0")}:00)</span>
                 </p>
-                <div class="space-y-1 mt-2">
-                    {#each getDisturbanceIndexCategories(di_threshold_low / 100, di_threshold_high / 100) as cat}
-                        <div class="flex items-center justify-between text-xs">
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-sm inline-block" style="background-color: {cat.color}"></span>
-                                <span class="text-foreground">{cat.label}</span>
+                {#if di_palette_mode === "categorized"}
+                    <div class="space-y-1 mt-2">
+                        {#each getDisturbanceIndexCategories(di_threshold_low / 100, di_threshold_high / 100) as cat}
+                            <div class="flex items-center justify-between text-xs">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-sm inline-block" style="background-color: {cat.color}"></span>
+                                    <span class="text-foreground">{cat.label}</span>
+                                </div>
+                                <span class="text-muted-foreground font-mono">{cat.rangeLabel}</span>
                             </div>
-                            <span class="text-muted-foreground font-mono">{cat.rangeLabel}</span>
+                        {/each}
+                    </div>
+                {:else}
+                    <div class="mt-2 space-y-1">
+                        <div class="flex gap-2 items-center">
+                            <span class="min-w-[40px] text-right text-xs font-mono text-muted-foreground">
+                                -{Math.max(di_threshold_high, 25)}%
+                            </span>
+                            <div
+                                class="flex-1 h-3 rounded border border-border/40"
+                                style="background: linear-gradient(to right, {COLOR_GRADIENT_DIVERGING_BRBG.join(', ')});"
+                            ></div>
+                            <span class="min-w-[40px] text-left text-xs font-mono text-muted-foreground">
+                                +{Math.max(di_threshold_high, 25)}%
+                            </span>
                         </div>
-                    {/each}
-                </div>
+                        <div class="flex justify-between items-center text-[10px] text-muted-foreground px-1">
+                            <span>Slower</span>
+                            <span>0% (Baseline)</span>
+                            <span>Faster</span>
+                        </div>
+                    </div>
+                {/if}
             </div>
         {:else if active_layer === DisplayOptions.DEMAND}
             <div class="mb-2">
@@ -2169,6 +2239,7 @@
             lineWeightBy={line_weight_by}
             diThresholdLow={di_threshold_low / 100}
             diThresholdHigh={di_threshold_high / 100}
+            diPaletteMode={di_palette_mode}
             {selectedWayId}
             selectedShapeId={selected_shape_id}
             onWaySelect={(id) => (selectedWayId = id)}

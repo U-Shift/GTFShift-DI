@@ -49,6 +49,8 @@ erDiagram
         string route_text_color "Hex text color code for contrast"
         object stats "Prioritisation statistics (averages, speed metrics, etc.)"
         object schedule "Key-value map of hour (0-23) -> total shape frequency"
+        object departure_stop "Departure stop information (stop_id, stop_name, lat, lon)"
+        object arrival_stop "Arrival/terminal stop information (stop_id, stop_name, lat, lon)"
     }
 
     Route_Data_JSON {

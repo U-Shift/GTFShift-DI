@@ -60,6 +60,7 @@ erDiagram
         string route_color "Hex color code for styling"
         string route_text_color "Hex text color code for contrast"
         int demand "Passenger demand (if applicable)"
+        object speed_profile "Route-level speed profile and disturbance index metrics (if RT available)"
     }
 
     Metadata_JSON {

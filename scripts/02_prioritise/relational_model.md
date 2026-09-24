@@ -13,7 +13,8 @@ The files generated with `.json` and `.geojson` extensions are:
 3. **`way_data_<region>_gtfs<date>_run<date>.json`**: Speed, lanes, and hourly frequencies for road segments.
 4. **`shape_data_<region>_gtfs<date>_run<date>.json`**: Transit shape metrics, attributes, and hourly schedule frequencies.
 5. **`route_data_<region>_gtfs<date>_run<date>.json`**: Transit route metadata.
-6. **`metadata_<region>_gtfs<date>_run<date>.json`**: Global pipeline execution metrics, census stats, and configurations.
+6. **`route_speed_profile_<region>_gtfs<date>_run<date>.json`**: Route-level speed profile and hourly disturbance index aggregations (if RT available).
+7. **`metadata_<region>_gtfs<date>_run<date>.json`**: Global pipeline execution metrics, census stats, and configurations.
 
 ---
 
@@ -70,6 +71,13 @@ erDiagram
         string route_long_name "Public transit route long name"
         string route_color "Hex color code for styling"
         string route_text_color "Hex text color code for contrast"
+        object speed_profile "Route-level speed profile and disturbance index metrics (if RT available)"
+    }
+
+    Route_Speed_Profile_JSON {
+        string route_id PK "GTFS route_id (key of root dictionary object)"
+        object stats "Overall route speed centrality, dispersion, and commercial speed"
+        array day_hour "List of hourly aggregations (day, hour, median speed, and disturbance_index)"
     }
 
     Metadata_JSON {

@@ -45,7 +45,11 @@
         COLOR_GRADIENT_RED,
     } from "./data";
     import Spinner from "$lib/components/ui/spinner/spinner.svelte";
-    import { DISTURBANCE_INDEX_CATEGORIES } from "./lib/utils";
+    import {
+        DISTURBANCE_INDEX_CATEGORIES,
+        getDisturbanceIndex,
+        computeWeightedStatistics,
+    } from "./lib/utils";
 
     // Map
     let { map, light_mode = $bindable() }: { map: L.Map; light_mode: boolean } =
@@ -149,6 +153,38 @@
             options.push({ value: "demand", label: "Demand" });
         }
         return options;
+    });
+
+    const disturbance_index_census = $derived.by(() => {
+        if (!geoData || !display_rt) return null;
+
+        const lengthValues: { value: number; weight: number }[] = [];
+        const freqValues: { value: number; weight: number }[] = [];
+
+        for (const way of Object.values(geoData.wayData)) {
+            const di = getDisturbanceIndex(way, criteria_hour);
+            if (di === undefined) continue;
+
+            const length = Number(way.length_m) || 0;
+            if (length > 0) {
+                lengthValues.push({ value: di, weight: length });
+            }
+
+            const freq = Number(way.hour_frequency?.[criteria_hour]) || 0;
+            if (freq > 0) {
+                freqValues.push({ value: di, weight: freq });
+            }
+        }
+
+        const census_length = computeWeightedStatistics(lengthValues);
+        const census_freq = computeWeightedStatistics(freqValues);
+
+        if (!census_length) return null;
+
+        return {
+            census_length,
+            census_freq,
+        };
     });
 
     let action_hide_form: boolean = $state(false);
@@ -1052,6 +1088,15 @@
                                         </div>
                                     {/each}
                                 </div>
+
+                                {#if disturbance_index_census}
+                                    <DataCensusTable
+                                        census_1={disturbance_index_census.census_length}
+                                        census_2={disturbance_index_census.census_freq}
+                                        census_1_label="Length"
+                                        census_2_label="Frequency"
+                                    />
+                                {/if}
                             </div>
                         </Accordion.Content>
                     </Accordion.Item>

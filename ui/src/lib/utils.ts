@@ -254,3 +254,92 @@ export function getLineWeight(
 
     return 3.5;
 }
+
+export function computeWeightedStatistics(
+    values: { value: number; weight: number }[],
+): import("../types/GeoPrioritisation").StatisticsBundle | undefined {
+    const valid = values.filter(
+        (v) =>
+            v.value !== undefined &&
+            v.value !== null &&
+            !isNaN(v.value) &&
+            isFinite(v.value) &&
+            v.weight !== undefined &&
+            v.weight !== null &&
+            !isNaN(v.weight) &&
+            v.weight > 0,
+    );
+
+    if (valid.length === 0) return undefined;
+
+    // Sort ascending by value
+    valid.sort((a, b) => a.value - b.value);
+
+    const totalWeight = valid.reduce((acc, v) => acc + v.weight, 0);
+    if (totalWeight <= 0) return undefined;
+
+    // Weighted mean
+    const weightedSum = valid.reduce((acc, v) => acc + v.value * v.weight, 0);
+    const mean = weightedSum / totalWeight;
+
+    // Weighted variance and sd
+    const weightedVarSum = valid.reduce(
+        (acc, v) => acc + v.weight * Math.pow(v.value - mean, 2),
+        0,
+    );
+    const variance = weightedVarSum / totalWeight;
+    const sd = Math.sqrt(variance);
+
+    const min = valid[0].value;
+    const max = valid[valid.length - 1].value;
+
+    // Helper for weighted percentile
+    const getPercentile = (p: number) => {
+        const target = p * totalWeight;
+        let cum = 0;
+        for (let i = 0; i < valid.length; i++) {
+            cum += valid[i].weight;
+            if (cum >= target) {
+                return valid[i].value;
+            }
+        }
+        return valid[valid.length - 1].value;
+    };
+
+    const p5 = getPercentile(0.05);
+    const p25 = getPercentile(0.25);
+    const median = getPercentile(0.5);
+    const p75 = getPercentile(0.75);
+    const p85 = getPercentile(0.85);
+    const p95 = getPercentile(0.95);
+
+    // Median below p85
+    const belowP85 = valid.filter((v) => v.value <= p85);
+    let median_below_p85 = median;
+    if (belowP85.length > 0) {
+        const totalWeightBelow = belowP85.reduce((acc, v) => acc + v.weight, 0);
+        const targetBelow = 0.5 * totalWeightBelow;
+        let cumBelow = 0;
+        for (let i = 0; i < belowP85.length; i++) {
+            cumBelow += belowP85[i].weight;
+            if (cumBelow >= targetBelow) {
+                median_below_p85 = belowP85[i].value;
+                break;
+            }
+        }
+    }
+
+    return {
+        min,
+        max,
+        p5,
+        p25,
+        p75,
+        p95,
+        mean,
+        median,
+        median_below_p85,
+        variance,
+        sd,
+    };
+}

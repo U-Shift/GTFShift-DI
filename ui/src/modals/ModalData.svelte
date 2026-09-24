@@ -1,7 +1,15 @@
 <script lang="ts">
     import { untrack } from "svelte";
     import type { Feature } from "geojson";
-    import { TableHandler, Datatable, ThSort } from "@vincjo/datatables";
+    import {
+        TableHandler,
+        Datatable,
+        ThSort,
+        ThFilter,
+        Search,
+        RowsPerPage,
+    } from "@vincjo/datatables";
+    import ThFilterNumeric from "../components/ThFilterNumeric.svelte";
     import * as Tooltip from "$lib/components/ui/tooltip/index.js";
     import type { GeoPrioritisation } from "../types/GeoPrioritisation";
     import { Button } from "$lib/components/ui/button/index.js";
@@ -29,6 +37,7 @@
 
     let data_filtered = $state<Feature[]>([]);
     let table = $state<TableHandler<any> | null>(null);
+    let show_filters = $state<boolean>(false);
 
     $effect(() => {
         if (geoData) {
@@ -46,6 +55,7 @@
                             frequency: wayData.hour_frequency?.[hour],
                             route_names: wayData.routes?.join(", ") || "",
                             disturbance_index: di,
+                            di_percent: di !== undefined ? Number((di * 100).toFixed(1)) : undefined,
                         },
                     } as unknown as Feature;
                 });
@@ -55,7 +65,7 @@
             if (data_filtered) {
                 if (!table) {
                     table = new TableHandler([] as Feature[], {
-                        rowsPerPage: 10,
+                        rowsPerPage: 15,
                     });
                 }
                 table.setRows([...data_filtered]);
@@ -79,26 +89,46 @@
     >
         <!-- Header -->
         <div
-            class="flex items-center justify-between px-5 py-4 border-b shrink-0"
+            class="flex items-center justify-between px-5 py-3 border-b shrink-0 gap-3"
         >
             <h2 class="text-lg font-bold flex items-center gap-2">
                 <i class="fas fa-table text-primary"></i>
                 Attribute table
                 <span class="text-muted-foreground font-normal text-sm"
-                    >at {hour}:00 (Showing {data_filtered.length} rows displayed
-                    in current layer, out of {geoData
-                        ? Object.keys(geoData.wayData).length
-                        : 0})</span
+                    >at {hour}:00 (Showing {table?.rows.length ?? data_filtered.length} of {data_filtered.length} rows)</span
                 >
             </h2>
-            <Button
-                variant="ghost"
-                size="sm"
-                onclick={() => (open = false)}
-                class="h-8 w-8 p-0"
-            >
-                <i class="fas fa-times"></i>
-            </Button>
+            <div class="flex items-center gap-2">
+                <Button
+                    variant={show_filters ? "secondary" : "outline"}
+                    size="sm"
+                    onclick={() => (show_filters = !show_filters)}
+                    class="h-8 text-xs gap-1.5 cursor-pointer"
+                    title={show_filters ? "Hide column filters" : "Show column filters"}
+                >
+                    <i class="fas fa-filter text-xs"></i>
+                    <span>{show_filters ? "Hide filters" : "Filter columns"}</span>
+                </Button>
+                {#if show_filters}
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onclick={() => table?.clearFilters()}
+                        class="h-8 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
+                        title="Clear all column filters"
+                    >
+                        Clear filters
+                    </Button>
+                {/if}
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    onclick={() => (open = false)}
+                    class="h-8 w-8 p-0 cursor-pointer"
+                >
+                    <i class="fas fa-times"></i>
+                </Button>
+            </div>
         </div>
 
         <!-- Table -->
@@ -106,6 +136,10 @@
             {#if table}
                 <div class="border rounded-md">
                     <Datatable basic {table}>
+                        {#snippet header()}
+                            <Search {table} />
+                            <RowsPerPage {table} options={[5, 10, 15, 20, 50, 100]} />
+                        {/snippet}
                         <table class="w-full text-sm">
                             <thead class="bg-muted/50 border-b sticky top-0">
                                 <tr>
@@ -202,7 +236,7 @@
                                         <ThSort
                                             {table}
                                             field={(r) => r.properties.demand}
-                                            >Demand <small
+                                        >Demand <small
                                                 >(passengers/day)</small
                                             ></ThSort
                                         >
@@ -218,6 +252,100 @@
                                         >Routes</ThSort
                                     >
                                 </tr>
+                                {#if show_filters}
+                                    <tr class="bg-muted/30 border-b filter-row">
+                                        <ThFilter
+                                            {table}
+                                            field={(r) => r.properties.way_osm_id}
+                                        />
+                                        <ThFilter
+                                            {table}
+                                            field={(r) =>
+                                                r.properties.name &&
+                                                typeof r.properties.name ===
+                                                    "string"
+                                                    ? r.properties.name
+                                                    : ""}
+                                        />
+                                        <ThFilterNumeric
+                                            {table}
+                                            field={(r) => r.properties.frequency}
+                                        />
+                                        <ThFilter
+                                            {table}
+                                            field={(r) =>
+                                                r.properties.is_bus_lane
+                                                    ? "Yes"
+                                                    : "No"}
+                                        />
+                                        <ThFilterNumeric
+                                            {table}
+                                            field={(r) =>
+                                                r.properties.n_lanes_circulation}
+                                        />
+                                        <ThFilterNumeric
+                                            {table}
+                                            field={(r) =>
+                                                r.properties.n_lanes_parking}
+                                        />
+                                        <ThFilterNumeric
+                                            {table}
+                                            field={(r) =>
+                                                r.properties.n_directions}
+                                        />
+                                        <ThFilterNumeric
+                                            {table}
+                                            field={(r) =>
+                                                r.properties
+                                                    .n_lanes_circulation_direction}
+                                        />
+                                        {#if rt_data}
+                                            <ThFilterNumeric
+                                                {table}
+                                                field={(r) =>
+                                                    r.properties.speed_avg}
+                                            />
+                                            <ThFilterNumeric
+                                                {table}
+                                                field={(r) =>
+                                                    r.properties.speed_median}
+                                            />
+                                            <ThFilterNumeric
+                                                {table}
+                                                field={(r) =>
+                                                    r.properties.speed_p75}
+                                            />
+                                            <ThFilterNumeric
+                                                {table}
+                                                field={(r) =>
+                                                    r.properties.speed_count}
+                                            />
+                                            <ThFilterNumeric
+                                                {table}
+                                                field={(r) =>
+                                                    r.properties.di_percent}
+                                                placeholder="±%"
+                                            />
+                                        {/if}
+                                        {#if demand_data}
+                                            <ThFilterNumeric
+                                                {table}
+                                                field={(r) =>
+                                                    r.properties.demand}
+                                            />
+                                        {/if}
+                                        <ThFilterNumeric
+                                            {table}
+                                            field={(r) =>
+                                                r.properties.length_m}
+                                        />
+                                        <ThFilter
+                                            {table}
+                                            field={(r) =>
+                                                r.properties.route_names}
+                                        />
+                                    </tr>
+                                {/if}
                             </thead>
                             <tbody class="divide-y">
                                 {#each table.rows as row}
@@ -441,4 +569,27 @@
     :global(.svelte-simple-datatable th:last-child) {
         min-width: 300px;
     } /* Always Routes */
+
+    :global(.filter-row th) {
+        padding: 4px 6px !important;
+        background-color: var(--muted, rgba(120, 120, 120, 0.08)) !important;
+    }
+    :global(.filter-row input) {
+        height: 26px !important;
+        font-size: 11px !important;
+        padding: 2px 8px !important;
+        background-color: var(--background, #fff) !important;
+        color: var(--foreground, #000) !important;
+        border: 1px solid var(--border, rgba(120, 120, 120, 0.25)) !important;
+        border-radius: 4px !important;
+        transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    :global(.filter-row input:focus) {
+        border-color: var(--primary, #3b82f6) !important;
+        box-shadow: 0 0 0 1px var(--primary, #3b82f6) !important;
+    }
+    :global(.filter-row input::placeholder) {
+        color: var(--muted-foreground, #888) !important;
+        font-size: 11px !important;
+    }
 </style>

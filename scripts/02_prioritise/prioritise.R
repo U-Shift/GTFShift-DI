@@ -407,20 +407,27 @@ for (i in 1:nrow(regions)) { # i =1
 
     # 4. Hourly speeds (auto_unbox will handle these as single numbers)
     if ("hour_speed_avg" %in% colnames(df)) {
-      # For avg, meadian, p25, p75 and count
+      # For avg, median, p25, p75, p85 (if available) and count
       hourly_speeds_avg <- setNames(as.list(df$hour_speed_avg), df$hour)
       hourly_speeds_median <- setNames(as.list(df$hour_speed_median), df$hour)
       hourly_speeds_p25 <- setNames(as.list(df$hour_speed_p25), df$hour)
       hourly_speeds_p75 <- setNames(as.list(df$hour_speed_p75), df$hour)
       hourly_speeds_count <- setNames(as.list(df$hour_speed_count), df$hour)
-      return(c(static_info, list(
+
+      hourly_list <- list(
         hour_frequency = hourly_freqs,
         hour_speed_avg = hourly_speeds_avg,
         hour_speed_median = hourly_speeds_median,
         hour_speed_p25 = hourly_speeds_p25,
         hour_speed_p75 = hourly_speeds_p75,
         hour_speed_count = hourly_speeds_count
-      )))
+      )
+
+      if ("hour_speed_p85" %in% colnames(df)) {
+        hourly_list$hour_speed_p85 <- setNames(as.list(df$hour_speed_p85), df$hour)
+      }
+
+      return(c(static_info, hourly_list))
     }
 
     # Combine

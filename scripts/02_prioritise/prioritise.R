@@ -200,6 +200,7 @@ for (i in 1:nrow(regions)) { # i =1
         route_global_stats <- trip_profiles |>
           group_by(route_id) |>
           summarise(
+            n_days = n_distinct(day),
             n_trips = n(),
             commercial_speed_avg = round(mean(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_median = round(median(commercial_speed, na.rm = TRUE), 2),
@@ -213,11 +214,12 @@ for (i in 1:nrow(regions)) { # i =1
             .groups = "drop"
           )
 
-        # 2. Aggregations by (route_id, day, hour)
-        route_day_hour_stats <- trip_profiles |>
+        # 2. Aggregations by (route_id, hour)
+        route_hour_stats <- trip_profiles |>
           filter(!is.na(hour)) |>
-          group_by(route_id, day, hour) |>
+          group_by(route_id, hour) |>
           summarise(
+            n_days = n_distinct(day),
             n_trips = n(),
             commercial_speed_avg = round(mean(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_median = round(median(commercial_speed, na.rm = TRUE), 2),
@@ -285,16 +287,16 @@ for (i in 1:nrow(regions)) { # i =1
 
         route_speed_profiles <- list(
           by_route = route_global_stats,
-          by_route_day_hour = route_day_hour_stats,
+          by_route_hour = route_hour_stats,
           by_trip = trip_global_stats,
           by_trip_day = trip_day_stats
         )
 
         # Build nested dictionary keyed by route_id for JSON storage
-        all_rids <- unique(c(route_global_stats$route_id, route_day_hour_stats$route_id, trip_global_stats$route_id, trip_day_stats$route_id))
+        all_rids <- unique(c(route_global_stats$route_id, route_hour_stats$route_id, trip_global_stats$route_id, trip_day_stats$route_id))
         route_speed_profiles_nested <- setNames(lapply(all_rids, function(rid) {
           g_row <- route_global_stats |> filter(route_id == rid)
-          dh_rows <- route_day_hour_stats |> filter(route_id == rid)
+          h_rows <- route_hour_stats |> filter(route_id == rid)
           t_rows <- trip_global_stats |> filter(route_id == rid)
           td_rows <- trip_day_stats |> filter(route_id == rid)
 
@@ -304,10 +306,10 @@ for (i in 1:nrow(regions)) { # i =1
             list()
           }
 
-          # Convert day_hour rows into a list of records
-          day_hour_list <- if (nrow(dh_rows) > 0) {
-            lapply(seq_len(nrow(dh_rows)), function(row_idx) {
-              as.list(dh_rows[row_idx, setdiff(names(dh_rows), "route_id")])
+          # Convert hour rows into a list of records
+          hour_list <- if (nrow(h_rows) > 0) {
+            lapply(seq_len(nrow(h_rows)), function(row_idx) {
+              as.list(h_rows[row_idx, setdiff(names(h_rows), "route_id")])
             })
           } else {
             list()
@@ -331,7 +333,7 @@ for (i in 1:nrow(regions)) { # i =1
             list()
           }
 
-          c(stats = list(stats_obj), day_hour = list(day_hour_list), trips = list(trip_list), trip_days = list(trip_day_list))
+          c(stats = list(stats_obj), hours = list(hour_list), trips = list(trip_list), trip_days = list(trip_day_list))
         }), all_rids)
 
         message("Trip speed profile and disturbance index computation completed.")

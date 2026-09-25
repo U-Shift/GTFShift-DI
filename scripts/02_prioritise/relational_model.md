@@ -77,7 +77,7 @@ erDiagram
     Route_Speed_Profile_JSON {
         string route_id PK "GTFS route_id (key of root dictionary object)"
         object stats "Overall route speed centrality, dispersion, and commercial speed"
-        array day_hour "List of hourly aggregations (day, hour, median speed, and disturbance_index)"
+        array hours "List of hourly aggregations (hour, commercial_speed_avg, and disturbance_index)"
     }
 
     Metadata_JSON {

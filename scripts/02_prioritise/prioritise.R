@@ -124,6 +124,7 @@ for (i in 1:nrow(regions)) { # i =1
 
   route_speed_profiles <- NULL
   route_speed_profiles_nested <- NULL
+  shape_speed_profiles_nested <- NULL
 
   if (has_rt_collection) {
     message("Extending with real-time data...")
@@ -184,7 +185,7 @@ for (i in 1:nrow(regions)) { # i =1
           by = c("trip_id", "route_id", "day")
         )
 
-        # Extract hour from timestamp_min in Europe/Lisbon timezone
+        # Extract hour from timestamp_min in Europe/Lisbon timezone and link shape_id from gtfs$trips
         trip_profiles <- trip_profiles |>
           mutate(
             hour = if (all(is.na(timestamp_min))) {
@@ -195,6 +196,18 @@ for (i in 1:nrow(regions)) { # i =1
               as.integer(format(as.POSIXct(timestamp_min, tz = "Europe/Lisbon"), "%H"))
             }
           )
+        if ("shape_id" %in% colnames(gtfs$trips)) {
+          trip_shapes <- gtfs$trips |>
+            select(trip_id, shape_id) |>
+            filter(!is.na(shape_id) & shape_id != "") |>
+            distinct(trip_id, .keep_all = TRUE)
+          trip_shapes$trip_id <- as.character(trip_shapes$trip_id)
+          trip_shapes$shape_id <- as.character(trip_shapes$shape_id)
+          trip_profiles <- trip_profiles |>
+            left_join(trip_shapes, by = "trip_id")
+        } else {
+          trip_profiles$shape_id <- NA_character_
+        }
 
         # 1. Global stats per route_id (across all trips of any time)
         route_global_stats <- trip_profiles |>
@@ -335,6 +348,78 @@ for (i in 1:nrow(regions)) { # i =1
 
           c(stats = list(stats_obj), hours = list(hour_list), trips = list(trip_list), trip_days = list(trip_day_list))
         }), all_rids)
+
+        # 5. Global stats per shape_id (across all trips of any time)
+        shape_global_stats <- trip_profiles |>
+          filter(!is.na(shape_id) & shape_id != "") |>
+          group_by(shape_id) |>
+          summarise(
+            n_days = n_distinct(day),
+            n_trips = n(),
+            commercial_speed_avg = round(mean(commercial_speed, na.rm = TRUE), 2),
+            commercial_speed_median = round(median(commercial_speed, na.rm = TRUE), 2),
+            commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),
+            commercial_speed_p15 = round(as.numeric(quantile(commercial_speed, probs = 0.15, na.rm = TRUE, names = FALSE)), 2),
+            commercial_speed_p25 = round(as.numeric(quantile(commercial_speed, probs = 0.25, na.rm = TRUE, names = FALSE)), 2),
+            commercial_speed_p75 = round(as.numeric(quantile(commercial_speed, probs = 0.75, na.rm = TRUE, names = FALSE)), 2),
+            commercial_speed_p85 = round(as.numeric(quantile(commercial_speed, probs = 0.85, na.rm = TRUE, names = FALSE)), 2),
+            commercial_speed_min = round(min(commercial_speed, na.rm = TRUE), 2),
+            commercial_speed_max = round(max(commercial_speed, na.rm = TRUE), 2),
+            .groups = "drop"
+          )
+
+        # 6. Aggregations by (shape_id, hour)
+        shape_hour_stats <- trip_profiles |>
+          filter(!is.na(shape_id) & shape_id != "" & !is.na(hour)) |>
+          group_by(shape_id, hour) |>
+          summarise(
+            n_days = n_distinct(day),
+            n_trips = n(),
+            commercial_speed_avg = round(mean(commercial_speed, na.rm = TRUE), 2),
+            commercial_speed_median = round(median(commercial_speed, na.rm = TRUE), 2),
+            commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),
+            commercial_speed_p15 = round(as.numeric(quantile(commercial_speed, probs = 0.15, na.rm = TRUE, names = FALSE)), 2),
+            commercial_speed_p25 = round(as.numeric(quantile(commercial_speed, probs = 0.25, na.rm = TRUE, names = FALSE)), 2),
+            commercial_speed_p75 = round(as.numeric(quantile(commercial_speed, probs = 0.75, na.rm = TRUE, names = FALSE)), 2),
+            commercial_speed_p85 = round(as.numeric(quantile(commercial_speed, probs = 0.85, na.rm = TRUE, names = FALSE)), 2),
+            commercial_speed_min = round(min(commercial_speed, na.rm = TRUE), 2),
+            commercial_speed_max = round(max(commercial_speed, na.rm = TRUE), 2),
+            .groups = "drop"
+          ) |>
+          left_join(shape_global_stats |> select(shape_id, shape_speed_p85 = commercial_speed_p85), by = "shape_id") |>
+          mutate(
+            # Disturbance index: (commercial_speed_avg - shape_speed_p85) / shape_speed_p85
+            disturbance_index = ifelse(
+              !is.na(shape_speed_p85) & shape_speed_p85 > 0,
+              round((commercial_speed_avg - shape_speed_p85) / shape_speed_p85, 4),
+              NA_real_
+            )
+          ) |>
+          select(-shape_speed_p85)
+
+        # Build nested dictionary keyed by shape_id for JSON storage
+        all_sids <- unique(c(shape_global_stats$shape_id, shape_hour_stats$shape_id))
+        shape_speed_profiles_nested <- setNames(lapply(all_sids, function(sid) {
+          g_row <- shape_global_stats |> filter(shape_id == sid)
+          h_rows <- shape_hour_stats |> filter(shape_id == sid)
+
+          stats_obj <- if (nrow(g_row) > 0) {
+            as.list(g_row[1, setdiff(names(g_row), "shape_id")])
+          } else {
+            list()
+          }
+
+          # Convert hour rows into a list of records
+          hour_list <- if (nrow(h_rows) > 0) {
+            lapply(seq_len(nrow(h_rows)), function(row_idx) {
+              as.list(h_rows[row_idx, setdiff(names(h_rows), "shape_id")])
+            })
+          } else {
+            list()
+          }
+
+          c(stats = list(stats_obj), hours = list(hour_list))
+        }), all_sids)
 
         message("Trip speed profile and disturbance index computation completed.")
       },
@@ -631,6 +716,12 @@ for (i in 1:nrow(regions)) { # i =1
       }
     })
 
+    # Attach speed profile stats if available
+    sid <- as.character(shape_metadata$shape_id)
+    if (!is.null(shape_speed_profiles_nested) && sid %in% names(shape_speed_profiles_nested)) {
+      shape_metadata$speed_profile <- shape_speed_profiles_nested[[sid]]
+    }
+
     # Combine metadata with the hourly 'schedule'
     c(shape_metadata, list(schedule = hourly_frequencies))
   })
@@ -647,13 +738,21 @@ for (i in 1:nrow(regions)) { # i =1
       names(x$arrival_stop) <- paste0("arrival_stop.", names(x$arrival_stop))
     }
 
+    speed_profile_flat <- list()
+    if (!is.null(x$speed_profile) && !is.null(x$speed_profile$stats)) {
+      sp_stats <- x$speed_profile$stats
+      names(sp_stats) <- paste0("speed_profile.", names(sp_stats))
+      speed_profile_flat <- sp_stats
+    }
+
     # Flatten everything into one list and convert to tibble
     as_tibble(c(
-      x[!(names(x) %in% c("stats", "schedule", "departure_stop", "arrival_stop"))],
+      x[!(names(x) %in% c("stats", "schedule", "departure_stop", "arrival_stop", "speed_profile"))],
       x$departure_stop,
       x$arrival_stop,
       x$stats,
-      x$schedule
+      x$schedule,
+      speed_profile_flat
     ))
   }))
 

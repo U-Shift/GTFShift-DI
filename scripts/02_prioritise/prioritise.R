@@ -833,7 +833,15 @@ for (i in 1:nrow(regions)) { # i =1
     )
   }
   census_frequency_hour <- list()
-  census_disturbance_index_hour <- list()
+  census_speed_avg_hour_length <- list()
+  census_speed_avg_hour_frequency <- list()
+  census_speed_median_hour_length <- list()
+  census_speed_median_hour_frequency <- list()
+  census_speed_p85_hour_length <- list()
+  census_speed_p85_hour_frequency <- list()
+  census_disturbance_index_hour_length <- list()
+  census_disturbance_index_hour_frequency <- list()
+
   for (h in 0:23) {
     prioritisation_h <- prioritisation |> filter(hour == h)
     census <- dataCensus(prioritisation_h$frequency, prioritisation_h$length_m)
@@ -841,13 +849,43 @@ for (i in 1:nrow(regions)) { # i =1
       census_frequency_hour[[as.character(h)]] <- census
     }
 
+    if ("hour_speed_avg" %in% colnames(prioritisation)) {
+      prioritisation_h_savg <- prioritisation_h |> filter(!is.na(hour_speed_avg))
+      if (nrow(prioritisation_h_savg) > 0) {
+        c_len <- dataCensus(prioritisation_h_savg$hour_speed_avg, prioritisation_h_savg$length_m)
+        c_freq <- dataCensus(prioritisation_h_savg$hour_speed_avg, prioritisation_h_savg$frequency)
+        if (!is.na(c_len$mean)) census_speed_avg_hour_length[[as.character(h)]] <- c_len
+        if (!is.na(c_freq$mean)) census_speed_avg_hour_frequency[[as.character(h)]] <- c_freq
+      }
+    }
+
+    if ("hour_speed_median" %in% colnames(prioritisation)) {
+      prioritisation_h_smed <- prioritisation_h |> filter(!is.na(hour_speed_median))
+      if (nrow(prioritisation_h_smed) > 0) {
+        c_len <- dataCensus(prioritisation_h_smed$hour_speed_median, prioritisation_h_smed$length_m)
+        c_freq <- dataCensus(prioritisation_h_smed$hour_speed_median, prioritisation_h_smed$frequency)
+        if (!is.na(c_len$mean)) census_speed_median_hour_length[[as.character(h)]] <- c_len
+        if (!is.na(c_freq$mean)) census_speed_median_hour_frequency[[as.character(h)]] <- c_freq
+      }
+    }
+
+    if ("hour_speed_p85" %in% colnames(prioritisation)) {
+      prioritisation_h_sp85 <- prioritisation_h |> filter(!is.na(hour_speed_p85))
+      if (nrow(prioritisation_h_sp85) > 0) {
+        c_len <- dataCensus(prioritisation_h_sp85$hour_speed_p85, prioritisation_h_sp85$length_m)
+        c_freq <- dataCensus(prioritisation_h_sp85$hour_speed_p85, prioritisation_h_sp85$frequency)
+        if (!is.na(c_len$mean)) census_speed_p85_hour_length[[as.character(h)]] <- c_len
+        if (!is.na(c_freq$mean)) census_speed_p85_hour_frequency[[as.character(h)]] <- c_freq
+      }
+    }
+
     if ("disturbance_index" %in% colnames(prioritisation)) {
-      prioritisation_h_di <- prioritisation |> filter(hour == h & !is.na(disturbance_index))
+      prioritisation_h_di <- prioritisation_h |> filter(!is.na(disturbance_index))
       if (nrow(prioritisation_h_di) > 0) {
-        census_di <- dataCensus(prioritisation_h_di$disturbance_index, prioritisation_h_di$length_m)
-        if (!is.na(census_di$mean)) {
-          census_disturbance_index_hour[[as.character(h)]] <- census_di
-        }
+        census_di_len <- dataCensus(prioritisation_h_di$disturbance_index, prioritisation_h_di$length_m)
+        census_di_freq <- dataCensus(prioritisation_h_di$disturbance_index, prioritisation_h_di$frequency)
+        if (!is.na(census_di_len$mean)) census_disturbance_index_hour_length[[as.character(h)]] <- census_di_len
+        if (!is.na(census_di_freq$mean)) census_disturbance_index_hour_frequency[[as.character(h)]] <- census_di_freq
       }
     }
   }
@@ -884,6 +922,10 @@ for (i in 1:nrow(regions)) { # i =1
       frequency_hour = census_frequency_hour,
       speed_avg_length = NA,
       speed_avg_frequency = NA,
+      speed_median_length = NA,
+      speed_median_frequency = NA,
+      speed_p85_length = NA,
+      speed_p85_frequency = NA,
       demand_frequency = NA,
       demand_length = NA,
       lanes_length = dataCensus(prioritisation_infrastructure$n_lanes_circulation_direction, prioritisation_infrastructure$length_m),
@@ -926,17 +968,29 @@ for (i in 1:nrow(regions)) { # i =1
   if ("speed_avg" %in% colnames(prioritisation_infrastructure)) {
     metadata$data_census$speed_avg_length <- dataCensus(prioritisation_infrastructure$speed_avg, prioritisation_infrastructure$length_m)
     metadata$data_census$speed_avg_frequency <- dataCensus(prioritisation_infrastructure$speed_avg, prioritisation_infrastructure$frequency)
+    metadata$data_census$speed_avg_hour_length <- census_speed_avg_hour_length
+    metadata$data_census$speed_avg_hour_frequency <- census_speed_avg_hour_frequency
+  }
+  if ("speed_median" %in% colnames(prioritisation_infrastructure)) {
+    metadata$data_census$speed_median_length <- dataCensus(prioritisation_infrastructure$speed_median, prioritisation_infrastructure$length_m)
+    metadata$data_census$speed_median_frequency <- dataCensus(prioritisation_infrastructure$speed_median, prioritisation_infrastructure$frequency)
+    metadata$data_census$speed_median_hour_length <- census_speed_median_hour_length
+    metadata$data_census$speed_median_hour_frequency <- census_speed_median_hour_frequency
   }
   if ("speed_p85" %in% colnames(prioritisation_infrastructure)) {
     metadata$data_census$speed_p85_length <- dataCensus(prioritisation_infrastructure$speed_p85, prioritisation_infrastructure$length_m)
     metadata$data_census$speed_p85_frequency <- dataCensus(prioritisation_infrastructure$speed_p85, prioritisation_infrastructure$frequency)
+    metadata$data_census$speed_p85_hour_length <- census_speed_p85_hour_length
+    metadata$data_census$speed_p85_hour_frequency <- census_speed_p85_hour_frequency
   }
   if ("disturbance_index" %in% colnames(prioritisation)) {
     valid_di <- prioritisation |> filter(!is.na(disturbance_index))
     if (nrow(valid_di) > 0) {
       metadata$data_census$disturbance_index_length <- dataCensus(valid_di$disturbance_index, valid_di$length_m)
       metadata$data_census$disturbance_index_frequency <- dataCensus(valid_di$disturbance_index, valid_di$frequency)
-      metadata$data_census$disturbance_index_hour <- census_disturbance_index_hour
+      metadata$data_census$disturbance_index_hour_length <- census_disturbance_index_hour_length
+      metadata$data_census$disturbance_index_hour_frequency <- census_disturbance_index_hour_frequency
+      metadata$data_census$disturbance_index_hour <- census_disturbance_index_hour_length
     }
   }
   if ("demand" %in% colnames(prioritisation_infrastructure)) {

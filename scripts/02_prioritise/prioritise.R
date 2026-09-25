@@ -201,17 +201,17 @@ for (i in 1:nrow(regions)) { # i =1
           group_by(route_id) |>
           summarise(
             n_trips = n(),
-            speed_avg = round(mean(speed_avg, na.rm = TRUE), 2),
-            speed_median = round(median(speed_median, na.rm = TRUE), 2),
-            speed_p85_all = round(as.numeric(quantile(speed_median, probs = 0.85, na.rm = TRUE, names = FALSE)), 2),
+            speed_avg = round(mean(commercial_speed, na.rm = TRUE), 2),
+            speed_median = round(median(commercial_speed, na.rm = TRUE), 2),
             commercial_speed = round(mean(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),
-            speed_p15 = round(mean(speed_p15, na.rm = TRUE), 2),
-            speed_p25 = round(mean(speed_p25, na.rm = TRUE), 2),
-            speed_p75 = round(mean(speed_p75, na.rm = TRUE), 2),
-            speed_p85 = round(mean(speed_p85, na.rm = TRUE), 2),
-            speed_min = round(min(speed_min, na.rm = TRUE), 2),
-            speed_max = round(max(speed_max, na.rm = TRUE), 2),
+            commercial_speed_p85_all = round(as.numeric(quantile(commercial_speed, probs = 0.85, na.rm = TRUE, names = FALSE)), 2),
+            speed_p15 = round(as.numeric(quantile(commercial_speed, probs = 0.15, na.rm = TRUE, names = FALSE)), 2),
+            speed_p25 = round(as.numeric(quantile(commercial_speed, probs = 0.25, na.rm = TRUE, names = FALSE)), 2),
+            speed_p75 = round(as.numeric(quantile(commercial_speed, probs = 0.75, na.rm = TRUE, names = FALSE)), 2),
+            speed_p85 = round(as.numeric(quantile(commercial_speed, probs = 0.85, na.rm = TRUE, names = FALSE)), 2),
+            speed_min = round(min(commercial_speed, na.rm = TRUE), 2),
+            speed_max = round(max(commercial_speed, na.rm = TRUE), 2),
             .groups = "drop"
           )
 
@@ -221,28 +221,28 @@ for (i in 1:nrow(regions)) { # i =1
           group_by(route_id, day, hour) |>
           summarise(
             n_trips = n(),
-            speed_avg = round(mean(speed_avg, na.rm = TRUE), 2),
-            speed_median = round(median(speed_median, na.rm = TRUE), 2),
+            speed_avg = round(mean(commercial_speed, na.rm = TRUE), 2),
+            speed_median = round(median(commercial_speed, na.rm = TRUE), 2),
             commercial_speed = round(mean(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),
-            speed_p15 = round(mean(speed_p15, na.rm = TRUE), 2),
-            speed_p25 = round(mean(speed_p25, na.rm = TRUE), 2),
-            speed_p75 = round(mean(speed_p75, na.rm = TRUE), 2),
-            speed_p85 = round(mean(speed_p85, na.rm = TRUE), 2),
-            speed_min = round(min(speed_min, na.rm = TRUE), 2),
-            speed_max = round(max(speed_max, na.rm = TRUE), 2),
+            speed_p15 = round(as.numeric(quantile(commercial_speed, probs = 0.15, na.rm = TRUE, names = FALSE)), 2),
+            speed_p25 = round(as.numeric(quantile(commercial_speed, probs = 0.25, na.rm = TRUE, names = FALSE)), 2),
+            speed_p75 = round(as.numeric(quantile(commercial_speed, probs = 0.75, na.rm = TRUE, names = FALSE)), 2),
+            speed_p85 = round(as.numeric(quantile(commercial_speed, probs = 0.85, na.rm = TRUE, names = FALSE)), 2),
+            speed_min = round(min(commercial_speed, na.rm = TRUE), 2),
+            speed_max = round(max(commercial_speed, na.rm = TRUE), 2),
             .groups = "drop"
           ) |>
-          left_join(route_global_stats |> select(route_id, speed_p85_all), by = "route_id") |>
+          left_join(route_global_stats |> select(route_id, commercial_speed_p85_all), by = "route_id") |>
           mutate(
-            # Disturbance index: (speed_median - speed_p85_all) / speed_p85_all
+            # Disturbance index: (commercial_speed - commercial_speed_p85_all) / commercial_speed_p85_all
             disturbance_index = ifelse(
-              !is.na(speed_p85_all) & speed_p85_all > 0,
-              round((speed_median - speed_p85_all) / speed_p85_all, 4),
+              !is.na(commercial_speed_p85_all) & commercial_speed_p85_all > 0,
+              round((commercial_speed - commercial_speed_p85_all) / commercial_speed_p85_all, 4),
               NA_real_
             )
           ) |>
-          select(-speed_p85_all)
+          select(-commercial_speed_p85_all)
 
         route_speed_profiles <- list(
           by_route = route_global_stats,

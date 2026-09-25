@@ -249,38 +249,201 @@
                     </div>
                 {/if}
 
+                <!-- Speed Hourly Card (100% width with 3 metrics for criteria_hour) -->
+                {#if true}
+                    {@const hKey = criteria_hour}
+                    {@const hStr = String(criteria_hour)}
+                    {@const hourSpeedAvg =
+                        way.hour_speed_avg?.[hKey] ??
+                        way.hour_speed_avg?.[hStr]}
+                    {@const hourSpeedMedian =
+                        way.hour_speed_median?.[hKey] ??
+                        way.hour_speed_median?.[hStr]}
+                    {@const hourSpeedP85 =
+                        way.hour_speed_p85?.[hKey] ??
+                        way.hour_speed_p85?.[hStr]}
+                    {#if hourSpeedAvg != null || hourSpeedMedian != null || hourSpeedP85 != null}
+                        {@const censusAvg =
+                            geoData.metadata.data_census
+                                .speed_avg_hour_length?.[hKey] ??
+                            geoData.metadata.data_census
+                                .speed_avg_hour_length?.[hStr] ??
+                            geoData.metadata.data_census.speed_avg_length}
+                        {@const censusMedian =
+                            geoData.metadata.data_census
+                                .speed_median_hour_length?.[hKey] ??
+                            geoData.metadata.data_census
+                                .speed_median_hour_length?.[hStr] ??
+                            geoData.metadata.data_census.speed_median_length}
+                        {@const censusP85 =
+                            geoData.metadata.data_census
+                                .speed_p85_hour_length?.[hKey] ??
+                            geoData.metadata.data_census
+                                .speed_p85_hour_length?.[hStr] ??
+                            geoData.metadata.data_census.speed_p85_length}
+                        {@const hourlyAvgColor =
+                            censusAvg && hourSpeedAvg != null
+                                ? getColorFromGradient(
+                                      Number(hourSpeedAvg),
+                                      censusAvg.p5,
+                                      censusAvg.p95,
+                                      COLOR_GRADIENT_RED.slice().reverse(),
+                                  )
+                                : null}
+                        {@const hourlyMedianColor =
+                            censusMedian && hourSpeedMedian != null
+                                ? getColorFromGradient(
+                                      Number(hourSpeedMedian),
+                                      censusMedian.p5,
+                                      censusMedian.p95,
+                                      COLOR_GRADIENT_RED.slice().reverse(),
+                                  )
+                                : null}
+                        {@const hourlyP85Color =
+                            censusP85 && hourSpeedP85 != null
+                                ? getColorFromGradient(
+                                      Number(hourSpeedP85),
+                                      censusP85.p5,
+                                      censusP85.p95,
+                                      COLOR_GRADIENT_RED.slice().reverse(),
+                                  )
+                                : null}
+                        <div
+                            class="col-span-2 p-3 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 flex flex-col justify-between shadow-sm overflow-hidden relative"
+                        >
+                            <div class="flex items-center justify-between mb-2">
+                                <p
+                                    class="text-[10px] font-bold uppercase text-muted-foreground"
+                                >
+                                    Speed <span
+                                        class="text-[9px] font-normal normal-case"
+                                        >(km/h)</span
+                                    >
+                                </p>
+                                <p class="text-[10px] text-muted-foreground">
+                                    {criteria_hour
+                                        .toString()
+                                        .padStart(2, "0")}:00 hour
+                                </p>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-2">
+                                <div
+                                    class="bg-background/50 rounded-lg p-2 border border-border/30 relative overflow-hidden"
+                                >
+                                    <p
+                                        class="text-[10px] font-medium text-muted-foreground mb-0.5"
+                                    >
+                                        Average
+                                    </p>
+                                    <p class="text-base font-bold">
+                                        {hourSpeedAvg != null
+                                            ? Number(hourSpeedAvg).toFixed(1)
+                                            : "-"}
+                                        <span
+                                            class="text-[9px] font-normal text-muted-foreground"
+                                            >km/h</span
+                                        >
+                                    </p>
+                                    {#if hourlyAvgColor}
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 h-[2.5px]"
+                                            style="background-color: {hourlyAvgColor}"
+                                        ></div>
+                                    {/if}
+                                </div>
+
+                                <div
+                                    class="bg-background/50 rounded-lg p-2 border border-border/30 relative overflow-hidden"
+                                >
+                                    <p
+                                        class="text-[10px] font-medium text-muted-foreground mb-0.5"
+                                    >
+                                        Median
+                                    </p>
+                                    <p class="text-base font-bold">
+                                        {hourSpeedMedian != null
+                                            ? Number(hourSpeedMedian).toFixed(1)
+                                            : "-"}
+                                        <span
+                                            class="text-[9px] font-normal text-muted-foreground"
+                                            >km/h</span
+                                        >
+                                    </p>
+                                    {#if hourlyMedianColor}
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 h-[2.5px]"
+                                            style="background-color: {hourlyMedianColor}"
+                                        ></div>
+                                    {/if}
+                                </div>
+
+                                <div
+                                    class="bg-background/50 rounded-lg p-2 border border-border/30 relative overflow-hidden"
+                                >
+                                    <p
+                                        class="text-[10px] font-medium text-muted-foreground mb-0.5"
+                                    >
+                                        P85
+                                    </p>
+                                    <p class="text-base font-bold">
+                                        {hourSpeedP85 != null
+                                            ? Number(hourSpeedP85).toFixed(1)
+                                            : "-"}
+                                        <span
+                                            class="text-[9px] font-normal text-muted-foreground"
+                                            >km/h</span
+                                        >
+                                    </p>
+                                    {#if hourlyP85Color}
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 h-[2.5px]"
+                                            style="background-color: {hourlyP85Color}"
+                                        ></div>
+                                    {/if}
+                                </div>
+                            </div>
+                        </div>
+                    {/if}
+                {/if}
+
                 <!-- Speed Card (100% width with 3 metrics) -->
                 {#if way.speed_avg != null || way.speed_median != null || way.speed_p85 != null}
                     <div
                         class="col-span-2 p-3 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 flex flex-col justify-between shadow-sm overflow-hidden relative"
                     >
                         {#if true}
-                            {@const speedCensus =
+                            {@const speedCensusAvg =
                                 geoData.metadata.data_census.speed_avg_length}
+                            {@const speedCensusMedian =
+                                geoData.metadata.data_census
+                                    .speed_median_length}
+                            {@const speedCensusP85 =
+                                geoData.metadata.data_census.speed_p85_length}
                             {@const avgColor =
-                                speedCensus && way.speed_avg != null
+                                speedCensusAvg && way.speed_avg != null
                                     ? getColorFromGradient(
                                           way.speed_avg,
-                                          speedCensus.p5,
-                                          speedCensus.p95,
+                                          speedCensusAvg.p5,
+                                          speedCensusAvg.p95,
                                           COLOR_GRADIENT_RED.slice().reverse(),
                                       )
                                     : null}
                             {@const medianColor =
-                                speedCensus && way.speed_median != null
+                                speedCensusMedian && way.speed_median != null
                                     ? getColorFromGradient(
                                           way.speed_median,
-                                          speedCensus.p5,
-                                          speedCensus.p95,
+                                          speedCensusMedian.p5,
+                                          speedCensusMedian.p95,
                                           COLOR_GRADIENT_RED.slice().reverse(),
                                       )
                                     : null}
                             {@const p85Color =
-                                speedCensus && way.speed_p85 != null
+                                speedCensusP85 && way.speed_p85 != null
                                     ? getColorFromGradient(
                                           way.speed_p85,
-                                          speedCensus.p5,
-                                          speedCensus.p95,
+                                          speedCensusP85.p5,
+                                          speedCensusP85.p95,
                                           COLOR_GRADIENT_RED.slice().reverse(),
                                       )
                                     : null}
@@ -294,7 +457,7 @@
                                     >
                                 </p>
                                 <p class="text-[10px] text-muted-foreground">
-                                    Whole RT collection interval
+                                    All day
                                 </p>
                             </div>
 
@@ -536,12 +699,11 @@
                             24h Disturbance Index
                         </h5>
                         {#if currentHourDi != null}
-                            {@const cat =
-                                getDisturbanceIndexCategory(
-                                    currentHourDi,
-                                    di_threshold_low,
-                                    di_threshold_high,
-                                )}
+                            {@const cat = getDisturbanceIndexCategory(
+                                currentHourDi,
+                                di_threshold_low,
+                                di_threshold_high,
+                            )}
                             <div
                                 class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-muted/80 text-foreground border border-border/60 shadow-xs relative overflow-hidden"
                                 title="DI at {criteria_hour}:00 ({cat.label})"

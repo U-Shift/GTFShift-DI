@@ -84,10 +84,16 @@ export interface GeoPrioritisation {
             frequency_hour: HourlyFrequency;
             speed_avg_length: StatisticsBundle | undefined;
             speed_avg_frequency: StatisticsBundle | undefined;
+            speed_avg_hour_length?: HourlyFrequency;
+            speed_avg_hour_frequency?: HourlyFrequency;
             speed_median_length?: StatisticsBundle | undefined;
             speed_median_frequency?: StatisticsBundle | undefined;
+            speed_median_hour_length?: HourlyFrequency;
+            speed_median_hour_frequency?: HourlyFrequency;
             speed_p85_length?: StatisticsBundle | undefined;
             speed_p85_frequency?: StatisticsBundle | undefined;
+            speed_p85_hour_length?: HourlyFrequency;
+            speed_p85_hour_frequency?: HourlyFrequency;
             disturbance_index_length?: StatisticsBundle | undefined;
             disturbance_index_frequency?: StatisticsBundle | undefined;
             disturbance_index_hour_length?: HourlyFrequency;

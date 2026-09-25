@@ -15,6 +15,7 @@
     import LayerRTSpeed from "./layers/LayerRTSpeed.svelte";
     import LayerRTSpeedMedian from "./layers/LayerRTSpeedMedian.svelte";
     import LayerRTSpeedP85 from "./layers/LayerRTSpeedP85.svelte";
+    import LayerRTSpeedHourly from "./layers/LayerRTSpeedHourly.svelte";
     import LayerDisturbanceIndex from "./layers/LayerDisturbanceIndex.svelte";
     import LayerDemand from "./layers/LayerDemand.svelte";
     import LayerBoundaries from "./layers/LayerBoundaries.svelte";
@@ -69,6 +70,7 @@
         N_LANES,
         PARKING_LANES,
         RT_SPEED,
+        RT_SPEED_HOURLY,
         DISTURBANCE_INDEX,
         DEMAND,
     }
@@ -177,6 +179,50 @@
         return {
             census_length: census.speed_avg_length,
             census_freq: census.speed_avg_frequency,
+        };
+    });
+
+    const speed_hourly_census = $derived.by(() => {
+        if (!geoData || !display_rt) return null;
+        const census = geoData.metadata?.data_census;
+        if (!census) return null;
+
+        const h = criteria_hour;
+        const hStr = String(criteria_hour);
+
+        if (selected_speed_metric === "median") {
+            return {
+                census_length:
+                    census.speed_median_hour_length?.[h] ??
+                    census.speed_median_hour_length?.[hStr] ??
+                    census.speed_median_length,
+                census_freq:
+                    census.speed_median_hour_frequency?.[h] ??
+                    census.speed_median_hour_frequency?.[hStr] ??
+                    census.speed_median_frequency,
+            };
+        }
+        if (selected_speed_metric === "p85") {
+            return {
+                census_length:
+                    census.speed_p85_hour_length?.[h] ??
+                    census.speed_p85_hour_length?.[hStr] ??
+                    census.speed_p85_length,
+                census_freq:
+                    census.speed_p85_hour_frequency?.[h] ??
+                    census.speed_p85_hour_frequency?.[hStr] ??
+                    census.speed_p85_frequency,
+            };
+        }
+        return {
+            census_length:
+                census.speed_avg_hour_length?.[h] ??
+                census.speed_avg_hour_length?.[hStr] ??
+                census.speed_avg_length,
+            census_freq:
+                census.speed_avg_hour_frequency?.[h] ??
+                census.speed_avg_hour_frequency?.[hStr] ??
+                census.speed_avg_frequency,
         };
     });
 
@@ -1794,7 +1840,7 @@
                     <Accordion.Item value={DisplayOptions.RT_SPEED.toString()}>
                         <Accordion.Trigger
                             class="text-sm font-medium hover:no-underline"
-                            >Speed</Accordion.Trigger
+                            >Speed (all day)</Accordion.Trigger
                         >
                         <Accordion.Content>
                             <div
@@ -1839,20 +1885,23 @@
                                     >
                                         P85
                                     </button>
-                                 </div>
+                                </div>
 
                                 <p>
                                     {selected_speed_metric === "avg"
                                         ? "Average speed"
                                         : selected_speed_metric === "median"
                                           ? "Median speed"
-                                          : "85th percentile speed"} computed based on GTFS-RT updates{#if selected_speed_metric === "avg"}
+                                          : "85th percentile speed"} computed based
+                                    on GTFS-RT updates{#if selected_speed_metric === "avg"}
                                         with <a
                                             href="https://u-shift.github.io/GTFShift/reference/rt_average_speed.html"
                                             target="_blank"
                                             class="bg-muted px-1.5 py-0.5 rounded text-xs font-mono hover:underline"
                                             >GTFShift::rt_average_speed()</a
-                                        >{/if}, considering the distance traversed along the route geometry and the time between consecutive updates.
+                                        >{/if}, considering the distance
+                                    traversed along the route geometry and the
+                                    time between consecutive updates.
                                 </p>
                                 <p>
                                     Road segments with bus service are colored
@@ -1860,9 +1909,10 @@
                                         ? "average speed"
                                         : selected_speed_metric === "median"
                                           ? "median speed"
-                                          : "85th percentile speed"} measured
-                                    (for the full days of the real-time data
-                                    collection interval), from the <span
+                                          : "85th percentile speed"} measured (for
+                                    the full days of the real-time data collection
+                                    interval), from the
+                                    <span
                                         style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
                                         class="font-bold"
                                         >P5 ({speed_census?.census_length?.p5?.toFixed(
@@ -1885,6 +1935,123 @@
                                     <DataCensusTable
                                         census_1={speed_census.census_length}
                                         census_2={speed_census.census_freq}
+                                        census_1_label="Length"
+                                        census_2_label="Frequency"
+                                    />
+                                {/if}
+                            </div>
+                        </Accordion.Content>
+                    </Accordion.Item>
+
+                    <Accordion.Item
+                        value={DisplayOptions.RT_SPEED_HOURLY.toString()}
+                    >
+                        <Accordion.Trigger
+                            class="text-sm font-medium hover:no-underline"
+                            >Speed (hourly)</Accordion.Trigger
+                        >
+                        <Accordion.Content>
+                            <div
+                                class="text-xs text-muted-foreground space-y-3 pt-2"
+                            >
+                                <div class="flex items-center gap-2 pt-1">
+                                    <span
+                                        >Speed at <Input
+                                            type="number"
+                                            class="w-16 h-7 inline-block mx-1 px-2 text-center"
+                                            bind:value={criteria_hour}
+                                            min="0"
+                                            max="23"
+                                        />:00 hour</span
+                                    >
+                                </div>
+
+                                <div
+                                    class="flex items-center gap-1 p-1 bg-muted/70 rounded-full border border-border/40 w-full"
+                                >
+                                    <button
+                                        type="button"
+                                        class="flex-1 py-1 px-2.5 rounded-full text-xs font-medium transition-all text-center cursor-pointer {selected_speed_metric ===
+                                        'avg'
+                                            ? 'bg-background text-foreground shadow-xs font-semibold'
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-background/40'}"
+                                        onclick={() =>
+                                            (selected_speed_metric = "avg")}
+                                        title="Average (mean) speed"
+                                    >
+                                        Average
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="flex-1 py-1 px-2.5 rounded-full text-xs font-medium transition-all text-center cursor-pointer {selected_speed_metric ===
+                                        'median'
+                                            ? 'bg-background text-foreground shadow-xs font-semibold'
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-background/40'}"
+                                        onclick={() =>
+                                            (selected_speed_metric = "median")}
+                                        title="Median speed"
+                                    >
+                                        Median
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="flex-1 py-1 px-2.5 rounded-full text-xs font-medium transition-all text-center cursor-pointer {selected_speed_metric ===
+                                        'p85'
+                                            ? 'bg-background text-foreground shadow-xs font-semibold'
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-background/40'}"
+                                        onclick={() =>
+                                            (selected_speed_metric = "p85")}
+                                        title="85th percentile speed"
+                                    >
+                                        P85
+                                    </button>
+                                </div>
+
+                                <p>
+                                    {selected_speed_metric === "avg"
+                                        ? "Average speed"
+                                        : selected_speed_metric === "median"
+                                          ? "Median speed"
+                                          : "85th percentile speed"} computed based
+                                    on GTFS-RT updates at {criteria_hour
+                                        .toString()
+                                        .padStart(2, "0")}:00, considering the distance
+                                    traversed along the route geometry and the time
+                                    between consecutive updates.
+                                </p>
+                                <p>
+                                    Road segments with bus service are colored
+                                    by the {selected_speed_metric === "avg"
+                                        ? "average speed"
+                                        : selected_speed_metric === "median"
+                                          ? "median speed"
+                                          : "85th percentile speed"} measured at
+                                    {criteria_hour.toString().padStart(2, "0")}:00
+                                    (for the full days of the real-time data
+                                    collection interval), from the
+                                    <span
+                                        style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
+                                        class="font-bold"
+                                        >P5 ({speed_hourly_census?.census_length?.p5?.toFixed(
+                                            2,
+                                        ) ?? "-"}</span
+                                    >
+                                    to the
+                                    <span
+                                        style="color: {COLOR_GRADIENT_RED.slice().reverse()[
+                                            COLOR_GRADIENT_RED.length - 1
+                                        ]}"
+                                        class="bg-black/50 font-bold px-1 rounded"
+                                        >P95 ({speed_hourly_census?.census_length?.p95?.toFixed(
+                                            2,
+                                        ) ?? "-"}</span
+                                    > values (km/h).
+                                </p>
+
+                                {#if speed_hourly_census?.census_length}
+                                    <DataCensusTable
+                                        census_1={speed_hourly_census.census_length}
+                                        census_2={speed_hourly_census.census_freq}
                                         census_1_label="Length"
                                         census_2_label="Frequency"
                                     />
@@ -2188,6 +2355,40 @@
                     >
                 </div>
             </div>
+        {:else if active_layer === DisplayOptions.RT_SPEED_HOURLY}
+            <div class="mb-2">
+                <p class="mb-2 text-foreground font-semibold">
+                    {selected_speed_metric === "avg"
+                        ? "Average speed"
+                        : selected_speed_metric === "median"
+                          ? "Median speed"
+                          : "P85 speed"}
+                    <span class="text-muted-foreground font-normal">
+                        ({criteria_hour.toString().padStart(2, "0")}:00, km/h)</span
+                    >
+                </p>
+                <div class="flex gap-2 items-center">
+                    <span
+                        class="min-w-[40px] text-right text-xs text-muted-foreground"
+                        >{speed_hourly_census?.census_length?.p5 != null
+                            ? Math.floor(speed_hourly_census.census_length.p5)
+                            : ""}</span
+                    >
+                    <div
+                        class="flex-1 h-3 rounded border"
+                        style="background: linear-gradient(to right, {COLOR_GRADIENT_RED.slice()
+                            .reverse()
+                            .map((c) => c)
+                            .join(', ')});"
+                    ></div>
+                    <span
+                        class="min-w-[40px] text-left text-xs text-muted-foreground"
+                        >{speed_hourly_census?.census_length?.p95 != null
+                            ? Math.ceil(speed_hourly_census.census_length.p95)
+                            : ""}</span
+                    >
+                </div>
+            </div>
         {:else if active_layer === DisplayOptions.DISTURBANCE_INDEX}
             <div class="mb-2">
                 <div class="flex items-center justify-between mb-2">
@@ -2436,6 +2637,19 @@
                 onVisibleWayIdsChange={handleVisibleWayIdsChange}
             />
         {/if}
+    {:else if active_layer === DisplayOptions.RT_SPEED_HOURLY}
+        <LayerRTSpeedHourly
+            {map}
+            {geoData}
+            criteriaHour={criteria_hour}
+            speedMetric={selected_speed_metric}
+            lineWeightBy={line_weight_by}
+            {selectedWayId}
+            selectedShapeId={selected_shape_id}
+            onWaySelect={(id) => (selectedWayId = id)}
+            onLayerCreate={handleLayerCreate}
+            onVisibleWayIdsChange={handleVisibleWayIdsChange}
+        />
     {:else if active_layer === DisplayOptions.DISTURBANCE_INDEX}
         <LayerDisturbanceIndex
             {map}

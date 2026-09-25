@@ -154,21 +154,12 @@ export function getDisturbanceIndex(
     criteriaHour: number,
 ): number | undefined {
     if (!wayProps) return undefined;
-    const speedP75 = Number(wayProps.speed_p75);
-    if (isNaN(speedP75) || speedP75 <= 0) return undefined;
-
-    const hourlySpeedMedian =
-        wayProps.hour_speed_median?.[criteriaHour] ??
-        wayProps.hour_speed_median?.[String(criteriaHour)];
-
-    if (hourlySpeedMedian === undefined || hourlySpeedMedian === null) {
-        return undefined;
-    }
-
-    const speedMedian = Number(hourlySpeedMedian);
-    if (isNaN(speedMedian)) return undefined;
-
-    return (speedMedian - speedP75) / speedP75;
+    const di =
+        wayProps.hour_disturbance_index?.[criteriaHour] ??
+        wayProps.hour_disturbance_index?.[String(criteriaHour)];
+    if (di === undefined || di === null) return undefined;
+    const num = Number(di);
+    return isNaN(num) ? undefined : num;
 }
 
 export type DICategory = {

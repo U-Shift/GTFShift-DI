@@ -77,11 +77,18 @@ export interface GeoPrioritisation {
             routes_missing_n: number,
             routes_found_n: number
         };
+        prioritisation_hour?: Record<string, any>;
         data_census: {
             frequency: StatisticsBundle;
             frequency_hour: HourlyFrequency;
             speed_avg_length: StatisticsBundle | undefined;
             speed_avg_frequency: StatisticsBundle | undefined;
+            speed_p85_length?: StatisticsBundle | undefined;
+            speed_p85_frequency?: StatisticsBundle | undefined;
+            disturbance_index_length?: StatisticsBundle | undefined;
+            disturbance_index_frequency?: StatisticsBundle | undefined;
+            disturbance_index_hour_length?: HourlyFrequency;
+            disturbance_index_hour_frequency?: HourlyFrequency;
             demand_length?: StatisticsBundle | undefined;
             demand_frequency?: StatisticsBundle | undefined;
             lanes_length: StatisticsBundle | undefined;

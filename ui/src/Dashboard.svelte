@@ -160,32 +160,36 @@
     const disturbance_index_census = $derived.by(() => {
         if (!geoData || !display_rt) return null;
 
-        const lengthValues: { value: number; weight: number }[] = [];
-        const freqValues: { value: number; weight: number }[] = [];
+        const backendHourLength =
+            geoData.metadata?.data_census?.disturbance_index_hour_length?.[
+                criteria_hour
+            ] ??
+            geoData.metadata?.data_census?.disturbance_index_hour_length?.[
+                String(criteria_hour)
+            ];
 
-        for (const way of Object.values(geoData.wayData)) {
-            const di = getDisturbanceIndex(way, criteria_hour);
-            if (di === undefined) continue;
+        const backendHourFreq =
+            geoData.metadata?.data_census?.disturbance_index_hour_frequency?.[
+                criteria_hour
+            ] ??
+            geoData.metadata?.data_census?.disturbance_index_hour_frequency?.[
+                String(criteria_hour)
+            ];
 
-            const length = Number(way.length_m) || 0;
-            if (length > 0) {
-                lengthValues.push({ value: di, weight: length });
-            }
+        const backendLengthCensus =
+            geoData.metadata?.data_census?.disturbance_index_length;
+        const backendFreqCensus =
+            geoData.metadata?.data_census?.disturbance_index_frequency;
 
-            const freq = Number(way.hour_frequency?.[criteria_hour]) || 0;
-            if (freq > 0) {
-                freqValues.push({ value: di, weight: freq });
-            }
-        }
-
-        const census_length = computeWeightedStatistics(lengthValues);
-        const census_freq = computeWeightedStatistics(freqValues);
-
-        if (!census_length) return null;
+        if (!backendHourLength) return null;
 
         return {
-            census_length,
-            census_freq,
+            census_length: backendHourLength,
+            census_freq:
+                backendHourFreq ??
+                backendFreqCensus ??
+                backendLengthCensus ??
+                backendHourLength,
         };
     });
 
@@ -1203,10 +1207,11 @@
                                                     class="w-16 h-6 text-xs text-center px-1"
                                                     bind:value={di_filter_count}
                                                     min="1"
-                                                    max={disturbance_index_census?.census_length?.n || 5000}
+                                                    max={disturbance_index_census
+                                                        ?.census_length?.n ||
+                                                        5000}
                                                     oninput={() =>
-                                                        (di_filter_count_auto =
-                                                            false)}
+                                                        (di_filter_count_auto = false)}
                                                 />
                                             </div>
                                         {/if}

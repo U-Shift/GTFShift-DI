@@ -990,7 +990,6 @@ for (i in 1:nrow(regions)) { # i =1
       metadata$data_census$disturbance_index_frequency <- dataCensus(valid_di$disturbance_index, valid_di$frequency)
       metadata$data_census$disturbance_index_hour_length <- census_disturbance_index_hour_length
       metadata$data_census$disturbance_index_hour_frequency <- census_disturbance_index_hour_frequency
-      metadata$data_census$disturbance_index_hour <- census_disturbance_index_hour_length
     }
   }
   if ("demand" %in% colnames(prioritisation_infrastructure)) {

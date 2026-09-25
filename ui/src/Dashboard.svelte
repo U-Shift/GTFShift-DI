@@ -157,6 +157,29 @@
         return options;
     });
 
+    const speed_census = $derived.by(() => {
+        if (!geoData || !display_rt) return null;
+        const census = geoData.metadata?.data_census;
+        if (!census) return null;
+
+        if (selected_speed_metric === "median") {
+            return {
+                census_length: census.speed_median_length,
+                census_freq: census.speed_median_frequency,
+            };
+        }
+        if (selected_speed_metric === "p85") {
+            return {
+                census_length: census.speed_p85_length,
+                census_freq: census.speed_p85_frequency,
+            };
+        }
+        return {
+            census_length: census.speed_avg_length,
+            census_freq: census.speed_avg_frequency,
+        };
+    });
+
     const disturbance_index_census = $derived.by(() => {
         if (!geoData || !display_rt) return null;
 
@@ -1866,9 +1889,9 @@
                                         collection interval), from the <span
                                             style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
                                             class="font-bold"
-                                            >P5 ({geoData.metadata.data_census.speed_avg_length?.p5?.toFixed(
+                                            >P5 ({speed_census?.census_length?.p5?.toFixed(
                                                 2,
-                                            )})</span
+                                            ) ?? "-"}</span
                                         >
                                         to the
                                         <span
@@ -1876,9 +1899,9 @@
                                                 COLOR_GRADIENT_RED.length - 1
                                             ]}"
                                             class="bg-black/50 font-bold px-1 rounded"
-                                            >P95 ({geoData.metadata.data_census.speed_avg_length?.p95?.toFixed(
+                                            >P95 ({speed_census?.census_length?.p95?.toFixed(
                                                 2,
-                                            )})</span
+                                            ) ?? "-"}</span
                                         > values (km/h).
                                     </p>
                                 {:else if selected_speed_metric === "p85"}
@@ -1897,9 +1920,9 @@
                                         from the <span
                                             style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
                                             class="font-bold"
-                                            >P5 ({geoData.metadata.data_census.speed_avg_length?.p5?.toFixed(
+                                            >P5 ({speed_census?.census_length?.p5?.toFixed(
                                                 2,
-                                            )})</span
+                                            ) ?? "-"}</span
                                         >
                                         to the
                                         <span
@@ -1907,19 +1930,17 @@
                                                 COLOR_GRADIENT_RED.length - 1
                                             ]}"
                                             class="bg-black/50 font-bold px-1 rounded"
-                                            >P95 ({geoData.metadata.data_census.speed_avg_length?.p95?.toFixed(
+                                            >P95 ({speed_census?.census_length?.p95?.toFixed(
                                                 2,
-                                            )})</span
+                                            ) ?? "-"}</span
                                         > values (km/h).
                                     </p>
                                 {/if}
 
-                                {#if geoData.metadata.data_census.speed_avg_length}
+                                {#if speed_census?.census_length}
                                     <DataCensusTable
-                                        census_1={geoData.metadata.data_census
-                                            .speed_avg_length}
-                                        census_2={geoData.metadata.data_census
-                                            .speed_avg_frequency}
+                                        census_1={speed_census.census_length}
+                                        census_2={speed_census.census_freq}
                                         census_1_label="Length"
                                         census_2_label="Frequency"
                                     />
@@ -2204,11 +2225,9 @@
                 <div class="flex gap-2 items-center">
                     <span
                         class="min-w-[40px] text-right text-xs text-muted-foreground"
-                        >{geoData?.metadata.data_census.speed_avg_length?.p5 &&
-                            Math.floor(
-                                geoData.metadata.data_census.speed_avg_length
-                                    .p5,
-                            )}</span
+                        >{speed_census?.census_length?.p5 != null
+                            ? Math.floor(speed_census.census_length.p5)
+                            : ""}</span
                     >
                     <div
                         class="flex-1 h-3 rounded border"
@@ -2219,11 +2238,9 @@
                     ></div>
                     <span
                         class="min-w-[40px] text-left text-xs text-muted-foreground"
-                        >{geoData?.metadata.data_census.speed_avg_length?.p95 &&
-                            Math.ceil(
-                                geoData.metadata.data_census.speed_avg_length
-                                    .p95,
-                            )}</span
+                        >{speed_census?.census_length?.p95 != null
+                            ? Math.ceil(speed_census.census_length.p95)
+                            : ""}</span
                     >
                 </div>
             </div>

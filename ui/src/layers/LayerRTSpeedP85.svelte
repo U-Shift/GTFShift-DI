@@ -61,10 +61,13 @@
             !isNaN(Number(speed_p85))
         ) {
             const speedValue = Number(speed_p85);
+            const census =
+                geoData.metadata.data_census.speed_p85_length ??
+                geoData.metadata.data_census.speed_avg_length;
             color = getColorFromGradient(
                 speedValue,
-                geoData.metadata.data_census.speed_avg_length?.p5 || 0,
-                geoData.metadata.data_census.speed_avg_length?.p95 || 1,
+                census?.p5 || 0,
+                census?.p95 || 1,
                 COLOR_GRADIENT_RED.slice().reverse(),
             );
         }

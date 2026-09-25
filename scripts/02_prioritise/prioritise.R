@@ -374,7 +374,15 @@ for (i in 1:nrow(regions)) { # i =1
       }
       # Left join prioritisation with prioritisation_hour_aggregated by way_osm_id and hour
       prioritisation <- prioritisation |>
-        left_join(prioritisation_hour_aggregated, by = c("way_osm_id", "hour"))
+        left_join(prioritisation_hour_aggregated, by = c("way_osm_id", "hour")) |>
+        mutate(
+          # Compute segment disturbance index using speed_p85 baseline and hour_speed_median
+          disturbance_index = ifelse(
+            !is.na(speed_p85) & speed_p85 > 0 & !is.na(hour_speed_median),
+            round((hour_speed_median - speed_p85) / speed_p85, 4),
+            NA_real_
+          )
+        )
     }
   }
 
@@ -492,6 +500,10 @@ for (i in 1:nrow(regions)) { # i =1
 
       if ("hour_speed_p85" %in% colnames(df)) {
         hourly_list$hour_speed_p85 <- setNames(as.list(df$hour_speed_p85), df$hour)
+      }
+
+      if ("disturbance_index" %in% colnames(df)) {
+        hourly_list$hour_disturbance_index <- setNames(as.list(df$disturbance_index), df$hour)
       }
 
       return(c(static_info, hourly_list))
@@ -822,11 +834,22 @@ for (i in 1:nrow(regions)) { # i =1
     )
   }
   census_frequency_hour <- list()
+  census_disturbance_index_hour <- list()
   for (h in 0:23) {
     prioritisation_h <- prioritisation |> filter(hour == h)
     census <- dataCensus(prioritisation_h$frequency, prioritisation_h$length_m)
     if (!is.na(census$mean)) {
       census_frequency_hour[[as.character(h)]] <- census
+    }
+
+    if ("disturbance_index" %in% colnames(prioritisation)) {
+      prioritisation_h_di <- prioritisation |> filter(hour == h & !is.na(disturbance_index))
+      if (nrow(prioritisation_h_di) > 0) {
+        census_di <- dataCensus(prioritisation_h_di$disturbance_index, prioritisation_h_di$length_m)
+        if (!is.na(census_di$mean)) {
+          census_disturbance_index_hour[[as.character(h)]] <- census_di
+        }
+      }
     }
   }
 
@@ -904,6 +927,18 @@ for (i in 1:nrow(regions)) { # i =1
   if ("speed_avg" %in% colnames(prioritisation_infrastructure)) {
     metadata$data_census$speed_avg_length <- dataCensus(prioritisation_infrastructure$speed_avg, prioritisation_infrastructure$length_m)
     metadata$data_census$speed_avg_frequency <- dataCensus(prioritisation_infrastructure$speed_avg, prioritisation_infrastructure$frequency)
+  }
+  if ("speed_p85" %in% colnames(prioritisation_infrastructure)) {
+    metadata$data_census$speed_p85_length <- dataCensus(prioritisation_infrastructure$speed_p85, prioritisation_infrastructure$length_m)
+    metadata$data_census$speed_p85_frequency <- dataCensus(prioritisation_infrastructure$speed_p85, prioritisation_infrastructure$frequency)
+  }
+  if ("disturbance_index" %in% colnames(prioritisation)) {
+    valid_di <- prioritisation |> filter(!is.na(disturbance_index))
+    if (nrow(valid_di) > 0) {
+      metadata$data_census$disturbance_index_length <- dataCensus(valid_di$disturbance_index, valid_di$length_m)
+      metadata$data_census$disturbance_index_frequency <- dataCensus(valid_di$disturbance_index, valid_di$frequency)
+      metadata$data_census$disturbance_index_hour <- census_disturbance_index_hour
+    }
   }
   if ("demand" %in% colnames(prioritisation_infrastructure)) {
     metadata$data_census$demand_frequency <- dataCensus(prioritisation_infrastructure$demand, prioritisation_infrastructure$frequency)

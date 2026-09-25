@@ -50,6 +50,18 @@ export interface GeoPrioritisation {
                 [hour: string]: number;
             };
             stats: PrioritisationStats;
+            departure_stop?: {
+                stop_id: string;
+                stop_name?: string;
+                lat: number;
+                lon: number;
+            };
+            arrival_stop?: {
+                stop_id: string;
+                stop_name?: string;
+                lat: number;
+                lon: number;
+            };
         };
     };
     metadata: {

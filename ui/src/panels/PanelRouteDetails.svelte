@@ -1,6 +1,7 @@
 <script lang="ts">
     import { Button } from "$lib/components/ui/button/index.js";
     import { untrack } from "svelte";
+    import { toCapitalCase } from "$lib/utils.js";
     import type { GeoPrioritisation } from "../types/GeoPrioritisation";
 
     let {
@@ -75,6 +76,55 @@
                 <i class="fas fa-times"></i>
             </Button>
         </div>
+
+        <!-- Terminal Stops (Departure & Arrival) -->
+        {#if shape?.departure_stop || shape?.arrival_stop}
+            <div class="px-1 py-0.5 space-y-1 text-xs">
+                {#if shape.departure_stop}
+                    {@const depName =
+                        toCapitalCase(shape.departure_stop.stop_name) ||
+                        shape.departure_stop.stop_id}
+                    <div class="flex items-center gap-2">
+                        <span
+                            class="w-2.5 h-2.5 rounded-full border-2 border-emerald-600 bg-background shrink-0"
+                        ></span>
+                        <div class="min-w-0 flex-1 truncate">
+                            <span
+                                class="text-xs text-foreground font-medium"
+                                title={depName}
+                            >
+                                <span class="text-muted-foreground">From:</span>
+                                {depName}
+                            </span>
+                        </div>
+                    </div>
+                {/if}
+                {#if shape.departure_stop && shape.arrival_stop}
+                    <div
+                        class="ml-[4px] h-2.5 border-l border-dashed border-border/80"
+                    ></div>
+                {/if}
+                {#if shape.arrival_stop}
+                    {@const arrName =
+                        toCapitalCase(shape.arrival_stop.stop_name) ||
+                        shape.arrival_stop.stop_id}
+                    <div class="flex items-center gap-2">
+                        <span
+                            class="w-2.5 h-2.5 rounded-full border-2 border-red-600 bg-background shrink-0"
+                        ></span>
+                        <div class="min-w-0 flex-1 truncate">
+                            <span
+                                class="text-xs text-foreground font-medium"
+                                title={arrName}
+                            >
+                                <span class="text-muted-foreground">To:</span>
+                                {arrName}
+                            </span>
+                        </div>
+                    </div>
+                {/if}
+            </div>
+        {/if}
 
         <!-- Route demand -->
         {#if !Number.isNaN(routeDemand)}

@@ -396,3 +396,13 @@ export function computeWeightedStatistics(
         sd,
     };
 }
+
+/**
+ * Converts a string (e.g. UPPERCASE GTFS stop name) to Capital Case / Title Case.
+ */
+export function toCapitalCase(str: string | undefined | null): string {
+    if (!str) return "";
+    return str
+        .toLowerCase()
+        .replace(/(?:^|[\s\-\/\(\)\.,;:])\w/g, (match) => match.toUpperCase());
+}

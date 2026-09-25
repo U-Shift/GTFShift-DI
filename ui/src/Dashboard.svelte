@@ -19,6 +19,7 @@
     import LayerDisturbanceIndex from "./layers/LayerDisturbanceIndex.svelte";
     import LayerDemand from "./layers/LayerDemand.svelte";
     import LayerBoundaries from "./layers/LayerBoundaries.svelte";
+    import LayerTerminalStops from "./layers/LayerTerminalStops.svelte";
     import DataCensusTable from "./components/DataCensusTable.svelte";
     import ModalData from "./modals/ModalData.svelte";
     import ModalDetails from "./modals/ModalDetails.svelte";
@@ -2679,6 +2680,18 @@
             onLayerCreate={handleLayerCreate}
             onVisibleWayIdsChange={handleVisibleWayIdsChange}
         />
+    {/if}
+
+    {#if selected_shape_id && selected_shape_id !== "all" && geoData.shapes?.[selected_shape_id]}
+        {@const selectedShape = geoData.shapes[selected_shape_id]}
+        {#if selectedShape.departure_stop || selectedShape.arrival_stop}
+            <LayerTerminalStops
+                {map}
+                departureStop={selectedShape.departure_stop}
+                arrivalStop={selectedShape.arrival_stop}
+                routeColor={selectedShape.route_color}
+            />
+        {/if}
     {/if}
 {/if}
 

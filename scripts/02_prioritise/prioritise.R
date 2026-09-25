@@ -678,15 +678,6 @@ for (i in 1:nrow(regions)) { # i =1
     digits = NA # To avoid precision loss in coordinates
   )
 
-  # Write standalone route_speed_profile JSON if available
-  if (!is.null(route_speed_profiles_nested)) {
-    write_json(
-      route_speed_profiles_nested,
-      sprintf("%s/route_speed_profile_%s_gtfs%s_run%s.json", output_region, region$name, gtfs_day_str, run_day),
-      auto_unbox = TRUE,
-      digits = NA
-    )
-  }
 
   # > 4.4. Store metadata about execution details
   prioritisation <- prioritisation |>

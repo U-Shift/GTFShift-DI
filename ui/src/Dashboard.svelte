@@ -1839,103 +1839,47 @@
                                     >
                                         P85
                                     </button>
-                                </div>
+                                 </div>
 
-                                {#if selected_speed_metric === "avg"}
-                                    <p>
-                                        Speed computed based on GTFS-RT updates
+                                <p>
+                                    {selected_speed_metric === "avg"
+                                        ? "Average speed"
+                                        : selected_speed_metric === "median"
+                                          ? "Median speed"
+                                          : "85th percentile speed"} computed based on GTFS-RT updates{#if selected_speed_metric === "avg"}
                                         with <a
                                             href="https://u-shift.github.io/GTFShift/reference/rt_average_speed.html"
                                             target="_blank"
                                             class="bg-muted px-1.5 py-0.5 rounded text-xs font-mono hover:underline"
                                             >GTFShift::rt_average_speed()</a
-                                        >, considering the distance traversed
-                                        along the route geometry and the time
-                                        between consecutive updates.
-                                    </p>
-                                    <p>
-                                        Road segments with bus service are
-                                        colored by the average speed measured
-                                        (for the full days of the real-time data
-                                        collection interval), from the <span
-                                            style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
-                                            class="font-bold"
-                                            >P5 ({geoData.metadata.data_census.speed_avg_length?.p5?.toFixed(
-                                                2,
-                                            )})</span
-                                        >
-                                        to the
-                                        <span
-                                            style="color: {COLOR_GRADIENT_RED.slice().reverse()[
-                                                COLOR_GRADIENT_RED.length - 1
-                                            ]}"
-                                            class="bg-black/50 font-bold px-1 rounded"
-                                            >P95 ({geoData.metadata.data_census.speed_avg_length?.p95?.toFixed(
-                                                2,
-                                            )})</span
-                                        > values (km/h).
-                                    </p>
-                                {:else if selected_speed_metric === "median"}
-                                    <p>
-                                        Median speed computed based on GTFS-RT
-                                        updates, considering the distance
-                                        traversed along the route geometry and
-                                        the time between consecutive updates.
-                                    </p>
-                                    <p>
-                                        Road segments with bus service are
-                                        colored by the median speed measured
-                                        (for the full days of the real-time data
-                                        collection interval), from the <span
-                                            style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
-                                            class="font-bold"
-                                            >P5 ({speed_census?.census_length?.p5?.toFixed(
-                                                2,
-                                            ) ?? "-"}</span
-                                        >
-                                        to the
-                                        <span
-                                            style="color: {COLOR_GRADIENT_RED.slice().reverse()[
-                                                COLOR_GRADIENT_RED.length - 1
-                                            ]}"
-                                            class="bg-black/50 font-bold px-1 rounded"
-                                            >P95 ({speed_census?.census_length?.p95?.toFixed(
-                                                2,
-                                            ) ?? "-"}</span
-                                        > values (km/h).
-                                    </p>
-                                {:else if selected_speed_metric === "p85"}
-                                    <p>
-                                        85th percentile speed computed based on
-                                        GTFS-RT updates, considering the
-                                        distance traversed along the route
-                                        geometry and the time between
-                                        consecutive updates.
-                                    </p>
-                                    <p>
-                                        Road segments with bus service are
-                                        colored by the 85th percentile speed
-                                        measured (for the full days of the
-                                        real-time data collection interval),
-                                        from the <span
-                                            style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
-                                            class="font-bold"
-                                            >P5 ({speed_census?.census_length?.p5?.toFixed(
-                                                2,
-                                            ) ?? "-"}</span
-                                        >
-                                        to the
-                                        <span
-                                            style="color: {COLOR_GRADIENT_RED.slice().reverse()[
-                                                COLOR_GRADIENT_RED.length - 1
-                                            ]}"
-                                            class="bg-black/50 font-bold px-1 rounded"
-                                            >P95 ({speed_census?.census_length?.p95?.toFixed(
-                                                2,
-                                            ) ?? "-"}</span
-                                        > values (km/h).
-                                    </p>
-                                {/if}
+                                        >{/if}, considering the distance traversed along the route geometry and the time between consecutive updates.
+                                </p>
+                                <p>
+                                    Road segments with bus service are colored
+                                    by the {selected_speed_metric === "avg"
+                                        ? "average speed"
+                                        : selected_speed_metric === "median"
+                                          ? "median speed"
+                                          : "85th percentile speed"} measured
+                                    (for the full days of the real-time data
+                                    collection interval), from the <span
+                                        style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
+                                        class="font-bold"
+                                        >P5 ({speed_census?.census_length?.p5?.toFixed(
+                                            2,
+                                        ) ?? "-"}</span
+                                    >
+                                    to the
+                                    <span
+                                        style="color: {COLOR_GRADIENT_RED.slice().reverse()[
+                                            COLOR_GRADIENT_RED.length - 1
+                                        ]}"
+                                        class="bg-black/50 font-bold px-1 rounded"
+                                        >P95 ({speed_census?.census_length?.p95?.toFixed(
+                                            2,
+                                        ) ?? "-"}</span
+                                    > values (km/h).
+                                </p>
 
                                 {#if speed_census?.census_length}
                                     <DataCensusTable

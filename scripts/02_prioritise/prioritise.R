@@ -205,7 +205,6 @@ for (i in 1:nrow(regions)) { # i =1
             speed_median = round(median(commercial_speed, na.rm = TRUE), 2),
             commercial_speed = round(mean(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),
-            commercial_speed_p85_all = round(as.numeric(quantile(commercial_speed, probs = 0.85, na.rm = TRUE, names = FALSE)), 2),
             speed_p15 = round(as.numeric(quantile(commercial_speed, probs = 0.15, na.rm = TRUE, names = FALSE)), 2),
             speed_p25 = round(as.numeric(quantile(commercial_speed, probs = 0.25, na.rm = TRUE, names = FALSE)), 2),
             speed_p75 = round(as.numeric(quantile(commercial_speed, probs = 0.75, na.rm = TRUE, names = FALSE)), 2),
@@ -233,27 +232,74 @@ for (i in 1:nrow(regions)) { # i =1
             speed_max = round(max(commercial_speed, na.rm = TRUE), 2),
             .groups = "drop"
           ) |>
-          left_join(route_global_stats |> select(route_id, commercial_speed_p85_all), by = "route_id") |>
+          left_join(route_global_stats |> select(route_id, route_speed_p85 = speed_p85), by = "route_id") |>
           mutate(
-            # Disturbance index: (commercial_speed - commercial_speed_p85_all) / commercial_speed_p85_all
+            # Disturbance index: (commercial_speed - route_speed_p85) / route_speed_p85
             disturbance_index = ifelse(
-              !is.na(commercial_speed_p85_all) & commercial_speed_p85_all > 0,
-              round((commercial_speed - commercial_speed_p85_all) / commercial_speed_p85_all, 4),
+              !is.na(route_speed_p85) & route_speed_p85 > 0,
+              round((commercial_speed - route_speed_p85) / route_speed_p85, 4),
               NA_real_
             )
           ) |>
-          select(-commercial_speed_p85_all)
+          select(-route_speed_p85)
+
+        # 3. Aggregations by trip_id across days
+        trip_global_stats <- trip_profiles |>
+          filter(!is.na(trip_id)) |>
+          group_by(trip_id, route_id) |>
+          summarise(
+            n_days = n(),
+            speed_avg = round(mean(commercial_speed, na.rm = TRUE), 2),
+            speed_median = round(median(commercial_speed, na.rm = TRUE), 2),
+            commercial_speed = round(mean(commercial_speed, na.rm = TRUE), 2),
+            commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),
+            speed_p15 = round(as.numeric(quantile(commercial_speed, probs = 0.15, na.rm = TRUE, names = FALSE)), 2),
+            speed_p25 = round(as.numeric(quantile(commercial_speed, probs = 0.25, na.rm = TRUE, names = FALSE)), 2),
+            speed_p75 = round(as.numeric(quantile(commercial_speed, probs = 0.75, na.rm = TRUE, names = FALSE)), 2),
+            speed_p85 = round(as.numeric(quantile(commercial_speed, probs = 0.85, na.rm = TRUE, names = FALSE)), 2),
+            speed_min = round(min(commercial_speed, na.rm = TRUE), 2),
+            speed_max = round(max(commercial_speed, na.rm = TRUE), 2),
+            .groups = "drop"
+          ) |>
+          left_join(route_global_stats |> select(route_id, route_speed_p85 = speed_p85), by = "route_id") |>
+          mutate(
+            # Disturbance index for trip: (commercial_speed - route_speed_p85) / route_speed_p85
+            disturbance_index = ifelse(
+              !is.na(route_speed_p85) & route_speed_p85 > 0,
+              round((commercial_speed - route_speed_p85) / route_speed_p85, 4),
+              NA_real_
+            )
+          ) |>
+          select(-route_speed_p85)
+
+        # 4. Individual trip stats by (trip_id, day)
+        trip_day_stats <- trip_profiles |>
+          filter(!is.na(trip_id)) |>
+          left_join(route_global_stats |> select(route_id, route_speed_p85 = speed_p85), by = "route_id") |>
+          mutate(
+            # Disturbance index for individual trip run: (commercial_speed - route_speed_p85) / route_speed_p85
+            disturbance_index = ifelse(
+              !is.na(route_speed_p85) & route_speed_p85 > 0,
+              round((commercial_speed - route_speed_p85) / route_speed_p85, 4),
+              NA_real_
+            )
+          ) |>
+          select(-route_speed_p85)
 
         route_speed_profiles <- list(
           by_route = route_global_stats,
-          by_route_day_hour = route_day_hour_stats
+          by_route_day_hour = route_day_hour_stats,
+          by_trip = trip_global_stats,
+          by_trip_day = trip_day_stats
         )
 
         # Build nested dictionary keyed by route_id for JSON storage
-        all_rids <- unique(c(route_global_stats$route_id, route_day_hour_stats$route_id))
+        all_rids <- unique(c(route_global_stats$route_id, route_day_hour_stats$route_id, trip_global_stats$route_id, trip_day_stats$route_id))
         route_speed_profiles_nested <- setNames(lapply(all_rids, function(rid) {
           g_row <- route_global_stats |> filter(route_id == rid)
           dh_rows <- route_day_hour_stats |> filter(route_id == rid)
+          t_rows <- trip_global_stats |> filter(route_id == rid)
+          td_rows <- trip_day_stats |> filter(route_id == rid)
 
           stats_obj <- if (nrow(g_row) > 0) {
             as.list(g_row[1, setdiff(names(g_row), "route_id")])
@@ -270,7 +316,25 @@ for (i in 1:nrow(regions)) { # i =1
             list()
           }
 
-          c(stats = list(stats_obj), day_hour = list(day_hour_list))
+          # Convert trip rows into a list of records
+          trip_list <- if (nrow(t_rows) > 0) {
+            lapply(seq_len(nrow(t_rows)), function(row_idx) {
+              as.list(t_rows[row_idx, setdiff(names(t_rows), "route_id")])
+            })
+          } else {
+            list()
+          }
+
+          # Convert individual (trip_id, day) rows into a list of records
+          trip_day_list <- if (nrow(td_rows) > 0) {
+            lapply(seq_len(nrow(td_rows)), function(row_idx) {
+              as.list(td_rows[row_idx, setdiff(names(td_rows), "route_id")])
+            })
+          } else {
+            list()
+          }
+
+          c(stats = list(stats_obj), day_hour = list(day_hour_list), trips = list(trip_list), trip_days = list(trip_day_list))
         }), all_rids)
 
         message("Trip speed profile and disturbance index computation completed.")

@@ -1,6 +1,6 @@
 # Initialization -------------------------------------------------------
 output <- "web_data"
-GTFShiftVersion <- "0.10 (dev version)" # as.character(packageVersion("GTFShift"))
+GTFShiftVersion <- as.character(packageVersion("GTFShift"))
 
 # GTFS-RT commercial speed computation parameters
 THRESHOLD_MIN_UPDATES_PER_ROAD_SEGMENT_FOR_SPEED <- 3 # number of updates per road segment to compute speed

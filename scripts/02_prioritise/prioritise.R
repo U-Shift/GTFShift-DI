@@ -10,14 +10,14 @@ library(osmdata)
 library(Hmisc) # For  Weighted Statistical Estimates
 # set_overpass_url("https://overpass-api.de/api/interpreter")
 
-# Run with: $ Rscript 02_prioritise/prioritise.R
+# Run with: $ Rscript 02_prioritise/prioritise.R > 02_prioritise/prioritise_$(date +%Y%m%d_%H%M%S).log 2>&1
 
 # Refer to prioritise_parameters.R to define parameters before running this script!
 source("02_prioritise/prioritise_parameters.R")
 
 regions <- regions |>
   # filter(name %in% c("lisboa_rt", "aml_rt", "barreiro", "stcp"))
-  filter(name %in% c("stcp"))
+  filter(name %in% c("aml_rt_area_3"))
 #  filter(name %in% c("cascais", "barreiro", "madrid"))
 # filter(name %in% c("lisboa_rt")) # , "aml_rt_area_1", "aml_rt_area_2", "aml_rt_area_3", "aml_rt_area_4", "stcp"))
 
@@ -164,118 +164,121 @@ for (i in 1:nrow(regions)) { # i =1
 
     # Trip-level speed profile analysis and disturbance index
     route_speed_profiles <- NULL
-    tryCatch({
-      message("Computing trip-level speed profiles and disturbance index...")
-      # Drop geometry and ungroup for profile computation
-      rt_for_profile <- rt_collection_filtered
-      if (inherits(rt_for_profile, "sf")) {
-        rt_for_profile <- sf::st_drop_geometry(rt_for_profile)
-      }
-      rt_for_profile <- dplyr::ungroup(rt_for_profile)
+    tryCatch(
+      {
+        message("Computing trip-level speed profiles and disturbance index...")
+        # Drop geometry and ungroup for profile computation
+        rt_for_profile <- rt_collection_filtered
+        if (inherits(rt_for_profile, "sf")) {
+          rt_for_profile <- sf::st_drop_geometry(rt_for_profile)
+        }
+        rt_for_profile <- dplyr::ungroup(rt_for_profile)
 
-      # Ensure trip_id and route_id are character
-      if ("trip_id" %in% colnames(rt_for_profile)) rt_for_profile$trip_id <- as.character(rt_for_profile$trip_id)
-      if ("route_id" %in% colnames(rt_for_profile)) rt_for_profile$route_id <- as.character(rt_for_profile$route_id)
+        # Ensure trip_id and route_id are character
+        if ("trip_id" %in% colnames(rt_for_profile)) rt_for_profile$trip_id <- as.character(rt_for_profile$trip_id)
+        if ("route_id" %in% colnames(rt_for_profile)) rt_for_profile$route_id <- as.character(rt_for_profile$route_id)
 
-      # Compute trip-level speed profile by (trip_id, route_id, day)
-      trip_profiles <- GTFShift::get_trip_speed_profile(
-        rt_speed = rt_for_profile,
-        by = c("trip_id", "route_id", "day")
-      )
-
-      # Extract hour from timestamp_min in Europe/Lisbon timezone
-      trip_profiles <- trip_profiles |>
-        mutate(
-          hour = if (all(is.na(timestamp_min))) {
-            NA_integer_
-          } else if (is.numeric(timestamp_min)) {
-            as.integer(format(as.POSIXct(timestamp_min, origin = "1970-01-01", tz = "Europe/Lisbon"), "%H"))
-          } else {
-            as.integer(format(as.POSIXct(timestamp_min, tz = "Europe/Lisbon"), "%H"))
-          }
+        # Compute trip-level speed profile by (trip_id, route_id, day)
+        trip_profiles <- GTFShift::get_trip_speed_profile(
+          rt_speed = rt_for_profile,
+          by = c("trip_id", "route_id", "day")
         )
 
-      # 1. Global stats per route_id (across all trips of any time)
-      route_global_stats <- trip_profiles |>
-        group_by(route_id) |>
-        summarise(
-          n_trips = n(),
-          speed_avg = round(mean(speed_avg, na.rm = TRUE), 2),
-          speed_median = round(median(speed_median, na.rm = TRUE), 2),
-          speed_p85_all = round(as.numeric(quantile(speed_median, probs = 0.85, na.rm = TRUE, names = FALSE)), 2),
-          commercial_speed = round(mean(commercial_speed, na.rm = TRUE), 2),
-          commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),
-          speed_p15 = round(mean(speed_p15, na.rm = TRUE), 2),
-          speed_p25 = round(mean(speed_p25, na.rm = TRUE), 2),
-          speed_p75 = round(mean(speed_p75, na.rm = TRUE), 2),
-          speed_p85 = round(mean(speed_p85, na.rm = TRUE), 2),
-          speed_min = round(min(speed_min, na.rm = TRUE), 2),
-          speed_max = round(max(speed_max, na.rm = TRUE), 2),
-          .groups = "drop"
-        )
-
-      # 2. Aggregations by (route_id, day, hour)
-      route_day_hour_stats <- trip_profiles |>
-        filter(!is.na(hour)) |>
-        group_by(route_id, day, hour) |>
-        summarise(
-          n_trips = n(),
-          speed_avg = round(mean(speed_avg, na.rm = TRUE), 2),
-          speed_median = round(median(speed_median, na.rm = TRUE), 2),
-          commercial_speed = round(mean(commercial_speed, na.rm = TRUE), 2),
-          commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),
-          speed_p15 = round(mean(speed_p15, na.rm = TRUE), 2),
-          speed_p25 = round(mean(speed_p25, na.rm = TRUE), 2),
-          speed_p75 = round(mean(speed_p75, na.rm = TRUE), 2),
-          speed_p85 = round(mean(speed_p85, na.rm = TRUE), 2),
-          speed_min = round(min(speed_min, na.rm = TRUE), 2),
-          speed_max = round(max(speed_max, na.rm = TRUE), 2),
-          .groups = "drop"
-        ) |>
-        left_join(route_global_stats |> select(route_id, speed_p85_all), by = "route_id") |>
-        mutate(
-          # Disturbance index: (speed_median - speed_p85_all) / speed_p85_all
-          disturbance_index = ifelse(
-            !is.na(speed_p85_all) & speed_p85_all > 0,
-            round((speed_median - speed_p85_all) / speed_p85_all, 4),
-            NA_real_
+        # Extract hour from timestamp_min in Europe/Lisbon timezone
+        trip_profiles <- trip_profiles |>
+          mutate(
+            hour = if (all(is.na(timestamp_min))) {
+              NA_integer_
+            } else if (is.numeric(timestamp_min)) {
+              as.integer(format(as.POSIXct(timestamp_min, origin = "1970-01-01", tz = "Europe/Lisbon"), "%H"))
+            } else {
+              as.integer(format(as.POSIXct(timestamp_min, tz = "Europe/Lisbon"), "%H"))
+            }
           )
-        ) |>
-        select(-speed_p85_all)
 
-      route_speed_profiles <- list(
-        by_route = route_global_stats,
-        by_route_day_hour = route_day_hour_stats
-      )
+        # 1. Global stats per route_id (across all trips of any time)
+        route_global_stats <- trip_profiles |>
+          group_by(route_id) |>
+          summarise(
+            n_trips = n(),
+            speed_avg = round(mean(speed_avg, na.rm = TRUE), 2),
+            speed_median = round(median(speed_median, na.rm = TRUE), 2),
+            speed_p85_all = round(as.numeric(quantile(speed_median, probs = 0.85, na.rm = TRUE, names = FALSE)), 2),
+            commercial_speed = round(mean(commercial_speed, na.rm = TRUE), 2),
+            commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),
+            speed_p15 = round(mean(speed_p15, na.rm = TRUE), 2),
+            speed_p25 = round(mean(speed_p25, na.rm = TRUE), 2),
+            speed_p75 = round(mean(speed_p75, na.rm = TRUE), 2),
+            speed_p85 = round(mean(speed_p85, na.rm = TRUE), 2),
+            speed_min = round(min(speed_min, na.rm = TRUE), 2),
+            speed_max = round(max(speed_max, na.rm = TRUE), 2),
+            .groups = "drop"
+          )
 
-      # Build nested dictionary keyed by route_id for JSON storage
-      all_rids <- unique(c(route_global_stats$route_id, route_day_hour_stats$route_id))
-      route_speed_profiles_nested <- setNames(lapply(all_rids, function(rid) {
-        g_row <- route_global_stats |> filter(route_id == rid)
-        dh_rows <- route_day_hour_stats |> filter(route_id == rid)
+        # 2. Aggregations by (route_id, day, hour)
+        route_day_hour_stats <- trip_profiles |>
+          filter(!is.na(hour)) |>
+          group_by(route_id, day, hour) |>
+          summarise(
+            n_trips = n(),
+            speed_avg = round(mean(speed_avg, na.rm = TRUE), 2),
+            speed_median = round(median(speed_median, na.rm = TRUE), 2),
+            commercial_speed = round(mean(commercial_speed, na.rm = TRUE), 2),
+            commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),
+            speed_p15 = round(mean(speed_p15, na.rm = TRUE), 2),
+            speed_p25 = round(mean(speed_p25, na.rm = TRUE), 2),
+            speed_p75 = round(mean(speed_p75, na.rm = TRUE), 2),
+            speed_p85 = round(mean(speed_p85, na.rm = TRUE), 2),
+            speed_min = round(min(speed_min, na.rm = TRUE), 2),
+            speed_max = round(max(speed_max, na.rm = TRUE), 2),
+            .groups = "drop"
+          ) |>
+          left_join(route_global_stats |> select(route_id, speed_p85_all), by = "route_id") |>
+          mutate(
+            # Disturbance index: (speed_median - speed_p85_all) / speed_p85_all
+            disturbance_index = ifelse(
+              !is.na(speed_p85_all) & speed_p85_all > 0,
+              round((speed_median - speed_p85_all) / speed_p85_all, 4),
+              NA_real_
+            )
+          ) |>
+          select(-speed_p85_all)
 
-        stats_obj <- if (nrow(g_row) > 0) {
-          as.list(g_row[1, setdiff(names(g_row), "route_id")])
-        } else {
-          list()
-        }
+        route_speed_profiles <- list(
+          by_route = route_global_stats,
+          by_route_day_hour = route_day_hour_stats
+        )
 
-        # Convert day_hour rows into a list of records
-        day_hour_list <- if (nrow(dh_rows) > 0) {
-          lapply(seq_len(nrow(dh_rows)), function(row_idx) {
-            as.list(dh_rows[row_idx, setdiff(names(dh_rows), "route_id")])
-          })
-        } else {
-          list()
-        }
+        # Build nested dictionary keyed by route_id for JSON storage
+        all_rids <- unique(c(route_global_stats$route_id, route_day_hour_stats$route_id))
+        route_speed_profiles_nested <- setNames(lapply(all_rids, function(rid) {
+          g_row <- route_global_stats |> filter(route_id == rid)
+          dh_rows <- route_day_hour_stats |> filter(route_id == rid)
 
-        c(stats = list(stats_obj), day_hour = list(day_hour_list))
-      }), all_rids)
+          stats_obj <- if (nrow(g_row) > 0) {
+            as.list(g_row[1, setdiff(names(g_row), "route_id")])
+          } else {
+            list()
+          }
 
-      message("Trip speed profile and disturbance index computation completed.")
-    }, error = function(e) {
-      warning("Could not compute trip speed profiles: ", e$message)
-    })
+          # Convert day_hour rows into a list of records
+          day_hour_list <- if (nrow(dh_rows) > 0) {
+            lapply(seq_len(nrow(dh_rows)), function(row_idx) {
+              as.list(dh_rows[row_idx, setdiff(names(dh_rows), "route_id")])
+            })
+          } else {
+            list()
+          }
+
+          c(stats = list(stats_obj), day_hour = list(day_hour_list))
+        }), all_rids)
+
+        message("Trip speed profile and disturbance index computation completed.")
+      },
+      error = function(e) {
+        warning("Could not compute trip speed profiles: ", e$message)
+      }
+    )
 
     # RT analysis per hour
     if (isTRUE(region$rt_collection_per_hour) && "hh" %in% colnames(rt_collection_filtered)) {
@@ -457,37 +460,40 @@ for (i in 1:nrow(regions)) { # i =1
   )
 
   # Precompute departure and arrival stop coordinates for each shape
-  shape_terminal_stops <- tryCatch({
-    # Find the first and last stop_sequence for each trip
-    trip_terminals <- gtfs$stop_times |>
-      group_by(trip_id) |>
-      summarise(
-        dep_seq = min(stop_sequence, na.rm = TRUE),
-        arr_seq = max(stop_sequence, na.rm = TRUE),
-        dep_stop_id = stop_id[which.min(stop_sequence)],
-        arr_stop_id = stop_id[which.max(stop_sequence)],
-        .groups = "drop"
-      )
+  shape_terminal_stops <- tryCatch(
+    {
+      # Find the first and last stop_sequence for each trip
+      trip_terminals <- gtfs$stop_times |>
+        group_by(trip_id) |>
+        summarise(
+          dep_seq = min(stop_sequence, na.rm = TRUE),
+          arr_seq = max(stop_sequence, na.rm = TRUE),
+          dep_stop_id = stop_id[which.min(stop_sequence)],
+          arr_stop_id = stop_id[which.max(stop_sequence)],
+          .groups = "drop"
+        )
 
-    # Link trips to shapes and deduplicate per shape_id
-    shapes_terminals_raw <- gtfs$trips |>
-      select(shape_id, trip_id) |>
-      filter(!is.na(shape_id) & shape_id != "") |>
-      inner_join(trip_terminals, by = "trip_id") |>
-      distinct(shape_id, .keep_all = TRUE)
+      # Link trips to shapes and deduplicate per shape_id
+      shapes_terminals_raw <- gtfs$trips |>
+        select(shape_id, trip_id) |>
+        filter(!is.na(shape_id) & shape_id != "") |>
+        inner_join(trip_terminals, by = "trip_id") |>
+        distinct(shape_id, .keep_all = TRUE)
 
-    # Prepare stops dataframe with coords and name
-    stops_info <- gtfs$stops |>
-      select(stop_id, any_of(c("stop_name")), stop_lat, stop_lon)
+      # Prepare stops dataframe with coords and name
+      stops_info <- gtfs$stops |>
+        select(stop_id, any_of(c("stop_name")), stop_lat, stop_lon)
 
-    # Join terminal stops with their coordinates
-    shapes_terminals_raw |>
-      left_join(stops_info |> rename(departure_stop_id = stop_id, departure_stop_name = any_of("stop_name"), departure_stop_lat = stop_lat, departure_stop_lon = stop_lon), by = c("dep_stop_id" = "departure_stop_id")) |>
-      left_join(stops_info |> rename(arrival_stop_id = stop_id, arrival_stop_name = any_of("stop_name"), arrival_stop_lat = stop_lat, arrival_stop_lon = stop_lon), by = c("arr_stop_id" = "arrival_stop_id"))
-  }, error = function(e) {
-    warning("Could not compute shape terminal stops: ", e$message)
-    NULL
-  })
+      # Join terminal stops with their coordinates
+      shapes_terminals_raw |>
+        left_join(stops_info |> rename(departure_stop_id = stop_id, departure_stop_name = any_of("stop_name"), departure_stop_lat = stop_lat, departure_stop_lon = stop_lon), by = c("dep_stop_id" = "departure_stop_id")) |>
+        left_join(stops_info |> rename(arrival_stop_id = stop_id, arrival_stop_name = any_of("stop_name"), arrival_stop_lat = stop_lat, arrival_stop_lon = stop_lon), by = c("arr_stop_id" = "arrival_stop_id"))
+    },
+    error = function(e) {
+      warning("Could not compute shape terminal stops: ", e$message)
+      NULL
+    }
+  )
 
   nested_shapes <- lapply(split(routes, routes$shape_id), function(df) {
     # Extract static metadata associated with this shape

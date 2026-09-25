@@ -14,7 +14,7 @@
     import LayerParkingLanes from "./layers/LayerParkingLanes.svelte";
     import LayerRTSpeed from "./layers/LayerRTSpeed.svelte";
     import LayerRTSpeedMedian from "./layers/LayerRTSpeedMedian.svelte";
-    import LayerRTSpeedP75 from "./layers/LayerRTSpeedP75.svelte";
+    import LayerRTSpeedP85 from "./layers/LayerRTSpeedP85.svelte";
     import LayerDisturbanceIndex from "./layers/LayerDisturbanceIndex.svelte";
     import LayerDemand from "./layers/LayerDemand.svelte";
     import LayerBoundaries from "./layers/LayerBoundaries.svelte";
@@ -73,7 +73,7 @@
         DEMAND,
     }
 
-    type SpeedMetric = "avg" | "median" | "p75";
+    type SpeedMetric = "avg" | "median" | "p85";
     let selected_speed_metric: SpeedMetric = $state("avg");
 
     let region: DataRegion | undefined = $state(undefined);
@@ -139,12 +139,12 @@
                 label: "Median speed (faster roads thicker)",
             });
             options.push({
-                value: "speed_p75_min",
-                label: "P75 speed (slower roads thicker)",
+                value: "speed_p85_min",
+                label: "P85 speed (slower roads thicker)",
             });
             options.push({
-                value: "speed_p75_max",
-                label: "P75 speed (faster roads thicker)",
+                value: "speed_p85_max",
+                label: "P85 speed (faster roads thicker)",
             });
             options.push({
                 value: "disturbance_index",
@@ -212,13 +212,13 @@
         }
 
         if (di_thresholds_auto) {
-            // Low threshold: magnitude around median/P75 (e.g. boundary of mild disturbance)
+            // Low threshold: magnitude around median/P85 (e.g. boundary of mild disturbance)
             // High threshold: magnitude around P25 (e.g. boundary of severe disturbance)
             const autoLow = Math.max(
                 1,
                 Math.min(
                     15,
-                    Math.round(Math.abs(census.p75) * 100) ||
+                    Math.round(Math.abs(census.p85 ?? 0) * 100) ||
                         Math.round(Math.abs(census.median) * 100) ||
                         5,
                 ),
@@ -365,7 +365,7 @@
             criteria_n_lanes_parking_enabled = false;
             criteria_avg_speed_enabled = display_rt;
             criteria_demand_enabled = display_demand;
-            line_weight_by = "speed_p75_min";
+            line_weight_by = "speed_p85_min";
             const defaultLayer = display_rt
                 ? DisplayOptions.DISTURBANCE_INDEX
                 : DisplayOptions.PRIORITISATION;
@@ -433,7 +433,7 @@
 
     $effect(() => {
         if (lineWeightOptions.find((o) => o.value === line_weight_by)) return;
-        line_weight_by = "speed_p75_min";
+        line_weight_by = "speed_p85_min";
     });
 
     const routeOptions = $derived.by(() => {
@@ -1108,9 +1108,9 @@
                                         >{criteria_hour
                                             .toString()
                                             .padStart(2, "0")}:00</span
-                                    >) and baseline 75th percentile speed (<span
+                                    >) and baseline 85th percentile speed (<span
                                         class="font-mono bg-muted px-1.5 py-0.5 rounded text-xs"
-                                        >speed_P75</span
+                                        >speed_P85</span
                                     >):
                                 </p>
                                 <div
@@ -1133,7 +1133,7 @@
                                             v&#772;<sub
                                                 >median,{criteria_hour}h</sub
                                             >
-                                            &minus; v<sub>P75</sub>
+                                            &minus; v<sub>P85</sub>
                                         </span>
                                         <span
                                             class="w-full border-t border-foreground/60"
@@ -1141,7 +1141,7 @@
                                         <span
                                             class="font-serif italic pt-0.5 px-1.5 text-foreground"
                                         >
-                                            v<sub>P75</sub>
+                                            v<sub>P85</sub>
                                         </span>
                                     </div>
                                 </div>
@@ -1807,14 +1807,14 @@
                                     <button
                                         type="button"
                                         class="flex-1 py-1 px-2.5 rounded-full text-xs font-medium transition-all text-center cursor-pointer {selected_speed_metric ===
-                                        'p75'
+                                        'p85'
                                             ? 'bg-background text-foreground shadow-xs font-semibold'
                                             : 'text-muted-foreground hover:text-foreground hover:bg-background/40'}"
                                         onclick={() =>
-                                            (selected_speed_metric = "p75")}
-                                        title="75th percentile speed"
+                                            (selected_speed_metric = "p85")}
+                                        title="85th percentile speed"
                                     >
-                                        P75
+                                        P85
                                     </button>
                                 </div>
 
@@ -1881,9 +1881,9 @@
                                             )})</span
                                         > values (km/h).
                                     </p>
-                                {:else if selected_speed_metric === "p75"}
+                                {:else if selected_speed_metric === "p85"}
                                     <p>
-                                        75th percentile speed computed based on
+                                        85th percentile speed computed based on
                                         GTFS-RT updates, considering the
                                         distance traversed along the route
                                         geometry and the time between
@@ -1891,7 +1891,7 @@
                                     </p>
                                     <p>
                                         Road segments with bus service are
-                                        colored by the 75th percentile speed
+                                        colored by the 85th percentile speed
                                         measured (for the full days of the
                                         real-time data collection interval),
                                         from the <span
@@ -2197,7 +2197,7 @@
                         ? "Average speed"
                         : selected_speed_metric === "median"
                           ? "Median speed"
-                          : "P75 speed"}
+                          : "P85 speed"}
                     <span class="text-muted-foreground font-normal">(km/h)</span
                     >
                 </p>
@@ -2462,8 +2462,8 @@
                 onLayerCreate={handleLayerCreate}
                 onVisibleWayIdsChange={handleVisibleWayIdsChange}
             />
-        {:else if selected_speed_metric === "p75"}
-            <LayerRTSpeedP75
+        {:else if selected_speed_metric === "p85"}
+            <LayerRTSpeedP85
                 {map}
                 {geoData}
                 criteriaHour={criteria_hour}

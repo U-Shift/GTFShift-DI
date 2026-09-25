@@ -110,7 +110,7 @@
                             <p
                                 class="text-[10px] text-muted-foreground truncate"
                             >
-                                {cat ? cat.label : "Relative to P75 speed"}
+                                {cat ? cat.label : "Relative to P85 speed"}
                             </p>
                             {#if cat}
                                 <div
@@ -250,7 +250,7 @@
                 {/if}
 
                 <!-- Speed Card (100% width with 3 metrics) -->
-                {#if way.speed_avg != null || way.speed_median != null || way.speed_p75 != null}
+                {#if way.speed_avg != null || way.speed_median != null || way.speed_p85 != null}
                     <div
                         class="col-span-2 p-3 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 flex flex-col justify-between shadow-sm overflow-hidden relative"
                     >
@@ -275,10 +275,10 @@
                                           COLOR_GRADIENT_RED.slice().reverse(),
                                       )
                                     : null}
-                            {@const p75Color =
-                                speedCensus && way.speed_p75 != null
+                            {@const p85Color =
+                                speedCensus && way.speed_p85 != null
                                     ? getColorFromGradient(
-                                          way.speed_p75,
+                                          way.speed_p85,
                                           speedCensus.p5,
                                           speedCensus.p95,
                                           COLOR_GRADIENT_RED.slice().reverse(),
@@ -364,13 +364,13 @@
                                     <p
                                         class="text-[10px] font-medium text-muted-foreground mb-0.5"
                                     >
-                                        P75
+                                        P85
                                     </p>
                                     <p class="text-base font-bold">
-                                        {way.speed_p75 != null
-                                            ? typeof way.speed_p75 === "number"
-                                                ? way.speed_p75.toFixed(1)
-                                                : Number(way.speed_p75).toFixed(
+                                        {way.speed_p85 != null
+                                            ? typeof way.speed_p85 === "number"
+                                                ? way.speed_p85.toFixed(1)
+                                                : Number(way.speed_p85).toFixed(
                                                       1,
                                                   )
                                             : "-"}
@@ -379,10 +379,10 @@
                                             >km/h</span
                                         >
                                     </p>
-                                    {#if p75Color}
+                                    {#if p85Color}
                                         <div
                                             class="absolute bottom-0 left-0 right-0 h-[2.5px]"
-                                            style="background-color: {p75Color}"
+                                            style="background-color: {p85Color}"
                                         ></div>
                                     {/if}
                                 </div>
@@ -517,7 +517,7 @@
             <h5 class="text-sm font-bold border-b pb-1">Hourly variations</h5>
 
             <!-- 24h Disturbance Index Section -->
-            {#if display_rt && way.speed_p75 != null && way.hour_speed_median && Object.values(way.hour_speed_median)?.some((v) => v != null)}
+            {#if display_rt && way.speed_p85 != null && way.hour_speed_median && Object.values(way.hour_speed_median)?.some((v) => v != null)}
                 {@const hourDis = Array.from({ length: 24 }, (_, i) =>
                     getDisturbanceIndex(way, i),
                 )}
@@ -772,7 +772,7 @@
                 </div>
             </section>
 
-            {#if display_rt && ((way.hour_speed_avg && Object.values(way.hour_speed_avg)?.some((v) => v != null)) || (way.hour_speed_median && Object.values(way.hour_speed_median)?.some((v) => v != null)) || (way.hour_speed_p75 && Object.values(way.hour_speed_p75)?.some((v) => v != null)))}
+            {#if display_rt && ((way.hour_speed_avg && Object.values(way.hour_speed_avg)?.some((v) => v != null)) || (way.hour_speed_median && Object.values(way.hour_speed_median)?.some((v) => v != null)) || (way.hour_speed_p85 && Object.values(way.hour_speed_p85)?.some((v) => v != null)))}
                 <section
                     class="space-y-3 p-4 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50"
                 >
@@ -944,24 +944,24 @@
                                     <th
                                         class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap"
                                     >
-                                        P75 speed (km/h)
+                                        P85 speed (km/h)
                                     </th>
                                     {#each Array(24) as _, i}
-                                        {@const p75Speed =
-                                            way.hour_speed_p75?.[i]}
+                                        {@const p85Speed =
+                                            way.hour_speed_p85?.[i]}
                                         <td
                                             class="text-[10px] font-medium text-center px-1 py-1 rounded bg-background/70 border border-border/30"
-                                            title="{i}:00 hour_speed_p75"
+                                            title="{i}:00 hour_speed_p85"
                                         >
-                                            {p75Speed == null ||
-                                            typeof p75Speed !== "number"
-                                                ? p75Speed != null &&
-                                                  !isNaN(Number(p75Speed))
-                                                    ? Number(p75Speed).toFixed(
+                                            {p85Speed == null ||
+                                            typeof p85Speed !== "number"
+                                                ? p85Speed != null &&
+                                                  !isNaN(Number(p85Speed))
+                                                    ? Number(p85Speed).toFixed(
                                                           1,
                                                       )
                                                     : "-"
-                                                : p75Speed.toFixed(1)}
+                                                : p85Speed.toFixed(1)}
                                         </td>
                                     {/each}
                                 </tr>

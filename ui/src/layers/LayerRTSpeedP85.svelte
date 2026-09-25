@@ -41,8 +41,8 @@
     function formatSpeedLabel(wayId: string): string {
         const speed = geoData.wayData[wayId]?.speed_p85;
         const speedValue = Number(speed);
-        if (isNaN(speedValue)) return "P75 speed: n/a";
-        return `P75 speed: ${speedValue.toFixed(1)} km/h`;
+        if (isNaN(speedValue)) return "P85 speed: n/a";
+        return `P85 speed: ${speedValue.toFixed(1)} km/h`;
     }
 
     function getSpeedStyle(wayId: string): L.PathOptions {
@@ -79,7 +79,7 @@
 
         wayLayerMap = new Map();
 
-        // Filter out features with no P75 speed data
+        // Filter out features with no P85 speed data
         const filteredFeatures = geoData.features.filter(
             (feature: Feature | undefined) => {
                 const wayId = feature?.properties?.way_osm_id;

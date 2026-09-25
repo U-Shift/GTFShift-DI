@@ -225,10 +225,10 @@ export function getWayMetricValue(
         return toNumberOrUndefined(wayProps?.speed_median);
     }
     if (
-        lineWeightBy === "speed_p75_min" ||
-        lineWeightBy === "speed_p75_max"
+        lineWeightBy === "speed_p85_min" ||
+        lineWeightBy === "speed_p85_max"
     ) {
-        return toNumberOrUndefined(wayProps?.speed_p75);
+        return toNumberOrUndefined(wayProps?.speed_p85);
     }
     if (lineWeightBy === "disturbance_index") {
         const di = getDisturbanceIndex(wayProps, criteriaHour);
@@ -269,7 +269,7 @@ export function getLineWeight(
         lineWeightBy === "speed_avg_min" ||
         lineWeightBy === "speed_min" ||
         lineWeightBy === "speed_median_min" ||
-        lineWeightBy === "speed_p75_min"
+        lineWeightBy === "speed_p85_min"
     ) {
         return getFrequencyWeightedLineWidth(
             value,
@@ -285,7 +285,7 @@ export function getLineWeight(
         lineWeightBy === "speed_avg_max" ||
         lineWeightBy === "speed_max" ||
         lineWeightBy === "speed_median_max" ||
-        lineWeightBy === "speed_p75_max"
+        lineWeightBy === "speed_p85_max"
     ) {
         return getFrequencyWeightedLineWidth(
             value,

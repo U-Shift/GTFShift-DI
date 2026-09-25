@@ -212,8 +212,8 @@
                                         <ThSort
                                             {table}
                                             field={(r) =>
-                                                r.properties.speed_p75}
-                                            >P75 speed <small>(km/h)</small
+                                                r.properties.speed_p85}
+                                            >P85 speed <small>(km/h)</small
                                             ></ThSort
                                         >
                                         <ThSort
@@ -313,7 +313,7 @@
                                             <ThFilterNumeric
                                                 {table}
                                                 field={(r) =>
-                                                    r.properties.speed_p75}
+                                                    r.properties.speed_p85}
                                             />
                                             <ThFilterNumeric
                                                 {table}
@@ -426,7 +426,7 @@
                                                 ) || "-"}</td
                                             >
                                             <td class="px-4 py-2"
-                                                >{row.properties.speed_p75?.toFixed(
+                                                >{row.properties.speed_p85?.toFixed(
                                                     1,
                                                 ) || "-"}</td
                                             >

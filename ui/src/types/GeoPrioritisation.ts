@@ -62,6 +62,36 @@ export interface GeoPrioritisation {
                 lat: number;
                 lon: number;
             };
+            speed_profile?: {
+                stats: {
+                    n_days?: number;
+                    n_trips?: number;
+                    commercial_speed_avg?: number;
+                    commercial_speed_median?: number;
+                    commercial_speed_alt?: number;
+                    commercial_speed_p15?: number;
+                    commercial_speed_p25?: number;
+                    commercial_speed_p75?: number;
+                    commercial_speed_p85?: number;
+                    commercial_speed_min?: number;
+                    commercial_speed_max?: number;
+                };
+                hours?: Array<{
+                    hour: number;
+                    n_days?: number;
+                    n_trips?: number;
+                    commercial_speed_avg?: number;
+                    commercial_speed_median?: number;
+                    commercial_speed_alt?: number;
+                    commercial_speed_p15?: number;
+                    commercial_speed_p25?: number;
+                    commercial_speed_p75?: number;
+                    commercial_speed_p85?: number;
+                    commercial_speed_min?: number;
+                    commercial_speed_max?: number;
+                    disturbance_index?: number;
+                }>;
+            };
         };
     };
     metadata: {

@@ -101,6 +101,7 @@
     let open_accordion: string | undefined = $state(undefined);
     let selected_shape_id: string = $state("all");
     let selectedTripId: string | undefined = $state(undefined);
+    let isRouteExpanded: boolean = $state(false);
     let route_select_open: boolean = $state(false);
     let display_rt: boolean = $state(false); // true if region has rt-data (optional)
     let display_demand: boolean = $state(false); // true if region has demand data (optional)
@@ -508,6 +509,9 @@
         selectedWayId;
         untrack(() => {
             selectedTripId = undefined;
+            if (!selected_shape_id || selected_shape_id === "all" || selectedWayId) {
+                isRouteExpanded = false;
+            }
         });
     });
 
@@ -2196,6 +2200,7 @@
 <PanelRouteDetails
     bind:selected_shape_id
     bind:selectedTripId
+    bind:isExpanded={isRouteExpanded}
     {geoData}
     {selectedWayId}
     {criteria_hour}
@@ -2209,13 +2214,14 @@
         bind:selectedTripId
         {selected_shape_id}
         {geoData}
+        bind:isExpanded={isRouteExpanded}
         di_threshold_low={di_threshold_low / 100}
         di_threshold_high={di_threshold_high / 100}
     />
 {/if}
 
 <!-- Map caption -->
-{#if active_layer !== undefined && !any_modal_open && !selectedWayId}
+{#if active_layer !== undefined && !any_modal_open && !selectedWayId && !isRouteExpanded}
     <div
         id="caption"
         class="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-auto sm:right-6 z-[1000] flex flex-col gap-3 p-4 bg-background/95 backdrop-blur shadow-lg border rounded-xl text-sm w-[calc(100vw-2rem)] sm:w-[350px] max-h-[30vh] sm:max-h-[40vh] overflow-y-auto"

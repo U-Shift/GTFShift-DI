@@ -44,6 +44,7 @@
         "commercial-speed",
         "trips",
         "road-segment",
+        "route-variants",
     ];
 
     function toggleAllSections() {
@@ -136,6 +137,15 @@
                   0.1,
               )
             : 0.1}
+    {@const variantShapes = shape?.route_short_name
+        ? Object.entries(geoData.shapes || {})
+              .filter(
+                  ([sId, s]) =>
+                      s.route_short_name === shape.route_short_name &&
+                      sId !== selected_shape_id,
+              )
+              .map(([sId, s]) => ({ shape_id: sId, ...s }))
+        : []}
     {#if isExpanded}
         <!-- Backdrop: blur behind just like ModalData -->
         <div
@@ -1506,6 +1516,100 @@
                                     No trips match "{tripSearchQuery}"
                                 </div>
                             {/if}
+                        </Accordion.Content>
+                    </Accordion.Item>
+                {/if}
+
+                <!-- Route Variants -->
+                {#if variantShapes.length > 0}
+                    <Accordion.Item
+                        value="route-variants"
+                        class="border border-border/50 rounded-xl bg-zinc-50/80 dark:bg-zinc-900/40 px-3 overflow-hidden shadow-xs"
+                    >
+                        <Accordion.Trigger class="py-3 hover:no-underline">
+                            <div
+                                class="flex items-center gap-2 text-start flex-1 min-w-0 pr-2"
+                            >
+                                <i
+                                    class="fas fa-shuffle text-xs text-muted-foreground"
+                                ></i>
+                                <span
+                                    class="text-xs font-bold uppercase tracking-wider text-muted-foreground"
+                                >
+                                    Route Variants
+                                </span>
+                                <span
+                                    class="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground ml-auto"
+                                >
+                                    {variantShapes.length}
+                                </span>
+                            </div>
+                        </Accordion.Trigger>
+                        <Accordion.Content class="pt-1 pb-3">
+                            <div
+                                class="grid {isExpanded
+                                    ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4'
+                                    : 'grid-cols-1'} gap-2"
+                            >
+                                {#each variantShapes as vShape}
+                                    {@const vColor =
+                                        vShape.route_color || shapeColor}
+                                    {@const vStats = vShape.stats}
+                                    <button
+                                        type="button"
+                                        onclick={() => {
+                                            selected_shape_id = vShape.shape_id;
+                                            selectedTripId = undefined;
+                                        }}
+                                        class="flex items-center justify-between p-2.5 rounded-xl border border-border/40 bg-background/80 hover:bg-muted/50 transition-colors text-left group cursor-pointer shadow-2xs"
+                                    >
+                                        <div
+                                            class="flex items-center gap-2.5 min-w-0"
+                                        >
+                                            <span
+                                                class="px-2 py-0.5 rounded text-xs font-bold font-mono shrink-0 shadow-2xs"
+                                                style="background-color: {vColor}22; border: 1px solid {vColor}44; color: {vColor};"
+                                            >
+                                                {vShape.route_short_name ||
+                                                    shape?.route_short_name ||
+                                                    vShape.shape_id}
+                                            </span>
+                                            <div class="min-w-0">
+                                                <p
+                                                    class="text-xs font-semibold text-foreground truncate group-hover:text-primary transition-colors"
+                                                    title={vShape.route_long_name}
+                                                >
+                                                    {vShape.route_long_name ||
+                                                        "Route " +
+                                                            (vShape.route_short_name ||
+                                                                vShape.shape_id)}
+                                                </p>
+                                                <div
+                                                    class="flex items-center gap-2 text-[10px] text-muted-foreground font-mono"
+                                                >
+                                                    <span>
+                                                        {vShape.direction_id
+                                                            ? "↙ Descending"
+                                                            : "↗ Ascending"}
+                                                    </span>
+                                                    {#if vStats?.extension}
+                                                        <span>•</span>
+                                                        <span>
+                                                            {(
+                                                                vStats.extension /
+                                                                1000
+                                                            ).toFixed(1)} km
+                                                        </span>
+                                                    {/if}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <i
+                                            class="fas fa-chevron-right text-[10px] text-muted-foreground/60 group-hover:text-foreground transition-colors shrink-0 ml-2"
+                                        ></i>
+                                    </button>
+                                {/each}
+                            </div>
                         </Accordion.Content>
                     </Accordion.Item>
                 {/if}

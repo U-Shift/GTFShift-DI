@@ -2183,7 +2183,13 @@
 />
 
 <!-- Route Details Panel (shown when a shape is selected and no way is selected) -->
-<PanelRouteDetails bind:selected_shape_id {geoData} {selectedWayId} />
+<PanelRouteDetails
+    bind:selected_shape_id
+    {geoData}
+    {selectedWayId}
+    di_threshold_low={di_threshold_low / 100}
+    di_threshold_high={di_threshold_high / 100}
+/>
 
 <!-- Map caption -->
 {#if active_layer !== undefined && !any_modal_open && !selectedWayId}

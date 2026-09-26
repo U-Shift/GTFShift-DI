@@ -2,17 +2,25 @@
     import { Button } from "$lib/components/ui/button/index.js";
     import * as Accordion from "$lib/components/ui/accordion/index.js";
     import { untrack } from "svelte";
-    import { toCapitalCase } from "$lib/utils.js";
+    import {
+        toCapitalCase,
+        getDisturbanceIndexCategory,
+        getDisturbanceIndexCategories,
+    } from "$lib/utils.js";
     import type { GeoPrioritisation } from "../types/GeoPrioritisation";
 
     let {
         selected_shape_id = $bindable(),
         geoData,
         selectedWayId,
+        di_threshold_low = 0.05,
+        di_threshold_high = 0.2,
     }: {
         selected_shape_id: string;
         geoData: GeoPrioritisation | null;
         selectedWayId: string | undefined;
+        di_threshold_low?: number;
+        di_threshold_high?: number;
     } = $props();
 </script>
 
@@ -52,6 +60,15 @@
                   1,
               )
             : 1}
+    {@const maxAbsDi =
+        speedProfileHours.length > 0
+            ? Math.max(
+                  ...speedProfileHours.map((h) =>
+                      Math.abs(h.disturbance_index ?? 0),
+                  ),
+                  0.1,
+              )
+            : 0.1}
     <div
         id="route-details-panel"
         class="absolute top-4 left-4 right-4 sm:left-auto sm:right-4 z-[1010] flex flex-col w-[calc(100vw-2rem)] sm:w-[380px] h-fit max-h-[calc(100vh-2rem)] rounded-xl bg-background/95 backdrop-blur shadow-lg border p-5 overflow-y-auto gap-4"
@@ -739,6 +756,142 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                        {/if}
+
+                        <!-- Hourly Disturbance Index Chart -->
+                        {#if speedProfileHours.some((h) => h.disturbance_index != null)}
+                            <div
+                                class="space-y-2 p-3 bg-background/80 rounded-xl border border-border/40 shadow-xs"
+                            >
+                                <h6
+                                    class="text-xs font-bold flex items-center gap-1.5 uppercase tracking-wider text-muted-foreground"
+                                >
+                                    <i class="fas fa-wave-square" style="color: {shapeColor}"></i>
+                                    Disturbance Index per Hour
+                                </h6>
+                                <p class="text-[10px] text-muted-foreground">
+                                    Relative difference from baseline (positive: faster, negative: slower).
+                                </p>
+
+                                <!-- Diverging bar chart (positive values go up, negative values go down) -->
+                                <div
+                                    class="flex items-center gap-[2px] h-28 border-l border-b border-muted-foreground/30 px-1 relative bg-muted/10 rounded-sm"
+                                >
+                                    <!-- Center dashed zero baseline -->
+                                    <div
+                                        class="absolute left-0 right-0 top-1/2 -translate-y-1/2 border-t border-dashed border-muted-foreground/40 pointer-events-none z-0"
+                                    ></div>
+                                    <span
+                                        class="absolute right-1 top-1/2 -translate-y-1/2 text-[8px] font-mono text-muted-foreground/50 pointer-events-none select-none z-0"
+                                    >
+                                        0%
+                                    </span>
+
+                                    {#each Array(24) as _, i}
+                                        {@const hourData = speedProfileHours.find(
+                                            (h) => h.hour === i,
+                                        )}
+                                        {@const di = hourData?.disturbance_index}
+                                        <div
+                                            class="flex-1 h-full flex flex-col relative group z-10"
+                                        >
+                                            <!-- Top half: positive values (faster than baseline) -->
+                                            <div
+                                                class="flex-1 flex items-end justify-center"
+                                            >
+                                                {#if di != null && di > 0}
+                                                    {@const cat =
+                                                        getDisturbanceIndexCategory(
+                                                            di,
+                                                            di_threshold_low,
+                                                            di_threshold_high,
+                                                        )}
+                                                    {@const barHeight = Math.min(
+                                                        Math.max(
+                                                            (di / maxAbsDi) * 100,
+                                                            5,
+                                                        ),
+                                                        100,
+                                                    )}
+                                                    <div
+                                                        class="w-full rounded-t-[1px] transition-all group-hover:brightness-110"
+                                                        style="height: {barHeight}%; background-color: {cat.color};"
+                                                    ></div>
+                                                {/if}
+                                            </div>
+
+                                            <!-- Bottom half: negative values (slower than baseline) -->
+                                            <div
+                                                class="flex-1 flex items-start justify-center"
+                                            >
+                                                {#if di != null && di < 0}
+                                                    {@const cat =
+                                                        getDisturbanceIndexCategory(
+                                                            di,
+                                                            di_threshold_low,
+                                                            di_threshold_high,
+                                                        )}
+                                                    {@const barHeight = Math.min(
+                                                        Math.max(
+                                                            (Math.abs(di) / maxAbsDi) * 100,
+                                                            5,
+                                                        ),
+                                                        100,
+                                                    )}
+                                                    <div
+                                                        class="w-full rounded-b-[1px] transition-all group-hover:brightness-110"
+                                                        style="height: {barHeight}%; background-color: {cat.color};"
+                                                    ></div>
+                                                {/if}
+                                            </div>
+
+                                            <!-- Tooltip on hover -->
+                                            {#if di != null}
+                                                {@const cat =
+                                                    getDisturbanceIndexCategory(
+                                                        di,
+                                                        di_threshold_low,
+                                                        di_threshold_high,
+                                                    )}
+                                                <div
+                                                    class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-30 shadow-md"
+                                                >
+                                                    {i}:00: {di > 0 ? "+" : ""}{(
+                                                        di * 100
+                                                    ).toFixed(1)}% ({cat.label})
+                                                </div>
+                                            {/if}
+                                        </div>
+                                    {/each}
+                                </div>
+
+                                <div
+                                    class="flex justify-between text-[9px] text-muted-foreground font-mono uppercase tracking-tighter mt-1"
+                                >
+                                    <span>0h</span>
+                                    <span>6h</span>
+                                    <span>12h</span>
+                                    <span>18h</span>
+                                    <span>23h</span>
+                                </div>
+
+                                <!-- Category legend chips -->
+                                <div
+                                    class="flex flex-wrap items-center justify-between gap-1 pt-1 border-t border-border/40 text-[9px]"
+                                >
+                                    {#each getDisturbanceIndexCategories(di_threshold_low, di_threshold_high) as cat}
+                                        <div class="flex items-center gap-1">
+                                            <span
+                                                class="w-2 h-2 rounded-xs inline-block"
+                                                style="background-color: {cat.color}"
+                                            ></span>
+                                            <span class="text-muted-foreground"
+                                                >{cat.label}</span
+                                            >
+                                        </div>
+                                    {/each}
                                 </div>
                             </div>
                         {/if}

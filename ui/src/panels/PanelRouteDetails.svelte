@@ -159,7 +159,7 @@
         id="route-details-panel"
         class={isExpanded
             ? "fixed top-4 left-4 right-4 sm:left-[calc(1rem+350px+0.5rem)] sm:right-4 z-[1050] flex flex-col h-fit max-h-[calc(100vh-2rem)] rounded-xl bg-background/95 backdrop-blur shadow-xl border p-5 overflow-y-auto gap-4"
-            : "absolute top-4 left-4 right-4 sm:left-auto sm:right-4 z-[1010] flex flex-col w-[calc(100vw-2rem)] sm:w-[380px] h-fit max-h-[calc(100vh-2rem)] rounded-xl bg-background/95 backdrop-blur shadow-lg border p-5 overflow-y-auto gap-4"}
+            : "absolute top-4 left-4 right-4 sm:left-auto sm:right-4 z-[1010] flex flex-col w-[calc(100vw-2rem)] sm:w-[456px] h-fit max-h-[calc(100vh-2rem)] rounded-xl bg-background/95 backdrop-blur shadow-lg border p-5 overflow-y-auto gap-4"}
     >
         <div class="w-full flex flex-col gap-4">
             <!-- Header -->
@@ -176,13 +176,6 @@
                             class="text-xs font-bold uppercase tracking-wider text-muted-foreground"
                             >Route {shape?.route_short_name}</span
                         >
-                        {#if isExpanded}
-                            <span
-                                class="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-primary/10 text-primary rounded-full"
-                            >
-                                Extended View
-                            </span>
-                        {/if}
                     </div>
                     <h3
                         class="{isExpanded

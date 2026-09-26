@@ -168,7 +168,7 @@
         id="trip-details-panel"
         class={isExpanded
             ? "fixed top-4 left-4 right-4 sm:left-[calc(1rem+350px+0.5rem)] sm:right-4 z-[1060] flex flex-col h-fit max-h-[calc(100vh-2rem)] rounded-xl bg-background/95 backdrop-blur shadow-xl border p-5 overflow-y-auto gap-4"
-            : "absolute top-4 left-4 right-4 sm:left-auto lg:right-[404px] sm:right-4 z-[1015] flex flex-col w-[calc(100vw-2rem)] sm:w-[380px] h-fit max-h-[calc(100vh-2rem)] rounded-xl bg-background/95 backdrop-blur shadow-xl border p-5 overflow-y-auto gap-4"}
+            : "absolute top-4 left-4 right-4 sm:left-auto lg:right-[480px] sm:right-4 z-[1015] flex flex-col w-[calc(100vw-2rem)] sm:w-[456px] h-fit max-h-[calc(100vh-2rem)] rounded-xl bg-background/95 backdrop-blur shadow-xl border p-5 overflow-y-auto gap-4"}
     >
         <div class="w-full flex flex-col gap-4">
             <!-- Header -->

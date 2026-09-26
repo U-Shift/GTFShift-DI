@@ -222,7 +222,7 @@
         id="details-panel"
         class={isExpanded
             ? "fixed top-4 left-4 right-4 sm:left-[calc(1rem+350px+0.5rem)] sm:right-4 z-[1050] flex flex-col h-fit max-h-[calc(100vh-2rem)] rounded-xl bg-background/95 backdrop-blur shadow-xl border p-5 overflow-y-auto gap-4"
-            : "absolute top-4 left-4 right-4 sm:left-auto sm:right-4 z-[1010] flex flex-col w-[calc(100vw-2rem)] sm:w-[380px] h-fit max-h-[calc(100vh-2rem)] rounded-xl bg-background/95 backdrop-blur shadow-lg border p-5 overflow-y-auto gap-4"}
+            : "absolute top-4 left-4 right-4 sm:left-auto sm:right-4 z-[1010] flex flex-col w-[calc(100vw-2rem)] sm:w-[456px] h-fit max-h-[calc(100vh-2rem)] rounded-xl bg-background/95 backdrop-blur shadow-lg border p-5 overflow-y-auto gap-4"}
     >
         <div class="w-full flex flex-col gap-4">
             <!-- Header -->
@@ -230,16 +230,6 @@
                 class="flex items-start justify-between gap-3 border-b border-border/40 pb-3"
             >
                 <div class="min-w-0 space-y-1">
-                    <div class="flex items-center gap-2">
-                        {#if isExpanded}
-                            <span
-                                class="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-primary/10 text-primary rounded-full"
-                            >
-                                Extended View
-                            </span>
-                        {/if}
-                    </div>
-
                     <h3
                         class="{isExpanded
                             ? 'text-xl sm:text-2xl'
@@ -360,7 +350,7 @@
                             <span
                                 class="text-xs font-bold uppercase tracking-wider text-muted-foreground"
                             >
-                                Physical & Transit Overview
+                                Physical & Operational Overview
                             </span>
                         </div>
                     </Accordion.Trigger>
@@ -1518,7 +1508,9 @@
                             {@const filteredShapes = way.shapes.filter(
                                 (shape_id) => {
                                     if (!routeSearchQuery.trim()) return true;
-                                    const q = routeSearchQuery.toLowerCase().trim();
+                                    const q = routeSearchQuery
+                                        .toLowerCase()
+                                        .trim();
                                     const route = geoData.shapes?.[shape_id];
                                     return (
                                         shape_id.toLowerCase().includes(q) ||
@@ -1535,7 +1527,9 @@
                             )}
 
                             {#if filteredShapes.length === 0}
-                                <p class="text-xs text-muted-foreground text-center py-4">
+                                <p
+                                    class="text-xs text-muted-foreground text-center py-4"
+                                >
                                     No routes match "{routeSearchQuery}"
                                 </p>
                             {:else}
@@ -1545,9 +1539,11 @@
                                         : 'grid-cols-1'} gap-2"
                                 >
                                     {#each filteredShapes as shape_id}
-                                        {@const route = geoData.shapes?.[shape_id]}
+                                        {@const route =
+                                            geoData.shapes?.[shape_id]}
                                         {@const routeColor =
-                                            route?.route_color || "var(--primary)"}
+                                            route?.route_color ||
+                                            "var(--primary)"}
                                         <button
                                             type="button"
                                             onclick={() => {

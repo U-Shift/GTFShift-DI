@@ -551,25 +551,6 @@
                                     </div>
                                 {/if}
 
-                                {#if speedProfileStats.commercial_speed_p15 != null}
-                                    <div
-                                        class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs"
-                                    >
-                                        <p
-                                            class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
-                                        >
-                                            P15 Speed
-                                        </p>
-                                        <p class="text-sm font-bold">
-                                            {Number(speedProfileStats.commercial_speed_p15).toFixed(1)}<span
-                                                class="text-[9px] font-normal"
-                                            >
-                                                km/h</span
-                                            >
-                                        </p>
-                                    </div>
-                                {/if}
-
                                 {#if speedProfileStats.commercial_speed_p85 != null}
                                     <div
                                         class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs"
@@ -638,18 +619,9 @@
                                         >
                                             {#if hourData && speedAvg != null}
                                                 <div
-                                                    class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-30 shadow-md flex flex-col gap-0.5"
+                                                    class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-20"
                                                 >
-                                                    <span class="font-bold">{i}:00 – {Number(speedAvg).toFixed(1)} km/h</span>
-                                                    {#if hourData.commercial_speed_median != null}
-                                                        <span class="text-[9px] opacity-80">Med: {Number(hourData.commercial_speed_median).toFixed(1)} km/h</span>
-                                                    {/if}
-                                                    {#if hourData.commercial_speed_p15 != null && hourData.commercial_speed_p85 != null}
-                                                        <span class="text-[9px] opacity-80">P15-P85: {Number(hourData.commercial_speed_p15).toFixed(1)} - {Number(hourData.commercial_speed_p85).toFixed(1)} km/h</span>
-                                                    {/if}
-                                                    {#if hourData.n_trips != null}
-                                                        <span class="text-[9px] opacity-80">Trips: {hourData.n_trips}</span>
-                                                    {/if}
+                                                    {i}:00: {Number(speedAvg).toFixed(1)} km/h
                                                 </div>
                                             {/if}
                                         </div>
@@ -661,6 +633,112 @@
                                     <span>0h</span><span>6h</span><span>12h</span><span
                                         >18h</span
                                     ><span>23h</span>
+                                </div>
+
+                                <!-- Hourly Metrics Table -->
+                                <div class="overflow-x-auto pt-2">
+                                    <table
+                                        class="w-full min-w-[760px] border-separate border-spacing-x-[2px] border-spacing-y-1"
+                                    >
+                                        <tbody>
+                                            <tr>
+                                                <th
+                                                    class="text-[9px] font-mono font-semibold text-muted-foreground text-left px-2 py-1"
+                                                >
+                                                    Metric\Hour
+                                                </th>
+                                                {#each Array(24) as _, i}
+                                                    <th
+                                                        class="text-[9px] font-mono font-semibold text-muted-foreground text-center px-1 py-1"
+                                                    >
+                                                        {i}h
+                                                    </th>
+                                                {/each}
+                                            </tr>
+
+                                            <!-- Average Speed -->
+                                            <tr>
+                                                <th
+                                                    class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap"
+                                                >
+                                                    Average speed (km/h)
+                                                </th>
+                                                {#each Array(24) as _, i}
+                                                    {@const hourData = speedProfileHours.find((h) => h.hour === i)}
+                                                    {@const val = hourData?.commercial_speed_avg}
+                                                    <td
+                                                        class="text-[10px] font-medium text-center px-1 py-1 rounded bg-background/70 border border-border/30"
+                                                        title="{i}:00 avg speed"
+                                                    >
+                                                        {val != null && !isNaN(Number(val))
+                                                            ? Number(val).toFixed(1)
+                                                            : "-"}
+                                                    </td>
+                                                {/each}
+                                            </tr>
+
+                                            <!-- Median Speed -->
+                                            <tr>
+                                                <th
+                                                    class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap"
+                                                >
+                                                    Median speed (km/h)
+                                                </th>
+                                                {#each Array(24) as _, i}
+                                                    {@const hourData = speedProfileHours.find((h) => h.hour === i)}
+                                                    {@const val = hourData?.commercial_speed_median}
+                                                    <td
+                                                        class="text-[10px] font-medium text-center px-1 py-1 rounded bg-background/70 border border-border/30"
+                                                        title="{i}:00 median speed"
+                                                    >
+                                                        {val != null && !isNaN(Number(val))
+                                                            ? Number(val).toFixed(1)
+                                                            : "-"}
+                                                    </td>
+                                                {/each}
+                                            </tr>
+
+                                            <!-- P85 Speed -->
+                                            <tr>
+                                                <th
+                                                    class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap"
+                                                >
+                                                    P85 speed (km/h)
+                                                </th>
+                                                {#each Array(24) as _, i}
+                                                    {@const hourData = speedProfileHours.find((h) => h.hour === i)}
+                                                    {@const val = hourData?.commercial_speed_p85}
+                                                    <td
+                                                        class="text-[10px] font-medium text-center px-1 py-1 rounded bg-background/70 border border-border/30"
+                                                        title="{i}:00 p85 speed"
+                                                    >
+                                                        {val != null && !isNaN(Number(val))
+                                                            ? Number(val).toFixed(1)
+                                                            : "-"}
+                                                    </td>
+                                                {/each}
+                                            </tr>
+
+                                            <!-- Trips count -->
+                                            <tr>
+                                                <th
+                                                    class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap"
+                                                >
+                                                    Trips sampled (nr.)
+                                                </th>
+                                                {#each Array(24) as _, i}
+                                                    {@const hourData = speedProfileHours.find((h) => h.hour === i)}
+                                                    {@const trips = hourData?.n_trips}
+                                                    <td
+                                                        class="text-[10px] font-medium text-center px-1 py-1 rounded bg-background/70 border border-border/30"
+                                                        title="{i}:00 trips"
+                                                    >
+                                                        {trips != null ? trips : "-"}
+                                                    </td>
+                                                {/each}
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         {/if}

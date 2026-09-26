@@ -1,5 +1,6 @@
 <script lang="ts">
     import { Button } from "$lib/components/ui/button/index.js";
+    import * as Accordion from "$lib/components/ui/accordion/index.js";
     import { untrack } from "svelte";
     import { toCapitalCase } from "$lib/utils.js";
     import type { GeoPrioritisation } from "../types/GeoPrioritisation";
@@ -138,504 +139,534 @@
             </div>
         {/if}
 
-        <!-- Route demand -->
-        {#if !Number.isNaN(routeDemand)}
-            <section
-                class="p-3 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50"
-            >
-                <div class="flex items-start justify-between gap-3">
-                    <div>
-                        <p
-                            class="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1"
-                        >
-                            Route Demand
-                        </p>
-                        <p class="text-2xl font-bold leading-none">
-                            {Math.round(routeDemand).toLocaleString()}
-                        </p>
-                        <p class="text-xs text-muted-foreground mt-1">
-                            passengers/day
-                        </p>
-                    </div>
-                    <div
-                        class="w-10 h-10 rounded-full flex items-center justify-center text-white/90 shadow-sm shrink-0"
-                        style="background-color: {shapeColor}"
-                    >
-                        <i class="fas fa-users text-sm"></i>
-                    </div>
-                </div>
-            </section>
-        {/if}
-
-        <!-- 24h Frequency Chart -->
-        {#if scheduleEntries.length > 0}
-            <section
-                class="space-y-2 p-3 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50"
-            >
-                <h5
-                    class="text-xs font-bold flex items-center gap-1.5 uppercase tracking-wider text-muted-foreground"
+        <!-- Sections Accordion -->
+        <Accordion.Root
+            type="multiple"
+            value={["demand-departures"]}
+            class="w-full space-y-2"
+        >
+            <!-- Group: Demand & Departures -->
+            {#if !Number.isNaN(routeDemand) || scheduleEntries.length > 0}
+                <Accordion.Item
+                    value="demand-departures"
+                    class="border border-border/50 rounded-xl bg-zinc-50/80 dark:bg-zinc-900/40 px-3 overflow-hidden shadow-xs"
                 >
-                    <i class="fas fa-chart-bar" style="color: {shapeColor}"></i>
-                    Scheduled Departures / Hour
-                </h5>
-                <div
-                    class="flex items-end gap-[2px] h-20 border-l border-b border-muted-foreground/30 px-1 pt-2"
-                >
-                    {#each Array(24) as _, i}
-                        {@const entry = scheduleEntries.find(
-                            (e) => e.hour === i,
-                        )}
-                        {@const count = entry?.count ?? 0}
-                        {@const height =
-                            count > 0
-                                ? Math.max((count / maxSchedule) * 100, 8)
-                                : 0}
-                        <div
-                            class="flex-1 rounded-t-[1px] relative group transition-colors"
-                            style="height: {height}%; background-color: {count >
-                            0
-                                ? shapeColor + 'bb'
-                                : 'transparent'};"
-                            title="{i}:00 – {count} dep."
-                        >
-                            {#if count > 0}
-                                <div
-                                    class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-20"
-                                >
-                                    {i}:00: {count}
-                                </div>
-                            {/if}
+                    <Accordion.Trigger class="py-3 hover:no-underline">
+                        <div class="flex items-center gap-2 text-start">
+                            <i class="fas fa-users text-xs text-muted-foreground"></i>
+                            <span class="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                                Demand & Departures
+                            </span>
                         </div>
-                    {/each}
-                </div>
-                <div
-                    class="flex justify-between text-[9px] text-muted-foreground font-mono uppercase tracking-tighter"
-                >
-                    <span>0h</span><span>6h</span><span>12h</span><span
-                        >18h</span
-                    ><span>23h</span>
-                </div>
-            </section>
-        {/if}
-
-        <!-- Aggregated Indicators Grid -->
-        {#if shapeWays.length > 0}
-            <section class="space-y-2">
-                <h5
-                    class="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-0"
-                >
-                    Road Segment Indicators
-                </h5>
-                <p class="col-span-3 text-[10px] text-muted-foreground mb-2">
-                    Average values weighted by segment length.
-                </p>
-                <div class="grid grid-cols-3 gap-2">
-                    <!-- Speed indicators -->
-                    {#if shape.stats?.speed_min && shape.stats?.speed_max && shape.stats?.speed_avg}
-                        <div
-                            class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
-                        >
-                            <p
-                                class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
-                            >
-                                Min Speed
-                            </p>
-                            <p class="text-sm font-bold">
-                                {shape.stats.speed_min}<span
-                                    class="text-[9px] font-normal"
-                                >
-                                    km/h</span
-                                >
-                            </p>
-                        </div>
-                        <div
-                            class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
-                        >
-                            <p
-                                class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
-                            >
-                                Avg Speed
-                            </p>
-                            <p class="text-sm font-bold">
-                                {shape.stats.speed_avg}<span
-                                    class="text-[9px] font-normal"
-                                >
-                                    km/h</span
-                                >
-                            </p>
-                        </div>
-                        <div
-                            class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
-                        >
-                            <p
-                                class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
-                            >
-                                Max Speed
-                            </p>
-                            <p class="text-sm font-bold">
-                                {shape.stats.speed_max}<span
-                                    class="text-[9px] font-normal"
-                                >
-                                    km/h</span
-                                >
-                            </p>
-                        </div>
-                        <p class="col-span-3 text-[10px] text-muted-foreground">
-                            Speed metrics considering speed at segment level
-                            (which considers all routes that go through it).
-                        </p>
-                    {/if}
-
-                    <!-- Lanes indicators -->
-                    <div
-                        class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
-                    >
-                        <p
-                            class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
-                        >
-                            Min Lanes/Dir
-                        </p>
-                        <p class="text-sm font-bold">
-                            {shape.stats.n_lanes_circulation_min}
-                        </p>
-                    </div>
-                    <div
-                        class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
-                    >
-                        <p
-                            class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
-                        >
-                            Avg Lanes/Dir
-                        </p>
-                        <p class="text-sm font-bold">
-                            {shape.stats.n_lanes_circulation_avg}
-                        </p>
-                    </div>
-                    <div
-                        class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
-                    >
-                        <p
-                            class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
-                        >
-                            Max Lanes/Dir
-                        </p>
-                        <p class="text-sm font-bold">
-                            {shape.stats.n_lanes_circulation_max}
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Extension bars -->
-                <div class="space-y-2 mt-1">
-                    <div
-                        class="p-3 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 space-y-2"
-                    >
-                        <p
-                            class="text-[9px] font-bold uppercase text-muted-foreground"
-                        >
-                            Route Extension
-                        </p>
-                        <div class="space-y-1.5">
-                            <div>
-                                <div
-                                    class="flex justify-between text-[10px] mb-0.5"
-                                >
-                                    <span class="text-muted-foreground"
-                                        >With bus lane</span
-                                    >
-                                    <span class="font-semibold"
-                                        >{(
-                                            shape.stats.extension_bus_lane /
-                                            1000
-                                        ).toFixed(2)} km ({shape.stats
-                                            .extension > 0
-                                            ? (
-                                                  (shape.stats
-                                                      .extension_bus_lane /
-                                                      shape.stats.extension) *
-                                                  100
-                                              ).toFixed(0)
-                                            : 0}%)</span
-                                    >
-                                </div>
-                                <div
-                                    class="h-2 rounded-full bg-muted overflow-hidden"
-                                >
+                    </Accordion.Trigger>
+                    <Accordion.Content class="pt-1 pb-3 space-y-3">
+                        <!-- Route demand -->
+                        {#if !Number.isNaN(routeDemand)}
+                            <div class="p-3 bg-background/80 rounded-xl border border-border/40 shadow-xs">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div>
+                                        <p class="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                                            Route Demand
+                                        </p>
+                                        <p class="text-2xl font-bold leading-none">
+                                            {Math.round(routeDemand).toLocaleString()}
+                                        </p>
+                                        <p class="text-xs text-muted-foreground mt-1">
+                                            passengers/day
+                                        </p>
+                                    </div>
                                     <div
-                                        class="h-full rounded-full bg-teal-500"
-                                        style="width: {shape.stats.extension > 0
-                                            ? (shape.stats.extension_bus_lane /
-                                                  shape.stats.extension) *
-                                              100
-                                            : 0}%"
-                                    ></div>
+                                        class="w-10 h-10 rounded-full flex items-center justify-center text-white/90 shadow-sm shrink-0"
+                                        style="background-color: {shapeColor}"
+                                    >
+                                        <i class="fas fa-users text-sm"></i>
+                                    </div>
                                 </div>
                             </div>
-                            <div>
+                        {/if}
+
+                        <!-- 24h Frequency Chart -->
+                        {#if scheduleEntries.length > 0}
+                            <div class="space-y-2 p-3 bg-background/80 rounded-xl border border-border/40 shadow-xs">
+                                <h5 class="text-xs font-bold flex items-center gap-1.5 uppercase tracking-wider text-muted-foreground">
+                                    <i class="fas fa-chart-bar" style="color: {shapeColor}"></i>
+                                    Scheduled Departures / Hour
+                                </h5>
                                 <div
-                                    class="flex justify-between text-[10px] mb-0.5"
+                                    class="flex items-end gap-[2px] h-20 border-l border-b border-muted-foreground/30 px-1 pt-2"
                                 >
-                                    <span class="text-muted-foreground"
-                                        >Without bus lane</span
-                                    >
-                                    <span class="font-semibold"
-                                        >{(
-                                            (shape.stats.extension -
-                                                shape.stats
-                                                    .extension_bus_lane) /
-                                            1000
-                                        ).toFixed(2)} km ({shape.stats
-                                            .extension > 0
-                                            ? (
-                                                  ((shape.stats.extension -
-                                                      shape.stats
-                                                          .extension_bus_lane) /
-                                                      shape.stats.extension) *
-                                                  100
-                                              ).toFixed(0)
-                                            : 0}%)</span
-                                    >
-                                </div>
-                                <div
-                                    class="h-2 rounded-full bg-muted overflow-hidden"
-                                >
-                                    <div
-                                        class="h-full rounded-full bg-orange-400"
-                                        style="width: {shape.stats.extension > 0
-                                            ? ((shape.stats.extension -
-                                                  shape.stats
-                                                      .extension_bus_lane) /
-                                                  shape.stats.extension) *
-                                              100
-                                            : 0}%"
-                                    ></div>
-                                </div>
-                            </div>
-                            <div
-                                class="flex justify-between text-[10px] pt-1 border-t border-border/50"
-                            >
-                                <span
-                                    class="text-muted-foreground font-semibold"
-                                    >Total</span
-                                >
-                                <span class="font-bold"
-                                    >{(shape.stats.extension / 1000).toFixed(2)}
-                                    km</span
-                                >
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        {/if}
-
-        <!-- Commercial Speed Indicators -->
-        {#if speedProfileStats || speedProfileHours.length > 0}
-            <section class="space-y-3">
-                <div>
-                    <h5
-                        class="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-0"
-                    >
-                        Commercial Speed Indicators
-                    </h5>
-                    <p class="text-[10px] text-muted-foreground">
-                        Real-time commercial speed metrics aggregated for this route shape.
-                    </p>
-                </div>
-
-                <!-- Stats Cards -->
-                {#if speedProfileStats}
-                    <div class="grid grid-cols-3 gap-2">
-                        {#if speedProfileStats.commercial_speed_min != null}
-                            <div
-                                class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
-                            >
-                                <p
-                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
-                                >
-                                    Min Speed
-                                </p>
-                                <p class="text-sm font-bold">
-                                    {Number(speedProfileStats.commercial_speed_min).toFixed(1)}<span
-                                        class="text-[9px] font-normal"
-                                    >
-                                        km/h</span
-                                    >
-                                </p>
-                            </div>
-                        {/if}
-
-                        {#if speedProfileStats.commercial_speed_avg != null}
-                            <div
-                                class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
-                            >
-                                <p
-                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
-                                >
-                                    Avg Speed
-                                </p>
-                                <p class="text-sm font-bold">
-                                    {Number(speedProfileStats.commercial_speed_avg).toFixed(1)}<span
-                                        class="text-[9px] font-normal"
-                                    >
-                                        km/h</span
-                                    >
-                                </p>
-                            </div>
-                        {/if}
-
-                        {#if speedProfileStats.commercial_speed_max != null}
-                            <div
-                                class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
-                            >
-                                <p
-                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
-                                >
-                                    Max Speed
-                                </p>
-                                <p class="text-sm font-bold">
-                                    {Number(speedProfileStats.commercial_speed_max).toFixed(1)}<span
-                                        class="text-[9px] font-normal"
-                                    >
-                                        km/h</span
-                                    >
-                                </p>
-                            </div>
-                        {/if}
-
-                        {#if speedProfileStats.commercial_speed_median != null}
-                            <div
-                                class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
-                            >
-                                <p
-                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
-                                >
-                                    Median Speed
-                                </p>
-                                <p class="text-sm font-bold">
-                                    {Number(speedProfileStats.commercial_speed_median).toFixed(1)}<span
-                                        class="text-[9px] font-normal"
-                                    >
-                                        km/h</span
-                                    >
-                                </p>
-                            </div>
-                        {/if}
-
-                        {#if speedProfileStats.commercial_speed_p15 != null}
-                            <div
-                                class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
-                            >
-                                <p
-                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
-                                >
-                                    P15 Speed
-                                </p>
-                                <p class="text-sm font-bold">
-                                    {Number(speedProfileStats.commercial_speed_p15).toFixed(1)}<span
-                                        class="text-[9px] font-normal"
-                                    >
-                                        km/h</span
-                                    >
-                                </p>
-                            </div>
-                        {/if}
-
-                        {#if speedProfileStats.commercial_speed_p85 != null}
-                            <div
-                                class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
-                            >
-                                <p
-                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
-                                >
-                                    P85 Speed
-                                </p>
-                                <p class="text-sm font-bold">
-                                    {Number(speedProfileStats.commercial_speed_p85).toFixed(1)}<span
-                                        class="text-[9px] font-normal"
-                                    >
-                                        km/h</span
-                                    >
-                                </p>
-                            </div>
-                        {/if}
-                    </div>
-
-                    {#if speedProfileStats.n_trips != null || speedProfileStats.n_days != null}
-                        <div
-                            class="flex justify-between items-center text-[10px] text-muted-foreground px-1"
-                        >
-                            {#if speedProfileStats.n_trips != null}
-                                <span>Trips sampled: <strong class="text-foreground">{speedProfileStats.n_trips}</strong></span>
-                            {/if}
-                            {#if speedProfileStats.n_days != null}
-                                <span>Days observed: <strong class="text-foreground">{speedProfileStats.n_days}</strong></span>
-                            {/if}
-                        </div>
-                    {/if}
-                {/if}
-
-                <!-- Hourly Variation Chart -->
-                {#if speedProfileHours.length > 0}
-                    <div
-                        class="space-y-2 p-3 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50"
-                    >
-                        <h6
-                            class="text-xs font-bold flex items-center gap-1.5 uppercase tracking-wider text-muted-foreground"
-                        >
-                            <i class="fas fa-gauge-high" style="color: {shapeColor}"></i>
-                            Hourly Commercial Speed (Avg)
-                        </h6>
-                        <div
-                            class="flex items-end gap-[2px] h-24 border-l border-b border-muted-foreground/30 px-1 pt-2 bg-muted/10 rounded-sm"
-                        >
-                            {#each Array(24) as _, i}
-                                {@const hourData = speedProfileHours.find(
-                                    (h) => h.hour === i,
-                                )}
-                                {@const speedAvg = hourData?.commercial_speed_avg}
-                                {@const height =
-                                    speedAvg != null && speedAvg > 0
-                                        ? Math.max(
-                                              (speedAvg / maxHourlyCommercialSpeed) * 100,
-                                              8,
-                                          )
-                                        : 0}
-                                <div
-                                    class="flex-1 rounded-t-[1px] relative group transition-colors"
-                                    style="height: {height}%; background-color: {speedAvg != null && speedAvg > 0
-                                        ? shapeColor + 'cc'
-                                        : 'transparent'};"
-                                >
-                                    {#if hourData && speedAvg != null}
+                                    {#each Array(24) as _, i}
+                                        {@const entry = scheduleEntries.find(
+                                            (e) => e.hour === i,
+                                        )}
+                                        {@const count = entry?.count ?? 0}
+                                        {@const height =
+                                            count > 0
+                                                ? Math.max((count / maxSchedule) * 100, 8)
+                                                : 0}
                                         <div
-                                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-30 shadow-md flex flex-col gap-0.5"
+                                            class="flex-1 rounded-t-[1px] relative group transition-colors"
+                                            style="height: {height}%; background-color: {count > 0
+                                                ? shapeColor + 'bb'
+                                                : 'transparent'};"
+                                            title="{i}:00 – {count} dep."
                                         >
-                                            <span class="font-bold">{i}:00 – {Number(speedAvg).toFixed(1)} km/h</span>
-                                            {#if hourData.commercial_speed_median != null}
-                                                <span class="text-[9px] opacity-80">Med: {Number(hourData.commercial_speed_median).toFixed(1)} km/h</span>
-                                            {/if}
-                                            {#if hourData.commercial_speed_p15 != null && hourData.commercial_speed_p85 != null}
-                                                <span class="text-[9px] opacity-80">P15-P85: {Number(hourData.commercial_speed_p15).toFixed(1)} - {Number(hourData.commercial_speed_p85).toFixed(1)} km/h</span>
-                                            {/if}
-                                            {#if hourData.n_trips != null}
-                                                <span class="text-[9px] opacity-80">Trips: {hourData.n_trips}</span>
+                                            {#if count > 0}
+                                                <div
+                                                    class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-20"
+                                                >
+                                                    {i}:00: {count}
+                                                </div>
                                             {/if}
                                         </div>
+                                    {/each}
+                                </div>
+                                <div
+                                    class="flex justify-between text-[9px] text-muted-foreground font-mono uppercase tracking-tighter"
+                                >
+                                    <span>0h</span><span>6h</span><span>12h</span><span
+                                        >18h</span
+                                    ><span>23h</span>
+                                </div>
+                            </div>
+                        {/if}
+                    </Accordion.Content>
+                </Accordion.Item>
+            {/if}
+
+            <!-- Road Segment Indicators -->
+            {#if shapeWays.length > 0}
+                <Accordion.Item
+                    value="road-segment"
+                    class="border border-border/50 rounded-xl bg-zinc-50/80 dark:bg-zinc-900/40 px-3 overflow-hidden shadow-xs"
+                >
+                    <Accordion.Trigger class="py-3 hover:no-underline">
+                        <div class="flex items-center gap-2 text-start">
+                            <i class="fas fa-road text-xs text-muted-foreground"></i>
+                            <span class="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                                Road Segment Indicators
+                            </span>
+                        </div>
+                    </Accordion.Trigger>
+                    <Accordion.Content class="pt-1 pb-3 space-y-3">
+                        <p class="text-[10px] text-muted-foreground">
+                            Average values weighted by segment length.
+                        </p>
+                        <div class="grid grid-cols-3 gap-2">
+                            <!-- Speed indicators -->
+                            {#if shape.stats?.speed_min && shape.stats?.speed_max && shape.stats?.speed_avg}
+                                <div
+                                    class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs"
+                                >
+                                    <p
+                                        class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                    >
+                                        Min Speed
+                                    </p>
+                                    <p class="text-sm font-bold">
+                                        {shape.stats.speed_min}<span
+                                            class="text-[9px] font-normal"
+                                        >
+                                            km/h</span
+                                        >
+                                    </p>
+                                </div>
+                                <div
+                                    class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs"
+                                >
+                                    <p
+                                        class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                    >
+                                        Avg Speed
+                                    </p>
+                                    <p class="text-sm font-bold">
+                                        {shape.stats.speed_avg}<span
+                                            class="text-[9px] font-normal"
+                                        >
+                                            km/h</span
+                                        >
+                                    </p>
+                                </div>
+                                <div
+                                    class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs"
+                                >
+                                    <p
+                                        class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                    >
+                                        Max Speed
+                                    </p>
+                                    <p class="text-sm font-bold">
+                                        {shape.stats.speed_max}<span
+                                            class="text-[9px] font-normal"
+                                        >
+                                            km/h</span
+                                        >
+                                    </p>
+                                </div>
+                                <p class="col-span-3 text-[10px] text-muted-foreground">
+                                    Speed metrics considering speed at segment level
+                                    (which considers all routes that go through it).
+                                </p>
+                            {/if}
+
+                            <!-- Lanes indicators -->
+                            <div
+                                class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs"
+                            >
+                                <p
+                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                >
+                                    Min Lanes/Dir
+                                </p>
+                                <p class="text-sm font-bold">
+                                    {shape.stats.n_lanes_circulation_min}
+                                </p>
+                            </div>
+                            <div
+                                class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs"
+                            >
+                                <p
+                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                >
+                                    Avg Lanes/Dir
+                                </p>
+                                <p class="text-sm font-bold">
+                                    {shape.stats.n_lanes_circulation_avg}
+                                </p>
+                            </div>
+                            <div
+                                class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs"
+                            >
+                                <p
+                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                >
+                                    Max Lanes/Dir
+                                </p>
+                                <p class="text-sm font-bold">
+                                    {shape.stats.n_lanes_circulation_max}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Extension bars -->
+                        <div class="space-y-2 mt-1">
+                            <div
+                                class="p-3 bg-background/80 rounded-xl border border-border/40 space-y-2 shadow-xs"
+                            >
+                                <p
+                                    class="text-[9px] font-bold uppercase text-muted-foreground"
+                                >
+                                    Route Extension
+                                </p>
+                                <div class="space-y-1.5">
+                                    <div>
+                                        <div
+                                            class="flex justify-between text-[10px] mb-0.5"
+                                        >
+                                            <span class="text-muted-foreground"
+                                                >With bus lane</span
+                                            >
+                                            <span class="font-semibold"
+                                                >{(
+                                                    shape.stats.extension_bus_lane /
+                                                    1000
+                                                ).toFixed(2)} km ({shape.stats
+                                                    .extension > 0
+                                                    ? (
+                                                          (shape.stats
+                                                              .extension_bus_lane /
+                                                              shape.stats.extension) *
+                                                          100
+                                                      ).toFixed(0)
+                                                    : 0}%)</span
+                                            >
+                                        </div>
+                                        <div
+                                            class="h-2 rounded-full bg-muted overflow-hidden"
+                                        >
+                                            <div
+                                                class="h-full rounded-full bg-teal-500"
+                                                style="width: {shape.stats.extension > 0
+                                                    ? (shape.stats.extension_bus_lane /
+                                                          shape.stats.extension) *
+                                                      100
+                                                    : 0}%"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div
+                                            class="flex justify-between text-[10px] mb-0.5"
+                                        >
+                                            <span class="text-muted-foreground"
+                                                >Without bus lane</span
+                                            >
+                                            <span class="font-semibold"
+                                                >{(
+                                                    (shape.stats.extension -
+                                                        shape.stats
+                                                            .extension_bus_lane) /
+                                                    1000
+                                                ).toFixed(2)} km ({shape.stats
+                                                    .extension > 0
+                                                    ? (
+                                                          ((shape.stats.extension -
+                                                              shape.stats
+                                                                  .extension_bus_lane) /
+                                                              shape.stats.extension) *
+                                                          100
+                                                      ).toFixed(0)
+                                                    : 0}%)</span
+                                            >
+                                        </div>
+                                        <div
+                                            class="h-2 rounded-full bg-muted overflow-hidden"
+                                        >
+                                            <div
+                                                class="h-full rounded-full bg-orange-400"
+                                                style="width: {shape.stats.extension > 0
+                                                    ? ((shape.stats.extension -
+                                                          shape.stats
+                                                              .extension_bus_lane) /
+                                                          shape.stats.extension) *
+                                                      100
+                                                    : 0}%"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="flex justify-between text-[10px] pt-1 border-t border-border/50"
+                                    >
+                                        <span
+                                            class="text-muted-foreground font-semibold"
+                                            >Total</span
+                                        >
+                                        <span class="font-bold"
+                                            >{(shape.stats.extension / 1000).toFixed(2)}
+                                            km</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </Accordion.Content>
+                </Accordion.Item>
+            {/if}
+
+            <!-- Commercial Speed Indicators -->
+            {#if speedProfileStats || speedProfileHours.length > 0}
+                <Accordion.Item
+                    value="commercial-speed"
+                    class="border border-border/50 rounded-xl bg-zinc-50/80 dark:bg-zinc-900/40 px-3 overflow-hidden shadow-xs"
+                >
+                    <Accordion.Trigger class="py-3 hover:no-underline">
+                        <div class="flex items-center gap-2 text-start">
+                            <i class="fas fa-gauge-high text-xs text-muted-foreground"></i>
+                            <span class="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                                Commercial Speed Indicators
+                            </span>
+                        </div>
+                    </Accordion.Trigger>
+                    <Accordion.Content class="pt-1 pb-3 space-y-3">
+                        <p class="text-[10px] text-muted-foreground">
+                            Real-time commercial speed metrics aggregated for this route shape.
+                        </p>
+
+                        <!-- Stats Cards -->
+                        {#if speedProfileStats}
+                            <div class="grid grid-cols-3 gap-2">
+                                {#if speedProfileStats.commercial_speed_min != null}
+                                    <div
+                                        class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs"
+                                    >
+                                        <p
+                                            class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                        >
+                                            Min Speed
+                                        </p>
+                                        <p class="text-sm font-bold">
+                                            {Number(speedProfileStats.commercial_speed_min).toFixed(1)}<span
+                                                class="text-[9px] font-normal"
+                                            >
+                                                km/h</span
+                                            >
+                                        </p>
+                                    </div>
+                                {/if}
+
+                                {#if speedProfileStats.commercial_speed_avg != null}
+                                    <div
+                                        class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs"
+                                    >
+                                        <p
+                                            class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                        >
+                                            Avg Speed
+                                        </p>
+                                        <p class="text-sm font-bold">
+                                            {Number(speedProfileStats.commercial_speed_avg).toFixed(1)}<span
+                                                class="text-[9px] font-normal"
+                                            >
+                                                km/h</span
+                                            >
+                                        </p>
+                                    </div>
+                                {/if}
+
+                                {#if speedProfileStats.commercial_speed_max != null}
+                                    <div
+                                        class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs"
+                                    >
+                                        <p
+                                            class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                        >
+                                            Max Speed
+                                        </p>
+                                        <p class="text-sm font-bold">
+                                            {Number(speedProfileStats.commercial_speed_max).toFixed(1)}<span
+                                                class="text-[9px] font-normal"
+                                            >
+                                                km/h</span
+                                            >
+                                        </p>
+                                    </div>
+                                {/if}
+
+                                {#if speedProfileStats.commercial_speed_median != null}
+                                    <div
+                                        class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs"
+                                    >
+                                        <p
+                                            class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                        >
+                                            Median Speed
+                                        </p>
+                                        <p class="text-sm font-bold">
+                                            {Number(speedProfileStats.commercial_speed_median).toFixed(1)}<span
+                                                class="text-[9px] font-normal"
+                                            >
+                                                km/h</span
+                                            >
+                                        </p>
+                                    </div>
+                                {/if}
+
+                                {#if speedProfileStats.commercial_speed_p15 != null}
+                                    <div
+                                        class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs"
+                                    >
+                                        <p
+                                            class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                        >
+                                            P15 Speed
+                                        </p>
+                                        <p class="text-sm font-bold">
+                                            {Number(speedProfileStats.commercial_speed_p15).toFixed(1)}<span
+                                                class="text-[9px] font-normal"
+                                            >
+                                                km/h</span
+                                            >
+                                        </p>
+                                    </div>
+                                {/if}
+
+                                {#if speedProfileStats.commercial_speed_p85 != null}
+                                    <div
+                                        class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs"
+                                    >
+                                        <p
+                                            class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                        >
+                                            P85 Speed
+                                        </p>
+                                        <p class="text-sm font-bold">
+                                            {Number(speedProfileStats.commercial_speed_p85).toFixed(1)}<span
+                                                class="text-[9px] font-normal"
+                                            >
+                                                km/h</span
+                                            >
+                                        </p>
+                                    </div>
+                                {/if}
+                            </div>
+
+                            {#if speedProfileStats.n_trips != null || speedProfileStats.n_days != null}
+                                <div
+                                    class="flex justify-between items-center text-[10px] text-muted-foreground px-1"
+                                >
+                                    {#if speedProfileStats.n_trips != null}
+                                        <span>Trips sampled: <strong class="text-foreground">{speedProfileStats.n_trips}</strong></span>
+                                    {/if}
+                                    {#if speedProfileStats.n_days != null}
+                                        <span>Days observed: <strong class="text-foreground">{speedProfileStats.n_days}</strong></span>
                                     {/if}
                                 </div>
-                            {/each}
-                        </div>
-                        <div
-                            class="flex justify-between text-[9px] text-muted-foreground font-mono uppercase tracking-tighter"
-                        >
-                            <span>0h</span><span>6h</span><span>12h</span><span
-                                >18h</span
-                            ><span>23h</span>
-                        </div>
-                    </div>
-                {/if}
-            </section>
-        {/if}
+                            {/if}
+                        {/if}
+
+                        <!-- Hourly Variation Chart -->
+                        {#if speedProfileHours.length > 0}
+                            <div
+                                class="space-y-2 p-3 bg-background/80 rounded-xl border border-border/40 shadow-xs"
+                            >
+                                <h6
+                                    class="text-xs font-bold flex items-center gap-1.5 uppercase tracking-wider text-muted-foreground"
+                                >
+                                    <i class="fas fa-gauge-high" style="color: {shapeColor}"></i>
+                                    Hourly Commercial Speed (Avg)
+                                </h6>
+                                <div
+                                    class="flex items-end gap-[2px] h-24 border-l border-b border-muted-foreground/30 px-1 pt-2 bg-muted/10 rounded-sm"
+                                >
+                                    {#each Array(24) as _, i}
+                                        {@const hourData = speedProfileHours.find(
+                                            (h) => h.hour === i,
+                                        )}
+                                        {@const speedAvg = hourData?.commercial_speed_avg}
+                                        {@const height =
+                                            speedAvg != null && speedAvg > 0
+                                                ? Math.max(
+                                                      (speedAvg / maxHourlyCommercialSpeed) * 100,
+                                                      8,
+                                                  )
+                                                : 0}
+                                        <div
+                                            class="flex-1 rounded-t-[1px] relative group transition-colors"
+                                            style="height: {height}%; background-color: {speedAvg != null && speedAvg > 0
+                                                ? shapeColor + 'cc'
+                                                : 'transparent'};"
+                                        >
+                                            {#if hourData && speedAvg != null}
+                                                <div
+                                                    class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-30 shadow-md flex flex-col gap-0.5"
+                                                >
+                                                    <span class="font-bold">{i}:00 – {Number(speedAvg).toFixed(1)} km/h</span>
+                                                    {#if hourData.commercial_speed_median != null}
+                                                        <span class="text-[9px] opacity-80">Med: {Number(hourData.commercial_speed_median).toFixed(1)} km/h</span>
+                                                    {/if}
+                                                    {#if hourData.commercial_speed_p15 != null && hourData.commercial_speed_p85 != null}
+                                                        <span class="text-[9px] opacity-80">P15-P85: {Number(hourData.commercial_speed_p15).toFixed(1)} - {Number(hourData.commercial_speed_p85).toFixed(1)} km/h</span>
+                                                    {/if}
+                                                    {#if hourData.n_trips != null}
+                                                        <span class="text-[9px] opacity-80">Trips: {hourData.n_trips}</span>
+                                                    {/if}
+                                                </div>
+                                            {/if}
+                                        </div>
+                                    {/each}
+                                </div>
+                                <div
+                                    class="flex justify-between text-[9px] text-muted-foreground font-mono uppercase tracking-tighter"
+                                >
+                                    <span>0h</span><span>6h</span><span>12h</span><span
+                                        >18h</span
+                                    ><span>23h</span>
+                                </div>
+                            </div>
+                        {/if}
+                    </Accordion.Content>
+                </Accordion.Item>
+            {/if}
+        </Accordion.Root>
     </div>
 {/if}

@@ -509,7 +509,11 @@
         selectedWayId;
         untrack(() => {
             selectedTripId = undefined;
-            if (!selected_shape_id || selected_shape_id === "all" || selectedWayId) {
+            if (
+                !selected_shape_id ||
+                selected_shape_id === "all" ||
+                selectedWayId
+            ) {
                 isRouteExpanded = false;
             }
         });
@@ -1192,10 +1196,9 @@
                                         >{criteria_hour
                                             .toString()
                                             .padStart(2, "0")}:00</span
-                                    >) and baseline 85th percentile speed (<span
-                                        class="font-mono bg-muted px-1.5 py-0.5 rounded text-xs"
-                                        >speed_P85</span
-                                    >):
+                                    >) and baseline 85th percentile speed (for
+                                    whole day) considering all the routes that
+                                    traverse each segment:
                                 </p>
                                 <div
                                     class="bg-muted/40 p-2.5 rounded-lg border border-border/40 text-center my-2 flex items-center justify-center gap-2 select-none"
@@ -1916,7 +1919,9 @@
                                             >GTFShift::rt_average_speed()</a
                                         >{/if}, considering the distance
                                     traversed along the route geometry and the
-                                    time between consecutive updates.
+                                    time between consecutive updates. Values
+                                    consider all routes that traverse each
+                                    segment.
                                 </p>
                                 <p>
                                     Road segments with bus service are colored
@@ -2033,6 +2038,8 @@
                                         .padStart(2, "0")}:00, considering the
                                     distance traversed along the route geometry
                                     and the time between consecutive updates.
+                                    Values consider all routes that traverse
+                                    each segment.
                                 </p>
                                 <p>
                                     Road segments with bus service are colored

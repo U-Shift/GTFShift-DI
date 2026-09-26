@@ -167,7 +167,9 @@
                             >Route {shape?.route_short_name}</span
                         >
                         {#if isExpanded}
-                            <span class="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-primary/10 text-primary rounded-full">
+                            <span
+                                class="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-primary/10 text-primary rounded-full"
+                            >
                                 Extended View
                             </span>
                         {/if}
@@ -487,7 +489,9 @@
                         </Accordion.Trigger>
                         <Accordion.Content class="pt-1 pb-3 space-y-3">
                             <p class="text-[10px] text-muted-foreground">
-                                Average values weighted by segment length.
+                                Average values weighted by segment length. Speed
+                                values consider all routes that traverse each
+                                segment.
                             </p>
                             <div
                                 class="grid {isExpanded
@@ -544,15 +548,6 @@
                                             >
                                         </p>
                                     </div>
-                                    <p
-                                        class="{isExpanded
-                                            ? 'col-span-3 sm:col-span-6'
-                                            : 'col-span-3'} text-[10px] text-muted-foreground"
-                                    >
-                                        Speed metrics considering speed at
-                                        segment level (which considers all
-                                        routes that go through it).
-                                    </p>
                                 {/if}
 
                                 <!-- Lanes indicators -->

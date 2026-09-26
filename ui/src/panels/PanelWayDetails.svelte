@@ -623,7 +623,7 @@
                                                 <p
                                                     class="text-[9px] font-bold uppercase text-muted-foreground mb-1 truncate"
                                                 >
-                                                    Disturbance Index
+                                                    DI
                                                 </p>
                                                 <p class="text-sm font-bold">
                                                     {#if currentHourDi != null}
@@ -780,7 +780,7 @@
                                                 <p
                                                     class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
                                                 >
-                                                    All-Day Avg
+                                                    Avg Speed
                                                 </p>
                                                 <p class="text-sm font-bold">
                                                     {way.speed_avg != null
@@ -809,7 +809,7 @@
                                                 <p
                                                     class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
                                                 >
-                                                    All-Day Median
+                                                    Median Speed
                                                 </p>
                                                 <p class="text-sm font-bold">
                                                     {way.speed_median != null
@@ -838,7 +838,7 @@
                                                 <p
                                                     class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
                                                 >
-                                                    All-Day P85
+                                                    P85 Speed
                                                 </p>
                                                 <p class="text-sm font-bold">
                                                     {way.speed_p85 != null

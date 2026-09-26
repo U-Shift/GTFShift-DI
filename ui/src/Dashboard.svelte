@@ -2016,9 +2016,9 @@
                                           : "85th percentile speed"} computed based
                                     on GTFS-RT updates at {criteria_hour
                                         .toString()
-                                        .padStart(2, "0")}:00, considering the distance
-                                    traversed along the route geometry and the time
-                                    between consecutive updates.
+                                        .padStart(2, "0")}:00, considering the
+                                    distance traversed along the route geometry
+                                    and the time between consecutive updates.
                                 </p>
                                 <p>
                                     Road segments with bus service are colored
@@ -2027,9 +2027,11 @@
                                         : selected_speed_metric === "median"
                                           ? "median speed"
                                           : "85th percentile speed"} measured at
-                                    {criteria_hour.toString().padStart(2, "0")}:00
-                                    (for the full days of the real-time data
-                                    collection interval), from the
+                                    {criteria_hour
+                                        .toString()
+                                        .padStart(2, "0")}:00 (for the full days
+                                    of the real-time data collection interval),
+                                    from the
                                     <span
                                         style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
                                         class="font-bold"

@@ -39,6 +39,18 @@
         scheduleEntries.length > 0
             ? Math.max(...scheduleEntries.map((e) => e.count))
             : 1}
+    {@const speedProfile = shape?.speed_profile}
+    {@const speedProfileStats = speedProfile?.stats}
+    {@const speedProfileHours = speedProfile?.hours ?? []}
+    {@const maxHourlyCommercialSpeed =
+        speedProfileHours.length > 0
+            ? Math.max(
+                  ...speedProfileHours.map(
+                      (h) => h.commercial_speed_avg ?? 0,
+                  ),
+                  1,
+              )
+            : 1}
     <div
         id="route-details-panel"
         class="absolute top-4 left-4 right-4 sm:left-auto sm:right-4 z-[1010] flex flex-col w-[calc(100vw-2rem)] sm:w-[380px] h-fit max-h-[calc(100vh-2rem)] rounded-xl bg-background/95 backdrop-blur shadow-lg border p-5 overflow-y-auto gap-4"
@@ -414,6 +426,215 @@
                         </div>
                     </div>
                 </div>
+            </section>
+        {/if}
+
+        <!-- Commercial Speed Indicators -->
+        {#if speedProfileStats || speedProfileHours.length > 0}
+            <section class="space-y-3">
+                <div>
+                    <h5
+                        class="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-0"
+                    >
+                        Commercial Speed Indicators
+                    </h5>
+                    <p class="text-[10px] text-muted-foreground">
+                        Real-time commercial speed metrics aggregated for this route shape.
+                    </p>
+                </div>
+
+                <!-- Stats Cards -->
+                {#if speedProfileStats}
+                    <div class="grid grid-cols-3 gap-2">
+                        {#if speedProfileStats.commercial_speed_min != null}
+                            <div
+                                class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
+                            >
+                                <p
+                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                >
+                                    Min Speed
+                                </p>
+                                <p class="text-sm font-bold">
+                                    {Number(speedProfileStats.commercial_speed_min).toFixed(1)}<span
+                                        class="text-[9px] font-normal"
+                                    >
+                                        km/h</span
+                                    >
+                                </p>
+                            </div>
+                        {/if}
+
+                        {#if speedProfileStats.commercial_speed_avg != null}
+                            <div
+                                class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
+                            >
+                                <p
+                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                >
+                                    Avg Speed
+                                </p>
+                                <p class="text-sm font-bold">
+                                    {Number(speedProfileStats.commercial_speed_avg).toFixed(1)}<span
+                                        class="text-[9px] font-normal"
+                                    >
+                                        km/h</span
+                                    >
+                                </p>
+                            </div>
+                        {/if}
+
+                        {#if speedProfileStats.commercial_speed_max != null}
+                            <div
+                                class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
+                            >
+                                <p
+                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                >
+                                    Max Speed
+                                </p>
+                                <p class="text-sm font-bold">
+                                    {Number(speedProfileStats.commercial_speed_max).toFixed(1)}<span
+                                        class="text-[9px] font-normal"
+                                    >
+                                        km/h</span
+                                    >
+                                </p>
+                            </div>
+                        {/if}
+
+                        {#if speedProfileStats.commercial_speed_median != null}
+                            <div
+                                class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
+                            >
+                                <p
+                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                >
+                                    Median Speed
+                                </p>
+                                <p class="text-sm font-bold">
+                                    {Number(speedProfileStats.commercial_speed_median).toFixed(1)}<span
+                                        class="text-[9px] font-normal"
+                                    >
+                                        km/h</span
+                                    >
+                                </p>
+                            </div>
+                        {/if}
+
+                        {#if speedProfileStats.commercial_speed_p15 != null}
+                            <div
+                                class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
+                            >
+                                <p
+                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                >
+                                    P15 Speed
+                                </p>
+                                <p class="text-sm font-bold">
+                                    {Number(speedProfileStats.commercial_speed_p15).toFixed(1)}<span
+                                        class="text-[9px] font-normal"
+                                    >
+                                        km/h</span
+                                    >
+                                </p>
+                            </div>
+                        {/if}
+
+                        {#if speedProfileStats.commercial_speed_p85 != null}
+                            <div
+                                class="p-2.5 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50 text-center"
+                            >
+                                <p
+                                    class="text-[9px] font-bold uppercase text-muted-foreground mb-1"
+                                >
+                                    P85 Speed
+                                </p>
+                                <p class="text-sm font-bold">
+                                    {Number(speedProfileStats.commercial_speed_p85).toFixed(1)}<span
+                                        class="text-[9px] font-normal"
+                                    >
+                                        km/h</span
+                                    >
+                                </p>
+                            </div>
+                        {/if}
+                    </div>
+
+                    {#if speedProfileStats.n_trips != null || speedProfileStats.n_days != null}
+                        <div
+                            class="flex justify-between items-center text-[10px] text-muted-foreground px-1"
+                        >
+                            {#if speedProfileStats.n_trips != null}
+                                <span>Trips sampled: <strong class="text-foreground">{speedProfileStats.n_trips}</strong></span>
+                            {/if}
+                            {#if speedProfileStats.n_days != null}
+                                <span>Days observed: <strong class="text-foreground">{speedProfileStats.n_days}</strong></span>
+                            {/if}
+                        </div>
+                    {/if}
+                {/if}
+
+                <!-- Hourly Variation Chart -->
+                {#if speedProfileHours.length > 0}
+                    <div
+                        class="space-y-2 p-3 bg-zinc-50/80 dark:bg-zinc-900/40 rounded-xl border border-border/50"
+                    >
+                        <h6
+                            class="text-xs font-bold flex items-center gap-1.5 uppercase tracking-wider text-muted-foreground"
+                        >
+                            <i class="fas fa-gauge-high" style="color: {shapeColor}"></i>
+                            Hourly Commercial Speed (Avg)
+                        </h6>
+                        <div
+                            class="flex items-end gap-[2px] h-24 border-l border-b border-muted-foreground/30 px-1 pt-2 bg-muted/10 rounded-sm"
+                        >
+                            {#each Array(24) as _, i}
+                                {@const hourData = speedProfileHours.find(
+                                    (h) => h.hour === i,
+                                )}
+                                {@const speedAvg = hourData?.commercial_speed_avg}
+                                {@const height =
+                                    speedAvg != null && speedAvg > 0
+                                        ? Math.max(
+                                              (speedAvg / maxHourlyCommercialSpeed) * 100,
+                                              8,
+                                          )
+                                        : 0}
+                                <div
+                                    class="flex-1 rounded-t-[1px] relative group transition-colors"
+                                    style="height: {height}%; background-color: {speedAvg != null && speedAvg > 0
+                                        ? shapeColor + 'cc'
+                                        : 'transparent'};"
+                                >
+                                    {#if hourData && speedAvg != null}
+                                        <div
+                                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-30 shadow-md flex flex-col gap-0.5"
+                                        >
+                                            <span class="font-bold">{i}:00 – {Number(speedAvg).toFixed(1)} km/h</span>
+                                            {#if hourData.commercial_speed_median != null}
+                                                <span class="text-[9px] opacity-80">Med: {Number(hourData.commercial_speed_median).toFixed(1)} km/h</span>
+                                            {/if}
+                                            {#if hourData.commercial_speed_p15 != null && hourData.commercial_speed_p85 != null}
+                                                <span class="text-[9px] opacity-80">P15-P85: {Number(hourData.commercial_speed_p15).toFixed(1)} - {Number(hourData.commercial_speed_p85).toFixed(1)} km/h</span>
+                                            {/if}
+                                            {#if hourData.n_trips != null}
+                                                <span class="text-[9px] opacity-80">Trips: {hourData.n_trips}</span>
+                                            {/if}
+                                        </div>
+                                    {/if}
+                                </div>
+                            {/each}
+                        </div>
+                        <div
+                            class="flex justify-between text-[9px] text-muted-foreground font-mono uppercase tracking-tighter"
+                        >
+                            <span>0h</span><span>6h</span><span>12h</span><span
+                                >18h</span
+                            ><span>23h</span>
+                        </div>
+                    </div>
+                {/if}
             </section>
         {/if}
     </div>

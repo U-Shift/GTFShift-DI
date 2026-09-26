@@ -225,6 +225,14 @@ for (i in 1:nrow(regions)) { # i =1
             commercial_speed_min = round(min(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_max = round(max(commercial_speed, na.rm = TRUE), 2),
             .groups = "drop"
+          ) |>
+          mutate(
+            # Disturbance index for global stats: (commercial_speed_median - commercial_speed_p85) / commercial_speed_p85
+            disturbance_index = ifelse(
+              !is.na(commercial_speed_p85) & commercial_speed_p85 > 0,
+              round((commercial_speed_median - commercial_speed_p85) / commercial_speed_p85, 4),
+              NA_real_
+            )
           )
 
         # 2. Aggregations by (route_id, hour)
@@ -366,6 +374,14 @@ for (i in 1:nrow(regions)) { # i =1
             commercial_speed_min = round(min(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_max = round(max(commercial_speed, na.rm = TRUE), 2),
             .groups = "drop"
+          ) |>
+          mutate(
+            # Disturbance index for global stats: (commercial_speed_median - commercial_speed_p85) / commercial_speed_p85
+            disturbance_index = ifelse(
+              !is.na(commercial_speed_p85) & commercial_speed_p85 > 0,
+              round((commercial_speed_median - commercial_speed_p85) / commercial_speed_p85, 4),
+              NA_real_
+            )
           )
 
         # 6. Aggregations by (shape_id, hour)
@@ -397,11 +413,55 @@ for (i in 1:nrow(regions)) { # i =1
           ) |>
           select(-shape_speed_p85)
 
+        # 7. Aggregations by (trip_id, shape_id) across days
+        shape_trip_global_stats <- trip_profiles |>
+          filter(!is.na(trip_id) & !is.na(shape_id) & shape_id != "") |>
+          group_by(trip_id, shape_id, route_id) |>
+          summarise(
+            n_days = n(),
+            commercial_speed_avg = round(mean(commercial_speed, na.rm = TRUE), 2),
+            commercial_speed_median = round(median(commercial_speed, na.rm = TRUE), 2),
+            commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),
+            commercial_speed_p15 = round(as.numeric(quantile(commercial_speed, probs = 0.15, na.rm = TRUE, names = FALSE)), 2),
+            commercial_speed_p25 = round(as.numeric(quantile(commercial_speed, probs = 0.25, na.rm = TRUE, names = FALSE)), 2),
+            commercial_speed_p75 = round(as.numeric(quantile(commercial_speed, probs = 0.75, na.rm = TRUE, names = FALSE)), 2),
+            commercial_speed_p85 = round(as.numeric(quantile(commercial_speed, probs = 0.85, na.rm = TRUE, names = FALSE)), 2),
+            commercial_speed_min = round(min(commercial_speed, na.rm = TRUE), 2),
+            commercial_speed_max = round(max(commercial_speed, na.rm = TRUE), 2),
+            .groups = "drop"
+          ) |>
+          left_join(shape_global_stats |> select(shape_id, shape_speed_p85 = commercial_speed_p85), by = "shape_id") |>
+          mutate(
+            # Disturbance index for trip on shape: (commercial_speed_avg - shape_speed_p85) / shape_speed_p85
+            disturbance_index = ifelse(
+              !is.na(shape_speed_p85) & shape_speed_p85 > 0,
+              round((commercial_speed_avg - shape_speed_p85) / shape_speed_p85, 4),
+              NA_real_
+            )
+          ) |>
+          select(-shape_speed_p85)
+
+        # 8. Individual trip stats by (trip_id, day) for shape
+        shape_trip_day_stats <- trip_profiles |>
+          filter(!is.na(trip_id) & !is.na(shape_id) & shape_id != "") |>
+          left_join(shape_global_stats |> select(shape_id, shape_speed_p85 = commercial_speed_p85), by = "shape_id") |>
+          mutate(
+            # Disturbance index for individual trip run on shape: (commercial_speed - shape_speed_p85) / shape_speed_p85
+            disturbance_index = ifelse(
+              !is.na(shape_speed_p85) & shape_speed_p85 > 0,
+              round((commercial_speed - shape_speed_p85) / shape_speed_p85, 4),
+              NA_real_
+            )
+          ) |>
+          select(-shape_speed_p85)
+
         # Build nested dictionary keyed by shape_id for JSON storage
-        all_sids <- unique(c(shape_global_stats$shape_id, shape_hour_stats$shape_id))
+        all_sids <- unique(c(shape_global_stats$shape_id, shape_hour_stats$shape_id, shape_trip_global_stats$shape_id, shape_trip_day_stats$shape_id))
         shape_speed_profiles_nested <- setNames(lapply(all_sids, function(sid) {
           g_row <- shape_global_stats |> filter(shape_id == sid)
           h_rows <- shape_hour_stats |> filter(shape_id == sid)
+          t_rows <- shape_trip_global_stats |> filter(shape_id == sid)
+          td_rows <- shape_trip_day_stats |> filter(shape_id == sid)
 
           stats_obj <- if (nrow(g_row) > 0) {
             as.list(g_row[1, setdiff(names(g_row), "shape_id")])
@@ -418,7 +478,25 @@ for (i in 1:nrow(regions)) { # i =1
             list()
           }
 
-          c(stats = list(stats_obj), hours = list(hour_list))
+          # Convert trip rows into a list of records
+          trip_list <- if (nrow(t_rows) > 0) {
+            lapply(seq_len(nrow(t_rows)), function(row_idx) {
+              as.list(t_rows[row_idx, setdiff(names(t_rows), "shape_id")])
+            })
+          } else {
+            list()
+          }
+
+          # Convert individual (trip_id, day) rows into a list of records
+          trip_day_list <- if (nrow(td_rows) > 0) {
+            lapply(seq_len(nrow(td_rows)), function(row_idx) {
+              as.list(td_rows[row_idx, setdiff(names(td_rows), "shape_id")])
+            })
+          } else {
+            list()
+          }
+
+          c(stats = list(stats_obj), hours = list(hour_list), trips = list(trip_list), trip_days = list(trip_day_list))
         }), all_sids)
 
         message("Trip speed profile and disturbance index computation completed.")

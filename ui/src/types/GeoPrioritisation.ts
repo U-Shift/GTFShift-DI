@@ -34,6 +34,49 @@ interface HourlyFrequency {
     [hour: string]: StatisticsBundle;
 }
 
+export type TripSpeedProfile = {
+    trip_id: string;
+    route_id?: string;
+    shape_id?: string;
+    n_days?: number;
+    commercial_speed_avg?: number;
+    commercial_speed_median?: number;
+    commercial_speed_alt?: number;
+    commercial_speed_p15?: number;
+    commercial_speed_p25?: number;
+    commercial_speed_p75?: number;
+    commercial_speed_p85?: number;
+    commercial_speed_min?: number;
+    commercial_speed_max?: number;
+    disturbance_index?: number;
+};
+
+export type TripDaySpeedProfile = {
+    trip_id: string;
+    route_id?: string;
+    shape_id?: string;
+    day: string | number;
+    timestamp_min?: number;
+    timestamp_max?: number;
+    hour?: number;
+    commercial_speed?: number;
+    commercial_speed_alt?: number;
+    disturbance_index?: number;
+    speed_avg?: number;
+    speed_median?: number;
+    speed_sd?: number;
+    speed_var?: number;
+    speed_min?: number;
+    speed_max?: number;
+    speed_p15?: number;
+    speed_p25?: number;
+    speed_p75?: number;
+    speed_p85?: number;
+    speed_iqr?: number;
+    speed_count?: number;
+    n_updates?: number;
+};
+
 export interface GeoPrioritisation {
     features: Feature[];
     wayData: Record<string, any>;
@@ -91,6 +134,8 @@ export interface GeoPrioritisation {
                     commercial_speed_max?: number;
                     disturbance_index?: number;
                 }>;
+                trips?: TripSpeedProfile[];
+                trip_days?: TripDaySpeedProfile[];
             };
         };
     };

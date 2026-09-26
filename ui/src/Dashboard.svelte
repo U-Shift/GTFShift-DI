@@ -25,6 +25,7 @@
     import ModalDetails from "./modals/ModalDetails.svelte";
     import ModalDownload from "./modals/ModalDownload.svelte";
     import PanelRouteDetails from "./panels/PanelRouteDetails.svelte";
+    import PanelTripDetails from "./panels/PanelTripDetails.svelte";
     import PanelWayDetails from "./panels/PanelWayDetails.svelte";
 
     import { Button } from "$lib/components/ui/button/index.js";
@@ -99,6 +100,7 @@
     let active_layer: DisplayOptions | undefined = $state(undefined);
     let open_accordion: string | undefined = $state(undefined);
     let selected_shape_id: string = $state("all");
+    let selectedTripId: string | undefined = $state(undefined);
     let route_select_open: boolean = $state(false);
     let display_rt: boolean = $state(false); // true if region has rt-data (optional)
     let display_demand: boolean = $state(false); // true if region has demand data (optional)
@@ -499,6 +501,14 @@
                 if (display_demand) criteria_demand_enabled = true;
             });
         }
+    });
+
+    $effect(() => {
+        selected_shape_id;
+        selectedWayId;
+        untrack(() => {
+            selectedTripId = undefined;
+        });
     });
 
     $effect(() => {
@@ -2185,12 +2195,24 @@
 <!-- Route Details Panel (shown when a shape is selected and no way is selected) -->
 <PanelRouteDetails
     bind:selected_shape_id
+    bind:selectedTripId
     {geoData}
     {selectedWayId}
     {criteria_hour}
     di_threshold_low={di_threshold_low / 100}
     di_threshold_high={di_threshold_high / 100}
 />
+
+<!-- Trip Details Panel (shown when a trip is selected) -->
+{#if selectedTripId && !selectedWayId}
+    <PanelTripDetails
+        bind:selectedTripId
+        {selected_shape_id}
+        {geoData}
+        di_threshold_low={di_threshold_low / 100}
+        di_threshold_high={di_threshold_high / 100}
+    />
+{/if}
 
 <!-- Map caption -->
 {#if active_layer !== undefined && !any_modal_open && !selectedWayId}

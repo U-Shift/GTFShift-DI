@@ -1,5 +1,6 @@
 <script lang="ts">
     import { Button } from "$lib/components/ui/button/index.js";
+    import { Input } from "$lib/components/ui/input/index.js";
     import * as Accordion from "$lib/components/ui/accordion/index.js";
     import { untrack } from "svelte";
     import {
@@ -7,10 +8,14 @@
         getDisturbanceIndexCategory,
         getDisturbanceIndexCategories,
     } from "$lib/utils.js";
-    import type { GeoPrioritisation } from "../types/GeoPrioritisation";
+    import type {
+        GeoPrioritisation,
+        TripSpeedProfile,
+    } from "../types/GeoPrioritisation";
 
     let {
         selected_shape_id = $bindable(),
+        selectedTripId = $bindable(),
         geoData,
         selectedWayId,
         di_threshold_low = 0.05,
@@ -18,12 +23,16 @@
         criteria_hour = 8,
     }: {
         selected_shape_id: string;
+        selectedTripId?: string;
         geoData: GeoPrioritisation | null;
         selectedWayId: string | undefined;
         di_threshold_low?: number;
         di_threshold_high?: number;
         criteria_hour?: number;
     } = $props();
+
+    let tripSearchQuery = $state("");
+    let tripSortBy = $state<"id" | "speed_desc" | "speed_asc" | "di_desc" | "di_asc">("id");
 </script>
 
 {#if selected_shape_id && selected_shape_id !== "all" && geoData && !selectedWayId}
@@ -53,6 +62,7 @@
     {@const speedProfile = shape?.speed_profile}
     {@const speedProfileStats = speedProfile?.stats}
     {@const speedProfileHours = speedProfile?.hours ?? []}
+    {@const speedProfileTrips = speedProfile?.trips ?? geoData.routes?.[shape?.route_id]?.speed_profile?.trips ?? []}
     {@const maxHourlyCommercialSpeed =
         speedProfileHours.length > 0
             ? Math.max(
@@ -948,6 +958,143 @@
                                         </div>
                                     {/each}
                                 </div>
+                            </div>
+                        {/if}
+                    </Accordion.Content>
+                </Accordion.Item>
+            {/if}
+
+            <!-- Trips Section -->
+            {#if speedProfileTrips.length > 0}
+                {@const filteredTrips = speedProfileTrips
+                    .filter((t: TripSpeedProfile) =>
+                        tripSearchQuery.trim() === "" ||
+                        t.trip_id.toLowerCase().includes(tripSearchQuery.toLowerCase().trim())
+                    )
+                    .sort((a: TripSpeedProfile, b: TripSpeedProfile) => {
+                        if (tripSortBy === "speed_desc") return (b.commercial_speed_avg ?? 0) - (a.commercial_speed_avg ?? 0);
+                        if (tripSortBy === "speed_asc") return (a.commercial_speed_avg ?? 0) - (b.commercial_speed_avg ?? 0);
+                        if (tripSortBy === "di_desc") return (b.disturbance_index ?? 0) - (a.disturbance_index ?? 0);
+                        if (tripSortBy === "di_asc") return (a.disturbance_index ?? 0) - (b.disturbance_index ?? 0);
+                        return a.trip_id.localeCompare(b.trip_id);
+                    })
+                }
+                <Accordion.Item
+                    value="trips"
+                    class="border border-border/50 rounded-xl bg-zinc-50/80 dark:bg-zinc-900/40 px-3 overflow-hidden shadow-xs"
+                >
+                    <Accordion.Trigger class="py-3 hover:no-underline">
+                        <div class="flex items-center gap-2 text-start flex-1 min-w-0 pr-2">
+                            <i class="fas fa-bus-simple text-xs text-muted-foreground"></i>
+                            <span class="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                                Trips
+                            </span>
+                            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground ml-auto">
+                                {speedProfileTrips.length}
+                            </span>
+                        </div>
+                    </Accordion.Trigger>
+                    <Accordion.Content class="pt-1 pb-3 space-y-2.5">
+                        <p class="text-[10px] text-muted-foreground">
+                            Speed and disturbance metrics per trip. Click any trip to view day-by-day variation.
+                        </p>
+
+                        <!-- Search and Sort controls -->
+                        <div class="flex items-center gap-2">
+                            <div class="relative flex-1">
+                                <i class="fas fa-search absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground pointer-events-none"></i>
+                                <Input
+                                    type="text"
+                                    placeholder="Filter by trip ID..."
+                                    bind:value={tripSearchQuery}
+                                    class="h-7 text-[11px] pl-7 pr-6 bg-background/80"
+                                />
+                                {#if tripSearchQuery}
+                                    <button
+                                        type="button"
+                                        class="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-[10px] p-0.5"
+                                        onclick={() => (tripSearchQuery = "")}
+                                        aria-label="Clear filter"
+                                    >
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                {/if}
+                            </div>
+                            <select
+                                bind:value={tripSortBy}
+                                class="h-7 text-[10px] font-medium px-2 rounded-md bg-background/80 border border-border/60 text-foreground cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary/50 shrink-0"
+                            >
+                                <option value="id">Sort: ID</option>
+                                <option value="speed_desc">Speed: High → Low</option>
+                                <option value="speed_asc">Speed: Low → High</option>
+                                <option value="di_desc">DI: High → Low</option>
+                                <option value="di_asc">DI: Low → High</option>
+                            </select>
+                        </div>
+
+                        <!-- Trips List -->
+                        {#if filteredTrips.length > 0}
+                            <div class="max-h-72 overflow-y-auto space-y-1.5 pr-0.5">
+                                {#each filteredTrips as t}
+                                    {@const isSelected = selectedTripId === t.trip_id}
+                                    {@const di = t.disturbance_index}
+                                    {@const cat = di != null ? getDisturbanceIndexCategory(di, di_threshold_low, di_threshold_high) : null}
+                                    <button
+                                        type="button"
+                                        class="w-full text-left p-2.5 rounded-xl border transition-all flex flex-col gap-1.5 cursor-pointer relative group {isSelected ? 'bg-primary/10 border-primary shadow-xs ring-1 ring-primary/40' : 'bg-background/80 hover:bg-muted/40 border-border/40 hover:border-border/80'}"
+                                        onclick={() => {
+                                            selectedTripId = isSelected ? undefined : t.trip_id;
+                                        }}
+                                    >
+                                        <div class="flex items-center justify-between gap-2">
+                                            <span class="font-mono text-xs font-bold text-foreground truncate" title={t.trip_id}>
+                                                {t.trip_id}
+                                            </span>
+                                            <div class="flex items-center gap-1.5 shrink-0">
+                                                {#if isSelected}
+                                                    <span class="text-[9px] font-semibold text-primary uppercase tracking-wider">
+                                                        Selected
+                                                    </span>
+                                                {/if}
+                                                <i class="fas fa-chevron-right text-[10px] text-muted-foreground/60 transition-transform {isSelected ? 'rotate-90 text-primary' : 'group-hover:translate-x-0.5'}"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-center justify-between text-[11px] pt-0.5 border-t border-border/20">
+                                            <div class="flex items-center gap-1 text-muted-foreground">
+                                                <span>Speed:</span>
+                                                <span class="font-bold text-foreground">
+                                                    {t.commercial_speed_avg != null ? Number(t.commercial_speed_avg).toFixed(1) + ' km/h' : '-'}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex items-center gap-1.5">
+                                                <span class="text-muted-foreground">DI:</span>
+                                                {#if di != null && cat}
+                                                    <span
+                                                        class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold"
+                                                        style="color: {cat.color}; background-color: {cat.color}15;"
+                                                        title="{cat.label}: {di > 0 ? '+' : ''}{(di * 100).toFixed(1)}%"
+                                                    >
+                                                        {di > 0 ? "+" : ""}{(di * 100).toFixed(1)}%
+                                                    </span>
+                                                {:else}
+                                                    <span class="text-muted-foreground font-mono">-</span>
+                                                {/if}
+                                            </div>
+                                        </div>
+
+                                        {#if isSelected}
+                                            <div
+                                                class="absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-primary"
+                                            ></div>
+                                        {/if}
+                                    </button>
+                                {/each}
+                            </div>
+                        {:else}
+                            <div class="py-4 text-center text-xs text-muted-foreground border border-dashed border-border/60 rounded-lg">
+                                No trips match "{tripSearchQuery}"
                             </div>
                         {/if}
                     </Accordion.Content>

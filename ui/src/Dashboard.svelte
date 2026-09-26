@@ -2187,6 +2187,7 @@
     bind:selected_shape_id
     {geoData}
     {selectedWayId}
+    {criteria_hour}
     di_threshold_low={di_threshold_low / 100}
     di_threshold_high={di_threshold_high / 100}
 />

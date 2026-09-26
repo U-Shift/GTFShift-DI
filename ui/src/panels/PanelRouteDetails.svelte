@@ -15,12 +15,14 @@
         selectedWayId,
         di_threshold_low = 0.05,
         di_threshold_high = 0.2,
+        criteria_hour = 8,
     }: {
         selected_shape_id: string;
         geoData: GeoPrioritisation | null;
         selectedWayId: string | undefined;
         di_threshold_low?: number;
         di_threshold_high?: number;
+        criteria_hour?: number;
     } = $props();
 </script>
 
@@ -60,6 +62,22 @@
                   1,
               )
             : 1}
+    {@const periodDI =
+        speedProfileStats?.commercial_speed_median != null &&
+        speedProfileStats?.commercial_speed_p85 &&
+        speedProfileStats.commercial_speed_p85 > 0
+            ? (speedProfileStats.commercial_speed_median -
+                  speedProfileStats.commercial_speed_p85) /
+              speedProfileStats.commercial_speed_p85
+            : undefined}
+    {@const periodDICategory =
+        periodDI != null
+            ? getDisturbanceIndexCategory(
+                  periodDI,
+                  di_threshold_low,
+                  di_threshold_high,
+              )
+            : null}
     {@const maxAbsDi =
         speedProfileHours.length > 0
             ? Math.max(
@@ -584,6 +602,43 @@
                                                 km/h</span
                                             >
                                         </p>
+                                    </div>
+                                {/if}
+
+                                <!-- DI Card (computed on the fly for the whole period) -->
+                                {#if periodDI != null}
+                                    <div
+                                        class="p-2.5 bg-background/80 rounded-xl border border-border/40 text-center shadow-xs relative overflow-hidden flex flex-col justify-between"
+                                    >
+                                        <div>
+                                            <p
+                                                class="text-[9px] font-bold uppercase text-muted-foreground mb-1 truncate"
+                                                title="Disturbance Index for the whole period (median speed vs P85 speed)"
+                                            >
+                                                DI (Period)
+                                            </p>
+                                            <p class="text-sm font-bold">
+                                                {periodDI > 0 ? "+" : ""}{(
+                                                    periodDI * 100
+                                                ).toFixed(1)}<span
+                                                    class="text-[9px] font-normal"
+                                                    >%</span
+                                                >
+                                            </p>
+                                        </div>
+                                        {#if periodDICategory}
+                                            <p
+                                                class="text-[9px] font-medium truncate mt-0.5"
+                                                style="color: {periodDICategory.color};"
+                                                title={periodDICategory.label}
+                                            >
+                                                {periodDICategory.label}
+                                            </p>
+                                            <div
+                                                class="absolute bottom-0 left-0 right-0 h-[2.5px]"
+                                                style="background-color: {periodDICategory.color};"
+                                            ></div>
+                                        {/if}
                                     </div>
                                 {/if}
                             </div>

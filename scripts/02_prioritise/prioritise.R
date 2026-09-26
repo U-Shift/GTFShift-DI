@@ -225,6 +225,14 @@ for (i in 1:nrow(regions)) { # i =1
             commercial_speed_min = round(min(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_max = round(max(commercial_speed, na.rm = TRUE), 2),
             .groups = "drop"
+          ) |>
+          mutate(
+            # Disturbance index for global stats: (commercial_speed_median - commercial_speed_p85) / commercial_speed_p85
+            disturbance_index = ifelse(
+              !is.na(commercial_speed_p85) & commercial_speed_p85 > 0,
+              round((commercial_speed_median - commercial_speed_p85) / commercial_speed_p85, 4),
+              NA_real_
+            )
           )
 
         # 2. Aggregations by (route_id, hour)
@@ -366,6 +374,14 @@ for (i in 1:nrow(regions)) { # i =1
             commercial_speed_min = round(min(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_max = round(max(commercial_speed, na.rm = TRUE), 2),
             .groups = "drop"
+          ) |>
+          mutate(
+            # Disturbance index for global stats: (commercial_speed_median - commercial_speed_p85) / commercial_speed_p85
+            disturbance_index = ifelse(
+              !is.na(commercial_speed_p85) & commercial_speed_p85 > 0,
+              round((commercial_speed_median - commercial_speed_p85) / commercial_speed_p85, 4),
+              NA_real_
+            )
           )
 
         # 6. Aggregations by (shape_id, hour)

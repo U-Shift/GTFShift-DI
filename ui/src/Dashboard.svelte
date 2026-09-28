@@ -46,7 +46,7 @@
         COLOR_RED,
         COLOR_GRADIENT,
         COLOR_GRADIENT_RED,
-        COLOR_GRADIENT_DIVERGING_BRBG,
+        COLOR_GRADIENT_DIVERGING_RWG,
     } from "./data";
     import Spinner from "$lib/components/ui/spinner/spinner.svelte";
     import {
@@ -1470,7 +1470,7 @@
                                         </div>
                                         <div
                                             class="w-full h-3.5 rounded border border-border/40 shadow-2xs"
-                                            style="background: linear-gradient(to right, {COLOR_GRADIENT_DIVERGING_BRBG.join(
+                                            style="background: linear-gradient(to right, {COLOR_GRADIENT_DIVERGING_RWG.join(
                                                 ', ',
                                             )});"
                                         ></div>
@@ -2486,7 +2486,7 @@
                             </span>
                             <div
                                 class="flex-1 h-3 rounded border border-border/40"
-                                style="background: linear-gradient(to right, {COLOR_GRADIENT_DIVERGING_BRBG.join(
+                                style="background: linear-gradient(to right, {COLOR_GRADIENT_DIVERGING_RWG.join(
                                     ', ',
                                 )});"
                             ></div>

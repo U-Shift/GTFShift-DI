@@ -16,7 +16,7 @@
         getDivergingColor,
         getLineWeight,
     } from "../lib/utils";
-    import { COLOR_GRADIENT_DIVERGING_BRBG } from "../data";
+    import { COLOR_GRADIENT_DIVERGING_RWG } from "../data";
 
     let {
         map,
@@ -57,7 +57,11 @@
         const props = geoData.wayData[wayId];
         const di = getDisturbanceIndex(props, criteriaHour);
         if (di === undefined) return "Disturbance Index: n/a";
-        const cat = getDisturbanceIndexCategory(di, diThresholdLow, diThresholdHigh);
+        const cat = getDisturbanceIndexCategory(
+            di,
+            diThresholdLow,
+            diThresholdHigh,
+        );
         const percentStr = (di * 100).toFixed(1);
         const sign = di > 0 ? "+" : "";
         return `Disturbance Index: ${sign}${percentStr}% (${cat.label})`;
@@ -77,9 +81,17 @@
             if (diPaletteMode === "diverging") {
                 // Symmetrical diverging ramp centered at 0, using diThresholdHigh as the full saturation scale
                 const maxRange = Math.max(diThresholdHigh, 0.25);
-                color = getDivergingColor(di, maxRange, COLOR_GRADIENT_DIVERGING_BRBG);
+                color = getDivergingColor(
+                    di,
+                    maxRange,
+                    COLOR_GRADIENT_DIVERGING_RWG,
+                );
             } else {
-                color = getDisturbanceIndexCategory(di, diThresholdLow, diThresholdHigh).color;
+                color = getDisturbanceIndexCategory(
+                    di,
+                    diThresholdLow,
+                    diThresholdHigh,
+                ).color;
             }
         }
         return {
@@ -127,7 +139,9 @@
         if (diFilterMode === "worst") {
             filteredFeatures = filteredFeatures.slice(0, diFilterCount);
         } else if (diFilterMode === "best") {
-            filteredFeatures = filteredFeatures.slice(Math.max(0, filteredFeatures.length - diFilterCount));
+            filteredFeatures = filteredFeatures.slice(
+                Math.max(0, filteredFeatures.length - diFilterCount),
+            );
         }
 
         const visibleWayIds = filteredFeatures
@@ -135,38 +149,30 @@
             .filter((wayId): wayId is string => !!wayId);
 
         // Create and add new layer to map
-        const newLayer = L.geoJSON(
-            filteredFeatures,
-            {
-                style: (feature: Feature | undefined) => {
-                    const wayId = feature?.properties?.way_osm_id;
-                    if (!wayId) return {};
-                    return getDIStyle(wayId);
-                },
-                onEachFeature: (feature, layer) => {
-                    const wayId = feature.properties?.way_osm_id;
-                    if (wayId) wayLayerMap.set(wayId, layer as L.Path);
-                    if (wayId) {
-                        bindWayValueTooltip(layer, formatDILabel(wayId));
-                    }
-                    layer.on("click", (e) => {
-                        L.DomEvent.stopPropagation(e);
-                        if (wayId) onWaySelect(wayId);
-                    });
-                    layer.on("mouseover", () => {
-                        handleWayMouseOver(layer, wayId, selectedWayId);
-                    });
-                    layer.on("mouseout", () => {
-                        handleWayMouseOut(
-                            layer,
-                            wayId,
-                            selectedWayId,
-                            getDIStyle,
-                        );
-                    });
-                },
+        const newLayer = L.geoJSON(filteredFeatures, {
+            style: (feature: Feature | undefined) => {
+                const wayId = feature?.properties?.way_osm_id;
+                if (!wayId) return {};
+                return getDIStyle(wayId);
             },
-        ).addTo(map);
+            onEachFeature: (feature, layer) => {
+                const wayId = feature.properties?.way_osm_id;
+                if (wayId) wayLayerMap.set(wayId, layer as L.Path);
+                if (wayId) {
+                    bindWayValueTooltip(layer, formatDILabel(wayId));
+                }
+                layer.on("click", (e) => {
+                    L.DomEvent.stopPropagation(e);
+                    if (wayId) onWaySelect(wayId);
+                });
+                layer.on("mouseover", () => {
+                    handleWayMouseOver(layer, wayId, selectedWayId);
+                });
+                layer.on("mouseout", () => {
+                    handleWayMouseOut(layer, wayId, selectedWayId, getDIStyle);
+                });
+            },
+        }).addTo(map);
 
         // Update parent state
         untrack(() => {

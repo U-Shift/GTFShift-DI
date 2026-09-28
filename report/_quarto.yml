@@ -1,0 +1,54 @@
+project:
+  type: book
+  output-dir: _book
+  resources:
+    - slides
+    - images
+
+book:
+  title: "Relatório Metodológico"
+  favicon: "images/favicon.ico"
+  subtitle: "GTFShift: Ferramenta de priorização de corredores bus e análise de operações"
+  author: "U-Shift Lab, Instituto Superior Técnico"
+  date: today
+  date-format: "MMMM YYYY"
+  chapters:
+    - index.qmd
+    # - part: "**Data**"
+    #  chapters:
+    #    - data_sources.qmd
+  # appendices:
+  #  - metadata.qmd
+  #  - pca_results.qmd
+  sidebar:
+    tools:
+    - icon: github
+      href: https://github.com/U-Shift/GTFShift-DI/
+      text: "GitHub Repository"
+      target: _blank
+    - icon: map-fill
+      href: https://ushift.pt/apps/gtfshift-tml
+      text: "Interactive Dashboard"
+      target: _blank
+  page-footer:
+    left: "&copy; 2026, U-Shift, CERIS, Instituto Superior Técnico, University of Lisbon"
+    right: "September 2026"
+    
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: superhero
+    toc: true
+    number-sections: true
+    echo: false
+    code-fold: true
+    lightbox: true # abrir imagens popup
+    css: "styles/global.css"
+    include-after-body: 
+      text: |
+        <script src="styles/global.js"></script>
+
+google-scholar: true

@@ -728,7 +728,7 @@
                     </div>
                 {/if}
 
-                <!-- Daily Metrics Breakdown Table -->
+                <!-- Individual Trips Metrics Breakdown Table -->
                 <div
                     class="space-y-2 p-3 bg-background/80 rounded-xl border border-border/40 shadow-xs"
                 >
@@ -736,7 +736,7 @@
                         class="text-xs font-bold flex items-center gap-1.5 uppercase tracking-wider text-muted-foreground"
                     >
                         <i class="fas fa-table text-primary/70"></i>
-                        Daily Metrics Breakdown
+                        Individual trips breakdown
                     </h6>
                     <div class="overflow-x-auto pt-1">
                         <table
@@ -757,7 +757,7 @@
                                     <th
                                         class="text-[9px] font-mono font-bold text-primary text-center px-1.5 py-1 bg-muted/40 rounded-t"
                                     >
-                                        Trip
+                                        All trips
                                     </th>
                                     {#each sortedTripDays as d}
                                         <th
@@ -769,21 +769,48 @@
                                     {/each}
                                 </tr>
 
-                                <!-- Average Commercial Speed -->
+                                <!-- Departure -->
                                 <tr>
                                     <th
                                         class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
                                     >
-                                        Average speed (km/h)
+                                        Departure
+                                    </th>
+                                    <td
+                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary font-mono"
+                                    >
+                                        -
+                                    </td>
+                                    {#each sortedTripDays as d}
+                                        <td
+                                            class="text-[10px] font-mono text-center px-1.5 py-1 rounded bg-background/70 border border-border/30 whitespace-nowrap text-muted-foreground"
+                                            title="{formatDayFull(d.day)} departure"
+                                        >
+                                            {formatTime(d.timestamp_min) ??
+                                                (d.hour != null
+                                                    ? `${d.hour}:00`
+                                                    : "-")}
+                                        </td>
+                                    {/each}
+                                </tr>
+
+                                <!-- Commercial Speed -->
+                                <tr>
+                                    <th
+                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
+                                    >
+                                        Commercial speed (km/h)
                                     </th>
                                     <td
                                         class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
                                     >
                                         {trip?.commercial_speed_avg != null &&
-                                        !isNaN(Number(trip.commercial_speed_avg))
+                                        !isNaN(
+                                            Number(trip.commercial_speed_avg),
+                                        )
                                             ? Number(
                                                   trip.commercial_speed_avg,
-                                              ).toFixed(1)
+                                                ).toFixed(1)
                                             : avgDaySpeed != null &&
                                                 !isNaN(Number(avgDaySpeed))
                                               ? Number(avgDaySpeed).toFixed(1)
@@ -796,7 +823,7 @@
                                             class="text-[10px] font-medium text-center px-1.5 py-1 rounded bg-background/70 border border-border/30 whitespace-nowrap"
                                             title="{formatDayFull(
                                                 d.day,
-                                            )} avg speed"
+                                            )} commercial speed"
                                         >
                                             {val != null && !isNaN(Number(val))
                                                 ? Number(val).toFixed(1)
@@ -946,111 +973,7 @@
                     </div>
                 </div>
 
-                <!-- 3. Daily Breakdown Table -->
-                <div
-                    class="space-y-2 p-3 bg-background/80 rounded-xl border border-border/40 shadow-xs"
-                >
-                    <div class="flex items-center justify-between">
-                        <h6
-                            class="text-xs font-bold flex items-center gap-1.5 uppercase tracking-wider text-muted-foreground"
-                        >
-                            <i class="fas fa-table" style="color: {shapeColor}"
-                            ></i>
-                            Daily Breakdown
-                        </h6>
-                        <span class="text-[10px] text-muted-foreground">
-                            {sortedTripDays.length} records
-                        </span>
-                    </div>
 
-                    <div
-                        class="overflow-x-auto max-h-60 overflow-y-auto rounded-lg border border-border/40"
-                    >
-                        <table class="w-full text-[11px] border-collapse">
-                            <thead
-                                class="bg-muted/50 text-[10px] text-muted-foreground uppercase tracking-wider sticky top-0 backdrop-blur z-10"
-                            >
-                                <tr>
-                                    <th class="text-left py-2 px-2.5 font-bold"
-                                        >Date</th
-                                    >
-                                    <th class="text-center py-2 px-2 font-bold"
-                                        >Departure</th
-                                    >
-                                    <th class="text-right py-2 px-2 font-bold"
-                                        >Avg. Speed</th
-                                    >
-                                    <th class="text-right py-2 px-2.5 font-bold"
-                                        >DI</th
-                                    >
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-border/30">
-                                {#each sortedTripDays as d}
-                                    {@const di = d.disturbance_index}
-                                    {@const cat =
-                                        di != null
-                                            ? getDisturbanceIndexCategory(
-                                                  di,
-                                                  di_threshold_low,
-                                                  di_threshold_high,
-                                              )
-                                            : null}
-                                    <tr
-                                        class="hover:bg-muted/30 transition-colors"
-                                    >
-                                        <td
-                                            class="py-1.5 px-2.5 font-mono text-[10px] whitespace-nowrap"
-                                        >
-                                            {formatDayFull(d.day)}
-                                        </td>
-                                        <td
-                                            class="py-1.5 px-2 text-center text-muted-foreground font-mono text-[10px] whitespace-nowrap"
-                                        >
-                                            {formatTime(d.timestamp_min) ??
-                                                (d.hour != null
-                                                    ? `${d.hour}:00`
-                                                    : "-")}
-                                        </td>
-                                        <td
-                                            class="py-1.5 px-2 text-right font-medium whitespace-nowrap"
-                                        >
-                                            {d.commercial_speed != null
-                                                ? Number(
-                                                      d.commercial_speed,
-                                                  ).toFixed(1) + " km/h"
-                                                : "-"}
-                                        </td>
-                                        <td
-                                            class="py-1.5 px-2.5 text-right whitespace-nowrap"
-                                        >
-                                            {#if di != null && cat}
-                                                <span
-                                                    class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-mono font-semibold"
-                                                    style="color: {cat.color}; background-color: {cat.color}15;"
-                                                    title="{cat.label}: {di > 0
-                                                        ? '+'
-                                                        : ''}{(
-                                                        di * 100
-                                                    ).toFixed(1)}%"
-                                                >
-                                                    {di > 0 ? "+" : ""}{(
-                                                        di * 100
-                                                    ).toFixed(1)}%
-                                                </span>
-                                            {:else}
-                                                <span
-                                                    class="text-muted-foreground"
-                                                    >-</span
-                                                >
-                                            {/if}
-                                        </td>
-                                    </tr>
-                                {/each}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
             {:else}
                 <div
                     class="p-4 rounded-xl border border-dashed border-border/60 text-center text-muted-foreground space-y-1"

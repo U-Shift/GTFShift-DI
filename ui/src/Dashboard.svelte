@@ -119,6 +119,7 @@
     let criteria_demand_enabled: boolean = $state(false);
     let visible_way_ids: string[] = $state([]);
     let line_weight_by: LineWeightMetric = $state("frequency");
+    let continuous_scale_mode: "percentile" | "minmax" = $state("percentile");
 
     const lineWeightOptions = $derived.by(() => {
         const hourLabel = `${criteria_hour.toString().padStart(2, "0")}:00`;
@@ -1770,24 +1771,47 @@
                                     >GTFShift::get_way_frequency_hourly()</a
                                 >.
                             </p>
+                            <div class="flex items-center justify-between gap-2 pt-1">
+                                <span class="font-medium text-foreground text-xs">Color Graduation Scale</span>
+                                <div class="flex items-center gap-1 p-0.5 bg-muted/60 rounded-md border border-border/40">
+                                    <button
+                                        type="button"
+                                        class="py-0.5 px-2 rounded text-[11px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'percentile'
+                                            ? 'bg-background text-foreground shadow-xs font-semibold'
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                                        onclick={() => (continuous_scale_mode = "percentile")}
+                                    >
+                                        P5 / P95
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="py-0.5 px-2 rounded text-[11px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'minmax'
+                                            ? 'bg-background text-foreground shadow-xs font-semibold'
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                                        onclick={() => (continuous_scale_mode = "minmax")}
+                                    >
+                                        Min / Max
+                                    </button>
+                                </div>
+                            </div>
                             <p>
                                 Road segments with bus service are colored by
                                 frequency, for the selected hour, from the <span
                                     style="color: {COLOR_GRADIENT[0]}"
-                                    class="bg-black/50 font-bold px-1 rounded"
-                                    >P5 ({geoData.metadata.data_census
-                                        .frequency_hour[criteria_hour]
-                                        ?.p5})</span
+                                    class="font-bold"
+                                    >{continuous_scale_mode === "minmax"
+                                        ? `Min (${geoData.metadata.data_census.frequency_hour[criteria_hour]?.min ?? 0})`
+                                        : `P5 (${geoData.metadata.data_census.frequency_hour[criteria_hour]?.p5 ?? 0})`}</span
                                 >
                                 to the
                                 <span
                                     style="color: {COLOR_GRADIENT[
                                         COLOR_GRADIENT.length - 1
                                     ]}"
-                                    class="font-bold"
-                                    >P95 ({geoData.metadata.data_census
-                                        .frequency_hour[criteria_hour]
-                                        ?.p95})</span
+                                    class="bg-black/50 font-bold px-1 rounded"
+                                    >{continuous_scale_mode === "minmax"
+                                        ? `Max (${geoData.metadata.data_census.frequency_hour[criteria_hour]?.max ?? 0})`
+                                        : `P95 (${geoData.metadata.data_census.frequency_hour[criteria_hour]?.p95 ?? 0})`}</span
                                 > number of buses per hour, considering:
                             </p>
                             <div class="flex items-center gap-2">
@@ -1829,22 +1853,47 @@
                                     >GTFShift::prioritise_lanes()</a
                                 >.
                             </p>
+                            <div class="flex items-center justify-between gap-2 pt-1">
+                                <span class="font-medium text-foreground text-xs">Color Graduation Scale</span>
+                                <div class="flex items-center gap-1 p-0.5 bg-muted/60 rounded-md border border-border/40">
+                                    <button
+                                        type="button"
+                                        class="py-0.5 px-2 rounded text-[11px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'percentile'
+                                            ? 'bg-background text-foreground shadow-xs font-semibold'
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                                        onclick={() => (continuous_scale_mode = "percentile")}
+                                    >
+                                        P5 / P95
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="py-0.5 px-2 rounded text-[11px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'minmax'
+                                            ? 'bg-background text-foreground shadow-xs font-semibold'
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                                        onclick={() => (continuous_scale_mode = "minmax")}
+                                    >
+                                        Min / Max
+                                    </button>
+                                </div>
+                            </div>
                             <p>
                                 Road segments with bus service are colored by
                                 number of lanes, from the <span
                                     style="color: {COLOR_GRADIENT[0]}"
-                                    class="bg-black/50 font-bold px-1 rounded"
-                                    >P5 ({geoData.metadata.data_census
-                                        .lanes_length?.p5})</span
+                                    class="font-bold"
+                                    >{continuous_scale_mode === "minmax"
+                                        ? `Min (${geoData.metadata.data_census.lanes_length?.min ?? 0})`
+                                        : `P5 (${geoData.metadata.data_census.lanes_length?.p5 ?? 0})`}</span
                                 >
                                 to the
                                 <span
                                     style="color: {COLOR_GRADIENT[
                                         COLOR_GRADIENT.length - 1
                                     ]}"
-                                    class="font-bold"
-                                    >P95 ({geoData.metadata.data_census
-                                        .lanes_length?.p95})</span
+                                    class="bg-black/50 font-bold px-1 rounded"
+                                    >{continuous_scale_mode === "minmax"
+                                        ? `Max (${geoData.metadata.data_census.lanes_length?.max ?? 0})`
+                                        : `P95 (${geoData.metadata.data_census.lanes_length?.p95 ?? 0})`}</span
                                 > number of lanes per direction.
                             </p>
                             {#if geoData.metadata.data_census.lanes_length}
@@ -1950,6 +1999,29 @@
                                     consider all routes that traverse each
                                     segment.
                                 </p>
+                                <div class="flex items-center justify-between gap-2 pt-1">
+                                    <span class="font-medium text-foreground text-xs">Color Graduation Scale</span>
+                                    <div class="flex items-center gap-1 p-0.5 bg-muted/60 rounded-md border border-border/40">
+                                        <button
+                                            type="button"
+                                            class="py-0.5 px-2 rounded text-[11px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'percentile'
+                                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                                            onclick={() => (continuous_scale_mode = "percentile")}
+                                        >
+                                            P5 / P95
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="py-0.5 px-2 rounded text-[11px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'minmax'
+                                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                                            onclick={() => (continuous_scale_mode = "minmax")}
+                                        >
+                                            Min / Max
+                                        </button>
+                                    </div>
+                                </div>
                                 <p>
                                     Road segments with bus service are colored
                                     by the {selected_speed_metric === "avg"
@@ -1962,9 +2034,9 @@
                                     <span
                                         style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
                                         class="font-bold"
-                                        >P5 ({speed_census?.census_length?.p5?.toFixed(
-                                            2,
-                                        ) ?? "-"}</span
+                                        >{continuous_scale_mode === "minmax"
+                                            ? `Min (${speed_census?.census_length?.min?.toFixed(2) ?? "-"})`
+                                            : `P5 (${speed_census?.census_length?.p5?.toFixed(2) ?? "-"})`}</span
                                     >
                                     to the
                                     <span
@@ -1972,9 +2044,9 @@
                                             COLOR_GRADIENT_RED.length - 1
                                         ]}"
                                         class="bg-black/50 font-bold px-1 rounded"
-                                        >P95 ({speed_census?.census_length?.p95?.toFixed(
-                                            2,
-                                        ) ?? "-"}</span
+                                        >{continuous_scale_mode === "minmax"
+                                            ? `Max (${speed_census?.census_length?.max?.toFixed(2) ?? "-"})`
+                                            : `P95 (${speed_census?.census_length?.p95?.toFixed(2) ?? "-"})`}</span
                                     > values (km/h).
                                 </p>
 
@@ -2068,6 +2140,29 @@
                                     Values consider all routes that traverse
                                     each segment.
                                 </p>
+                                <div class="flex items-center justify-between gap-2 pt-1">
+                                    <span class="font-medium text-foreground text-xs">Color Graduation Scale</span>
+                                    <div class="flex items-center gap-1 p-0.5 bg-muted/60 rounded-md border border-border/40">
+                                        <button
+                                            type="button"
+                                            class="py-0.5 px-2 rounded text-[11px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'percentile'
+                                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                                            onclick={() => (continuous_scale_mode = "percentile")}
+                                        >
+                                            P5 / P95
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="py-0.5 px-2 rounded text-[11px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'minmax'
+                                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                                            onclick={() => (continuous_scale_mode = "minmax")}
+                                        >
+                                            Min / Max
+                                        </button>
+                                    </div>
+                                </div>
                                 <p>
                                     Road segments with bus service are colored
                                     by the {selected_speed_metric === "avg"
@@ -2083,9 +2178,9 @@
                                     <span
                                         style="color: {COLOR_GRADIENT_RED.slice().reverse()[0]}"
                                         class="font-bold"
-                                        >P5 ({speed_hourly_census?.census_length?.p5?.toFixed(
-                                            2,
-                                        ) ?? "-"}</span
+                                        >{continuous_scale_mode === "minmax"
+                                            ? `Min (${speed_hourly_census?.census_length?.min?.toFixed(2) ?? "-"})`
+                                            : `P5 (${speed_hourly_census?.census_length?.p5?.toFixed(2) ?? "-"})`}</span
                                     >
                                     to the
                                     <span
@@ -2093,9 +2188,9 @@
                                             COLOR_GRADIENT_RED.length - 1
                                         ]}"
                                         class="bg-black/50 font-bold px-1 rounded"
-                                        >P95 ({speed_hourly_census?.census_length?.p95?.toFixed(
-                                            2,
-                                        ) ?? "-"}</span
+                                        >{continuous_scale_mode === "minmax"
+                                            ? `Max (${speed_hourly_census?.census_length?.max?.toFixed(2) ?? "-"})`
+                                            : `P95 (${speed_hourly_census?.census_length?.p95?.toFixed(2) ?? "-"})`}</span
                                     > values (km/h).
                                 </p>
 
@@ -2129,25 +2224,48 @@
                                         {@html geoData.metadata.demand.notes}
                                     </p>
                                 {/if}
+                                <div class="flex items-center justify-between gap-2 pt-1">
+                                    <span class="font-medium text-foreground text-xs">Color Graduation Scale</span>
+                                    <div class="flex items-center gap-1 p-0.5 bg-muted/60 rounded-md border border-border/40">
+                                        <button
+                                            type="button"
+                                            class="py-0.5 px-2 rounded text-[11px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'percentile'
+                                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                                            onclick={() => (continuous_scale_mode = "percentile")}
+                                        >
+                                            P5 / P95
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="py-0.5 px-2 rounded text-[11px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'minmax'
+                                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                                            onclick={() => (continuous_scale_mode = "minmax")}
+                                        >
+                                            Min / Max
+                                        </button>
+                                    </div>
+                                </div>
                                 <p>
                                     Road segments with bus service are colored
                                     by passenger demand (cumulative for the
                                     representative day in study), from the <span
                                         style="color: {COLOR_GRADIENT[0]}"
-                                        class="bg-black/50 font-bold px-1 rounded"
-                                        >P5 ({geoData.metadata.data_census.demand_length?.p5?.toFixed(
-                                            0,
-                                        )})</span
+                                        class="font-bold"
+                                        >{continuous_scale_mode === "minmax"
+                                            ? `Min (${geoData.metadata.data_census.demand_length?.min?.toFixed(0) ?? 0})`
+                                            : `P5 (${geoData.metadata.data_census.demand_length?.p5?.toFixed(0) ?? 0})`}</span
                                     >
                                     to the
                                     <span
                                         style="color: {COLOR_GRADIENT[
                                             COLOR_GRADIENT.length - 1
                                         ]}"
-                                        class="font-bold"
-                                        >P95 ({geoData.metadata.data_census.demand_length?.p95?.toFixed(
-                                            0,
-                                        )})</span
+                                        class="bg-black/50 font-bold px-1 rounded"
+                                        >{continuous_scale_mode === "minmax"
+                                            ? `Max (${geoData.metadata.data_census.demand_length?.max?.toFixed(0) ?? 0})`
+                                            : `P95 (${geoData.metadata.data_census.demand_length?.p95?.toFixed(0) ?? 0})`}</span
                                     > passengers/day.
                                 </p>
                                 {#if geoData.metadata.data_census.demand_length}
@@ -2326,18 +2444,42 @@
             </p>
         {:else if active_layer === DisplayOptions.FREQUENCY}
             <div class="mb-2">
-                <p class="mb-2 text-foreground font-semibold">
-                    Transit frequency <span
-                        class="text-muted-foreground font-normal"
-                        >(buses/hour, at {criteria_hour}:00)</span
-                    >
-                </p>
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-foreground font-semibold">
+                        Transit frequency <span
+                            class="text-muted-foreground font-normal"
+                            >({criteria_hour}:00)</span
+                        >
+                    </p>
+                    <div class="flex items-center gap-1 p-0.5 bg-muted/60 rounded-md border border-border/40">
+                        <button
+                            type="button"
+                            class="py-0.5 px-1.5 rounded text-[10px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'percentile'
+                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                            onclick={() => (continuous_scale_mode = "percentile")}
+                            title="Scale between 5th and 95th percentiles"
+                        >
+                            P5/P95
+                        </button>
+                        <button
+                            type="button"
+                            class="py-0.5 px-1.5 rounded text-[10px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'minmax'
+                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                            onclick={() => (continuous_scale_mode = "minmax")}
+                            title="Scale between minimum and maximum"
+                        >
+                            Min/Max
+                        </button>
+                    </div>
+                </div>
                 <div class="flex gap-2 items-center">
                     <span
                         class="min-w-[40px] text-right text-xs text-muted-foreground"
-                        >{geoData?.metadata.data_census.frequency_hour[
-                            criteria_hour
-                        ]?.p5}</span
+                        >{continuous_scale_mode === "minmax"
+                            ? (geoData?.metadata.data_census.frequency_hour[criteria_hour]?.min ?? 0)
+                            : (geoData?.metadata.data_census.frequency_hour[criteria_hour]?.p5 ?? 0)}</span
                     >
                     <div
                         class="flex-1 h-3 rounded border"
@@ -2347,21 +2489,47 @@
                     ></div>
                     <span
                         class="min-w-[40px] text-left text-xs text-muted-foreground"
-                        >{geoData?.metadata.data_census.frequency_hour[
-                            criteria_hour
-                        ]?.p95}</span
+                        >{continuous_scale_mode === "minmax"
+                            ? (geoData?.metadata.data_census.frequency_hour[criteria_hour]?.max ?? 0)
+                            : (geoData?.metadata.data_census.frequency_hour[criteria_hour]?.p95 ?? 0)}</span
                     >
                 </div>
             </div>
         {:else if active_layer === DisplayOptions.N_LANES}
             <div class="mb-2">
-                <p class="mb-2 text-foreground font-semibold">
-                    Number of lanes per direction
-                </p>
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-foreground font-semibold">
+                        Number of lanes per direction
+                    </p>
+                    <div class="flex items-center gap-1 p-0.5 bg-muted/60 rounded-md border border-border/40">
+                        <button
+                            type="button"
+                            class="py-0.5 px-1.5 rounded text-[10px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'percentile'
+                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                            onclick={() => (continuous_scale_mode = "percentile")}
+                            title="Scale between 5th and 95th percentiles"
+                        >
+                            P5/P95
+                        </button>
+                        <button
+                            type="button"
+                            class="py-0.5 px-1.5 rounded text-[10px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'minmax'
+                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                            onclick={() => (continuous_scale_mode = "minmax")}
+                            title="Scale between minimum and maximum"
+                        >
+                            Min/Max
+                        </button>
+                    </div>
+                </div>
                 <div class="flex gap-2 items-center">
                     <span
                         class="min-w-[40px] text-right text-xs text-muted-foreground"
-                        >{geoData?.metadata.data_census.lanes_length?.p5}</span
+                        >{continuous_scale_mode === "minmax"
+                            ? (geoData?.metadata.data_census.lanes_length?.min ?? 0)
+                            : (geoData?.metadata.data_census.lanes_length?.p5 ?? 0)}</span
                     >
                     <div
                         class="flex-1 h-3 rounded border"
@@ -2371,7 +2539,9 @@
                     ></div>
                     <span
                         class="min-w-[40px] text-left text-xs text-muted-foreground"
-                        >{geoData?.metadata.data_census.lanes_length?.p95}</span
+                        >{continuous_scale_mode === "minmax"
+                            ? (geoData?.metadata.data_census.lanes_length?.max ?? 1)
+                            : (geoData?.metadata.data_census.lanes_length?.p95 ?? 1)}</span
                     >
                 </div>
             </div>
@@ -2404,21 +2574,48 @@
             </div>
         {:else if active_layer === DisplayOptions.RT_SPEED}
             <div class="mb-2">
-                <p class="mb-2 text-foreground font-semibold">
-                    {selected_speed_metric === "avg"
-                        ? "Average speed"
-                        : selected_speed_metric === "median"
-                          ? "Median speed"
-                          : "P85 speed"}
-                    <span class="text-muted-foreground font-normal">(km/h)</span
-                    >
-                </p>
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-foreground font-semibold">
+                        {selected_speed_metric === "avg"
+                            ? "Average speed"
+                            : selected_speed_metric === "median"
+                              ? "Median speed"
+                              : "P85 speed"}
+                        <span class="text-muted-foreground font-normal">(km/h)</span>
+                    </p>
+                    <div class="flex items-center gap-1 p-0.5 bg-muted/60 rounded-md border border-border/40">
+                        <button
+                            type="button"
+                            class="py-0.5 px-1.5 rounded text-[10px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'percentile'
+                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                            onclick={() => (continuous_scale_mode = "percentile")}
+                            title="Scale between 5th and 95th percentiles"
+                        >
+                            P5/P95
+                        </button>
+                        <button
+                            type="button"
+                            class="py-0.5 px-1.5 rounded text-[10px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'minmax'
+                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                            onclick={() => (continuous_scale_mode = "minmax")}
+                            title="Scale between minimum and maximum"
+                        >
+                            Min/Max
+                        </button>
+                    </div>
+                </div>
                 <div class="flex gap-2 items-center">
                     <span
                         class="min-w-[40px] text-right text-xs text-muted-foreground"
-                        >{speed_census?.census_length?.p5 != null
-                            ? Math.floor(speed_census.census_length.p5)
-                            : ""}</span
+                        >{continuous_scale_mode === "minmax"
+                            ? (speed_census?.census_length?.min != null
+                                ? Math.floor(speed_census.census_length.min)
+                                : "")
+                            : (speed_census?.census_length?.p5 != null
+                                ? Math.floor(speed_census.census_length.p5)
+                                : "")}</span
                     >
                     <div
                         class="flex-1 h-3 rounded border"
@@ -2429,30 +2626,61 @@
                     ></div>
                     <span
                         class="min-w-[40px] text-left text-xs text-muted-foreground"
-                        >{speed_census?.census_length?.p95 != null
-                            ? Math.ceil(speed_census.census_length.p95)
-                            : ""}</span
+                        >{continuous_scale_mode === "minmax"
+                            ? (speed_census?.census_length?.max != null
+                                ? Math.ceil(speed_census.census_length.max)
+                                : "")
+                            : (speed_census?.census_length?.p95 != null
+                                ? Math.ceil(speed_census.census_length.p95)
+                                : "")}</span
                     >
                 </div>
             </div>
         {:else if active_layer === DisplayOptions.RT_SPEED_HOURLY}
             <div class="mb-2">
-                <p class="mb-2 text-foreground font-semibold">
-                    {selected_speed_metric === "avg"
-                        ? "Average speed"
-                        : selected_speed_metric === "median"
-                          ? "Median speed"
-                          : "P85 speed"}
-                    <span class="text-muted-foreground font-normal">
-                        ({criteria_hour.toString().padStart(2, "0")}:00, km/h)</span
-                    >
-                </p>
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-foreground font-semibold">
+                        {selected_speed_metric === "avg"
+                            ? "Average speed"
+                            : selected_speed_metric === "median"
+                              ? "Median speed"
+                              : "P85 speed"}
+                        <span class="text-muted-foreground font-normal">
+                            ({criteria_hour.toString().padStart(2, "0")}:00, km/h)</span>
+                    </p>
+                    <div class="flex items-center gap-1 p-0.5 bg-muted/60 rounded-md border border-border/40">
+                        <button
+                            type="button"
+                            class="py-0.5 px-1.5 rounded text-[10px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'percentile'
+                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                            onclick={() => (continuous_scale_mode = "percentile")}
+                            title="Scale between 5th and 95th percentiles"
+                        >
+                            P5/P95
+                        </button>
+                        <button
+                            type="button"
+                            class="py-0.5 px-1.5 rounded text-[10px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'minmax'
+                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                            onclick={() => (continuous_scale_mode = "minmax")}
+                            title="Scale between minimum and maximum"
+                        >
+                            Min/Max
+                        </button>
+                    </div>
+                </div>
                 <div class="flex gap-2 items-center">
                     <span
                         class="min-w-[40px] text-right text-xs text-muted-foreground"
-                        >{speed_hourly_census?.census_length?.p5 != null
-                            ? Math.floor(speed_hourly_census.census_length.p5)
-                            : ""}</span
+                        >{continuous_scale_mode === "minmax"
+                            ? (speed_hourly_census?.census_length?.min != null
+                                ? Math.floor(speed_hourly_census.census_length.min)
+                                : "")
+                            : (speed_hourly_census?.census_length?.p5 != null
+                                ? Math.floor(speed_hourly_census.census_length.p5)
+                                : "")}</span
                     >
                     <div
                         class="flex-1 h-3 rounded border"
@@ -2463,9 +2691,13 @@
                     ></div>
                     <span
                         class="min-w-[40px] text-left text-xs text-muted-foreground"
-                        >{speed_hourly_census?.census_length?.p95 != null
-                            ? Math.ceil(speed_hourly_census.census_length.p95)
-                            : ""}</span
+                        >{continuous_scale_mode === "minmax"
+                            ? (speed_hourly_census?.census_length?.max != null
+                                ? Math.ceil(speed_hourly_census.census_length.max)
+                                : "")
+                            : (speed_hourly_census?.census_length?.p95 != null
+                                ? Math.ceil(speed_hourly_census.census_length.p95)
+                                : "")}</span
                     >
                 </div>
             </div>
@@ -2552,18 +2784,44 @@
             </div>
         {:else if active_layer === DisplayOptions.DEMAND}
             <div class="mb-2">
-                <p class="mb-2 text-foreground font-semibold">
-                    Demand <span class="text-muted-foreground font-normal"
-                        >(passengers/day)</span
-                    >
-                </p>
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-foreground font-semibold">
+                        Demand <span class="text-muted-foreground font-normal"
+                            >(passengers/day)</span>
+                    </p>
+                    <div class="flex items-center gap-1 p-0.5 bg-muted/60 rounded-md border border-border/40">
+                        <button
+                            type="button"
+                            class="py-0.5 px-1.5 rounded text-[10px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'percentile'
+                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                            onclick={() => (continuous_scale_mode = "percentile")}
+                            title="Scale between 5th and 95th percentiles"
+                        >
+                            P5/P95
+                        </button>
+                        <button
+                            type="button"
+                            class="py-0.5 px-1.5 rounded text-[10px] font-medium transition-all text-center cursor-pointer {continuous_scale_mode === 'minmax'
+                                ? 'bg-background text-foreground shadow-xs font-semibold'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-background/30'}"
+                            onclick={() => (continuous_scale_mode = "minmax")}
+                            title="Scale between minimum and maximum"
+                        >
+                            Min/Max
+                        </button>
+                    </div>
+                </div>
                 <div class="flex gap-2 items-center">
                     <span
                         class="min-w-[40px] text-right text-xs text-muted-foreground"
-                        >{geoData?.metadata.data_census.demand_length?.p5 &&
-                            Math.floor(
-                                geoData.metadata.data_census.demand_length.p5,
-                            )}</span
+                        >{continuous_scale_mode === "minmax"
+                            ? (geoData?.metadata.data_census.demand_length?.min != null
+                                ? Math.floor(geoData.metadata.data_census.demand_length.min)
+                                : 0)
+                            : (geoData?.metadata.data_census.demand_length?.p5 != null
+                                ? Math.floor(geoData.metadata.data_census.demand_length.p5)
+                                : 0)}</span
                     >
                     <div
                         class="flex-1 h-3 rounded border"
@@ -2573,10 +2831,13 @@
                     ></div>
                     <span
                         class="min-w-[40px] text-left text-xs text-muted-foreground"
-                        >{geoData?.metadata.data_census.demand_length?.p95 &&
-                            Math.ceil(
-                                geoData.metadata.data_census.demand_length.p95,
-                            )}</span
+                        >{continuous_scale_mode === "minmax"
+                            ? (geoData?.metadata.data_census.demand_length?.max != null
+                                ? Math.ceil(geoData.metadata.data_census.demand_length.max)
+                                : 0)
+                            : (geoData?.metadata.data_census.demand_length?.p95 != null
+                                ? Math.ceil(geoData.metadata.data_census.demand_length.p95)
+                                : 0)}</span
                     >
                 </div>
             </div>
@@ -2659,6 +2920,7 @@
             {geoData}
             criteriaHour={criteria_hour}
             lineWeightBy={line_weight_by}
+            continuousScaleMode={continuous_scale_mode}
             {selectedWayId}
             selectedShapeId={selected_shape_id}
             onWaySelect={(id) => (selectedWayId = id)}
@@ -2671,6 +2933,7 @@
             {geoData}
             criteriaHour={criteria_hour}
             lineWeightBy={line_weight_by}
+            continuousScaleMode={continuous_scale_mode}
             {selectedWayId}
             selectedShapeId={selected_shape_id}
             onWaySelect={(id) => (selectedWayId = id)}
@@ -2683,6 +2946,7 @@
             {geoData}
             criteriaHour={criteria_hour}
             lineWeightBy={line_weight_by}
+            continuousScaleMode={continuous_scale_mode}
             {selectedWayId}
             selectedShapeId={selected_shape_id}
             onWaySelect={(id) => (selectedWayId = id)}
@@ -2696,6 +2960,7 @@
                 {geoData}
                 criteriaHour={criteria_hour}
                 lineWeightBy={line_weight_by}
+                continuousScaleMode={continuous_scale_mode}
                 {selectedWayId}
                 selectedShapeId={selected_shape_id}
                 onWaySelect={(id) => (selectedWayId = id)}
@@ -2708,6 +2973,7 @@
                 {geoData}
                 criteriaHour={criteria_hour}
                 lineWeightBy={line_weight_by}
+                continuousScaleMode={continuous_scale_mode}
                 {selectedWayId}
                 selectedShapeId={selected_shape_id}
                 onWaySelect={(id) => (selectedWayId = id)}
@@ -2720,6 +2986,7 @@
                 {geoData}
                 criteriaHour={criteria_hour}
                 lineWeightBy={line_weight_by}
+                continuousScaleMode={continuous_scale_mode}
                 {selectedWayId}
                 selectedShapeId={selected_shape_id}
                 onWaySelect={(id) => (selectedWayId = id)}
@@ -2734,6 +3001,7 @@
             criteriaHour={criteria_hour}
             speedMetric={selected_speed_metric}
             lineWeightBy={line_weight_by}
+            continuousScaleMode={continuous_scale_mode}
             {selectedWayId}
             selectedShapeId={selected_shape_id}
             onWaySelect={(id) => (selectedWayId = id)}
@@ -2764,6 +3032,7 @@
             {geoData}
             criteriaHour={criteria_hour}
             lineWeightBy={line_weight_by}
+            continuousScaleMode={continuous_scale_mode}
             {selectedWayId}
             selectedShapeId={selected_shape_id}
             onWaySelect={(id) => (selectedWayId = id)}

@@ -16,6 +16,7 @@
         geoData,
         criteriaHour,
         lineWeightBy = "frequency",
+        continuousScaleMode = "percentile",
         selectedWayId = undefined,
         selectedShapeId = undefined,
         onLayerCreate = (layer) => {},
@@ -26,6 +27,7 @@
         geoData: GeoPrioritisation;
         criteriaHour: number;
         lineWeightBy: LineWeightMetric;
+        continuousScaleMode?: "percentile" | "minmax";
         selectedWayId: string | undefined;
         selectedShapeId: string | undefined;
         onLayerCreate: (layer: L.Layer) => void;
@@ -46,15 +48,13 @@
     function getParkingLaneStyle(wayId: string): L.PathOptions {
         const props = geoData.wayData[wayId];
         const n_lanes_parking = props?.n_lanes_parking || 0;
-        const p5 =
-            (geoData.metadata.data_census as any).parking_lanes_length?.p5 ?? 0;
-        const p95 =
-            (geoData.metadata.data_census as any).parking_lanes_length?.p95 ??
-            Math.max(n_lanes_parking, 1);
+        const census = (geoData.metadata.data_census as any).parking_lanes_length;
+        const minVal = continuousScaleMode === "minmax" ? (census?.min ?? 0) : (census?.p5 ?? 0);
+        const maxVal = continuousScaleMode === "minmax" ? (census?.max ?? Math.max(n_lanes_parking, 1)) : (census?.p95 ?? Math.max(n_lanes_parking, 1));
         const color = getColorFromGradient(
             n_lanes_parking,
-            p5,
-            p95,
+            minVal,
+            maxVal,
             COLOR_GRADIENT,
         );
         const weight = getLineWeight(

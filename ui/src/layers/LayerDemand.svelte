@@ -16,6 +16,7 @@
         geoData,
         criteriaHour,
         lineWeightBy = "frequency",
+        continuousScaleMode = "percentile",
         selectedWayId = undefined,
         selectedShapeId = undefined,
         onLayerCreate = (layer) => {},
@@ -26,6 +27,7 @@
         geoData: GeoPrioritisation;
         criteriaHour: number;
         lineWeightBy: LineWeightMetric;
+        continuousScaleMode?: "percentile" | "minmax";
         selectedWayId: string | undefined;
         selectedShapeId: string | undefined;
         onLayerCreate: (layer: L.Layer) => void;
@@ -62,10 +64,13 @@
             lineWeightBy,
         );
         if (demandValue !== undefined) {
+            const census = geoData.metadata.data_census.demand_length;
+            const minVal = continuousScaleMode === "minmax" ? (census?.min ?? 0) : (census?.p5 ?? 0);
+            const maxVal = continuousScaleMode === "minmax" ? (census?.max ?? 1) : (census?.p95 ?? 1);
             color = getColorFromGradient(
                 demandValue,
-                geoData.metadata.data_census.demand_length?.p5 || 0,
-                geoData.metadata.data_census.demand_length?.p95 || 1,
+                minVal,
+                maxVal,
                 COLOR_GRADIENT,
             );
         }

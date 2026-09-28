@@ -932,7 +932,7 @@
                                             : 'h-28'} border-l border-b border-muted-foreground/30 px-1 relative bg-muted/10 rounded-sm"
                                     >
                                         <div
-                                            class="absolute left-0 right-0 top-1/2 -translate-y-1/2 border-t border-dashed border-muted-foreground/40 pointer-events-none z-0"
+                                            class="absolute left-0 right-0 top-1/2 -translate-y-1/2 border-t border-solid border-muted-foreground/50 pointer-events-none z-0"
                                         ></div>
                                         <span
                                             class="absolute right-1 top-1/2 -translate-y-1/2 text-[8px] font-mono text-muted-foreground/50 pointer-events-none select-none z-0"
@@ -940,14 +940,46 @@
                                             0%
                                         </span>
 
+                                        {#if way.speed_p85 != null && way.speed_p85 > 0 && way.speed_median != null}
+                                            {@const dailyDi =
+                                                (way.speed_median -
+                                                    way.speed_p85) /
+                                                way.speed_p85}
+                                            {@const dailyDiYPercent =
+                                                50 -
+                                                Math.min(
+                                                    Math.max(
+                                                        (dailyDi / maxAbsDi) *
+                                                            50,
+                                                        -50,
+                                                    ),
+                                                    50,
+                                                )}
+                                            <div
+                                                class="absolute left-0 right-0 border-t border-dashed border-muted-foreground/60 pointer-events-none z-20"
+                                                style="top: {dailyDiYPercent}%;"
+                                                title="Daily DI: {(
+                                                    dailyDi * 100
+                                                ).toFixed(1)}%"
+                                            ></div>
+                                            <span
+                                                class="absolute left-1 text-[8px] font-mono font-medium text-muted-foreground pointer-events-none select-none z-20 -translate-y-full"
+                                                style="top: {dailyDiYPercent}%;"
+                                            >
+                                                Daily: {dailyDi > 0
+                                                    ? "+"
+                                                    : ""}{(
+                                                    dailyDi * 100
+                                                ).toFixed(1)}%
+                                            </span>
+                                        {/if}
+
                                         {#each Array(24) as _, i}
                                             {@const di = hourDis[i]}
                                             {@const isSelectedHour =
                                                 i === criteria_hour}
                                             <div
-                                                class="flex-1 h-full flex flex-col relative group z-10 {isSelectedHour
-                                                    ? 'bg-primary/10 rounded-sm'
-                                                    : ''}"
+                                                class="flex-1 h-full flex flex-col relative group z-10"
                                             >
                                                 <!-- Top half: positive values -->
                                                 <div
@@ -971,7 +1003,9 @@
                                                                 100,
                                                             )}
                                                         <div
-                                                            class="w-full rounded-t-[1px] transition-all group-hover:brightness-110"
+                                                            class="w-full rounded-t-[1px] transition-all group-hover:brightness-110 {isSelectedHour
+                                                                ? 'ring-1 ring-muted-foreground/50 ring-offset-1 ring-offset-background'
+                                                                : ''}"
                                                             style="height: {barHeight}%; background-color: {cat.color};"
                                                         ></div>
                                                     {/if}
@@ -1001,7 +1035,9 @@
                                                                 100,
                                                             )}
                                                         <div
-                                                            class="w-full rounded-b-[1px] transition-all group-hover:brightness-110"
+                                                            class="w-full rounded-b-[1px] transition-all group-hover:brightness-110 {isSelectedHour
+                                                                ? 'ring-1 ring-muted-foreground/50 ring-offset-1 ring-offset-background'
+                                                                : ''}"
                                                             style="height: {barHeight}%; background-color: {cat.color};"
                                                         ></div>
                                                     {/if}
@@ -1088,56 +1124,91 @@
                                     through this segment.
                                 </p>
 
-                                <div
-                                    class="flex items-end gap-[2px] {isExpanded
-                                        ? 'h-36'
-                                        : 'h-28'} border-l border-b border-muted-foreground/30 px-1 pt-2 bg-muted/10 rounded-sm"
-                                >
-                                    {#each Array(24) as _, i}
-                                        {@const hFreq =
-                                            way.hour_frequency?.[i] || 0}
-                                        {@const maxFreq = Math.max(
-                                            ...(Object.values(
-                                                way.hour_frequency || { 0: 1 },
-                                            ) as number[]),
-                                            1,
-                                        )}
-                                        {@const height = Math.max(
-                                            (hFreq / maxFreq) * 100,
-                                            hFreq > 0 ? 8 : 0,
-                                        )}
-                                        {@const hourFreqCensus =
-                                            geoData.metadata?.data_census
-                                                ?.frequency_hour?.[i]}
-                                        {@const barColor = hourFreqCensus
-                                            ? getColorFromGradient(
-                                                  hFreq,
-                                                  hourFreqCensus.p5,
-                                                  hourFreqCensus.p95,
-                                                  COLOR_GRADIENT,
-                                              )
-                                            : "var(--primary)"}
-                                        {@const isSelectedHour =
-                                            i === criteria_hour}
-                                        <div
-                                            class="flex-1 rounded-t-[1px] relative group transition-colors {isSelectedHour
-                                                ? 'ring-1 ring-primary ring-offset-1 ring-offset-background'
-                                                : ''}"
-                                            style="height: {height}%; background-color: {hFreq >
-                                            0
-                                                ? barColor
-                                                : 'transparent'};"
-                                        >
-                                            {#if hFreq > 0}
-                                                <div
-                                                    class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-20"
-                                                >
-                                                    {i}:00: {hFreq} buses
-                                                </div>
-                                            {/if}
-                                        </div>
-                                    {/each}
-                                </div>
+                                {#if true}
+                                    {@const totalDailyFreq = way.hour_frequency
+                                        ? (
+                                              Object.values(
+                                                  way.hour_frequency,
+                                              ) as number[]
+                                          ).reduce((a, b) => a + b, 0)
+                                        : 0}
+                                    {@const avgDailyFreqPerHour =
+                                        totalDailyFreq / 24}
+                                    {@const maxFreqChart = Math.max(
+                                        ...(Object.values(
+                                            way.hour_frequency || { 0: 1 },
+                                        ) as number[]),
+                                        1,
+                                    )}
+
+                                    <div
+                                        class="flex items-end gap-[2px] {isExpanded
+                                            ? 'h-36'
+                                            : 'h-28'} border-l border-b border-muted-foreground/30 px-1 pt-2 bg-muted/10 rounded-sm relative"
+                                    >
+                                        {#if avgDailyFreqPerHour > 0}
+                                            {@const dailyFreqYPercent =
+                                                100 -
+                                                (avgDailyFreqPerHour /
+                                                    maxFreqChart) *
+                                                    100}
+                                            <div
+                                                class="absolute left-0 right-0 border-t border-dashed border-muted-foreground/60 pointer-events-none z-20"
+                                                style="top: {dailyFreqYPercent}%;"
+                                                title="Avg Daily Frequency: {avgDailyFreqPerHour.toFixed(
+                                                    1,
+                                                )} buses/h"
+                                            ></div>
+                                            <span
+                                                class="absolute left-1 text-[8px] font-mono font-medium text-muted-foreground pointer-events-none select-none z-20 -translate-y-full"
+                                                style="top: {dailyFreqYPercent}%;"
+                                            >
+                                                Daily Avg: {avgDailyFreqPerHour.toFixed(
+                                                    1,
+                                                )}/h
+                                            </span>
+                                        {/if}
+
+                                        {#each Array(24) as _, i}
+                                            {@const hFreq =
+                                                way.hour_frequency?.[i] || 0}
+                                            {@const height = Math.max(
+                                                (hFreq / maxFreqChart) * 100,
+                                                hFreq > 0 ? 8 : 0,
+                                            )}
+                                            {@const hourFreqCensus =
+                                                geoData.metadata?.data_census
+                                                    ?.frequency_hour?.[i]}
+                                            {@const barColor = hourFreqCensus
+                                                ? getColorFromGradient(
+                                                      hFreq,
+                                                      hourFreqCensus.p5,
+                                                      hourFreqCensus.p95,
+                                                      COLOR_GRADIENT,
+                                                  )
+                                                : "var(--primary)"}
+                                            {@const isSelectedHour =
+                                                i === criteria_hour}
+                                            <div
+                                                class="flex-1 rounded-t-[1px] relative group transition-colors {isSelectedHour
+                                                    ? 'ring-1 ring-muted-foreground/50 ring-offset-1 ring-offset-background'
+                                                    : ''}"
+                                                style="height: {height}%; background-color: {hFreq >
+                                                0
+                                                    ? barColor
+                                                    : 'transparent'};"
+                                            >
+                                                {#if hFreq > 0}
+                                                    <div
+                                                        class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-30"
+                                                    >
+                                                        {i}:00: {hFreq} buses
+                                                    </div>
+                                                {/if}
+                                            </div>
+                                        {/each}
+                                    </div>
+                                {/if}
 
                                 <div
                                     class="flex justify-between text-[9px] text-muted-foreground font-mono uppercase tracking-tighter"
@@ -1179,65 +1250,98 @@
                                         {/if}
                                     </div>
 
-                                    <div
-                                        class="flex items-end gap-[2px] {isExpanded
-                                            ? 'h-36'
-                                            : 'h-28'} border-l border-b border-muted-foreground/30 px-1 pt-2 bg-muted/10 rounded-sm"
-                                    >
-                                        {#each Array(24) as _, i}
-                                            {@const avg_speed =
-                                                way.hour_speed_avg?.[i] || 0}
-                                            {@const maxSpeed = Math.max(
-                                                ...(Object.values(
-                                                    way.hour_speed_avg || {
-                                                        0: 1,
-                                                    },
-                                                ) as number[]),
-                                                1,
-                                            )}
-                                            {@const height = Math.max(
-                                                (avg_speed / maxSpeed) * 100,
-                                                avg_speed > 0 ? 8 : 0,
-                                            )}
-                                            {@const hourSpeedCensus =
-                                                geoData.metadata?.data_census
-                                                    ?.speed_avg_hour_length?.[
-                                                    i
-                                                ] ??
-                                                geoData.metadata?.data_census
-                                                    ?.speed_avg_length}
-                                            {@const barColor =
-                                                hourSpeedCensus && avg_speed > 0
-                                                    ? getColorFromGradient(
-                                                          avg_speed,
-                                                          hourSpeedCensus.p5,
-                                                          hourSpeedCensus.p95,
-                                                          COLOR_GRADIENT_RED.slice().reverse(),
-                                                      )
-                                                    : "var(--primary)"}
-                                            {@const isSelectedHour =
-                                                i === criteria_hour}
-                                            <div
-                                                class="flex-1 rounded-t-[1px] relative group transition-colors {isSelectedHour
-                                                    ? 'ring-1 ring-primary ring-offset-1 ring-offset-background'
-                                                    : ''}"
-                                                style="height: {height}%; background-color: {avg_speed >
-                                                0
-                                                    ? barColor
-                                                    : 'transparent'};"
-                                            >
-                                                {#if avg_speed > 0}
-                                                    <div
-                                                        class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-20"
-                                                    >
-                                                        {i}:00: {Number(
-                                                            avg_speed,
-                                                        ).toFixed(1)} km/h
-                                                    </div>
-                                                {/if}
-                                            </div>
-                                        {/each}
-                                    </div>
+                                    {#if true}
+                                        {@const maxSpeedChart = Math.max(
+                                            ...(Object.values(
+                                                way.hour_speed_avg || { 0: 1 },
+                                            ) as number[]),
+                                            way.speed_avg != null
+                                                ? way.speed_avg
+                                                : 0,
+                                            1,
+                                        )}
+
+                                        <div
+                                            class="flex items-end gap-[2px] {isExpanded
+                                                ? 'h-36'
+                                                : 'h-28'} border-l border-b border-muted-foreground/30 px-1 pt-2 bg-muted/10 rounded-sm relative"
+                                        >
+                                            {#if way.speed_avg != null && way.speed_avg > 0}
+                                                {@const dailySpeedYPercent =
+                                                    100 -
+                                                    (way.speed_avg /
+                                                        maxSpeedChart) *
+                                                        100}
+                                                <div
+                                                    class="absolute left-0 right-0 border-t border-dashed border-muted-foreground/60 pointer-events-none z-20"
+                                                    style="top: {dailySpeedYPercent}%;"
+                                                    title="Daily Avg Speed: {Number(
+                                                        way.speed_avg,
+                                                    ).toFixed(1)} km/h"
+                                                ></div>
+                                                <span
+                                                    class="absolute left-1 text-[8px] font-mono font-medium text-muted-foreground pointer-events-none select-none z-20 -translate-y-full"
+                                                    style="top: {dailySpeedYPercent}%;"
+                                                >
+                                                    Daily Avg: {Number(
+                                                        way.speed_avg,
+                                                    ).toFixed(1)} km/h
+                                                </span>
+                                            {/if}
+
+                                            {#each Array(24) as _, i}
+                                                {@const avg_speed =
+                                                    way.hour_speed_avg?.[i] ||
+                                                    0}
+                                                {@const height = Math.max(
+                                                    (avg_speed /
+                                                        maxSpeedChart) *
+                                                        100,
+                                                    avg_speed > 0 ? 8 : 0,
+                                                )}
+                                                {@const hourSpeedCensus =
+                                                    geoData.metadata
+                                                        ?.data_census
+                                                        ?.speed_avg_hour_length?.[
+                                                        i
+                                                    ] ??
+                                                    geoData.metadata
+                                                        ?.data_census
+                                                        ?.speed_avg_length}
+                                                {@const barColor =
+                                                    hourSpeedCensus &&
+                                                    avg_speed > 0
+                                                        ? getColorFromGradient(
+                                                              avg_speed,
+                                                              hourSpeedCensus.p5,
+                                                              hourSpeedCensus.p95,
+                                                              COLOR_GRADIENT_RED.slice().reverse(),
+                                                          )
+                                                        : "var(--primary)"}
+                                                {@const isSelectedHour =
+                                                    i === criteria_hour}
+                                                <div
+                                                    class="flex-1 rounded-t-[1px] relative group transition-colors {isSelectedHour
+                                                        ? 'ring-1 ring-muted-foreground/50 ring-offset-1 ring-offset-background'
+                                                        : ''}"
+                                                    style="height: {height}%; background-color: {avg_speed >
+                                                    0
+                                                        ? barColor
+                                                        : 'transparent'};"
+                                                >
+                                                    {#if avg_speed > 0}
+                                                        <div
+                                                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-20"
+                                                        >
+                                                            {i}:00: {Number(
+                                                                avg_speed,
+                                                            ).toFixed(1)} km/h
+                                                        </div>
+                                                    {/if}
+                                                </div>
+                                            {/each}
+                                        </div>
+                                    {/if}
 
                                     <div
                                         class="flex justify-between text-[9px] text-muted-foreground font-mono uppercase tracking-tighter"
@@ -1272,6 +1376,11 @@
                                                 >
                                                     Metric\Hour
                                                 </th>
+                                                <th
+                                                    class="text-[9px] font-mono font-bold text-primary text-center px-1.5 py-1 bg-muted/40 rounded-t"
+                                                >
+                                                    Daily
+                                                </th>
                                                 {#each Array(24) as _, i}
                                                     <th
                                                         class="text-[9px] font-mono font-semibold {i ===
@@ -1291,6 +1400,20 @@
                                                 >
                                                     Frequency (buses)
                                                 </th>
+                                                <td
+                                                    class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                                >
+                                                    {way.hour_frequency
+                                                        ? (
+                                                              Object.values(
+                                                                  way.hour_frequency,
+                                                              ) as number[]
+                                                          ).reduce(
+                                                              (a, b) => a + b,
+                                                              0,
+                                                          )
+                                                        : 0}
+                                                </td>
                                                 {#each Array(24) as _, i}
                                                     {@const tableFreq =
                                                         way.hour_frequency?.[i]}
@@ -1315,6 +1438,21 @@
                                                     >
                                                         Avg speed (km/h)
                                                     </th>
+                                                    <td
+                                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                                    >
+                                                        {way.speed_avg !=
+                                                            null &&
+                                                        !isNaN(
+                                                            Number(
+                                                                way.speed_avg,
+                                                            ),
+                                                        )
+                                                            ? Number(
+                                                                  way.speed_avg,
+                                                              ).toFixed(1)
+                                                            : "-"}
+                                                    </td>
                                                     {#each Array(24) as _, i}
                                                         {@const avgSpeed =
                                                             way
@@ -1350,6 +1488,21 @@
                                                     >
                                                         Median speed (km/h)
                                                     </th>
+                                                    <td
+                                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                                    >
+                                                        {way.speed_median !=
+                                                            null &&
+                                                        !isNaN(
+                                                            Number(
+                                                                way.speed_median,
+                                                            ),
+                                                        )
+                                                            ? Number(
+                                                                  way.speed_median,
+                                                              ).toFixed(1)
+                                                            : "-"}
+                                                    </td>
                                                     {#each Array(24) as _, i}
                                                         {@const medianSpeed =
                                                             way
@@ -1386,6 +1539,21 @@
                                                     >
                                                         P85 speed (km/h)
                                                     </th>
+                                                    <td
+                                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                                    >
+                                                        {way.speed_p85 !=
+                                                            null &&
+                                                        !isNaN(
+                                                            Number(
+                                                                way.speed_p85,
+                                                            ),
+                                                        )
+                                                            ? Number(
+                                                                  way.speed_p85,
+                                                              ).toFixed(1)
+                                                            : "-"}
+                                                    </td>
                                                     {#each Array(24) as _, i}
                                                         {@const p85Speed =
                                                             way
@@ -1421,6 +1589,13 @@
                                                     >
                                                         Speed count (nr.)
                                                     </th>
+                                                    <td
+                                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                                    >
+                                                        {way.speed_count != null
+                                                            ? way.speed_count
+                                                            : "-"}
+                                                    </td>
                                                     {#each Array(24) as _, i}
                                                         {@const count =
                                                             way

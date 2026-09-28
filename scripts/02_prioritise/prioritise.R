@@ -845,9 +845,9 @@ for (i in 1:nrow(regions)) { # i =1
 
     # Attach speed profile stats if available
     rid <- as.character(df$route_id[1])
-    if (!is.null(route_speed_profiles_nested) && rid %in% names(route_speed_profiles_nested)) {
-      route_metadata$speed_profile <- route_speed_profiles_nested[[rid]]
-    }
+    # if (!is.null(route_speed_profiles_nested) && rid %in% names(route_speed_profiles_nested)) {
+    # route_metadata$speed_profile <- route_speed_profiles_nested[[rid]]
+    # }
 
     c(route_metadata)
   })

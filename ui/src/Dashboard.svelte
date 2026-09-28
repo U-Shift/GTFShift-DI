@@ -2145,30 +2145,36 @@
     <!-- Control buttons -->
     <div class="w-full flex gap-2 mt-4 pt-4 border-t">
         {#if region && selected_layer && geoData && geoData.metadata}
-            <Button
-                variant="outline"
-                size="sm"
-                onclick={() => {
-                    if (region && region.layers && region.layers.length === 1) {
-                        region = undefined;
-                    }
-                    selected_layer = undefined;
-                    selected_layer_id = "";
-                    geoData = null;
-                    active_layer = undefined;
-                    open_accordion = undefined;
-                    selected_speed_metric = "avg";
-                    selected_shape_id = "all";
-                    selectedWayId = undefined;
-                    action_modal_about_open = false;
-                    action_modal_data_open = false;
-                    action_modal_details_open = false;
-                    action_modal_download_open = false;
-                }}
-                class="flex-1"
-            >
-                <i class="fa-solid fa-arrow-left mr-2"></i> Regions
-            </Button>
+            {#if !action_hide_form}
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onclick={() => {
+                        if (
+                            region &&
+                            region.layers &&
+                            region.layers.length === 1
+                        ) {
+                            region = undefined;
+                        }
+                        selected_layer = undefined;
+                        selected_layer_id = "";
+                        geoData = null;
+                        active_layer = undefined;
+                        open_accordion = undefined;
+                        selected_speed_metric = "avg";
+                        selected_shape_id = "all";
+                        selectedWayId = undefined;
+                        action_modal_about_open = false;
+                        action_modal_data_open = false;
+                        action_modal_details_open = false;
+                        action_modal_download_open = false;
+                    }}
+                    class="flex-1"
+                >
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Regions
+                </Button>
+            {/if}
             <Button
                 variant="outline"
                 size="sm"
@@ -2176,20 +2182,22 @@
                 class="flex-1"
             >
                 {@html !action_hide_form
-                    ? '<i class="fa-solid fa-map mr-2"></i> Hide'
-                    : '<i class="fa-solid fa-sliders mr-2"></i> Layers'}
+                    ? '<i class="fa-solid fa-map mr-2"></i> Map'
+                    : '<i class="fa-solid fa-sliders mr-2"></i> Settings'}
             </Button>
         {/if}
-        <Button
-            variant="outline"
-            size="sm"
-            onclick={() => {
-                light_mode = !light_mode;
-            }}
-            class="flex-1"
-        >
-            <i class="fa-solid fa-circle-half-stroke mr-2"></i> Theme
-        </Button>
+        {#if !action_hide_form}
+            <Button
+                variant="outline"
+                size="sm"
+                onclick={() => {
+                    light_mode = !light_mode;
+                }}
+                class="flex-1"
+            >
+                <i class="fa-solid fa-circle-half-stroke mr-2"></i> Theme
+            </Button>
+        {/if}
     </div>
 </div>
 

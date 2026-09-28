@@ -5,11 +5,48 @@ export const BASE_URL: string = '.'; // 'https://ushift.tecnico.ulisboa.pt/apps/
 
 export const ABOUT_METHODOLOGICAL_SLIDES: string = 'https://ushift.tecnico.ulisboa.pt/~ushift.daemon/apps/gtfshift/slides_gmu_20260512';
 
-export const MAP_DARK: string = 'https://tiles.openfreemap.org/styles/dark';
-export const MAP_LIGHT: string = 'https://tiles.openfreemap.org/styles/positron';
-export const MAP_LIGHT_OPACITY: number = 0.5;
-export const MAP_DARK_OPACITY: number = 0.9;
-export const MAP_ATTRIBUTION: string = '&copy; <a href="https://openfreemap.org" target="_blank">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors';
+export interface BasemapDef {
+    id: string;
+    name: string;
+    url?: string;
+    vector: boolean;
+    attribution?: string;
+    opacity?: number;
+    lightUrl?: string;
+    darkUrl?: string;
+    lightOpacity?: number;
+    darkOpacity?: number;
+}
+
+export const BASEMAPS: Record<string, BasemapDef> = {
+    simplified: {
+        id: "simplified",
+        name: "Simplified",
+        vector: true,
+        lightUrl: 'https://tiles.openfreemap.org/styles/positron',
+        darkUrl: 'https://tiles.openfreemap.org/styles/dark',
+        lightOpacity: 0.5,
+        darkOpacity: 0.9,
+        attribution: '<a href="https://openfreemap.org/">OpenFreeMap</a> <a href="https://www.openmaptiles.org/">&copy; OpenMapTiles</a> Data from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    },
+    osm: {
+        id: "osm",
+        name: "OpenStreetMap",
+        vector: true,
+        url: 'https://vector.openstreetmap.org/styles/svwd/svwd03style.json',
+        opacity: 0.9,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    },
+    aerial: {
+        id: "aerial",
+        name: "Aerial",
+        vector: false,
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        attribution: '&copy; ESRI',
+        opacity: 0.9,
+    },
+};
+
 export const MAP_INIT_ZOOM: number = 3; // 3
 export const MAP_INIT_CENTER: [number, number] = [38.7169, -9.1399];
 

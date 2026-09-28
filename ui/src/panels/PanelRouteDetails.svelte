@@ -419,45 +419,79 @@
                                             ></i>
                                             Scheduled Departures / Hour
                                         </h5>
-                                        <div
-                                            class="flex items-end gap-[2px] {isExpanded
-                                                ? 'h-28'
-                                                : 'h-20'} border-l border-b border-muted-foreground/30 px-1 pt-2"
-                                        >
-                                            {#each Array(24) as _, i}
-                                                {@const entry =
-                                                    scheduleEntries.find(
-                                                        (e) => e.hour === i,
-                                                    )}
-                                                {@const count =
-                                                    entry?.count ?? 0}
-                                                {@const height =
-                                                    count > 0
-                                                        ? Math.max(
-                                                              (count /
-                                                                  maxSchedule) *
-                                                                  100,
-                                                              8,
-                                                          )
-                                                        : 0}
-                                                <div
-                                                    class="flex-1 rounded-t-[1px] relative group transition-colors"
-                                                    style="height: {height}%; background-color: {count >
-                                                    0
-                                                        ? shapeColor + 'bb'
-                                                        : 'transparent'};"
-                                                    title="{i}:00 – {count} dep."
-                                                >
-                                                    {#if count > 0}
-                                                        <div
-                                                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-20"
-                                                        >
-                                                            {i}:00: {count}
-                                                        </div>
-                                                    {/if}
-                                                </div>
-                                            {/each}
-                                        </div>
+                                        {#if true}
+                                            {@const totalSchedule = scheduleEntries.reduce(
+                                                (sum, e) => sum + (e.count || 0),
+                                                0,
+                                            )}
+                                            {@const avgSchedulePerHour = totalSchedule / 24}
+                                            <div
+                                                class="flex items-end gap-[2px] {isExpanded
+                                                    ? 'h-28'
+                                                    : 'h-20'} border-l border-b border-muted-foreground/30 px-1 pt-2 bg-muted/10 rounded-sm relative"
+                                            >
+                                                {#if avgSchedulePerHour > 0}
+                                                    {@const dailyAvgYPercent =
+                                                        100 -
+                                                        (avgSchedulePerHour /
+                                                            maxSchedule) *
+                                                            100}
+                                                    <div
+                                                        class="absolute left-0 right-0 border-t border-dashed border-muted-foreground/60 pointer-events-none z-20"
+                                                        style="top: {dailyAvgYPercent}%;"
+                                                        title="Daily Avg: {avgSchedulePerHour.toFixed(
+                                                            1,
+                                                        )} dep/h"
+                                                    ></div>
+                                                    <span
+                                                        class="absolute left-1 text-[8px] font-mono font-medium text-muted-foreground pointer-events-none select-none z-20 -translate-y-full"
+                                                        style="top: {dailyAvgYPercent}%;"
+                                                    >
+                                                        Daily Avg: {avgSchedulePerHour.toFixed(
+                                                            1,
+                                                        )}/h
+                                                    </span>
+                                                {/if}
+
+                                                {#each Array(24) as _, i}
+                                                    {@const entry =
+                                                        scheduleEntries.find(
+                                                            (e) => e.hour === i,
+                                                        )}
+                                                    {@const count =
+                                                        entry?.count ?? 0}
+                                                    {@const height =
+                                                        count > 0
+                                                            ? Math.max(
+                                                                  (count /
+                                                                      maxSchedule) *
+                                                                      100,
+                                                                  8,
+                                                              )
+                                                            : 0}
+                                                    {@const isSelectedHour =
+                                                        i === criteria_hour}
+                                                    <div
+                                                        class="flex-1 rounded-t-[1px] relative group transition-colors {isSelectedHour
+                                                            ? 'ring-1 ring-muted-foreground/50 ring-offset-1 ring-offset-background'
+                                                            : ''}"
+                                                        style="height: {height}%; background-color: {count >
+                                                        0
+                                                            ? shapeColor + 'bb'
+                                                            : 'transparent'};"
+                                                        title="{i}:00 – {count} dep."
+                                                    >
+                                                        {#if count > 0}
+                                                            <div
+                                                                class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-foreground text-background text-[10px] rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-20"
+                                                            >
+                                                                {i}:00: {count}
+                                                            </div>
+                                                        {/if}
+                                                    </div>
+                                                {/each}
+                                            </div>
+                                        {/if}
                                         <div
                                             class="flex justify-between text-[9px] text-muted-foreground font-mono uppercase tracking-tighter"
                                         >
@@ -926,8 +960,31 @@
                                     <div
                                         class="flex items-end gap-[2px] {isExpanded
                                             ? 'h-36'
-                                            : 'h-24'} border-l border-b border-muted-foreground/30 px-1 pt-2 bg-muted/10 rounded-sm"
+                                            : 'h-24'} border-l border-b border-muted-foreground/30 px-1 pt-2 bg-muted/10 rounded-sm relative"
                                     >
+                                        {#if speedProfileStats.commercial_speed_avg != null && speedProfileStats.commercial_speed_avg > 0}
+                                            {@const speedAvgYPercent =
+                                                100 -
+                                                (speedProfileStats.commercial_speed_avg /
+                                                    maxHourlyCommercialSpeed) *
+                                                    100}
+                                            <div
+                                                class="absolute left-0 right-0 border-t border-dashed border-muted-foreground/60 pointer-events-none z-20"
+                                                style="top: {speedAvgYPercent}%;"
+                                                title="Daily Avg: {Number(
+                                                    speedProfileStats.commercial_speed_avg,
+                                                ).toFixed(1)} km/h"
+                                            ></div>
+                                            <span
+                                                class="absolute left-1 text-[8px] font-mono font-medium text-muted-foreground pointer-events-none select-none z-20 -translate-y-full"
+                                                style="top: {speedAvgYPercent}%;"
+                                            >
+                                                Daily Avg: {Number(
+                                                    speedProfileStats.commercial_speed_avg,
+                                                ).toFixed(1)} km/h
+                                            </span>
+                                        {/if}
+
                                         {#each Array(24) as _, i}
                                             {@const hourData =
                                                 speedProfileHours.find(
@@ -944,8 +1001,12 @@
                                                           8,
                                                       )
                                                     : 0}
+                                            {@const isSelectedHour =
+                                                i === criteria_hour}
                                             <div
-                                                class="flex-1 rounded-t-[1px] relative group transition-colors"
+                                                class="flex-1 rounded-t-[1px] relative group transition-colors {isSelectedHour
+                                                    ? 'ring-1 ring-muted-foreground/50 ring-offset-1 ring-offset-background'
+                                                    : ''}"
                                                 style="height: {height}%; background-color: {speedAvg !=
                                                     null && speedAvg > 0
                                                     ? shapeColor + 'cc'
@@ -969,147 +1030,6 @@
                                         <span>0h</span><span>6h</span><span
                                             >12h</span
                                         ><span>18h</span><span>23h</span>
-                                    </div>
-
-                                    <!-- Hourly Metrics Table -->
-                                    <div class="overflow-x-auto pt-2">
-                                        <table
-                                            class="w-full min-w-[760px] border-separate border-spacing-x-[2px] border-spacing-y-1"
-                                        >
-                                            <tbody>
-                                                <tr>
-                                                    <th
-                                                        class="text-[9px] font-mono font-semibold text-muted-foreground text-left px-2 py-1"
-                                                    >
-                                                        Metric\Hour
-                                                    </th>
-                                                    {#each Array(24) as _, i}
-                                                        <th
-                                                            class="text-[9px] font-mono font-semibold text-muted-foreground text-center px-1 py-1"
-                                                        >
-                                                            {i}h
-                                                        </th>
-                                                    {/each}
-                                                </tr>
-
-                                                <!-- Average Speed -->
-                                                <tr>
-                                                    <th
-                                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap"
-                                                    >
-                                                        Average speed (km/h)
-                                                    </th>
-                                                    {#each Array(24) as _, i}
-                                                        {@const hourData =
-                                                            speedProfileHours.find(
-                                                                (h) =>
-                                                                    h.hour ===
-                                                                    i,
-                                                            )}
-                                                        {@const val =
-                                                            hourData?.commercial_speed_avg}
-                                                        <td
-                                                            class="text-[10px] font-medium text-center px-1 py-1 rounded bg-background/70 border border-border/30"
-                                                            title="{i}:00 avg speed"
-                                                        >
-                                                            {val != null &&
-                                                            !isNaN(Number(val))
-                                                                ? Number(
-                                                                      val,
-                                                                  ).toFixed(1)
-                                                                : "-"}
-                                                        </td>
-                                                    {/each}
-                                                </tr>
-
-                                                <!-- Median Speed -->
-                                                <tr>
-                                                    <th
-                                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap"
-                                                    >
-                                                        Median speed (km/h)
-                                                    </th>
-                                                    {#each Array(24) as _, i}
-                                                        {@const hourData =
-                                                            speedProfileHours.find(
-                                                                (h) =>
-                                                                    h.hour ===
-                                                                    i,
-                                                            )}
-                                                        {@const val =
-                                                            hourData?.commercial_speed_median}
-                                                        <td
-                                                            class="text-[10px] font-medium text-center px-1 py-1 rounded bg-background/70 border border-border/30"
-                                                            title="{i}:00 median speed"
-                                                        >
-                                                            {val != null &&
-                                                            !isNaN(Number(val))
-                                                                ? Number(
-                                                                      val,
-                                                                  ).toFixed(1)
-                                                                : "-"}
-                                                        </td>
-                                                    {/each}
-                                                </tr>
-
-                                                <!-- P85 Speed -->
-                                                <tr>
-                                                    <th
-                                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap"
-                                                    >
-                                                        P85 speed (km/h)
-                                                    </th>
-                                                    {#each Array(24) as _, i}
-                                                        {@const hourData =
-                                                            speedProfileHours.find(
-                                                                (h) =>
-                                                                    h.hour ===
-                                                                    i,
-                                                            )}
-                                                        {@const val =
-                                                            hourData?.commercial_speed_p85}
-                                                        <td
-                                                            class="text-[10px] font-medium text-center px-1 py-1 rounded bg-background/70 border border-border/30"
-                                                            title="{i}:00 p85 speed"
-                                                        >
-                                                            {val != null &&
-                                                            !isNaN(Number(val))
-                                                                ? Number(
-                                                                      val,
-                                                                  ).toFixed(1)
-                                                                : "-"}
-                                                        </td>
-                                                    {/each}
-                                                </tr>
-
-                                                <!-- Trips count -->
-                                                <tr>
-                                                    <th
-                                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap"
-                                                    >
-                                                        Trips sampled (nr.)
-                                                    </th>
-                                                    {#each Array(24) as _, i}
-                                                        {@const hourData =
-                                                            speedProfileHours.find(
-                                                                (h) =>
-                                                                    h.hour ===
-                                                                    i,
-                                                            )}
-                                                        {@const trips =
-                                                            hourData?.n_trips}
-                                                        <td
-                                                            class="text-[10px] font-medium text-center px-1 py-1 rounded bg-background/70 border border-border/30"
-                                                            title="{i}:00 trips"
-                                                        >
-                                                            {trips != null
-                                                                ? trips
-                                                                : "-"}
-                                                        </td>
-                                                    {/each}
-                                                </tr>
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
                             {/if}
@@ -1141,15 +1061,45 @@
                                             ? 'h-36'
                                             : 'h-28'} border-l border-b border-muted-foreground/30 px-1 relative bg-muted/10 rounded-sm"
                                     >
-                                        <!-- Center dashed zero baseline -->
+                                        <!-- Center solid zero baseline -->
                                         <div
-                                            class="absolute left-0 right-0 top-1/2 -translate-y-1/2 border-t border-dashed border-muted-foreground/40 pointer-events-none z-0"
+                                            class="absolute left-0 right-0 top-1/2 -translate-y-1/2 border-t border-solid border-muted-foreground/50 pointer-events-none z-0"
                                         ></div>
                                         <span
                                             class="absolute right-1 top-1/2 -translate-y-1/2 text-[8px] font-mono text-muted-foreground/50 pointer-events-none select-none z-0"
                                         >
                                             0%
                                         </span>
+
+                                        {#if periodDI != null}
+                                            {@const periodDiYPercent =
+                                                50 -
+                                                Math.min(
+                                                    Math.max(
+                                                        (periodDI / maxAbsDi) *
+                                                            50,
+                                                        -50,
+                                                    ),
+                                                    50,
+                                                )}
+                                            <div
+                                                class="absolute left-0 right-0 border-t border-dashed border-muted-foreground/60 pointer-events-none z-20"
+                                                style="top: {periodDiYPercent}%;"
+                                                title="Daily DI: {(
+                                                    periodDI * 100
+                                                ).toFixed(1)}%"
+                                            ></div>
+                                            <span
+                                                class="absolute left-1 text-[8px] font-mono font-medium text-muted-foreground pointer-events-none select-none z-20 -translate-y-full"
+                                                style="top: {periodDiYPercent}%;"
+                                            >
+                                                Daily: {periodDI > 0
+                                                    ? "+"
+                                                    : ""}{(
+                                                    periodDI * 100
+                                                ).toFixed(1)}%
+                                            </span>
+                                        {/if}
 
                                         {#each Array(24) as _, i}
                                             {@const hourData =
@@ -1158,6 +1108,8 @@
                                                 )}
                                             {@const di =
                                                 hourData?.disturbance_index}
+                                            {@const isSelectedHour =
+                                                i === criteria_hour}
                                             <div
                                                 class="flex-1 h-full flex flex-col relative group z-10"
                                             >
@@ -1183,7 +1135,9 @@
                                                                 100,
                                                             )}
                                                         <div
-                                                            class="w-full rounded-t-[1px] transition-all group-hover:brightness-110"
+                                                            class="w-full rounded-t-[1px] transition-all group-hover:brightness-110 {isSelectedHour
+                                                                ? 'ring-1 ring-muted-foreground/50 ring-offset-1 ring-offset-background'
+                                                                : ''}"
                                                             style="height: {barHeight}%; background-color: {cat.color};"
                                                         ></div>
                                                     {/if}
@@ -1213,7 +1167,9 @@
                                                                 100,
                                                             )}
                                                         <div
-                                                            class="w-full rounded-b-[1px] transition-all group-hover:brightness-110"
+                                                            class="w-full rounded-b-[1px] transition-all group-hover:brightness-110 {isSelectedHour
+                                                                ? 'ring-1 ring-muted-foreground/50 ring-offset-1 ring-offset-background'
+                                                                : ''}"
                                                             style="height: {barHeight}%; background-color: {cat.color};"
                                                         ></div>
                                                     {/if}
@@ -1269,6 +1225,270 @@
                                                 >
                                             </div>
                                         {/each}
+                                    </div>
+                                </div>
+                            {/if}
+
+                            <!-- 24-Hour Metrics Breakdown Table -->
+                            {#if speedProfileHours.length > 0}
+                                <div
+                                    class="space-y-2 p-3 bg-background/80 rounded-xl border border-border/40 shadow-xs"
+                                >
+                                    <h6
+                                        class="text-xs font-bold flex items-center gap-1.5 uppercase tracking-wider text-muted-foreground"
+                                    >
+                                        <i class="fas fa-table text-primary/70"></i>
+                                        24-Hour Metrics Breakdown
+                                    </h6>
+                                    <div class="overflow-x-auto pt-1">
+                                        <table
+                                            class="w-full min-w-[780px] border-separate border-spacing-x-[2px] border-spacing-y-1"
+                                        >
+                                            <tbody>
+                                                <tr>
+                                                    <th
+                                                        class="text-[9px] font-mono font-semibold text-muted-foreground text-left px-2 py-1 sticky left-0 bg-background/95 backdrop-blur z-10"
+                                                    >
+                                                        Metric\Hour
+                                                    </th>
+                                                    <th
+                                                        class="text-[9px] font-mono font-bold text-primary text-center px-1.5 py-1 bg-muted/40 rounded-t"
+                                                    >
+                                                        Daily
+                                                    </th>
+                                                    {#each Array(24) as _, i}
+                                                        <th
+                                                            class="text-[9px] font-mono font-semibold {i ===
+                                                            criteria_hour
+                                                                ? 'text-primary font-bold'
+                                                                : 'text-muted-foreground'} text-center px-1 py-1"
+                                                        >
+                                                            {i}h
+                                                        </th>
+                                                    {/each}
+                                                </tr>
+
+                                                <!-- Average Speed -->
+                                                <tr>
+                                                    <th
+                                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
+                                                    >
+                                                        Average speed (km/h)
+                                                    </th>
+                                                    <td
+                                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                                    >
+                                                        {speedProfileStats?.commercial_speed_avg !=
+                                                            null &&
+                                                        !isNaN(
+                                                            Number(
+                                                                speedProfileStats.commercial_speed_avg,
+                                                            ),
+                                                        )
+                                                            ? Number(
+                                                                  speedProfileStats.commercial_speed_avg,
+                                                              ).toFixed(1)
+                                                            : "-"}
+                                                    </td>
+                                                    {#each Array(24) as _, i}
+                                                        {@const hourData =
+                                                            speedProfileHours.find(
+                                                                (h) =>
+                                                                    h.hour ===
+                                                                    i,
+                                                            )}
+                                                        {@const val =
+                                                            hourData?.commercial_speed_avg}
+                                                        <td
+                                                            class="text-[10px] font-medium text-center px-1 py-1 rounded {i ===
+                                                            criteria_hour
+                                                                ? 'bg-primary/10 border-primary/40'
+                                                                : 'bg-background/70'} border border-border/30"
+                                                            title="{i}:00 avg speed"
+                                                        >
+                                                            {val != null &&
+                                                            !isNaN(Number(val))
+                                                                ? Number(
+                                                                      val,
+                                                                  ).toFixed(1)
+                                                                : "-"}
+                                                        </td>
+                                                    {/each}
+                                                </tr>
+
+                                                <!-- Median Speed -->
+                                                <tr>
+                                                    <th
+                                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
+                                                    >
+                                                        Median speed (km/h)
+                                                    </th>
+                                                    <td
+                                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                                    >
+                                                        {speedProfileStats?.commercial_speed_median !=
+                                                            null &&
+                                                        !isNaN(
+                                                            Number(
+                                                                speedProfileStats.commercial_speed_median,
+                                                            ),
+                                                        )
+                                                            ? Number(
+                                                                  speedProfileStats.commercial_speed_median,
+                                                              ).toFixed(1)
+                                                            : "-"}
+                                                    </td>
+                                                    {#each Array(24) as _, i}
+                                                        {@const hourData =
+                                                            speedProfileHours.find(
+                                                                (h) =>
+                                                                    h.hour ===
+                                                                    i,
+                                                            )}
+                                                        {@const val =
+                                                            hourData?.commercial_speed_median}
+                                                        <td
+                                                            class="text-[10px] font-medium text-center px-1 py-1 rounded {i ===
+                                                            criteria_hour
+                                                                ? 'bg-primary/10 border-primary/40'
+                                                                : 'bg-background/70'} border border-border/30"
+                                                            title="{i}:00 median speed"
+                                                        >
+                                                            {val != null &&
+                                                            !isNaN(Number(val))
+                                                                ? Number(
+                                                                      val,
+                                                                  ).toFixed(1)
+                                                                : "-"}
+                                                        </td>
+                                                    {/each}
+                                                </tr>
+
+                                                <!-- P85 Speed -->
+                                                <tr>
+                                                    <th
+                                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
+                                                    >
+                                                        P85 speed (km/h)
+                                                    </th>
+                                                    <td
+                                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                                    >
+                                                        {speedProfileStats?.commercial_speed_p85 !=
+                                                            null &&
+                                                        !isNaN(
+                                                            Number(
+                                                                speedProfileStats.commercial_speed_p85,
+                                                            ),
+                                                        )
+                                                            ? Number(
+                                                                  speedProfileStats.commercial_speed_p85,
+                                                              ).toFixed(1)
+                                                            : "-"}
+                                                    </td>
+                                                    {#each Array(24) as _, i}
+                                                        {@const hourData =
+                                                            speedProfileHours.find(
+                                                                (h) =>
+                                                                    h.hour ===
+                                                                    i,
+                                                            )}
+                                                        {@const val =
+                                                            hourData?.commercial_speed_p85}
+                                                        <td
+                                                            class="text-[10px] font-medium text-center px-1 py-1 rounded {i ===
+                                                            criteria_hour
+                                                                ? 'bg-primary/10 border-primary/40'
+                                                                : 'bg-background/70'} border border-border/30"
+                                                            title="{i}:00 p85 speed"
+                                                        >
+                                                            {val != null &&
+                                                            !isNaN(Number(val))
+                                                                ? Number(
+                                                                      val,
+                                                                  ).toFixed(1)
+                                                                : "-"}
+                                                        </td>
+                                                    {/each}
+                                                </tr>
+
+                                                <!-- Trips sampled -->
+                                                <tr>
+                                                    <th
+                                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
+                                                    >
+                                                        Trips sampled (nr.)
+                                                    </th>
+                                                    <td
+                                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                                    >
+                                                        {speedProfileStats?.n_trips !=
+                                                        null
+                                                            ? speedProfileStats.n_trips
+                                                            : "-"}
+                                                    </td>
+                                                    {#each Array(24) as _, i}
+                                                        {@const hourData =
+                                                            speedProfileHours.find(
+                                                                (h) =>
+                                                                    h.hour ===
+                                                                    i,
+                                                            )}
+                                                        {@const trips =
+                                                            hourData?.n_trips}
+                                                        <td
+                                                            class="text-[10px] font-medium text-center px-1 py-1 rounded {i ===
+                                                            criteria_hour
+                                                                ? 'bg-primary/10 border-primary/40'
+                                                                : 'bg-background/70'} border border-border/30"
+                                                            title="{i}:00 trips"
+                                                        >
+                                                            {trips != null
+                                                                ? trips
+                                                                : "-"}
+                                                        </td>
+                                                    {/each}
+                                                </tr>
+
+                                                <!-- Disturbance Index -->
+                                                <tr>
+                                                    <th
+                                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
+                                                    >
+                                                        Disturbance Index (%)
+                                                    </th>
+                                                    <td
+                                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                                    >
+                                                        {periodDI != null
+                                                            ? `${periodDI > 0 ? "+" : ""}${(periodDI * 100).toFixed(1)}%`
+                                                            : "-"}
+                                                    </td>
+                                                    {#each Array(24) as _, i}
+                                                        {@const hourData =
+                                                            speedProfileHours.find(
+                                                                (h) =>
+                                                                    h.hour ===
+                                                                    i,
+                                                            )}
+                                                        {@const di =
+                                                            hourData?.disturbance_index}
+                                                        <td
+                                                            class="text-[10px] font-medium text-center px-1 py-1 rounded {i ===
+                                                            criteria_hour
+                                                                ? 'bg-primary/10 border-primary/40'
+                                                                : 'bg-background/70'} border border-border/30"
+                                                            title="{i}:00 DI"
+                                                        >
+                                                            {di != null &&
+                                                            !isNaN(Number(di))
+                                                                ? `${di > 0 ? "+" : ""}${(di * 100).toFixed(1)}%`
+                                                                : "-"}
+                                                        </td>
+                                                    {/each}
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             {/if}

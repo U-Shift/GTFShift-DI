@@ -455,15 +455,23 @@
                     >
                         <!-- Average speed reference dashed line -->
                         {#if avgDaySpeed != null && avgDaySpeed > 0}
-                            {@const avgY = Math.min(
-                                (avgDaySpeed / maxDaySpeed) * 100,
-                                100,
-                            )}
+                            {@const avgYPercent =
+                                100 -
+                                Math.min(
+                                    (avgDaySpeed / maxDaySpeed) * 100,
+                                    100,
+                                )}
                             <div
-                                class="absolute left-0 right-0 border-t border-dashed border-primary/50 pointer-events-none z-10"
-                                style="bottom: {avgY}%;"
+                                class="absolute left-0 right-0 border-t border-dashed border-muted-foreground/60 pointer-events-none z-20"
+                                style="top: {avgYPercent}%;"
                                 title="Average: {avgDaySpeed.toFixed(1)} km/h"
                             ></div>
+                            <span
+                                class="absolute left-1 text-[8px] font-mono font-medium text-muted-foreground pointer-events-none select-none z-20 -translate-y-full"
+                                style="top: {avgYPercent}%;"
+                            >
+                                Avg: {avgDaySpeed.toFixed(1)} km/h
+                            </span>
                         {/if}
 
                         {#each sortedTripDays as dayData, i}
@@ -522,132 +530,6 @@
                             )}</span
                         >
                     </div>
-
-                    <!-- Daily Speed Metrics Table (as in other speed charts) -->
-                    <div class="overflow-x-auto pt-2">
-                        <table
-                            class="w-full border-separate border-spacing-x-[2px] border-spacing-y-1"
-                            style="min-width: {Math.max(
-                                sortedTripDays.length * 52 + 130,
-                                360,
-                            )}px;"
-                        >
-                            <tbody>
-                                <!-- Header Row with Dates -->
-                                <tr>
-                                    <th
-                                        class="text-[9px] font-mono font-semibold text-muted-foreground text-left px-2 py-1 sticky left-0 bg-background/95 backdrop-blur z-10"
-                                    >
-                                        Metric\Date
-                                    </th>
-                                    {#each sortedTripDays as d}
-                                        <th
-                                            class="text-[9px] font-mono font-semibold text-muted-foreground text-center px-1.5 py-1 whitespace-nowrap"
-                                            title={formatDayFull(d.day)}
-                                        >
-                                            {formatDayShort(d.day)}
-                                        </th>
-                                    {/each}
-                                </tr>
-
-                                <!-- Average Commercial Speed -->
-                                <tr>
-                                    <th
-                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
-                                    >
-                                        Average speed (km/h)
-                                    </th>
-                                    {#each sortedTripDays as d}
-                                        {@const val =
-                                            d.commercial_speed ?? d.speed_avg}
-                                        <td
-                                            class="text-[10px] font-medium text-center px-1.5 py-1 rounded bg-background/70 border border-border/30 whitespace-nowrap"
-                                            title="{formatDayFull(
-                                                d.day,
-                                            )} avg speed"
-                                        >
-                                            {val != null && !isNaN(Number(val))
-                                                ? Number(val).toFixed(1)
-                                                : "-"}
-                                        </td>
-                                    {/each}
-                                </tr>
-
-                                <!-- Median Speed -->
-                                {#if hasMedian}
-                                    <tr>
-                                        <th
-                                            class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
-                                        >
-                                            Median speed (km/h)
-                                        </th>
-                                        {#each sortedTripDays as d}
-                                            {@const val = d.speed_median}
-                                            <td
-                                                class="text-[10px] font-medium text-center px-1.5 py-1 rounded bg-background/70 border border-border/30 whitespace-nowrap"
-                                                title="{formatDayFull(
-                                                    d.day,
-                                                )} median speed"
-                                            >
-                                                {val != null &&
-                                                !isNaN(Number(val))
-                                                    ? Number(val).toFixed(1)
-                                                    : "-"}
-                                            </td>
-                                        {/each}
-                                    </tr>
-                                {/if}
-
-                                <!-- P85 Speed -->
-                                {#if hasP85}
-                                    <tr>
-                                        <th
-                                            class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
-                                        >
-                                            P85 speed (km/h)
-                                        </th>
-                                        {#each sortedTripDays as d}
-                                            {@const val = d.speed_p85}
-                                            <td
-                                                class="text-[10px] font-medium text-center px-1.5 py-1 rounded bg-background/70 border border-border/30 whitespace-nowrap"
-                                                title="{formatDayFull(
-                                                    d.day,
-                                                )} p85 speed"
-                                            >
-                                                {val != null &&
-                                                !isNaN(Number(val))
-                                                    ? Number(val).toFixed(1)
-                                                    : "-"}
-                                            </td>
-                                        {/each}
-                                    </tr>
-                                {/if}
-
-                                <!-- Speed count -->
-                                {#if hasCount}
-                                    <tr>
-                                        <th
-                                            class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
-                                        >
-                                            Speed count (nr.)
-                                        </th>
-                                        {#each sortedTripDays as d}
-                                            {@const val =
-                                                d.speed_count ?? d.n_updates}
-                                            <td
-                                                class="text-[10px] font-medium text-center px-1.5 py-1 rounded bg-background/70 border border-border/30 whitespace-nowrap"
-                                                title="{formatDayFull(
-                                                    d.day,
-                                                )} speed count"
-                                            >
-                                                {val != null ? val : "-"}
-                                            </td>
-                                        {/each}
-                                    </tr>
-                                {/if}
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
 
                 <!-- 2. Daily Disturbance Index Chart (Diverging bar chart) -->
@@ -680,13 +562,40 @@
                         >
                             <!-- Zero Baseline -->
                             <div
-                                class="absolute left-0 right-0 top-1/2 -translate-y-1/2 border-t border-dashed border-muted-foreground/40 pointer-events-none z-0"
+                                class="absolute left-0 right-0 top-1/2 -translate-y-1/2 border-t border-solid border-muted-foreground/50 pointer-events-none z-0"
                             ></div>
                             <span
                                 class="absolute right-1 top-1/2 -translate-y-1/2 text-[8px] font-mono text-muted-foreground/50 pointer-events-none select-none z-0"
                             >
                                 0%
                             </span>
+
+                            {#if tripDI != null}
+                                {@const tripDiYPercent =
+                                    50 -
+                                    Math.min(
+                                        Math.max(
+                                            (tripDI / maxAbsDayDi) * 50,
+                                            -50,
+                                        ),
+                                        50,
+                                    )}
+                                <div
+                                    class="absolute left-0 right-0 border-t border-dashed border-muted-foreground/60 pointer-events-none z-20"
+                                    style="top: {tripDiYPercent}%;"
+                                    title="Trip DI: {(tripDI * 100).toFixed(
+                                        1,
+                                    )}%"
+                                ></div>
+                                <span
+                                    class="absolute left-1 text-[8px] font-mono font-medium text-muted-foreground pointer-events-none select-none z-20 -translate-y-full"
+                                    style="top: {tripDiYPercent}%;"
+                                >
+                                    Trip: {tripDI > 0 ? "+" : ""}{(
+                                        tripDI * 100
+                                    ).toFixed(1)}%
+                                </span>
+                            {/if}
 
                             {#each sortedTripDays as dayData}
                                 {@const di = dayData.disturbance_index}
@@ -818,6 +727,224 @@
                         </div>
                     </div>
                 {/if}
+
+                <!-- Daily Metrics Breakdown Table -->
+                <div
+                    class="space-y-2 p-3 bg-background/80 rounded-xl border border-border/40 shadow-xs"
+                >
+                    <h6
+                        class="text-xs font-bold flex items-center gap-1.5 uppercase tracking-wider text-muted-foreground"
+                    >
+                        <i class="fas fa-table text-primary/70"></i>
+                        Daily Metrics Breakdown
+                    </h6>
+                    <div class="overflow-x-auto pt-1">
+                        <table
+                            class="w-full border-separate border-spacing-x-[2px] border-spacing-y-1"
+                            style="min-width: {Math.max(
+                                sortedTripDays.length * 52 + 180,
+                                420,
+                            )}px;"
+                        >
+                            <tbody>
+                                <!-- Header Row with Dates -->
+                                <tr>
+                                    <th
+                                        class="text-[9px] font-mono font-semibold text-muted-foreground text-left px-2 py-1 sticky left-0 bg-background/95 backdrop-blur z-10"
+                                    >
+                                        Metric\Date
+                                    </th>
+                                    <th
+                                        class="text-[9px] font-mono font-bold text-primary text-center px-1.5 py-1 bg-muted/40 rounded-t"
+                                    >
+                                        Trip
+                                    </th>
+                                    {#each sortedTripDays as d}
+                                        <th
+                                            class="text-[9px] font-mono font-semibold text-muted-foreground text-center px-1.5 py-1 whitespace-nowrap"
+                                            title={formatDayFull(d.day)}
+                                        >
+                                            {formatDayShort(d.day)}
+                                        </th>
+                                    {/each}
+                                </tr>
+
+                                <!-- Average Commercial Speed -->
+                                <tr>
+                                    <th
+                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
+                                    >
+                                        Average speed (km/h)
+                                    </th>
+                                    <td
+                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                    >
+                                        {trip?.commercial_speed_avg != null &&
+                                        !isNaN(Number(trip.commercial_speed_avg))
+                                            ? Number(
+                                                  trip.commercial_speed_avg,
+                                              ).toFixed(1)
+                                            : avgDaySpeed != null &&
+                                                !isNaN(Number(avgDaySpeed))
+                                              ? Number(avgDaySpeed).toFixed(1)
+                                              : "-"}
+                                    </td>
+                                    {#each sortedTripDays as d}
+                                        {@const val =
+                                            d.commercial_speed ?? d.speed_avg}
+                                        <td
+                                            class="text-[10px] font-medium text-center px-1.5 py-1 rounded bg-background/70 border border-border/30 whitespace-nowrap"
+                                            title="{formatDayFull(
+                                                d.day,
+                                            )} avg speed"
+                                        >
+                                            {val != null && !isNaN(Number(val))
+                                                ? Number(val).toFixed(1)
+                                                : "-"}
+                                        </td>
+                                    {/each}
+                                </tr>
+
+                                <!-- Median Speed -->
+                                {#if hasMedian}
+                                    <tr>
+                                        <th
+                                            class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
+                                        >
+                                            Median speed (km/h)
+                                        </th>
+                                        <td
+                                            class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                        >
+                                            {trip?.commercial_speed_median !=
+                                                null &&
+                                            !isNaN(
+                                                Number(
+                                                    trip.commercial_speed_median,
+                                                ),
+                                            )
+                                                ? Number(
+                                                      trip.commercial_speed_median,
+                                                  ).toFixed(1)
+                                                : "-"}
+                                        </td>
+                                        {#each sortedTripDays as d}
+                                            {@const val = d.speed_median}
+                                            <td
+                                                class="text-[10px] font-medium text-center px-1.5 py-1 rounded bg-background/70 border border-border/30 whitespace-nowrap"
+                                                title="{formatDayFull(
+                                                    d.day,
+                                                )} median speed"
+                                            >
+                                                {val != null &&
+                                                !isNaN(Number(val))
+                                                    ? Number(val).toFixed(1)
+                                                    : "-"}
+                                            </td>
+                                        {/each}
+                                    </tr>
+                                {/if}
+
+                                <!-- P85 Speed -->
+                                {#if hasP85}
+                                    <tr>
+                                        <th
+                                            class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
+                                        >
+                                            P85 speed (km/h)
+                                        </th>
+                                        <td
+                                            class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                        >
+                                            {trip?.commercial_speed_p85 !=
+                                                null &&
+                                            !isNaN(
+                                                Number(
+                                                    trip.commercial_speed_p85,
+                                                ),
+                                            )
+                                                ? Number(
+                                                      trip.commercial_speed_p85,
+                                                  ).toFixed(1)
+                                                : "-"}
+                                        </td>
+                                        {#each sortedTripDays as d}
+                                            {@const val = d.speed_p85}
+                                            <td
+                                                class="text-[10px] font-medium text-center px-1.5 py-1 rounded bg-background/70 border border-border/30 whitespace-nowrap"
+                                                title="{formatDayFull(
+                                                    d.day,
+                                                )} p85 speed"
+                                            >
+                                                {val != null &&
+                                                !isNaN(Number(val))
+                                                    ? Number(val).toFixed(1)
+                                                    : "-"}
+                                            </td>
+                                        {/each}
+                                    </tr>
+                                {/if}
+
+                                <!-- Speed count -->
+                                {#if hasCount}
+                                    <tr>
+                                        <th
+                                            class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
+                                        >
+                                            Speed count (nr.)
+                                        </th>
+                                        <td
+                                            class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                        >
+                                            {trip?.speed_count ??
+                                                trip?.n_days ??
+                                                sortedTripDays.length}
+                                        </td>
+                                        {#each sortedTripDays as d}
+                                            {@const val =
+                                                d.speed_count ?? d.n_updates}
+                                            <td
+                                                class="text-[10px] font-medium text-center px-1.5 py-1 rounded bg-background/70 border border-border/30 whitespace-nowrap"
+                                                title="{formatDayFull(
+                                                    d.day,
+                                                )} speed count"
+                                            >
+                                                {val != null ? val : "-"}
+                                            </td>
+                                        {/each}
+                                    </tr>
+                                {/if}
+
+                                <!-- Disturbance Index -->
+                                <tr>
+                                    <th
+                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
+                                    >
+                                        Disturbance Index (%)
+                                    </th>
+                                    <td
+                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary"
+                                    >
+                                        {tripDI != null
+                                            ? `${tripDI > 0 ? "+" : ""}${(tripDI * 100).toFixed(1)}%`
+                                            : "-"}
+                                    </td>
+                                    {#each sortedTripDays as d}
+                                        {@const di = d.disturbance_index}
+                                        <td
+                                            class="text-[10px] font-medium text-center px-1.5 py-1 rounded bg-background/70 border border-border/30 whitespace-nowrap"
+                                            title="{formatDayFull(d.day)} DI"
+                                        >
+                                            {di != null && !isNaN(Number(di))
+                                                ? `${di > 0 ? "+" : ""}${(di * 100).toFixed(1)}%`
+                                                : "-"}
+                                        </td>
+                                    {/each}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
                 <!-- 3. Daily Breakdown Table -->
                 <div

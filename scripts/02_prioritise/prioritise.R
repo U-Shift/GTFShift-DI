@@ -697,41 +697,47 @@ for (i in 1:nrow(regions)) { # i =1
     route_text_color = ifelse(!str_starts(route_text_color, "#"), paste0("#", route_text_color), route_text_color)
   )
 
-  # Precompute departure and arrival stop coordinates for each shape
-  shape_terminal_stops <- tryCatch(
+  # Precompute stops for each shape
+  shape_stops <- tryCatch(
     {
-      # Find the first and last stop_sequence for each trip
-      trip_terminals <- gtfs$stop_times |>
-        group_by(trip_id) |>
-        summarise(
-          dep_seq = min(stop_sequence, na.rm = TRUE),
-          arr_seq = max(stop_sequence, na.rm = TRUE),
-          dep_stop_id = stop_id[which.min(stop_sequence)],
-          arr_stop_id = stop_id[which.max(stop_sequence)],
-          .groups = "drop"
-        )
+      # For each shape, pick a representative trip (the one with the most stops)
+      trip_stop_counts <- gtfs$stop_times |>
+        count(trip_id, name = "n_stops")
 
-      # Link trips to shapes and deduplicate per shape_id
-      shapes_terminals_raw <- gtfs$trips |>
+      shape_trips <- gtfs$trips |>
         select(shape_id, trip_id) |>
         filter(!is.na(shape_id) & shape_id != "") |>
-        inner_join(trip_terminals, by = "trip_id") |>
-        distinct(shape_id, .keep_all = TRUE)
+        inner_join(trip_stop_counts, by = "trip_id") |>
+        group_by(shape_id) |>
+        slice_max(n_stops, n = 1, with_ties = FALSE) |>
+        ungroup() |>
+        select(shape_id, trip_id)
 
       # Prepare stops dataframe with coords and name
       stops_info <- gtfs$stops |>
-        select(stop_id, any_of(c("stop_name")), stop_lat, stop_lon)
+        select(stop_id, any_of(c("stop_name")), stop_lat, stop_lon) |>
+        distinct(stop_id, .keep_all = TRUE)
 
-      # Join terminal stops with their coordinates
-      shapes_terminals_raw |>
-        left_join(stops_info |> rename(departure_stop_id = stop_id, departure_stop_name = any_of("stop_name"), departure_stop_lat = stop_lat, departure_stop_lon = stop_lon), by = c("dep_stop_id" = "departure_stop_id")) |>
-        left_join(stops_info |> rename(arrival_stop_id = stop_id, arrival_stop_name = any_of("stop_name"), arrival_stop_lat = stop_lat, arrival_stop_lon = stop_lon), by = c("arr_stop_id" = "arrival_stop_id"))
+      # Link trip stop times to stops info and order by stop_sequence
+      gtfs$stop_times |>
+        select(trip_id, stop_sequence, stop_id) |>
+        mutate(stop_sequence = as.integer(stop_sequence)) |>
+        inner_join(shape_trips, by = "trip_id") |>
+        left_join(stops_info, by = "stop_id") |>
+        arrange(shape_id, stop_sequence)
     },
     error = function(e) {
-      warning("Could not compute shape terminal stops: ", e$message)
+      warning("Could not compute shape stops: ", e$message)
       NULL
     }
   )
+
+  # Group stops by shape_id for O(1) lookup
+  shape_stops_list <- if (!is.null(shape_stops)) {
+    split(shape_stops, shape_stops$shape_id)
+  } else {
+    NULL
+  }
 
   nested_shapes <- lapply(split(routes, routes$shape_id), function(df) {
     # Extract static metadata associated with this shape
@@ -739,29 +745,23 @@ for (i in 1:nrow(regions)) { # i =1
       select(route_id, shape_id, route_short_name, route_long_name, direction_id, route_color, route_text_color) %>%
       as.list()
 
-    # Add departure and arrival stop details
-    if (!is.null(shape_terminal_stops)) {
-      terminals <- shape_terminal_stops |> filter(shape_id == shape_metadata$shape_id)
-      if (nrow(terminals) > 0) {
-        dep <- list(
-          stop_id = terminals$dep_stop_id[1],
-          lat = round(as.numeric(terminals$departure_stop_lat[1]), 6),
-          lon = round(as.numeric(terminals$departure_stop_lon[1]), 6)
-        )
-        if ("departure_stop_name" %in% names(terminals) && !is.na(terminals$departure_stop_name[1])) {
-          dep$stop_name <- terminals$departure_stop_name[1]
-        }
-        shape_metadata$departure_stop <- dep
-
-        arr <- list(
-          stop_id = terminals$arr_stop_id[1],
-          lat = round(as.numeric(terminals$arrival_stop_lat[1]), 6),
-          lon = round(as.numeric(terminals$arrival_stop_lon[1]), 6)
-        )
-        if ("arrival_stop_name" %in% names(terminals) && !is.na(terminals$arrival_stop_name[1])) {
-          arr$stop_name <- terminals$arrival_stop_name[1]
-        }
-        shape_metadata$arrival_stop <- arr
+    # Add stops details
+    sid <- as.character(shape_metadata$shape_id)
+    if (!is.null(shape_stops_list) && sid %in% names(shape_stops_list)) {
+      st_df <- shape_stops_list[[sid]]
+      if (nrow(st_df) > 0) {
+        shape_metadata$stops <- lapply(seq_len(nrow(st_df)), function(i) {
+          stop_item <- list(
+            stop_sequence = as.integer(st_df$stop_sequence[i]),
+            stop_id = as.character(st_df$stop_id[i]),
+            lat = round(as.numeric(st_df$stop_lat[i]), 6),
+            lon = round(as.numeric(st_df$stop_lon[i]), 6)
+          )
+          if ("stop_name" %in% names(st_df) && !is.na(st_df$stop_name[i])) {
+            stop_item$stop_name <- as.character(st_df$stop_name[i])
+          }
+          stop_item
+        })
       }
     }
 
@@ -809,12 +809,6 @@ for (i in 1:nrow(regions)) { # i =1
     # Prepend prefixes to sub-list names before flattening
     names(x$stats) <- paste0("stats.", names(x$stats))
     names(x$schedule) <- paste0("schedule.", names(x$schedule))
-    if (!is.null(x$departure_stop)) {
-      names(x$departure_stop) <- paste0("departure_stop.", names(x$departure_stop))
-    }
-    if (!is.null(x$arrival_stop)) {
-      names(x$arrival_stop) <- paste0("arrival_stop.", names(x$arrival_stop))
-    }
 
     speed_profile_flat <- list()
     if (!is.null(x$speed_profile) && !is.null(x$speed_profile$stats)) {
@@ -825,9 +819,7 @@ for (i in 1:nrow(regions)) { # i =1
 
     # Flatten everything into one list and convert to tibble
     as_tibble(c(
-      x[!(names(x) %in% c("stats", "schedule", "departure_stop", "arrival_stop", "speed_profile"))],
-      x$departure_stop,
-      x$arrival_stop,
+      x[!(names(x) %in% c("stats", "schedule", "stops", "speed_profile"))],
       x$stats,
       x$schedule,
       speed_profile_flat

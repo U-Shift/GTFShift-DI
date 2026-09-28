@@ -720,7 +720,7 @@ for (i in 1:nrow(regions)) { # i =1
 
       # Link trip stop times to stops info and order by stop_sequence
       gtfs$stop_times |>
-        select(trip_id, stop_sequence, stop_id) |>
+        select(trip_id, stop_sequence, stop_id, any_of("departure_time")) |>
         mutate(stop_sequence = as.integer(stop_sequence)) |>
         inner_join(shape_trips, by = "trip_id") |>
         left_join(stops_info, by = "stop_id") |>
@@ -759,6 +759,9 @@ for (i in 1:nrow(regions)) { # i =1
           )
           if ("stop_name" %in% names(st_df) && !is.na(st_df$stop_name[i])) {
             stop_item$stop_name <- as.character(st_df$stop_name[i])
+          }
+          if ("departure_time" %in% names(st_df) && !is.na(st_df$departure_time[i])) {
+            stop_item$departure_time <- as.character(st_df$departure_time[i])
           }
           stop_item
         })

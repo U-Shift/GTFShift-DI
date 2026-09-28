@@ -26,7 +26,7 @@ export const COLOR_GRADIENT_DIVERGING_BRBG: string[] = ["#543005", "#563105", "#
 export const DB_REGIONS: DataRegion[] = [
     {
         id: 'aml',
-        name: 'Carris Metropolitana',
+        name: 'Carris Metropolitana (Area 3)',
         region: 'Lisbon Metro Area, PT',
         rt_data: true,
         demand_data: true,
@@ -34,6 +34,7 @@ export const DB_REGIONS: DataRegion[] = [
         date: 'Feb - May 2026',
         color: '#363636',
         layers: [
+            /*
             {
                 id: 'aml_all',
                 name: 'All network',
@@ -85,6 +86,7 @@ export const DB_REGIONS: DataRegion[] = [
                     zip: BASE_URL + '/data/aml_2/run_20260806_101548/aml_2.zip'
                 }
             },
+            */
             {
                 id: 'aml_a3',
                 name: 'Area 3',
@@ -102,6 +104,7 @@ export const DB_REGIONS: DataRegion[] = [
                     zip: BASE_URL + '/data/aml_3/run_20260926_104805/aml_3.zip'
                 }
             },
+            /*
             {
                 id: 'aml_a4',
                 name: 'Area 4',
@@ -119,6 +122,7 @@ export const DB_REGIONS: DataRegion[] = [
                     zip: BASE_URL + '/data/aml_4/run_20260806_103907/aml_4.zip'
                 }
             }
+            */
         ]
     }
 ]

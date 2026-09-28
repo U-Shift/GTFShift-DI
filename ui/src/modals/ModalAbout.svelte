@@ -28,7 +28,7 @@
                     About GTFShift
                 </h2>
                 <p class="text-sm text-muted-foreground mt-0.5">
-                    Bus lane prioritisation tool
+                    Bus lane prioritisation & operational analysis tool
                 </p>
             </div>
             <Button
@@ -45,73 +45,7 @@
         <div
             class="flex-1 overflow-y-auto px-5 py-4 space-y-4 text-sm leading-relaxed"
         >
-            <p>
-                <u
-                    ><strong class="text-primary">GTFShift</strong> Bus lane prioritisation
-                    tool</u
-                >
-                is an interactive dashboard that provides a comprehensive bundle
-                of indicators to support the identification and prioritisation of
-                road segments where bus lanes should be implemented for some case
-                studies.
-            </p>
-            <p>
-                It covers several dimensions of this problem, namely bus
-                frequency, infrastructure availability, traffic conditions,
-                passenger demand and network continuity. Together, these can be
-                used to identify road segments where bus lanes should be
-                implemented, enabling for a transparent and data-driven
-                decision-making process, suitable to different contexts and
-                criteria.
-            </p>
-            <p>
-                The results are based on the application of the
-                <u><strong class="text-primary">GTFShift</strong> R package</u>,
-                an open-source software tool that implements the methodology
-                behind this dashboard, allowing for the replication and
-                application of the methodology to other case studies.
-            </p>
-            <p>
-                For details on the methodology, code and data, refer to the
-                methodological slides and the R package documentation and
-                repository in the buttons below.
-            </p>
-
-            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-2">
-                <Button
-                    variant="outline"
-                    href="https://github.com/U-Shift/GTFShift-web/issues/new?template=new-region.yml"
-                    target="_blank"
-                    class="w-full justify-start"
-                >
-                    <i class="fa fa-globe mr-2"></i> Suggest a new region
-                </Button>
-                <Button
-                    variant="outline"
-                    href="https://u-shift.github.io/GTFShift/"
-                    target="_blank"
-                    class="w-full justify-start"
-                >
-                    <i class="fa fa-book mr-2"></i> R package docs
-                </Button>
-
-                <Button
-                    variant="outline"
-                    href={ABOUT_METHODOLOGICAL_SLIDES}
-                    target="_blank"
-                    class="w-full justify-start"
-                >
-                    <i class="fa fa-file-lines mr-2"></i> Methodological slides
-                </Button>
-                <Button
-                    variant="outline"
-                    href="https://github.com/U-Shift/GTFShift-web/"
-                    target="_blank"
-                    class="w-full justify-start"
-                >
-                    <i class="fa fa-github mr-2"></i> Web app repository
-                </Button>
-            </div>
+            <p>...</p>
 
             <div class="pt-4 border-t">
                 <h4 class="font-bold mb-2">Developers</h4>

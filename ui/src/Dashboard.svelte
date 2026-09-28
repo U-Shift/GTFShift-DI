@@ -584,7 +584,8 @@
             </Tooltip.Provider>
         </div>
         <p class="text-sm text-muted-foreground">
-            Bus lane prioritisation tool<br /><b>TML edition</b>
+            <b>TML edition</b><br />
+            Bus lane prioritisation<br />& operational analysis tool
         </p>
         {#if loading}
             <p

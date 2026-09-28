@@ -28,6 +28,7 @@
         diPaletteMode = "categorized",
         diFilterMode = "all",
         diFilterCount = 10,
+        diMinLength = 100,
         selectedWayId = undefined,
         selectedShapeId = undefined,
         onLayerCreate = (layer) => {},
@@ -43,6 +44,7 @@
         diPaletteMode?: "categorized" | "diverging";
         diFilterMode?: "all" | "worst" | "best";
         diFilterCount?: number;
+        diMinLength?: number;
         selectedWayId: string | undefined;
         selectedShapeId: string | undefined;
         onLayerCreate: (layer: L.Layer) => void;
@@ -105,7 +107,7 @@
 
         wayLayerMap = new Map();
 
-        // Filter out features with no valid Disturbance Index data
+        // Filter out features with no valid Disturbance Index data or shorter than diMinLength
         let filteredFeatures = geoData.features.filter(
             (feature: Feature | undefined) => {
                 const wayId = feature?.properties?.way_osm_id;
@@ -116,6 +118,12 @@
                     !props?.shapes?.includes(selectedShapeId)
                 ) {
                     return false;
+                }
+                if (diMinLength != null && diMinLength > 0) {
+                    const len = Number(props?.length_m ?? feature?.properties?.length_m ?? 0);
+                    if (isNaN(len) || len < diMinLength) {
+                        return false;
+                    }
                 }
                 const di = getDisturbanceIndex(props, criteriaHour);
                 return di !== undefined;

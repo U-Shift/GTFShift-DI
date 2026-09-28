@@ -273,6 +273,7 @@
     let di_filter_mode: "all" | "worst" | "best" = $state("all");
     let di_filter_count: number = $state(150);
     let di_filter_count_auto: boolean = $state(true);
+    let di_min_length: number = $state(0);
 
     // Auto-calibrate thresholds and filter count based on census
     $effect(() => {
@@ -1282,27 +1283,52 @@
                                             class="font-medium text-foreground text-xs"
                                             >Filter Performers</span
                                         >
-                                        {#if di_filter_mode !== "all"}
+                                        <div class="flex items-center gap-2">
                                             <div
                                                 class="flex items-center gap-1"
+                                                title="Filter segments with length greater than or equal to this value (meters)"
                                             >
                                                 <span
                                                     class="text-[11px] text-muted-foreground"
-                                                    >Top</span
+                                                    >&ge;</span
                                                 >
                                                 <Input
                                                     type="number"
                                                     class="w-16 h-6 text-xs text-center px-1"
-                                                    bind:value={di_filter_count}
-                                                    min="1"
-                                                    max={disturbance_index_census
-                                                        ?.census_length?.n ||
-                                                        5000}
-                                                    oninput={() =>
-                                                        (di_filter_count_auto = false)}
+                                                    bind:value={di_min_length}
+                                                    min="0"
+                                                    step="10"
+                                                    placeholder="100"
                                                 />
+                                                <span
+                                                    class="text-[11px] text-muted-foreground"
+                                                    >m</span
+                                                >
                                             </div>
-                                        {/if}
+                                            {#if di_filter_mode !== "all"}
+                                                <div
+                                                    class="flex items-center gap-1"
+                                                >
+                                                    <span
+                                                        class="text-[11px] text-muted-foreground"
+                                                        >Top</span
+                                                    >
+                                                    <Input
+                                                        type="number"
+                                                        class="w-16 h-6 text-xs text-center px-1"
+                                                        bind:value={
+                                                            di_filter_count
+                                                        }
+                                                        min="1"
+                                                        max={disturbance_index_census
+                                                            ?.census_length
+                                                            ?.n || 5000}
+                                                        oninput={() =>
+                                                            (di_filter_count_auto = false)}
+                                                    />
+                                                </div>
+                                            {/if}
+                                        </div>
                                     </div>
                                     <div
                                         class="flex items-center gap-1 p-0.5 bg-muted/60 rounded-md border border-border/40 w-full"
@@ -2454,14 +2480,24 @@
                                 .padStart(2, "0")}:00)</span
                         >
                     </p>
-                    {#if di_filter_mode !== "all"}
-                        <span
-                            class="text-[10px] font-medium px-1.5 py-0.5 rounded bg-muted text-foreground border border-border/40 capitalize"
-                        >
-                            {di_filter_mode}
-                            {di_filter_count}
-                        </span>
-                    {/if}
+                    <div class="flex items-center gap-1">
+                        {#if di_min_length != null && di_min_length > 0}
+                            <span
+                                class="text-[10px] font-medium px-1.5 py-0.5 rounded bg-muted text-foreground border border-border/40"
+                                title="Segments &ge; {di_min_length}m"
+                            >
+                                &ge; {di_min_length}m
+                            </span>
+                        {/if}
+                        {#if di_filter_mode !== "all"}
+                            <span
+                                class="text-[10px] font-medium px-1.5 py-0.5 rounded bg-muted text-foreground border border-border/40 capitalize"
+                            >
+                                {di_filter_mode}
+                                {di_filter_count}
+                            </span>
+                        {/if}
+                    </div>
                 </div>
                 {#if di_palette_mode === "categorized"}
                     <div class="space-y-1 mt-2">
@@ -2715,6 +2751,7 @@
             diPaletteMode={di_palette_mode}
             diFilterMode={di_filter_mode}
             diFilterCount={di_filter_count}
+            diMinLength={di_min_length}
             {selectedWayId}
             selectedShapeId={selected_shape_id}
             onWaySelect={(id) => (selectedWayId = id)}

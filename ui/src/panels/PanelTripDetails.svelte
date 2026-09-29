@@ -213,6 +213,16 @@
                             {/if}
                         </button>
                     </div>
+
+                    {@const depTime = tripDays.find((d) => d.departure_time)?.departure_time ?? trip?.departure_time}
+                    {@const arrTime = tripDays.find((d) => d.arrival_time)?.arrival_time ?? trip?.arrival_time}
+                    {#if depTime || arrTime}
+                        <p class="text-xs text-muted-foreground font-medium flex items-center gap-1.5 pt-0.5">
+                            <span>Departure: <span class="font-mono text-foreground">{depTime ?? "-"}</span></span>
+                            <span>•</span>
+                            <span>Arrival: <span class="font-mono text-foreground">{arrTime ?? "-"}</span></span>
+                        </p>
+                    {/if}
                 </div>
 
                 <div class="flex items-center gap-1.5 shrink-0">
@@ -784,7 +794,9 @@
                                     {#each sortedTripDays as d}
                                         <td
                                             class="text-[10px] font-mono text-center px-1.5 py-1 rounded bg-background/70 border border-border/30 whitespace-nowrap text-muted-foreground"
-                                            title="{formatDayFull(d.day)} departure"
+                                            title="{formatDayFull(
+                                                d.day,
+                                            )} departure"
                                         >
                                             {formatTime(d.timestamp_min) ??
                                                 (d.hour != null
@@ -810,7 +822,7 @@
                                         )
                                             ? Number(
                                                   trip.commercial_speed_avg,
-                                                ).toFixed(1)
+                                              ).toFixed(1)
                                             : avgDaySpeed != null &&
                                                 !isNaN(Number(avgDaySpeed))
                                               ? Number(avgDaySpeed).toFixed(1)
@@ -972,8 +984,6 @@
                         </table>
                     </div>
                 </div>
-
-
             {:else}
                 <div
                     class="p-4 rounded-xl border border-dashed border-border/60 text-center text-muted-foreground space-y-1"

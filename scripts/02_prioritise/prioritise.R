@@ -209,6 +209,30 @@ for (i in 1:nrow(regions)) { # i =1
           trip_profiles$shape_id <- NA_character_
         }
 
+        # Link scheduled departure_time (first stop) and arrival_time (last stop departure_time) from gtfs$stop_times
+        if (!is.null(gtfs$stop_times) && all(c("trip_id", "stop_sequence", "departure_time") %in% colnames(gtfs$stop_times))) {
+          trip_times <- gtfs$stop_times |>
+            select(trip_id, stop_sequence, departure_time) |>
+            filter(!is.na(trip_id) & trip_id != "") |>
+            mutate(
+              trip_id = as.character(trip_id),
+              stop_sequence = as.integer(stop_sequence),
+              departure_time = as.character(departure_time)
+            ) |>
+            arrange(trip_id, stop_sequence) |>
+            group_by(trip_id) |>
+            summarise(
+              departure_time = dplyr::first(departure_time),
+              arrival_time = dplyr::last(departure_time),
+              .groups = "drop"
+            )
+          trip_profiles <- trip_profiles |>
+            left_join(trip_times, by = "trip_id")
+        } else {
+          trip_profiles$departure_time <- NA_character_
+          trip_profiles$arrival_time <- NA_character_
+        }
+
         # 1. Global stats per route_id (across all trips of any time)
         route_global_stats <- trip_profiles |>
           group_by(route_id) |>
@@ -270,6 +294,8 @@ for (i in 1:nrow(regions)) { # i =1
           group_by(trip_id, route_id) |>
           summarise(
             n_days = n(),
+            departure_time = if ("departure_time" %in% names(trip_profiles)) dplyr::first(departure_time) else NA_character_,
+            arrival_time = if ("arrival_time" %in% names(trip_profiles)) dplyr::first(arrival_time) else NA_character_,
             commercial_speed_avg = round(mean(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_median = round(median(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),
@@ -419,6 +445,8 @@ for (i in 1:nrow(regions)) { # i =1
           group_by(shape_id, trip_id, route_id) |>
           summarise(
             n_days = n(),
+            departure_time = if ("departure_time" %in% names(trip_profiles)) dplyr::first(departure_time) else NA_character_,
+            arrival_time = if ("arrival_time" %in% names(trip_profiles)) dplyr::first(arrival_time) else NA_character_,
             commercial_speed_avg = round(mean(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_median = round(median(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),
@@ -720,7 +748,7 @@ for (i in 1:nrow(regions)) { # i =1
 
       # Link trip stop times to stops info and order by stop_sequence
       gtfs$stop_times |>
-        select(trip_id, stop_sequence, stop_id, any_of("departure_time")) |>
+        select(trip_id, stop_sequence, stop_id) |>
         mutate(stop_sequence = as.integer(stop_sequence)) |>
         inner_join(shape_trips, by = "trip_id") |>
         left_join(stops_info, by = "stop_id") |>
@@ -759,9 +787,6 @@ for (i in 1:nrow(regions)) { # i =1
           )
           if ("stop_name" %in% names(st_df) && !is.na(st_df$stop_name[i])) {
             stop_item$stop_name <- as.character(st_df$stop_name[i])
-          }
-          if ("departure_time" %in% names(st_df) && !is.na(st_df$departure_time[i])) {
-            stop_item$departure_time <- as.character(st_df$departure_time[i])
           }
           stop_item
         })

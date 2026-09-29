@@ -38,6 +38,8 @@ export type TripSpeedProfile = {
     trip_id: string;
     route_id?: string;
     shape_id?: string;
+    departure_time?: string;
+    arrival_time?: string;
     n_days?: number;
     commercial_speed_avg?: number;
     commercial_speed_median?: number;
@@ -56,6 +58,8 @@ export type TripDaySpeedProfile = {
     route_id?: string;
     shape_id?: string;
     day: string | number;
+    departure_time?: string;
+    arrival_time?: string;
     timestamp_min?: number;
     timestamp_max?: number;
     hour?: number;

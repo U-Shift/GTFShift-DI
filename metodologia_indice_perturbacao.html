@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="U-Shift Lab, Instituto Superior Técnico">
 
-<title>Relatório Metodológico</title>
+<title>5&nbsp; Índice de Perturbação – Relatório Metodológico</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -53,7 +87,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./dados_fontes.html" rel="next">
+<link href="./metodologia_priorizacao.html" rel="next">
+<link href="./metodologia.html" rel="prev">
 <link href="./images/favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -97,15 +132,38 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles/global.css">
-<link rel="stylesheet" href="styles/index.css">
-<meta name="citation_title" content="Relatório Metodológico">
-<meta name="citation_author" content="U-Shift Lab, Instituto Superior Técnico">
-<meta name="citation_publication_date" content="2026-09-01">
-<meta name="citation_cover_date" content="2026-09-01">
-<meta name="citation_year" content="2026">
-<meta name="citation_online_date" content="2026-09-01">
+<meta name="citation_title" content="[[5]{.chapter-number}&nbsp; [Índice de Perturbação]{.chapter-title}]{#sec-indice-perturbacao .quarto-section-identifier}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=GTFShift: Explore and Analyse General Transit Feed Specification (GTFS) Files with a Focus on Urban Mobility;,citation_abstract=A bundle of methods to harmonize GTFS and OSM data, enabling the integration and exploration of different layers of transit data, starting with the planned operations (GTFS), but also the infrastructure topology (OSM) and real-time information (GTFS-RT).;,citation_author=Gonçalo F. Matos;,citation_author=Rosa Félix;,citation_author=Miguel Relvas Pires;,citation_publication_date=2026-09-27;,citation_cover_date=2026-09-27;,citation_year=2026;,citation_fulltext_html_url=https://cloud.r-project.org/web/packages/GTFShift/index.html;">
 <meta name="citation_reference" content="citation_title=GTFShift: Bus lane prioritization tool;,citation_abstract=Interactive dashboard for GTFShift R package;,citation_author=Gonçalo F. Matos;,citation_author=Rosa Félix;,citation_publication_date=2026-05;,citation_cover_date=2026-05;,citation_year=2026;,citation_fulltext_html_url=https://github.com/U-Shift/GTFShift-web;">
@@ -300,7 +358,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introdução</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./metodologia.html"><strong>Metodologia e visualização</strong></a></li><li class="breadcrumb-item"><a href="./metodologia_indice_perturbacao.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Índice de Perturbação</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -332,7 +390,7 @@ div.csl-indent {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introdução</span></span></a>
   </div>
 </li>
@@ -376,7 +434,7 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./metodologia_indice_perturbacao.html" class="sidebar-item-text sidebar-link">
+  <a href="./metodologia_indice_perturbacao.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Índice de Perturbação</span></span></a>
   </div>
 </li>
@@ -404,12 +462,16 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-introduction" id="toc-sec-introduction" class="nav-link active" data-scroll-target="#sec-introduction"><span class="header-section-number">1</span> Introdução</a>
+  <li><a href="#definição-do-índice" id="toc-definição-do-índice" class="nav-link active" data-scroll-target="#definição-do-índice"><span class="header-section-number">5.1</span> Definição do índice</a>
   <ul class="collapse">
-  <li><a href="#gtfshift-pacote-de-código-r" id="toc-gtfshift-pacote-de-código-r" class="nav-link" data-scroll-target="#gtfshift-pacote-de-código-r"><span class="header-section-number">1.1</span> GTFShift: pacote de código R</a></li>
-  <li><a href="#gtfshift-ferramenta-de-priorização-de-corredores-bus" id="toc-gtfshift-ferramenta-de-priorização-de-corredores-bus" class="nav-link" data-scroll-target="#gtfshift-ferramenta-de-priorização-de-corredores-bus"><span class="header-section-number">1.2</span> GTFShift: ferramenta de priorização de corredores bus</a></li>
-  <li><a href="#gtfshifttml" id="toc-gtfshifttml" class="nav-link" data-scroll-target="#gtfshifttml"><span class="header-section-number">1.3</span> GTFShift/TML</a></li>
+  <li><a href="#nível-de-segmento-de-via" id="toc-nível-de-segmento-de-via" class="nav-link" data-scroll-target="#nível-de-segmento-de-via"><span class="header-section-number">5.1.1</span> Nível de segmento de via</a></li>
+  <li><a href="#nível-de-viagem-e-linha-route" id="toc-nível-de-viagem-e-linha-route" class="nav-link" data-scroll-target="#nível-de-viagem-e-linha-route"><span class="header-section-number">5.1.2</span> Nível de viagem e linha (<em>route</em>)</a></li>
+  <li><a href="#nível-de-percurso-shape" id="toc-nível-de-percurso-shape" class="nav-link" data-scroll-target="#nível-de-percurso-shape"><span class="header-section-number">5.1.3</span> Nível de percurso (<em>shape</em>)</a></li>
   </ul></li>
+  <li><a href="#categorias-de-perturbação" id="toc-categorias-de-perturbação" class="nav-link" data-scroll-target="#categorias-de-perturbação"><span class="header-section-number">5.2</span> Categorias de perturbação</a></li>
+  <li><a href="#filtragem-por-comprimento-mínimo" id="toc-filtragem-por-comprimento-mínimo" class="nav-link" data-scroll-target="#filtragem-por-comprimento-mínimo"><span class="header-section-number">5.3</span> Filtragem por comprimento mínimo</a></li>
+  <li><a href="#filtros-top-n" id="toc-filtros-top-n" class="nav-link" data-scroll-target="#filtros-top-n"><span class="header-section-number">5.4</span> Filtros top-N</a></li>
+  <li><a href="#interpretação" id="toc-interpretação" class="nav-link" data-scroll-target="#interpretação"><span class="header-section-number">5.5</span> Interpretação</a></li>
   </ul>
 </nav>
     </div>
@@ -417,29 +479,16 @@ div.csl-indent {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./metodologia.html"><strong>Metodologia e visualização</strong></a></li><li class="breadcrumb-item"><a href="./metodologia_indice_perturbacao.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Índice de Perturbação</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Relatório Metodológico</h1>
-<p class="subtitle lead">GTFShift Edição TML: Ferramenta de priorização de corredores bus e análise de operações</p>
+<h1 class="title"><span id="sec-indice-perturbacao" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Índice de Perturbação</span></span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>U-Shift Lab, Instituto Superior Técnico </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 2026</p>
-    </div>
-  </div>
   
     
   </div>
@@ -449,65 +498,116 @@ div.csl-indent {
 </header>
 
 
-<section id="sec-introduction" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Introdução</h1>
-<p>Este relatório descreve a metodologia aplicada, os resultados obtidos e documenta o portal interativo desenvolvido no âmbito da adaptação e extensão da ferramenta GTFShift às necessidades operacionais da Transportes Metropolitanos de Lisboa (TML), que deu origem ao portal interativo <a href="https://ushift.pt/apps/gtfshift-tml" target="_blank"><strong>GTFShift/TML</strong></a>.</p>
-<p>As secções <strong>Dados</strong> e <strong>Metodologia</strong> descrevem a recolha e métodos de processamento e análise dos dados utilizados, seguindo-se a apresentação e documentação do <strong>Portal interativo</strong>, que permite a sua visualização de forma simples e intuitiva.</p>
-<p>Antes de entrar em detalhe, é importante contextualizar o âmbito do GTFShift e das suas variantes, que se apresentam em seguida.</p>
-<section id="gtfshift-pacote-de-código-r" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="gtfshift-pacote-de-código-r"><span class="header-section-number">1.1</span> GTFShift: pacote de código R</h2>
-<p>O <strong>GTFShift</strong> <span class="citation" data-cites="matos_gtfshift_2026">(<a href="references.html#ref-matos_gtfshift_2026" role="doc-biblioref">Matos et al. 2026</a>)</span> é um pacote de código em R focado na harmonização de dados de operação de transporte público (GTFS) com a infraestrutura viária (OpenStreetMap, OSM) que permite uma análise integrada dos sistemas de transporte, disponibilizando métodos de recolha e processamento de dados relativos a elementos urbanos, operação planeada e a sua execução. A junção destas dimensões permite um estudo aprofundado sobre o funcionamento e o desempenho dos vários modos que compõe o esqueleto da mobilidade nas nossas cidades, assim como o diagonóstico dos principais constrangimentos como auxílio aos processos de tomada de decisão em políticas públicas.</p>
+<p>A camada de índice de perturbação (<em>Disturbance Index</em>, DI) é adaptada do índice desenvolvido pela Carris Metropolitana para analisar a fiabilidade da sua operação no cumprimento de horários no âmbito do projeto <em>deployEMDS</em> <span class="citation" data-cites="carris_metropolitana_carrismetropolitanadeploy_emds_2026">(<a href="references.html#ref-carris_metropolitana_carrismetropolitanadeploy_emds_2026" role="doc-biblioref">Carris Metropolitana 2026</a>)</span>. Apresentado em <a href="#eq-di-tml" class="quarto-xref">Equation&nbsp;<span>5.1</span></a>, este relaciona, para cada segmento entre duas paragens, o tempo de viagem mediano e o primeiro quartil (Q1, assumido como o tempo de viagem de referência) dos tempos de viagem observados, de forma a quantificar o grau de degradação face a condições favoráveis de circulação e identificar os segmentos onde a operação é mais afetada por constrangimentos operacionais.</p>
+<p><span id="eq-di-tml"><span class="math display">\[
+\text{DI}_{\text{Freeflow}} = \frac{\operatorname{median}_{i=1,\dots,N} \left(\Delta t^{(i)}\right) - Q_{1,\text{shape}}\left(\Delta t\right)}{Q_{1,\text{shape}}\left(\Delta t\right)}
+\tag{5.1}\]</span></span></p>
+<p>onde <span class="math inline">\(\Delta t^{(i)} = \text{stop\_observed\_time\_end}^{(i)} - \text{stop\_observed\_time\_start}^{(i)}\)</span> corresponde ao tempo de viagem observado no segmento para a viagem <span class="math inline">\(i\)</span>, e <span class="math inline">\(Q_{1,\text{shape}}(\Delta t)\)</span> denota o primeiro quartil dos tempos de viagem observados nesse percurso.</p>
+<p>No contexto do GTFShift, foi aplicada uma adaptação deste índice, ao nível do segmento da rede viária, com o objetivo de desbloquear uma análise mais fina da perturbação operacional e numa perspetiva de infraestrutura. Esta adaptação consistiu em quantifica o grau de degradação da velocidade comercial das viagens realizadas em relação à sua velocidade de referência (velocidade em condições favoráveis, assumida como sendo a velocidade no percentil 85), identificando os segmentos onde a operação é mais afetada pelo congestionamento rodoviário.</p>
+<p>Esta camada requer dados de GTFS-RT.</p>
+<section id="definição-do-índice" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="definição-do-índice"><span class="header-section-number">5.1</span> Definição do índice</h2>
+<p>O índice de perturbação é formulado de acordo com a escala de agregação espacial:</p>
+<p><strong>Nível de segmento da rede viária (<em>way</em>):</strong> Avalia a perturbação horária <span class="math inline">\(h\)</span> num dado segmento <span class="math inline">\(s\)</span>, comparando a velocidade mediana observada nessa hora com a velocidade de referência P85 do segmento ao longo de todo o período:</p>
+<p><span id="eq-di-segmento"><span class="math display">\[
+DI_{s,h} = \frac{v_{\text{mediana},s,h} - v_{P85,s}}{v_{P85,s}}
+\tag{5.2}\]</span></span></p>
+<p>onde:</p>
+<ul>
+<li><span class="math inline">\(v_{\text{mediana},s,h}\)</span> é a velocidade mediana dos autocarros no segmento <span class="math inline">\(s\)</span> durante a hora <span class="math inline">\(h\)</span>;</li>
+<li><span class="math inline">\(v_{P85,s}\)</span> é o percentil 85 da velocidade no segmento <span class="math inline">\(s\)</span>, calculado sobre todas as observações do período de análise.</li>
+</ul>
+<p><strong>Nível de linha (<em>route</em>) ou percurso (<em>shape</em>):</strong> Avalia a perturbação da velocidade comercial ao nível de cada viagem individual realizada, comparando a velocidade comercial observada na viagem <span class="math inline">\(i\)</span> com a velocidade de referência P85 da respetiva linha ou percurso (calculada sobre todas as viagens do período):</p>
+<p><span id="eq-di-linha"><span class="math display">\[
+DI_{r,i} = \frac{v_{\text{comercial},r,i} - v_{P85,r}}{v_{P85,r}}
+\tag{5.3}\]</span></span></p>
+<p>onde:</p>
+<ul>
+<li><span class="math inline">\(v_{\text{comercial},r,i}\)</span> é a velocidade comercial observada na viagem <span class="math inline">\(i\)</span> da linha ou percurso <span class="math inline">\(r\)</span>;</li>
+<li><span class="math inline">\(v_{P85,r}\)</span> é a velocidade comercial no percentil 85 da linha ou percurso <span class="math inline">\(r\)</span>, considerando a totalidade das viagens analisadas.</li>
+</ul>
+<p>O índice de perturbação assume valores negativos quando a velocidade observada é inferior à de referência (perturbação), e valores próximos de zero ou positivos quando a operação decorre sem constrangimentos significativos.</p>
+<section id="nível-de-segmento-de-via" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="nível-de-segmento-de-via"><span class="header-section-number">5.1.1</span> Nível de segmento de via</h3>
+<p>Para cada segmento de via (<em>way</em>), o DI horário é calculado comparando a velocidade mediana horária (<code>hour_speed_median</code>) com a velocidade P85 global do segmento (<code>speed_p85</code>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>disturbance_index <span class="ot">=</span> (hour_speed_median <span class="sc">-</span> speed_p85) <span class="sc">/</span> speed_p85</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="gtfshift-ferramenta-de-priorização-de-corredores-bus" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="gtfshift-ferramenta-de-priorização-de-corredores-bus"><span class="header-section-number">1.2</span> GTFShift: ferramenta de priorização de corredores bus</h2>
-<p>Um exemplo da sua aplicação é a priorização de vias de trânsito para a implementação de corredores <em>bus</em>. Uma intervenção urbana com forte evidência científica sobre os seus potenciais de melhoria da fiabilidade das operações de autocarros urbanos através da redução dos impactos negativos do congestionamento <span class="citation" data-cites="cesme2018">(<a href="references.html#ref-cesme2018" role="doc-biblioref">Cesme et al. 2018</a>)</span>, da variabilidade dos tempos de viagem <span class="citation" data-cites="surprenant-legault-2011">(<a href="references.html#ref-surprenant-legault-2011" role="doc-biblioref">Surprenant-Legault and El-Geneidy 2011</a>)</span>, do aumento da velocidade comercial <span class="citation" data-cites="basso-2011">(<a href="references.html#ref-basso-2011" role="doc-biblioref">Basso et al. 2011</a>)</span> e até da equidade na utilização do espaço público <span class="citation" data-cites="uitp_regions_2025 vuchic1981">(<a href="references.html#ref-uitp_regions_2025" role="doc-biblioref">UITP 2025</a>; <a href="references.html#ref-vuchic1981" role="doc-biblioref">Vuchic 1981</a>)</span>. A sua implementação, é, no entanto, limitada pela escassez do espaço físico em ambiente urbano, cuja alocação ao transporte público pode levar a uma redução da qualidade de serviço de outros modos <span class="citation" data-cites="arasan-2010">(<a href="references.html#ref-arasan-2010" role="doc-biblioref">Arasan and Vedagiri 2010</a>)</span>, com potencial para prejudicar a aceitação pública <span class="citation" data-cites="batty-2014">(<a href="references.html#ref-batty-2014" role="doc-biblioref">Batty et al. 2014</a>)</span>.</p>
-<p>Basear estas decisões em evidências robustas e territorialmente situadas é, por isso, essencial. Para responder a este problema, foi desenvolvido o portal interativo <strong>GTFShift: ferramenta de priorização de corredores bus</strong> <span class="citation" data-cites="matos_gtfshift_dashboard_2026">(<a href="references.html#ref-matos_gtfshift_dashboard_2026" role="doc-biblioref">Matos and Félix 2026b</a>)</span>, que aplica a metodologia desenvolvida no âmbito do pacote GTFShift a um caso de estudo concreto e disponibiliza os resultados de forma transparente, acessível e aberta a qualquer um, sem necessidade de conhecimentos profundos de programação ou análise de dados. Esta ferramenta permite uma análise detalhada das vias de trânsito, do seu desempenho operacional e das suas características urbanas e de mobilidade, permitindo uma melhor compreensão dos constrangimentos que afetam o serviço de transporte público e a identificação e priorização de potenciais corredores de <em>bus</em>.</p>
-<p>O desenvolvimento de ambos os projetos descritos anteriormente foi realizado no âmbito da atividade de investigação do grupo de investigação U-Shift, parte do CERIS (<em>Civil Engineering Research and Innovation for Sustainability</em>), no Departamento de Engenharia Civil do Instituto Superior Técnico, Universidade de Lisboa, e disponibilizados de forma aberta segundo a licença GPL-3.0.</p>
+<section id="nível-de-viagem-e-linha-route" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="nível-de-viagem-e-linha-route"><span class="header-section-number">5.1.2</span> Nível de viagem e linha (<em>route</em>)</h3>
+<p>Para cada viagem individual de uma linha ou percurso, o DI é calculado comparando a velocidade comercial dessa realização com a velocidade P85 global da respetiva linha (<code>route_speed_p85</code>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>disturbance_index <span class="ot">=</span> (commercial_speed <span class="sc">-</span> route_speed_p85) <span class="sc">/</span> route_speed_p85</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="gtfshifttml" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="gtfshifttml"><span class="header-section-number">1.3</span> GTFShift/TML</h2>
-<p>Após a disponibilização das ferramentas atrás referidas, a TML manifestou interesse na extensão do âmbito das análises realizadas ao nível da infraestrutura com uma componente mais operacional, focada não apenas na análise e diagnóstico de intervenções ao nível da infraestrutura, mas também do desempenho operacional da Carris Metropolitana, operador de transporte público rodoviário metropolitano sob sua gestão.</p>
-<p>O portal interativo <strong>GTFShift/TML</strong> <span class="citation" data-cites="matos_gtfshift_tml_2026">(<a href="references.html#ref-matos_gtfshift_tml_2026" role="doc-biblioref">Matos and Félix 2026a</a>)</span> nasce então desta colaboração, procurando implementar um protótipo funcional com vista à validação dos requisitos definidos pela TML, para posterior avaliação interna e eventual incorporação nos sistemas internos da empresa.</p>
-<p>Seguindo a lógica da transferência de conhecimento da academia para a sociedade e em linha com a política de dados abertos praticada pela TML <span class="citation" data-cites="carris_metropolitana_dados_abertos_2026">(<a href="references.html#ref-carris_metropolitana_dados_abertos_2026" role="doc-biblioref">Carris Metropolitana 2026</a>)</span>, este projeto foi também disponibilizado de forma aberta segundo a licença GPL-3.0.</p>
-<p>O presente relatório descreve em detalhe a metodologia de análise implementada para o caso de estudo da Carris Metropolitana, enumerando os dados utilizados, os resultados produzidos, e servindo também de documentação técnica de referência para o portal GTFShift/TML.</p>
+<section id="nível-de-percurso-shape" class="level3" data-number="5.1.3">
+<h3 data-number="5.1.3" class="anchored" data-anchor-id="nível-de-percurso-shape"><span class="header-section-number">5.1.3</span> Nível de percurso (<em>shape</em>)</h3>
+<p>Analogamente, para cada percurso (<em>shape</em>), o DI é calculado com a velocidade P85 global do percurso como referência:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>disturbance_index <span class="ot">=</span> (commercial_speed_avg <span class="sc">-</span> shape_speed_p85) <span class="sc">/</span> shape_speed_p85</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="categorias-de-perturbação" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="categorias-de-perturbação"><span class="header-section-number">5.2</span> Categorias de perturbação</h2>
+<p>No modo de visualização categorizado (adaptado de <span class="citation" data-cites="carris_metropolitana_carrismetropolitanadeploy_emds_2026">Carris Metropolitana (<a href="references.html#ref-carris_metropolitana_carrismetropolitanadeploy_emds_2026" role="doc-biblioref">2026</a>)</span>), os segmentos são classificados em cinco categorias com base nos limiares <code>diThresholdLow</code> e <code>diThresholdHigh</code>. Por omissão, estes limiares são calibrados automaticamente a partir da distribuição estatística do DI: o limiar inferior é definido com o P85 e o limiar superior com o P25, procurando criar uma distribuição uniforme dos segmentos pelas diferentes categorias.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Categoria</th>
+<th>Cor</th>
+<th>Condição</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Muito mais rápido</td>
+<td><span style="color: #0B3C5D;"><strong>Azul escuro</strong></span></td>
+<td><span class="math inline">\(DI \geq \text{diThresholdHigh}\)</span></td>
+</tr>
+<tr class="even">
+<td>Mais rápido</td>
+<td><span style="color: #328CC1;"><strong>Azul claro</strong></span></td>
+<td><span class="math inline">\(\text{diThresholdLow} &lt; DI &lt; \text{diThresholdHigh}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Velocidade regular</td>
+<td><span style="color: #2ECC71;"><strong>Verde</strong></span></td>
+<td><span class="math inline">\(-\text{diThresholdLow} \leq DI \leq \text{diThresholdLow}\)</span></td>
+</tr>
+<tr class="even">
+<td>Mais lento</td>
+<td><span style="color: #E67E22;"><strong>Laranja</strong></span></td>
+<td><span class="math inline">\(-\text{diThresholdHigh} \leq DI &lt; -\text{diThresholdLow}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Muito mais lento</td>
+<td><span style="color: #E74C3C;"><strong>Vermelho</strong></span></td>
+<td><span class="math inline">\(DI &lt; -\text{diThresholdHigh}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Alternativamente, o modo de visualização divergente usa uma paleta de cores contínua centrada em zero, permitindo uma melhor visualização da magnitude da perturbação (positiva ou negativa) em cada segmento.</p>
+</section>
+<section id="filtragem-por-comprimento-mínimo" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="filtragem-por-comprimento-mínimo"><span class="header-section-number">5.3</span> Filtragem por comprimento mínimo</h2>
+<p>Para evitar que segmentos muito curtos (e.g., interseções, entradas de parques) dominem visualmente a análise, é disponibilizado um filtro opcional por comprimento mínimo. Quando ativado, apenas segmentos com comprimento igual ou superior a <code>diMinLength</code> metros são incluídos na visualização.</p>
+</section>
+<section id="filtros-top-n" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="filtros-top-n"><span class="header-section-number">5.4</span> Filtros top-N</h2>
+<p>É também possível filtrar os segmentos mais perturbados (“worst N”) ou os menos perturbados (“best N”), facilitando a identificação rápida dos locais críticos ou de boa performance. O número de segmentos filtrados em cada categoria é parametrizável.</p>
+</section>
+<section id="interpretação" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="interpretação"><span class="header-section-number">5.5</span> Interpretação</h2>
+<p>Um índice de perturbação negativo indica que os autocarros circulam significativamente abaixo da sua velocidade de referência, sugerindo congestionamento recorrente ou outro tipo de perturbação operacional. Pelo contrário, um valor positivo indica que os autocarros circulam acima da sua velocidade de referência, sugerindo que o horário pode estar desajustado face às condições normais de circulação.</p>
+<p>A diferença metodológica face ao uso direto da velocidade é que o DI normaliza os valores pelo P85 de cada percurso/segmento, tornando a comparação válida entre elementos com diferentes características geográficas e operacionais (isto é, zonas de periferia vs.&nbsp;zonas centrais têm velocidades absolutas muito diferentes, mas podem ter perturbações similares).</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
-<div id="ref-arasan-2010" class="csl-entry" role="listitem">
-Arasan, V. Thamizh, and P. Vedagiri. 2010. <span>“<span class="nocase">Study of the impact of exclusive bus lane under highly heterogeneous traffic condition</span>.”</span> <em>Public Transport</em> 2 (1-2): 135–55. <a href="https://doi.org/10.1007/s12469-010-0021-x">https://doi.org/10.1007/s12469-010-0021-x</a>.
-</div>
-<div id="ref-basso-2011" class="csl-entry" role="listitem">
-Basso, Leonardo J., Cristián Angelo Guevara, Antonio Gschwender, and Marcelo Fuster. 2011. <span>“<span class="nocase">Congestion pricing, transit subsidies and dedicated bus lanes: Efficient and practical solutions to congestion</span>.”</span> <em>Transport Policy</em> 18 (5): 676–84. <a href="https://doi.org/10.1016/j.tranpol.2011.01.002">https://doi.org/10.1016/j.tranpol.2011.01.002</a>.
-</div>
-<div id="ref-batty-2014" class="csl-entry" role="listitem">
-Batty, Paul, Roberto Palacin, and Arturo González-Gil. 2014. <span>“<span class="nocase">Challenges and opportunities in developing urban modal shift</span>.”</span> <em>Travel Behaviour and Society</em> 2 (2): 109–23. <a href="https://doi.org/10.1016/j.tbs.2014.12.001">https://doi.org/10.1016/j.tbs.2014.12.001</a>.
-</div>
-<div id="ref-carris_metropolitana_dados_abertos_2026" class="csl-entry" role="listitem">
-Carris Metropolitana. 2026. <span>“<span>CMetropolitana</span>: Dados Abertos.”</span> <a href="https://carrismetropolitana.pt/open-data">https://carrismetropolitana.pt/open-data</a>.
-</div>
-<div id="ref-cesme2018" class="csl-entry" role="listitem">
-Cesme, Burak, Richard Roisman, Ramona Burns, et al. 2018. <span>“Strategies and Barriers in Effective Bus Lane Implementation and Management: Best Practices for Use in the Greater Washington, d.c. Region.”</span> <em>Transportation Research Record: Journal of the Transportation Research Board</em> 2672 (8): 29–40. <a href="https://doi.org/10.1177/0361198118791914">https://doi.org/10.1177/0361198118791914</a>.
-</div>
-<div id="ref-matos_gtfshift_tml_2026" class="csl-entry" role="listitem">
-Matos, Gonçalo F., and Rosa Félix. 2026a. <em><span>GTFShift</span>: Bus Lane Prioritisation &amp; Operational Analysis Tool</em>. V. 1.0. Released September. <a href="https://github.com/U-Shift/GTFShift-DI">https://github.com/U-Shift/GTFShift-DI</a>.
-</div>
-<div id="ref-matos_gtfshift_dashboard_2026" class="csl-entry" role="listitem">
-Matos, Gonçalo F., and Rosa Félix. 2026b. <em><span>GTFShift</span>: Bus Lane Prioritization Tool</em>. V. 1.1. Released May. <a href="https://github.com/U-Shift/GTFShift-web">https://github.com/U-Shift/GTFShift-web</a>.
-</div>
-<div id="ref-matos_gtfshift_2026" class="csl-entry" role="listitem">
-Matos, Gonçalo F., Rosa Félix, and Miguel Relvas Pires. 2026. <em><span>GTFShift</span>: Explore and Analyse General Transit Feed Specification (<span>GTFS</span>) Files with a Focus on Urban Mobility</em>. V. 1.0.0. Released September 27. <a href="https://cloud.r-project.org/web/packages/GTFShift/index.html">https://cloud.r-project.org/web/packages/GTFShift/index.html</a>.
-</div>
-<div id="ref-surprenant-legault-2011" class="csl-entry" role="listitem">
-Surprenant-Legault, Julien, and Ahmed M. El-Geneidy. 2011. <span>“<span class="nocase">Introduction of reserved bus lane</span>.”</span> <em>Transportation Research Record Journal of the Transportation Research Board</em> 2218 (1): 10–18. <a href="https://doi.org/10.3141/2218-02">https://doi.org/10.3141/2218-02</a>.
-</div>
-<div id="ref-uitp_regions_2025" class="csl-entry" role="listitem">
-UITP. 2025. <em>Regions Thrive with Congestion-Free Bus Networks</em>. <a href="https://www.uitp.org/wp-content/uploads/sites/7/2025/08/20250820_Congestion-free-Bus-Network_Action-Points_WEB.pdf">https://www.uitp.org/wp-content/uploads/sites/7/2025/08/20250820_Congestion-free-Bus-Network_Action-Points_WEB.pdf</a>.
-</div>
-<div id="ref-vuchic1981" class="csl-entry" role="listitem">
-Vuchic, Vukan R. 1981. <em><span class="nocase">Urban Public Transportation - Systems and Technology</span></em>. Prentice-Hall, Inc.
+<div id="ref-carris_metropolitana_carrismetropolitanadeploy_emds_2026" class="csl-entry" role="listitem">
+Carris Metropolitana. 2026. <em>Carrismetropolitana/Deploy-Emds</em>. Carris Metropolitana, released August 7. <a href="https://github.com/carrismetropolitana/deploy-emds">https://github.com/carrismetropolitana/deploy-emds</a>.
 </div>
 </div>
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -926,10 +1026,13 @@ Vuchic, Vukan R. 1981. <em><span class="nocase">Urban Public Transportation - Sy
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./metodologia.html" class="pagination-link" aria-label="Metodologia">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Metodologia</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./dados_fontes.html" class="pagination-link" aria-label="Fontes de dados e período de análise">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Fontes de dados e período de análise</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./metodologia_priorizacao.html" class="pagination-link" aria-label="Priorização de Corredores *Bus*">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Priorização de Corredores <em>Bus</em></span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

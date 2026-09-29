@@ -1,0 +1,294 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Relatório Metodológico",
+    "section": "",
+    "text": "1 Introdução\nEste relatório descreve a metodologia aplicada, os resultados obtidos e documenta o portal interativo desenvolvido no âmbito da adaptação e extensão da ferramenta GTFShift às necessidades operacionais da Transportes Metropolitanos de Lisboa (TML), que deu origem ao portal interativo GTFShift/TML.\nAs secções Dados e Metodologia descrevem a recolha e métodos de processamento e análise dos dados utilizados, seguindo-se a apresentação e documentação do Portal interativo, que permite a sua visualização de forma simples e intuitiva.\nAntes de entrar em detalhe, é importante contextualizar o âmbito do GTFShift e das suas variantes, que se apresentam em seguida.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introdução</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#gtfshift-pacote-de-código-r",
+    "href": "index.html#gtfshift-pacote-de-código-r",
+    "title": "Relatório Metodológico",
+    "section": "1.1 GTFShift: pacote de código R",
+    "text": "1.1 GTFShift: pacote de código R\nO GTFShift (Matos et al. 2026) é um pacote de código em R focado na harmonização de dados de operação de transporte público (GTFS) com a infraestrutura viária (OpenStreetMap, OSM) que permite uma análise integrada dos sistemas de transporte, disponibilizando métodos de recolha e processamento de dados relativos a elementos urbanos, operação planeada e a sua execução. A junção destas dimensões permite um estudo aprofundado sobre o funcionamento e o desempenho dos vários modos que compõe o esqueleto da mobilidade nas nossas cidades, assim como o diagonóstico dos principais constrangimentos como auxílio aos processos de tomada de decisão em políticas públicas.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introdução</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#gtfshift-ferramenta-de-priorização-de-corredores-bus",
+    "href": "index.html#gtfshift-ferramenta-de-priorização-de-corredores-bus",
+    "title": "Relatório Metodológico",
+    "section": "1.2 GTFShift: ferramenta de priorização de corredores bus",
+    "text": "1.2 GTFShift: ferramenta de priorização de corredores bus\nUm exemplo da sua aplicação é a priorização de vias de trânsito para a implementação de corredores bus. Uma intervenção urbana com forte evidência científica sobre os seus potenciais de melhoria da fiabilidade das operações de autocarros urbanos através da redução dos impactos negativos do congestionamento (Cesme et al. 2018), da variabilidade dos tempos de viagem (Surprenant-Legault and El-Geneidy 2011), do aumento da velocidade comercial (Basso et al. 2011) e até da equidade na utilização do espaço público (UITP 2025; Vuchic 1981). A sua implementação, é, no entanto, limitada pela escassez do espaço físico em ambiente urbano, cuja alocação ao transporte público pode levar a uma redução da qualidade de serviço de outros modos (Arasan and Vedagiri 2010), com potencial para prejudicar a aceitação pública (Batty et al. 2014).\nBasear estas decisões em evidências robustas e territorialmente situadas é, por isso, essencial. Para responder a este problema, foi desenvolvido o portal interativo GTFShift: ferramenta de priorização de corredores bus (Matos and Félix 2026b), que aplica a metodologia desenvolvida no âmbito do pacote GTFShift a um caso de estudo concreto e disponibiliza os resultados de forma transparente, acessível e aberta a qualquer um, sem necessidade de conhecimentos profundos de programação ou análise de dados. Esta ferramenta permite uma análise detalhada das vias de trânsito, do seu desempenho operacional e das suas características urbanas e de mobilidade, permitindo uma melhor compreensão dos constrangimentos que afetam o serviço de transporte público e a identificação e priorização de potenciais corredores de bus.\nO desenvolvimento de ambos os projetos descritos anteriormente foi realizado no âmbito da atividade de investigação do grupo de investigação U-Shift, parte do CERIS (Civil Engineering Research and Innovation for Sustainability), no Departamento de Engenharia Civil do Instituto Superior Técnico, Universidade de Lisboa, e disponibilizados de forma aberta segundo a licença GPL-3.0.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introdução</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#gtfshifttml",
+    "href": "index.html#gtfshifttml",
+    "title": "Relatório Metodológico",
+    "section": "1.3 GTFShift/TML",
+    "text": "1.3 GTFShift/TML\nApós a disponibilização das ferramentas atrás referidas, a TML manifestou interesse na extensão do âmbito das análises realizadas ao nível da infraestrutura com uma componente mais operacional, focada não apenas na análise e diagnóstico de intervenções ao nível da infraestrutura, mas também do desempenho operacional da Carris Metropolitana, operador de transporte público rodoviário metropolitano sob sua gestão.\nO portal interativo GTFShift/TML (Matos and Félix 2026a) nasce então desta colaboração, procurando implementar um protótipo funcional com vista à validação dos requisitos definidos pela TML, para posterior avaliação interna e eventual incorporação nos sistemas internos da empresa.\nSeguindo a lógica da transferência de conhecimento da academia para a sociedade e em linha com a política de dados abertos praticada pela TML (Carris Metropolitana 2026), este projeto foi também disponibilizado de forma aberta segundo a licença GPL-3.0.\nO presente relatório descreve em detalhe a metodologia de análise implementada para o caso de estudo da Carris Metropolitana, enumerando os dados utilizados, os resultados produzidos, e servindo também de documentação técnica de referência para o portal GTFShift/TML.\n\n\n\n\nArasan, V. Thamizh, and P. Vedagiri. 2010. “Study of the impact of exclusive bus lane under highly heterogeneous traffic condition.” Public Transport 2 (1-2): 135–55. https://doi.org/10.1007/s12469-010-0021-x.\n\n\nBasso, Leonardo J., Cristián Angelo Guevara, Antonio Gschwender, and Marcelo Fuster. 2011. “Congestion pricing, transit subsidies and dedicated bus lanes: Efficient and practical solutions to congestion.” Transport Policy 18 (5): 676–84. https://doi.org/10.1016/j.tranpol.2011.01.002.\n\n\nBatty, Paul, Roberto Palacin, and Arturo González-Gil. 2014. “Challenges and opportunities in developing urban modal shift.” Travel Behaviour and Society 2 (2): 109–23. https://doi.org/10.1016/j.tbs.2014.12.001.\n\n\nCarris Metropolitana. 2026. “CMetropolitana: Dados Abertos.” https://carrismetropolitana.pt/open-data.\n\n\nCesme, Burak, Richard Roisman, Ramona Burns, et al. 2018. “Strategies and Barriers in Effective Bus Lane Implementation and Management: Best Practices for Use in the Greater Washington, d.c. Region.” Transportation Research Record: Journal of the Transportation Research Board 2672 (8): 29–40. https://doi.org/10.1177/0361198118791914.\n\n\nMatos, Gonçalo F., and Rosa Félix. 2026a. GTFShift: Bus Lane Prioritisation & Operational Analysis Tool. V. 1.0. Released September. https://github.com/U-Shift/GTFShift-DI.\n\n\nMatos, Gonçalo F., and Rosa Félix. 2026b. GTFShift: Bus Lane Prioritization Tool. V. 1.1. Released May. https://github.com/U-Shift/GTFShift-web.\n\n\nMatos, Gonçalo F., Rosa Félix, and Miguel Relvas Pires. 2026. GTFShift: Explore and Analyse General Transit Feed Specification (GTFS) Files with a Focus on Urban Mobility. V. 1.0.0. Released September 27. https://cloud.r-project.org/web/packages/GTFShift/index.html.\n\n\nSurprenant-Legault, Julien, and Ahmed M. El-Geneidy. 2011. “Introduction of reserved bus lane.” Transportation Research Record Journal of the Transportation Research Board 2218 (1): 10–18. https://doi.org/10.3141/2218-02.\n\n\nUITP. 2025. Regions Thrive with Congestion-Free Bus Networks. https://www.uitp.org/wp-content/uploads/sites/7/2025/08/20250820_Congestion-free-Bus-Network_Action-Points_WEB.pdf.\n\n\nVuchic, Vukan R. 1981. Urban Public Transportation - Systems and Technology. Prentice-Hall, Inc.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introdução</span>"
+    ]
+  },
+  {
+    "objectID": "dados_fontes.html",
+    "href": "dados_fontes.html",
+    "title": "2  Fontes de dados e período de análise",
+    "section": "",
+    "text": "2.1 GTFS (General Transit Feed Specification)\nA metodologia aplicada assenta na combinação de três conjuntos de dados, que permitem analisar as várias dimensões do problema em estudo: dados de oferta planeada de transporte público (GTFS), de operação em tempo real (GTFS-RT) e de infraestrutura viária (OpenStreetMap).\nO período de análise para a oferta planeada e para a procura (número de passageiros) é uma quarta-feira útil (20/05/2026), por ser considerado um dia típico de operação. Para a monitorização em tempo real da performance operacional, por ser uma análise mais fina que chega ao nível de cada viagem individual, foi considerado um período mais alargado, de duas semanas úteis, entre 13 e 30/04/2026 (14 dias), de forma a conseguir capturar várias amostras para a mesma viagem.\nO GTFS (MobilityData, n.d.) é um formato aberto e padronizado para representar a oferta programada de transporte público. Um feed GTFS é composto por um conjunto de ficheiros CSV comprimidos num arquivo .zip, descrevendo rotas, geometrias (shapes), paragens, e os horários de todas as viagens planeadas para um ou vários operadores de transporte.\nNo contexto desta análise, os dados GTFS são a principal fonte de informação sobre a oferta de serviço planeada. Os principais ficheiros utilizados são:\nO feed atualizado da GTFS da Carris Metropolitana está disponível de forma aberta na sua API própria (Carris Metropolitana 2026b). Foi utilizada a versão descarregada a 19/05/2026, o dia anterior ao período de análise (20/05/2026). Esta versão está disponível no repositório histórico de GTFS da MobilityData (MobilityData 2026), em https://files.mobilitydatabase.org/mdb-2027/mdb-2027-202605190105/mdb-2027-202605190105.zip.",
+    "crumbs": [
+      "**Dados**",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Fontes de dados e período de análise</span>"
+    ]
+  },
+  {
+    "objectID": "dados_fontes.html#gtfs-general-transit-feed-specification",
+    "href": "dados_fontes.html#gtfs-general-transit-feed-specification",
+    "title": "2  Fontes de dados e período de análise",
+    "section": "",
+    "text": "Ficheiro\nDescrição\n\n\n\n\nroutes.txt\nIdentificação e metadados das linhas (route_id, route_short_name, route_long_name, route_color)\n\n\ntrips.txt\nAssociação de viagens a linhas e percursos (shape_id)\n\n\nshapes.txt\nGeometria espacial dos percursos\n\n\nstop_times.txt\nHorários programados por paragem para cada viagem\n\n\nstops.txt\nCoordenadas geográficas e identificadores das paragens\n\n\ncalendar.txt / calendar_dates.txt\nCalendário de operação por dias da semana e exceções",
+    "crumbs": [
+      "**Dados**",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Fontes de dados e período de análise</span>"
+    ]
+  },
+  {
+    "objectID": "dados_fontes.html#openstreetmap-osm",
+    "href": "dados_fontes.html#openstreetmap-osm",
+    "title": "2  Fontes de dados e período de análise",
+    "section": "2.2 OpenStreetMap (OSM)",
+    "text": "2.2 OpenStreetMap (OSM)\nO OpenStreetMap (OpenStreetMap, n.d.) é uma base de dados geográfica colaborativa e de acesso livre, utilizada nesta análise como fonte de informação sobre a infraestrutura viária. Em particular, são recolhidos dados sobre:\n\nRotas de transporte público (relations OSM com route = bus | tram), que permitem associar os percursos GTFS a segmentos de via (ways OSM);\nNúmero de vias de trânsito por sentido (lanes, lanes:forward, lanes:backward);\nExistência de corredores bus (busway, lanes:bus);\nExistência de estacionamento (parking:lane).\n\nPara obter esta informação são utilizadas as bibliotecas de R osmdata (Maspons et al. 2026) e osmextract (Gilardi et al. 2026).",
+    "crumbs": [
+      "**Dados**",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Fontes de dados e período de análise</span>"
+    ]
+  },
+  {
+    "objectID": "dados_fontes.html#dados-de-operação-em-tempo-real-gtfs-rt",
+    "href": "dados_fontes.html#dados-de-operação-em-tempo-real-gtfs-rt",
+    "title": "2  Fontes de dados e período de análise",
+    "section": "2.3 Dados de operação em tempo real (GTFS-RT)",
+    "text": "2.3 Dados de operação em tempo real (GTFS-RT)\nO GTFS-RT (General Transit Feed Specification - Real Time) é uma extensão do protocolo GTFS que permite a partilha de informação em tempo real sobre a operação de veículos, incluindo posições GPS, atrasos e alertas de serviço. Nesta análise, são utilizados dados de posicionamento de veículos (VehiclePosition) para calcular métricas de velocidade comercial observada em cada segmento de via.\nOs dados de GTFS-RT foram recolhidos de forma periódica (uma vez por minuto) nos dias úteis entre 13 e 30 de abril de 2026 (14 dias). A recolha foi feita através da API oficial da Carris Metropolitana (Carris Metropolitana 2026a).\nO código utilizado para a recolha e agregação destes dados está disponível em github.com/U-Shift/GTFShift-DI/tree/main/scripts/00_fetch_rt.",
+    "crumbs": [
+      "**Dados**",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Fontes de dados e período de análise</span>"
+    ]
+  },
+  {
+    "objectID": "dados_fontes.html#dados-de-procura-de-passageiros",
+    "href": "dados_fontes.html#dados-de-procura-de-passageiros",
+    "title": "2  Fontes de dados e período de análise",
+    "section": "2.4 Dados de procura de passageiros",
+    "text": "2.4 Dados de procura de passageiros\nObtiveram-se dados de procura através da API de métricas da Carris Metropolitana (Carris Metropolitana 2026a). Foi recolhido o número de passageiros agregados por linha e por dia, considerando o dia 20/05/2026.\nEstes dados permitem ponderar a análise de priorização pelo volume de passageiros transportados, identificando os segmentos onde o impacto potencial de uma faixa de bus seria maior. A associação entre dados de procura e a rede viária é feita através do identificador de linha (route_short_name), que é cruzado com o GTFS para obter o route_id correspondente.\nO código utilizado para a recolha destes dados está disponível em github.com/U-Shift/GTFShift-DI/blob/main/scripts/00_demand/carris_metropolitana.R.\n\n\n\n\nCarris Metropolitana. 2026a. Carrismetropolitana/Api. Carris Metropolitana, released September 29. https://github.com/carrismetropolitana/api.\n\n\nCarris Metropolitana. 2026b. Carrismetropolitana/Gtfs. Carris Metropolitana, released September 15. https://github.com/carrismetropolitana/gtfs.\n\n\nGilardi, Andrea, Robin Lovelace, Barry Rowlingson, et al. 2026. Osmextract: Download and Import Open Street Map Data Extracts. V. 0.6.0. Released April 14. https://cran.r-project.org/web/packages/osmextract/index.html.\n\n\nMaspons, Joan, Mark Padgham, Bob Rudis, et al. 2026. Osmdata: Import ’OpenStreetMap’ Data as Simple Features or Spatial Objects. V. 0.4.1. Released September 1. https://cran.r-project.org/web/packages/osmdata/index.html.\n\n\nMobilityData. 2026. “Carris Metropolitana GTFS Schedule Feed. Mobility Database.” https://mobilitydatabase.org/feeds/gtfs/mdb-2027.\n\n\nMobilityData. n.d. “General Transit Feed Specification (GTFS).” Accessed September 29, 2026. https://gtfs.org/documentation/overview/.\n\n\nOpenStreetMap. n.d. “OpenStreetMap: About. OpenStreetMap.” Accessed September 29, 2026. https://www.openstreetmap.org/about.",
+    "crumbs": [
+      "**Dados**",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Fontes de dados e período de análise</span>"
+    ]
+  },
+  {
+    "objectID": "dados_preparacao.html",
+    "href": "dados_preparacao.html",
+    "title": "3  Preparação de dados",
+    "section": "",
+    "text": "3.1 Filtragem temporal do GTFS\nAntes de avançar para a análise, os dados recolhidos passam por um conjunto de etapas de preparação e validação, que garantem a consistência e qualidade da informação utilizada.\nO feed GTFS completo abrange tipicamente vários meses ou anos de operação. Para a análise, foi selecionado um dia de referência que representa as condições típicas de operação (neste caso, uma quarta-feira útil de um período sem feriados ou condições especiais). A filtragem é feita com recurso à biblioteca tidytransit (Poletti et al. 2026):\nEsta operação retém apenas as viagens, paragens e percursos operacionais no dia selecionado, reduzindo significativamente a dimensão dos dados e tornando a análise mais focada.",
+    "crumbs": [
+      "**Dados**",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Preparação de dados</span>"
+    ]
+  },
+  {
+    "objectID": "dados_preparacao.html#filtragem-temporal-do-gtfs",
+    "href": "dados_preparacao.html#filtragem-temporal-do-gtfs",
+    "title": "3  Preparação de dados",
+    "section": "",
+    "text": "gtfs &lt;- tidytransit::filter_feed_by_date(gtfs, extract_date = region$gtfs_day)",
+    "crumbs": [
+      "**Dados**",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Preparação de dados</span>"
+    ]
+  },
+  {
+    "objectID": "dados_preparacao.html#manipulação-customizada-do-gtfs",
+    "href": "dados_preparacao.html#manipulação-customizada-do-gtfs",
+    "title": "3  Preparação de dados",
+    "section": "3.2 Manipulação customizada do GTFS",
+    "text": "3.2 Manipulação customizada do GTFS\nQuando os dados de origem apresentam inconsistências ou requerem ajustes específicos (e.g., correção de identificadores, remoção de serviços especiais, ou unificação de feeds de múltiplos operadores), é aplicada uma função de manipulação customizada, definida no ficheiro de parâmetros como gtfs_manipulate. O feed resultante, já manipulado e filtrado, é guardado separadamente para referência.\nNo caso da Carris Metropolitana, foi aplicada uma função para filtrar o feed por área de operação GTFShift::filter_by_agency() e remover os identificadores associados aos planos de operação, para permitir a associação com as geometrias OSM (que não têm este identificador).\nmanipulate_carris_met &lt;- function(gtfs) {\n  # Remove all text from [ to ] from gtfs$shape_ids, which are present in Carris Metropolitana feed and cause issues in matching with OSM shapes\n  gtfs$shapes$shape_id &lt;- stringr::str_replace_all(gtfs$shapes$shape_id, \"\\\\[.*\\\\]\", \"\")\n  gtfs$trips$shape_id &lt;- stringr::str_replace_all(gtfs$trips$shape_id, \"\\\\[.*\\\\]\", \"\")\n  gtfs$trips$trip_id &lt;- stringr::str_replace_all(gtfs$trips$trip_id, \"\\\\[.*\\\\]\", \"\")\n  gtfs$stop_times$trip_id &lt;- stringr::str_replace_all(gtfs$stop_times$trip_id, \"\\\\[.*\\\\]\", \"\")\n  return(gtfs)\n}\n\nmanipulate_carris_met_area_1 &lt;- function(gtfs) {\n  gtfs &lt;- manipulate_carris_met(gtfs)\n  gtfs &lt;- GTFShift::filter_by_agency(gtfs, id = 41)\n  return(gtfs)\n}\n\nmanipulate_carris_met_area_2 &lt;- function(gtfs) {\n  gtfs &lt;- manipulate_carris_met(gtfs)\n  gtfs &lt;- GTFShift::filter_by_agency(gtfs, id = 42)\n  return(gtfs)\n}\n\nmanipulate_carris_met_area_3 &lt;- function(gtfs) {\n  gtfs &lt;- manipulate_carris_met(gtfs)\n  gtfs &lt;- GTFShift::filter_by_agency(gtfs, id = 43)\n  return(gtfs)\n}\n\nmanipulate_carris_met_area_4 &lt;- function(gtfs) {\n  gtfs &lt;- manipulate_carris_met(gtfs)\n  gtfs &lt;- GTFShift::filter_by_agency(gtfs, id = 44)\n  return(gtfs)\n}",
+    "crumbs": [
+      "**Dados**",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Preparação de dados</span>"
+    ]
+  },
+  {
+    "objectID": "dados_preparacao.html#associação-gtfsosm",
+    "href": "dados_preparacao.html#associação-gtfsosm",
+    "title": "3  Preparação de dados",
+    "section": "3.3 Associação GTFS–OSM",
+    "text": "3.3 Associação GTFS–OSM\nA associação entre as geometrias GTFS e a rede viária OSM é o núcleo metodológico do processo de preparação. Apesar de existirem atributos nas relações OSM gtfs:shape_id e gtfs:route_id que permitem esta correspondência direta, estes não estavam definidos na rede da Carris Metropolitana. Para ultrapassar esta lacuna, foi aplicado o algoritmo de correspondência geométrica GTFShift::osm_shapes_match_routes(), utilizando o código disponível em scripts/01_osm_match.\nFoi possível obter uma correspondência para 98,96% das geometrias GTFS (shapes), que correspondem a 96,76% das viagens realizadas em hora de ponta. Os resultados desta correspondência estão disponíveis em U-Shift/busclar. Posteriormente, estes resultados foram utilizados para atualizar o OSM com os atributos em falta, utilizando o código documentado em GTFShift: Update OSM data.\nUma vez estabelecida a ligação entre as geometrias GTFS e a rede viária OSM e atualizada a última fonte com os identificadores correspondentes, foi aplicado o método GTFShift::prioritise_lanes(), que permite calcular, para cada segmento de via e hora do dia, os seguintes indicadores:\n\nAtributos da infraestrutura, extraídos de cada way (segmento da via), como número de faixas, existência de faixa bus, estacionamento;\nFrequência, calculada por hora e por segmento de via, agregando todas as linhas e percursos que o percorrem.\n\nO resultado é um conjunto de dados com uma linha por combinação de segmento de via (way_osm_id) e hora do dia, contendo os atributos de infraestrutura e os indicadores de serviço correspondentes.",
+    "crumbs": [
+      "**Dados**",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Preparação de dados</span>"
+    ]
+  },
+  {
+    "objectID": "dados_preparacao.html#filtragem-e-validação-dos-dados-gtfs-rt",
+    "href": "dados_preparacao.html#filtragem-e-validação-dos-dados-gtfs-rt",
+    "title": "3  Preparação de dados",
+    "section": "3.4 Filtragem e validação dos dados GTFS-RT",
+    "text": "3.4 Filtragem e validação dos dados GTFS-RT\nOs dados de GTFS-RT são submetidos a um conjunto de filtros de qualidade antes de serem utilizados no cálculo de velocidades. A validação é feita utilizando o método rt_collection_speed_from_shape_distance_progression(), em três fases sequenciais:\n1.ª validação — por atualização individual:\n\n\n\n\n\n\n\n\nParâmetro\nDescrição\nValor\n\n\n\n\nTHRESHOLD_TIME_BETWEEN_UPDATES_MAX\nIntervalo máximo aceitável entre duas atualizações consecutivas da mesma viagem\n90 s\n\n\nTHRESHOLD_DISTANCE_TO_GEOMETRY_MAX\nDistância máxima entre a posição GPS reportada e a geometria da rota (descarta posições com erro elevado)\n50 m\n\n\nTHRESHOLD_SPEED_MAX\nVelocidade máxima aceitável (descarta valores físicamente impossíveis)\n140 km/h\n\n\n\n2.ª validação — por viagem:\n\n\n\n\n\n\n\n\nParâmetro\nDescrição\nValor\n\n\n\n\nTHRESHOLD_UPDATES_PER_TRIP_MIN_MARGIN\nRácio mínimo entre atualizações recebidas e atualizações esperadas (duração da viagem ÷ intervalo máximo). Garante que a viagem tem cobertura temporal suficiente para estimar velocidade\n0,7 (70%)\n\n\n\n3.ª validação — posição ao longo do percurso:\n\n\n\n\n\n\n\n\nParâmetro\nDescrição\nValor\n\n\n\n\nTHRESHOLD_EDGE_DISTANCE_DISCARD\nMargem de exclusão nas extremidades do percurso: são descartadas as atualizações nos primeiros e últimos metros do trajeto, onde o veículo está tipicamente em arranque ou em paragem terminal\n100 m\n\n\n\nApós aplicação de todos os filtros, as atualizações GTFS-RT válidas são projetadas na rede viária OSM e associadas aos segmentos de via correspondentes (GTFShift::project_points_along_geometry()), para posterior cálculo das métricas de velocidade ao nível do segmento (GTFShift::rt_average_speed()) e das viagens (velocidade comercial, GTFShift::get_trip_speed_profile()). Os dois primeiros métodos enumerados anteriormente são encapsulados pelo método GTFShift::rt_extend_prioritisation().",
+    "crumbs": [
+      "**Dados**",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Preparação de dados</span>"
+    ]
+  },
+  {
+    "objectID": "dados_preparacao.html#associação-de-dados-de-procura",
+    "href": "dados_preparacao.html#associação-de-dados-de-procura",
+    "title": "3  Preparação de dados",
+    "section": "3.5 Associação de dados de procura",
+    "text": "3.5 Associação de dados de procura\nOs dados de procura de passageiros são associados à rede viária através de uma junção entre as linhas GTFS e os segmentos de via. Para cada segmento (way_osm_id) e hora, é calculada a procura total como a soma da procura de todas as linhas que o percorrem:\npriotitization_demand &lt;- prioritisation |&gt;\n  st_drop_geometry() |&gt;\n  select(way_osm_id, hour, routes) |&gt;\n  tidyr::unnest(routes) |&gt;\n  left_join(route_demand |&gt; select(route_id, demand),\n            by = c(\"routes\" = \"route_id\")) |&gt;\n  group_by(way_osm_id, hour) |&gt;\n  summarise(demand = sum(demand, na.rm = TRUE), .groups = \"drop\")\nComo a procura é um valor diário (não horário) e para a totalidade da linha é possível que este valor sobreestime o número de passageiros que efetivamente atravessa cada segmento num autocarro, uma vez que nem todos os passageiros frequentam a totalidade da linha, podendo embarcar ou desembarcar nas suas paragens intermédias, o que não é capturado pelos dados disponíveis.\n\n\n\n\nPoletti, Flavio, Daniel Herszenhut, Mark Padgham, et al. 2026. Tidytransit: Read, Validate, Analyze, and Map GTFS Feeds. V. 1.8.0. Released January 26. https://cran.r-project.org/web/packages/tidytransit/index.html.",
+    "crumbs": [
+      "**Dados**",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Preparação de dados</span>"
+    ]
+  },
+  {
+    "objectID": "metodologia.html",
+    "href": "metodologia.html",
+    "title": "4  Metodologia",
+    "section": "",
+    "text": "A metodologia, ilustrada em Figure 4.1, é implementada pelo ficheiro prioritise.R, que orquestra todas as etapas de processamento de dados e geração dos resultados para o portal interativo. Este processamento é por sua vez parametrizado no ficheiro prioritise_parameters.R, que define as configurações específicas para as áreas da Carris Metropolitana.\n\n\n\n\n\n\nFigure 4.1: Quadro metodológico\n\n\n\nÉ importante ressalvar que o processamento aqui descrito implica a recolha e preparação antecipada de alguns dados, nomeadamente a recolha de dados GTFS-RT e a harmomização das geometrias do GTFS e OSM, com atualização do último com os identificadores correspondentes. Todos os detalhes destes procedimentos estão descritos no Chapter 3.\nO fluxo de processamento segue então a seguinte sequência lógica:\n\n\n\n\n\n\nflowchart TD\n    A[\"1. Carregamento do GTFS&lt;br/&gt;Filtragem por data e manipulação customizada\"] --&gt; B[\"2. Consulta e extração de dados OSM&lt;br/&gt;(via ficheiro .pbf local)\"]\n    B --&gt; C[\"3. Associação GTFS–OSM&lt;br/&gt;&lt;code&gt;GTFShift:&lt;br/&gt;:prioritise_lanes()&lt;/code&gt;\"]\n    \n    C --&gt; D{\"Dados adicionais&lt;br/&gt;disponíveis?\"}\n    \n    D -- \"Se GTFS-RT disponível\" --&gt; E[\"4a. Extensão dos segmentos&lt;br/&gt;com velocidades em tempo real&lt;br/&gt;&lt;code&gt;GTFShift::rt_extend_&lt;br/&gt;prioritisation()&lt;/code&gt;\"]\n    E --&gt; F[\"4b. Perfis de velocidade e&lt;br/&gt;índice de perturbação por viagem&lt;br/&gt;&lt;code&gt;GTFShift:&lt;br/&gt;:get_trip_speed_profile()&lt;/code&gt;\"]\n    \n    D -- \"Se procura disponível\" --&gt; H[\"4c. Integração de dados de procura\"]\n    D -- \"Apenas estático\" --&gt; G\n    \n    F --&gt; G[\"5. Construção e exportação de ficheiros para o portal interativo&lt;br/&gt;(ways GeoJSON, way_data JSON, shape_data JSON, route_data JSON, metadata JSON)\"]\n    H --&gt; G\n\n\n\n\nFigure 4.2: Fluxo de processamento e execução da metodologia no script prioritise.R\n\n\n\n\n\nO fluxo é executado para cada região definida, produzindo um conjunto de ficheiros de saída organizados por região e data de análise. O documento seguinte descreve em detalhe cada uma das camadas de análise disponíveis no painel interativo, correspondendo a diferentes dimensões da rede de transporte público e da infraestrutura viária.",
+    "crumbs": [
+      "**Metodologia e visualização**",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Metodologia</span>"
+    ]
+  },
+  {
+    "objectID": "metodologia_indice_perturbacao.html",
+    "href": "metodologia_indice_perturbacao.html",
+    "title": "5  Índice de Perturbação",
+    "section": "",
+    "text": "5.1 Definição do índice\nA camada de índice de perturbação (Disturbance Index, DI) é adaptada do índice desenvolvido pela Carris Metropolitana para analisar a fiabilidade da sua operação no cumprimento de horários no âmbito do projeto deployEMDS (Carris Metropolitana 2026). Apresentado em Equation 5.1, este relaciona, para cada segmento entre duas paragens, o tempo de viagem mediano e o primeiro quartil (Q1, assumido como o tempo de viagem de referência) dos tempos de viagem observados, de forma a quantificar o grau de degradação face a condições favoráveis de circulação e identificar os segmentos onde a operação é mais afetada por constrangimentos operacionais.\n\\[\n\\text{DI}_{\\text{Freeflow}} = \\frac{\\operatorname{median}_{i=1,\\dots,N} \\left(\\Delta t^{(i)}\\right) - Q_{1,\\text{shape}}\\left(\\Delta t\\right)}{Q_{1,\\text{shape}}\\left(\\Delta t\\right)}\n\\tag{5.1}\\]\nonde \\(\\Delta t^{(i)} = \\text{stop\\_observed\\_time\\_end}^{(i)} - \\text{stop\\_observed\\_time\\_start}^{(i)}\\) corresponde ao tempo de viagem observado no segmento para a viagem \\(i\\), e \\(Q_{1,\\text{shape}}(\\Delta t)\\) denota o primeiro quartil dos tempos de viagem observados nesse percurso.\nNo contexto do GTFShift, foi aplicada uma adaptação deste índice, ao nível do segmento da rede viária, com o objetivo de desbloquear uma análise mais fina da perturbação operacional e numa perspetiva de infraestrutura. Esta adaptação consistiu em quantifica o grau de degradação da velocidade comercial das viagens realizadas em relação à sua velocidade de referência (velocidade em condições favoráveis, assumida como sendo a velocidade no percentil 85), identificando os segmentos onde a operação é mais afetada pelo congestionamento rodoviário.\nEsta camada requer dados de GTFS-RT.\nO índice de perturbação é formulado de acordo com a escala de agregação espacial:\nNível de segmento da rede viária (way): Avalia a perturbação horária \\(h\\) num dado segmento \\(s\\), comparando a velocidade mediana observada nessa hora com a velocidade de referência P85 do segmento ao longo de todo o período:\n\\[\nDI_{s,h} = \\frac{v_{\\text{mediana},s,h} - v_{P85,s}}{v_{P85,s}}\n\\tag{5.2}\\]\nonde:\nNível de linha (route) ou percurso (shape): Avalia a perturbação da velocidade comercial ao nível de cada viagem individual realizada, comparando a velocidade comercial observada na viagem \\(i\\) com a velocidade de referência P85 da respetiva linha ou percurso (calculada sobre todas as viagens do período):\n\\[\nDI_{r,i} = \\frac{v_{\\text{comercial},r,i} - v_{P85,r}}{v_{P85,r}}\n\\tag{5.3}\\]\nonde:\nO índice de perturbação assume valores negativos quando a velocidade observada é inferior à de referência (perturbação), e valores próximos de zero ou positivos quando a operação decorre sem constrangimentos significativos.",
+    "crumbs": [
+      "**Metodologia e visualização**",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Índice de Perturbação</span>"
+    ]
+  },
+  {
+    "objectID": "metodologia_indice_perturbacao.html#definição-do-índice",
+    "href": "metodologia_indice_perturbacao.html#definição-do-índice",
+    "title": "5  Índice de Perturbação",
+    "section": "",
+    "text": "\\(v_{\\text{mediana},s,h}\\) é a velocidade mediana dos autocarros no segmento \\(s\\) durante a hora \\(h\\);\n\\(v_{P85,s}\\) é o percentil 85 da velocidade no segmento \\(s\\), calculado sobre todas as observações do período de análise.\n\n\n\n\n\n\\(v_{\\text{comercial},r,i}\\) é a velocidade comercial observada na viagem \\(i\\) da linha ou percurso \\(r\\);\n\\(v_{P85,r}\\) é a velocidade comercial no percentil 85 da linha ou percurso \\(r\\), considerando a totalidade das viagens analisadas.\n\n\n\n5.1.1 Nível de segmento de via\nPara cada segmento de via (way), o DI horário é calculado comparando a velocidade mediana horária (hour_speed_median) com a velocidade P85 global do segmento (speed_p85):\ndisturbance_index = (hour_speed_median - speed_p85) / speed_p85\n\n\n5.1.2 Nível de viagem e linha (route)\nPara cada viagem individual de uma linha ou percurso, o DI é calculado comparando a velocidade comercial dessa realização com a velocidade P85 global da respetiva linha (route_speed_p85):\ndisturbance_index = (commercial_speed - route_speed_p85) / route_speed_p85\n\n\n5.1.3 Nível de percurso (shape)\nAnalogamente, para cada percurso (shape), o DI é calculado com a velocidade P85 global do percurso como referência:\ndisturbance_index = (commercial_speed_avg - shape_speed_p85) / shape_speed_p85",
+    "crumbs": [
+      "**Metodologia e visualização**",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Índice de Perturbação</span>"
+    ]
+  },
+  {
+    "objectID": "metodologia_indice_perturbacao.html#categorias-de-perturbação",
+    "href": "metodologia_indice_perturbacao.html#categorias-de-perturbação",
+    "title": "5  Índice de Perturbação",
+    "section": "5.2 Categorias de perturbação",
+    "text": "5.2 Categorias de perturbação\nNo modo de visualização categorizado (adaptado de Carris Metropolitana (2026)), os segmentos são classificados em cinco categorias com base nos limiares diThresholdLow e diThresholdHigh. Por omissão, estes limiares são calibrados automaticamente a partir da distribuição estatística do DI: o limiar inferior é definido com o P85 e o limiar superior com o P25, procurando criar uma distribuição uniforme dos segmentos pelas diferentes categorias.\n\n\n\n\n\n\n\n\nCategoria\nCor\nCondição\n\n\n\n\nMuito mais rápido\nAzul escuro\n\\(DI \\geq \\text{diThresholdHigh}\\)\n\n\nMais rápido\nAzul claro\n\\(\\text{diThresholdLow} &lt; DI &lt; \\text{diThresholdHigh}\\)\n\n\nVelocidade regular\nVerde\n\\(-\\text{diThresholdLow} \\leq DI \\leq \\text{diThresholdLow}\\)\n\n\nMais lento\nLaranja\n\\(-\\text{diThresholdHigh} \\leq DI &lt; -\\text{diThresholdLow}\\)\n\n\nMuito mais lento\nVermelho\n\\(DI &lt; -\\text{diThresholdHigh}\\)\n\n\n\nAlternativamente, o modo de visualização divergente usa uma paleta de cores contínua centrada em zero, permitindo uma melhor visualização da magnitude da perturbação (positiva ou negativa) em cada segmento.",
+    "crumbs": [
+      "**Metodologia e visualização**",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Índice de Perturbação</span>"
+    ]
+  },
+  {
+    "objectID": "metodologia_indice_perturbacao.html#filtragem-por-comprimento-mínimo",
+    "href": "metodologia_indice_perturbacao.html#filtragem-por-comprimento-mínimo",
+    "title": "5  Índice de Perturbação",
+    "section": "5.3 Filtragem por comprimento mínimo",
+    "text": "5.3 Filtragem por comprimento mínimo\nPara evitar que segmentos muito curtos (e.g., interseções, entradas de parques) dominem visualmente a análise, é disponibilizado um filtro opcional por comprimento mínimo. Quando ativado, apenas segmentos com comprimento igual ou superior a diMinLength metros são incluídos na visualização.",
+    "crumbs": [
+      "**Metodologia e visualização**",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Índice de Perturbação</span>"
+    ]
+  },
+  {
+    "objectID": "metodologia_indice_perturbacao.html#filtros-top-n",
+    "href": "metodologia_indice_perturbacao.html#filtros-top-n",
+    "title": "5  Índice de Perturbação",
+    "section": "5.4 Filtros top-N",
+    "text": "5.4 Filtros top-N\nÉ também possível filtrar os segmentos mais perturbados (“worst N”) ou os menos perturbados (“best N”), facilitando a identificação rápida dos locais críticos ou de boa performance. O número de segmentos filtrados em cada categoria é parametrizável.",
+    "crumbs": [
+      "**Metodologia e visualização**",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Índice de Perturbação</span>"
+    ]
+  },
+  {
+    "objectID": "metodologia_indice_perturbacao.html#interpretação",
+    "href": "metodologia_indice_perturbacao.html#interpretação",
+    "title": "5  Índice de Perturbação",
+    "section": "5.5 Interpretação",
+    "text": "5.5 Interpretação\nUm índice de perturbação negativo indica que os autocarros circulam significativamente abaixo da sua velocidade de referência, sugerindo congestionamento recorrente ou outro tipo de perturbação operacional. Pelo contrário, um valor positivo indica que os autocarros circulam acima da sua velocidade de referência, sugerindo que o horário pode estar desajustado face às condições normais de circulação.\nA diferença metodológica face ao uso direto da velocidade é que o DI normaliza os valores pelo P85 de cada percurso/segmento, tornando a comparação válida entre elementos com diferentes características geográficas e operacionais (isto é, zonas de periferia vs. zonas centrais têm velocidades absolutas muito diferentes, mas podem ter perturbações similares).\n\n\n\n\nCarris Metropolitana. 2026. Carrismetropolitana/Deploy-Emds. Carris Metropolitana, released August 7. https://github.com/carrismetropolitana/deploy-emds.",
+    "crumbs": [
+      "**Metodologia e visualização**",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Índice de Perturbação</span>"
+    ]
+  },
+  {
+    "objectID": "metodologia_priorizacao.html",
+    "href": "metodologia_priorizacao.html",
+    "title": "6  Priorização de Corredores Bus",
+    "section": "",
+    "text": "6.1 Geração dos indicadores base\nA camada de priorização de corredores bus integra múltiplos critérios para identificar os segmentos de via com maior potencial para implementação ou manutenção de corredores bus.\nO ponto de partida é a função GTFShift::prioritise_lanes(), que combina dados GTFS e OSM para gerar, para cada segmento de via com serviço de transporte público, os seguintes indicadores:\nA associação entre percursos GTFS e segmentos OSM é feita com base nas relações de rota OSM que têm correspondência com os percursos GTFS (através dos atributos gtfs:* do OSM). Os atributos de infraestrutura viária são extraídos diretamente das tags OSM dos segmentos identificados.",
+    "crumbs": [
+      "**Metodologia e visualização**",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Priorização de Corredores *Bus*</span>"
+    ]
+  },
+  {
+    "objectID": "metodologia_priorizacao.html#geração-dos-indicadores-base",
+    "href": "metodologia_priorizacao.html#geração-dos-indicadores-base",
+    "title": "6  Priorização de Corredores Bus",
+    "section": "",
+    "text": "Campo\nDescrição\n\n\n\n\nway_osm_id\nIdentificador único do segmento de via no OSM\n\n\nhour\nHora do dia (0–23)\n\n\nfrequency\nNúmero de serviços por hora que percorrem o segmento nessa hora\n\n\nis_bus_lane\nIndicador booleano: o segmento tem atualmente uma faixa bus?\n\n\nn_lanes_circulation\nNúmero total de vias de circulação\n\n\nn_lanes_circulation_direction\nNúmero de vias de circulação por sentido\n\n\nn_lanes_parking\nNúmero de vias de estacionamento\n\n\nn_directions\nNúmero de sentidos de circulação (1 ou 2)\n\n\nroutes\nLista de route_id que percorrem o segmento\n\n\nshapes\nLista de shape_id que percorrem o segmento",
+    "crumbs": [
+      "**Metodologia e visualização**",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Priorização de Corredores *Bus*</span>"
+    ]
+  },
+  {
+    "objectID": "metodologia_priorizacao.html#critérios-de-priorização",
+    "href": "metodologia_priorizacao.html#critérios-de-priorização",
+    "title": "6  Priorização de Corredores Bus",
+    "section": "6.2 Critérios de priorização",
+    "text": "6.2 Critérios de priorização\nO utilizador pode definir os critérios de priorização para filtrar e visualizar os segmentos mais relevantes. Os critérios disponíveis são:\n\n6.2.1 Frequência de serviço\nDefine o limiar mínimo de serviços por hora para que um segmento seja considerado prioritário. Segmentos com frequência abaixo do limiar são excluídos da visualização (a menos que já tenham uma faixa bus, caso em que são sinalizados a amarelo).\nA frequência é calculada para a hora de análise selecionada, considerando todas as viagens (de todas as linhas) que passam pelo segmento nessa hora.\nPor omissão este valor é definido como a mediana das frequências abaixo do percentil 85.\n\n\n6.2.2 Número de vias de circulação por sentido\nDefine o limiar mínimo de vias de circulação por sentido. Segmentos com menos vias de circulação do que o limiar são excluídos da visualização.\nPor omissão este valor é definido como 2, assumindo uma postura conservadora, em que, ao implementar um corredor bus, é deixado pelo menos uma via de trânsito para a circulação de outros veículos.\n\n\n6.2.3 Velocidade média\nDefine o limiar máximo de velocidade média observada. Segmentos onde os autocarros circulam a velocidades acima do limiar são considerados menos urgentes para intervenção e excluidos da visualização. Este critério requer dados de GTFS-RT.\nPor omissão este valor é definido como a média das velocidades abaixo do percentil 85.\n\n\n6.2.4 Procura de passageiros\nDefine o limiar mínimo de procura diária de passageiros. Permite focar a análise nos segmentos com maior impacto potencial em termos de passageiros beneficiados.\nPor omissão este valor é definido como a média da procura abaixo do percentil 85.",
+    "crumbs": [
+      "**Metodologia e visualização**",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Priorização de Corredores *Bus*</span>"
+    ]
+  },
+  {
+    "objectID": "metodologia_priorizacao.html#classificação-e-visualização",
+    "href": "metodologia_priorizacao.html#classificação-e-visualização",
+    "title": "6  Priorização de Corredores Bus",
+    "section": "6.3 Classificação e visualização",
+    "text": "6.3 Classificação e visualização\nOs segmentos são classificados e coloridos em três categorias:\n\n\n\n\n\n\n\n\nCor\nClassificação\nCondição\n\n\n\n\nVerde\nFaixa bus existente, cumpre critérios\nTem faixa bus e satisfaz todos os critérios ativos são satisfeitos\n\n\nAmarelo\nFaixa bus existente, não cumpre critérios\nTem faixa bus mas não satisfaz todos os critérios ativos\n\n\nVermelho\nPrioritário para faixa bus\nNão tem faixa bus mas satisfaz todos os critérios ativos\n\n\n\nA espessura de cada segmento no mapa pode ser configurada para refletir a frequência de serviço ou a procura de passageiros, tornando visualmente mais proeminentes os segmentos mais relevantes.",
+    "crumbs": [
+      "**Metodologia e visualização**",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Priorização de Corredores *Bus*</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Arasan, V. Thamizh, and P. Vedagiri. 2010. “Study of the impact of exclusive bus lane under highly\nheterogeneous traffic condition.” Public\nTransport 2 (1-2): 135–55. https://doi.org/10.1007/s12469-010-0021-x.\n\n\nBasso, Leonardo J., Cristián Angelo Guevara, Antonio Gschwender, and\nMarcelo Fuster. 2011. “Congestion pricing,\ntransit subsidies and dedicated bus lanes: Efficient and practical\nsolutions to congestion.” Transport Policy 18\n(5): 676–84. https://doi.org/10.1016/j.tranpol.2011.01.002.\n\n\nBatty, Paul, Roberto Palacin, and Arturo González-Gil. 2014.\n“Challenges and opportunities in developing\nurban modal shift.” Travel Behaviour and Society\n2 (2): 109–23. https://doi.org/10.1016/j.tbs.2014.12.001.\n\n\nCarris Metropolitana. 2026a. Carrismetropolitana/Api. Carris\nMetropolitana, released September 29. https://github.com/carrismetropolitana/api.\n\n\nCarris Metropolitana. 2026b. Carrismetropolitana/Deploy-Emds.\nCarris Metropolitana, released August 7. https://github.com/carrismetropolitana/deploy-emds.\n\n\nCarris Metropolitana. 2026c. Carrismetropolitana/Gtfs. Carris\nMetropolitana, released September 15. https://github.com/carrismetropolitana/gtfs.\n\n\nCarris Metropolitana. 2026d. “CMetropolitana: Dados\nAbertos.” https://carrismetropolitana.pt/open-data.\n\n\nCesme, Burak, Richard Roisman, Ramona Burns, et al. 2018.\n“Strategies and Barriers in Effective Bus Lane Implementation and\nManagement: Best Practices for Use in the Greater Washington, d.c.\nRegion.” Transportation Research Record: Journal of the\nTransportation Research Board 2672 (8): 29–40. https://doi.org/10.1177/0361198118791914.\n\n\nGilardi, Andrea, Robin Lovelace, Barry Rowlingson,\net al. 2026. Osmextract: Download and Import Open Street Map\nData Extracts. V. 0.6.0. Released April 14. https://cran.r-project.org/web/packages/osmextract/index.html.\n\n\nMaspons, Joan, Mark Padgham, Bob Rudis, et\nal. 2026. Osmdata: Import ’OpenStreetMap’ Data\nas Simple Features or Spatial Objects. V. 0.4.1. Released September\n1. https://cran.r-project.org/web/packages/osmdata/index.html.\n\n\nMatos, Gonçalo F., and Rosa Félix. 2026a. GTFShift: Bus\nLane Prioritisation & Operational Analysis Tool. V. 1.0.\nReleased September. https://github.com/U-Shift/GTFShift-DI.\n\n\nMatos, Gonçalo F., and Rosa Félix. 2026b. GTFShift: Bus\nLane Prioritization Tool. V. 1.1. Released May. https://github.com/U-Shift/GTFShift-web.\n\n\nMatos, Gonçalo F., Rosa Félix, and Miguel Relvas Pires. 2026.\nGTFShift: Explore and Analyse General Transit Feed\nSpecification (GTFS) Files with a Focus on Urban\nMobility. V. 1.0.0. Released September 27. https://cloud.r-project.org/web/packages/GTFShift/index.html.\n\n\nMobilityData. 2026. “Carris Metropolitana GTFS\nSchedule Feed. Mobility Database.” https://mobilitydatabase.org/feeds/gtfs/mdb-2027.\n\n\nMobilityData. n.d. “General Transit Feed Specification\n(GTFS).” Accessed September 29, 2026. https://gtfs.org/documentation/overview/.\n\n\nOpenStreetMap. n.d. “OpenStreetMap: About.\nOpenStreetMap.” Accessed September 29, 2026. https://www.openstreetmap.org/about.\n\n\nPoletti, Flavio, Daniel Herszenhut, Mark Padgham, et al. 2026.\nTidytransit: Read, Validate, Analyze, and Map GTFS\nFeeds. V. 1.8.0. Released January 26. https://cran.r-project.org/web/packages/tidytransit/index.html.\n\n\nSurprenant-Legault, Julien, and Ahmed M. El-Geneidy. 2011. “Introduction of reserved bus lane.”\nTransportation Research Record Journal of the Transportation\nResearch Board 2218 (1): 10–18. https://doi.org/10.3141/2218-02.\n\n\nUITP. 2025. Regions Thrive with Congestion-Free Bus Networks.\nhttps://www.uitp.org/wp-content/uploads/sites/7/2025/08/20250820_Congestion-free-Bus-Network_Action-Points_WEB.pdf.\n\n\nVuchic, Vukan R. 1981. Urban Public\nTransportation - Systems and Technology. Prentice-Hall, Inc.",
+    "crumbs": [
+      "References"
+    ]
+  }
+]

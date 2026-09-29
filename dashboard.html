@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="U-Shift Lab, Instituto Superior Técnico">
 
-<title>Relatório Metodológico</title>
+<title>7&nbsp; Dashboard – Relatório Metodológico</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -24,26 +23,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -53,7 +33,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./dados_fontes.html" rel="next">
+<link href="./references.html" rel="next">
+<link href="./metodologia_priorizacao.html" rel="prev">
 <link href="./images/favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -99,13 +80,7 @@ div.csl-indent {
 
 
 <link rel="stylesheet" href="styles/global.css">
-<link rel="stylesheet" href="styles/index.css">
-<meta name="citation_title" content="Relatório Metodológico">
-<meta name="citation_author" content="U-Shift Lab, Instituto Superior Técnico">
-<meta name="citation_publication_date" content="2026-09-01">
-<meta name="citation_cover_date" content="2026-09-01">
-<meta name="citation_year" content="2026">
-<meta name="citation_online_date" content="2026-09-01">
+<meta name="citation_title" content="[[7]{.chapter-number}&nbsp; [Dashboard]{.chapter-title}]{#sec-dashboard .quarto-section-identifier}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=GTFShift: Explore and Analyse General Transit Feed Specification (GTFS) Files with a Focus on Urban Mobility;,citation_abstract=A bundle of methods to harmonize GTFS and OSM data, enabling the integration and exploration of different layers of transit data, starting with the planned operations (GTFS), but also the infrastructure topology (OSM) and real-time information (GTFS-RT).;,citation_author=Gonçalo F. Matos;,citation_author=Rosa Félix;,citation_author=Miguel Relvas Pires;,citation_publication_date=2026-09-27;,citation_cover_date=2026-09-27;,citation_year=2026;,citation_fulltext_html_url=https://cloud.r-project.org/web/packages/GTFShift/index.html;">
 <meta name="citation_reference" content="citation_title=GTFShift: Bus lane prioritization tool;,citation_abstract=Interactive dashboard for GTFShift R package;,citation_author=Gonçalo F. Matos;,citation_author=Rosa Félix;,citation_publication_date=2026-05;,citation_cover_date=2026-05;,citation_year=2026;,citation_fulltext_html_url=https://github.com/U-Shift/GTFShift-web;">
@@ -300,7 +275,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introdução</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dashboard.html"><strong>Dashboard</strong></a></li><li class="breadcrumb-item"><a href="./dashboard.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dashboard</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -332,7 +307,7 @@ div.csl-indent {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introdução</span></span></a>
   </div>
 </li>
@@ -362,7 +337,7 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>Metodologia e visualização</strong></span></a>
+ <span class="menu-text"><strong>Metodologia</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -388,6 +363,23 @@ div.csl-indent {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Dashboard</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dashboard.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dashboard</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
@@ -399,47 +391,23 @@ div.csl-indent {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#sec-introduction" id="toc-sec-introduction" class="nav-link active" data-scroll-target="#sec-introduction"><span class="header-section-number">1</span> Introdução</a>
-  <ul class="collapse">
-  <li><a href="#gtfshift-pacote-de-código-r" id="toc-gtfshift-pacote-de-código-r" class="nav-link" data-scroll-target="#gtfshift-pacote-de-código-r"><span class="header-section-number">1.1</span> GTFShift: pacote de código R</a></li>
-  <li><a href="#gtfshift-ferramenta-de-priorização-de-corredores-bus" id="toc-gtfshift-ferramenta-de-priorização-de-corredores-bus" class="nav-link" data-scroll-target="#gtfshift-ferramenta-de-priorização-de-corredores-bus"><span class="header-section-number">1.2</span> GTFShift: ferramenta de priorização de corredores bus</a></li>
-  <li><a href="#gtfshifttml" id="toc-gtfshifttml" class="nav-link" data-scroll-target="#gtfshifttml"><span class="header-section-number">1.3</span> GTFShift/TML</a></li>
-  </ul></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dashboard.html"><strong>Dashboard</strong></a></li><li class="breadcrumb-item"><a href="./dashboard.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dashboard</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Relatório Metodológico</h1>
-<p class="subtitle lead">GTFShift Edição TML: Ferramenta de priorização de corredores bus e análise de operações</p>
+<h1 class="title"><span id="sec-dashboard" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dashboard</span></span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>U-Shift Lab, Instituto Superior Técnico </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 2026</p>
-    </div>
-  </div>
   
     
   </div>
@@ -449,66 +417,9 @@ div.csl-indent {
 </header>
 
 
-<section id="sec-introduction" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Introdução</h1>
-<p>Este relatório descreve a metodologia aplicada, os resultados obtidos e documenta o portal interativo desenvolvido no âmbito da adaptação e extensão da ferramenta GTFShift às necessidades operacionais da Transportes Metropolitanos de Lisboa (TML), que deu origem ao portal interativo <a href="https://ushift.pt/apps/gtfshift-tml" target="_blank"><strong>GTFShift/TML</strong></a>.</p>
-<p>As secções <strong>Dados</strong> e <strong>Metodologia</strong> descrevem a recolha e métodos de processamento e análise dos dados utilizados, seguindo-se a apresentação e documentação do <strong>Portal interativo</strong>, que permite a sua visualização de forma simples e intuitiva.</p>
-<p>Antes de entrar em detalhe, é importante contextualizar o âmbito do GTFShift e das suas variantes, que se apresentam em seguida.</p>
-<section id="gtfshift-pacote-de-código-r" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="gtfshift-pacote-de-código-r"><span class="header-section-number">1.1</span> GTFShift: pacote de código R</h2>
-<p>O <strong>GTFShift</strong> <span class="citation" data-cites="matos_gtfshift_2026">(<a href="references.html#ref-matos_gtfshift_2026" role="doc-biblioref">Matos et al. 2026</a>)</span> é um pacote de código em R focado na harmonização de dados de operação de transporte público (GTFS) com a infraestrutura viária (OpenStreetMap, OSM) que permite uma análise integrada dos sistemas de transporte, disponibilizando métodos de recolha e processamento de dados relativos a elementos urbanos, operação planeada e a sua execução. A junção destas dimensões permite um estudo aprofundado sobre o funcionamento e o desempenho dos vários modos que compõe o esqueleto da mobilidade nas nossas cidades, assim como o diagonóstico dos principais constrangimentos como auxílio aos processos de tomada de decisão em políticas públicas.</p>
-</section>
-<section id="gtfshift-ferramenta-de-priorização-de-corredores-bus" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="gtfshift-ferramenta-de-priorização-de-corredores-bus"><span class="header-section-number">1.2</span> GTFShift: ferramenta de priorização de corredores bus</h2>
-<p>Um exemplo da sua aplicação é a priorização de vias de trânsito para a implementação de corredores <em>bus</em>. Uma intervenção urbana com forte evidência científica sobre os seus potenciais de melhoria da fiabilidade das operações de autocarros urbanos através da redução dos impactos negativos do congestionamento <span class="citation" data-cites="cesme2018">(<a href="references.html#ref-cesme2018" role="doc-biblioref">Cesme et al. 2018</a>)</span>, da variabilidade dos tempos de viagem <span class="citation" data-cites="surprenant-legault-2011">(<a href="references.html#ref-surprenant-legault-2011" role="doc-biblioref">Surprenant-Legault and El-Geneidy 2011</a>)</span>, do aumento da velocidade comercial <span class="citation" data-cites="basso-2011">(<a href="references.html#ref-basso-2011" role="doc-biblioref">Basso et al. 2011</a>)</span> e até da equidade na utilização do espaço público <span class="citation" data-cites="uitp_regions_2025 vuchic1981">(<a href="references.html#ref-uitp_regions_2025" role="doc-biblioref">UITP 2025</a>; <a href="references.html#ref-vuchic1981" role="doc-biblioref">Vuchic 1981</a>)</span>. A sua implementação, é, no entanto, limitada pela escassez do espaço físico em ambiente urbano, cuja alocação ao transporte público pode levar a uma redução da qualidade de serviço de outros modos <span class="citation" data-cites="arasan-2010">(<a href="references.html#ref-arasan-2010" role="doc-biblioref">Arasan and Vedagiri 2010</a>)</span>, com potencial para prejudicar a aceitação pública <span class="citation" data-cites="batty-2014">(<a href="references.html#ref-batty-2014" role="doc-biblioref">Batty et al. 2014</a>)</span>.</p>
-<p>Basear estas decisões em evidências robustas e territorialmente situadas é, por isso, essencial. Para responder a este problema, foi desenvolvido o portal interativo <strong>GTFShift: ferramenta de priorização de corredores bus</strong> <span class="citation" data-cites="matos_gtfshift_dashboard_2026">(<a href="references.html#ref-matos_gtfshift_dashboard_2026" role="doc-biblioref">Matos and Félix 2026b</a>)</span>, que aplica a metodologia desenvolvida no âmbito do pacote GTFShift a um caso de estudo concreto e disponibiliza os resultados de forma transparente, acessível e aberta a qualquer um, sem necessidade de conhecimentos profundos de programação ou análise de dados. Esta ferramenta permite uma análise detalhada das vias de trânsito, do seu desempenho operacional e das suas características urbanas e de mobilidade, permitindo uma melhor compreensão dos constrangimentos que afetam o serviço de transporte público e a identificação e priorização de potenciais corredores de <em>bus</em>.</p>
-<p>O desenvolvimento de ambos os projetos descritos anteriormente foi realizado no âmbito da atividade de investigação do grupo de investigação U-Shift, parte do CERIS (<em>Civil Engineering Research and Innovation for Sustainability</em>), no Departamento de Engenharia Civil do Instituto Superior Técnico, Universidade de Lisboa, e disponibilizados de forma aberta segundo a licença GPL-3.0.</p>
-</section>
-<section id="gtfshifttml" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="gtfshifttml"><span class="header-section-number">1.3</span> GTFShift/TML</h2>
-<p>Após a disponibilização das ferramentas atrás referidas, a TML manifestou interesse na extensão do âmbito das análises realizadas ao nível da infraestrutura com uma componente mais operacional, focada não apenas na análise e diagnóstico de intervenções ao nível da infraestrutura, mas também do desempenho operacional da Carris Metropolitana, operador de transporte público rodoviário metropolitano sob sua gestão.</p>
-<p>O portal interativo <strong>GTFShift/TML</strong> <span class="citation" data-cites="matos_gtfshift_tml_2026">(<a href="references.html#ref-matos_gtfshift_tml_2026" role="doc-biblioref">Matos and Félix 2026a</a>)</span> nasce então desta colaboração, procurando implementar um protótipo funcional com vista à validação dos requisitos definidos pela TML, para posterior avaliação interna e eventual incorporação nos sistemas internos da empresa.</p>
-<p>Seguindo a lógica da transferência de conhecimento da academia para a sociedade e em linha com a política de dados abertos praticada pela TML <span class="citation" data-cites="carris_metropolitana_dados_abertos_2026">(<a href="references.html#ref-carris_metropolitana_dados_abertos_2026" role="doc-biblioref">Carris Metropolitana 2026</a>)</span>, este projeto foi também disponibilizado de forma aberta segundo a licença GPL-3.0.</p>
-<p>O presente relatório descreve em detalhe a metodologia de análise implementada para o caso de estudo da Carris Metropolitana, enumerando os dados utilizados, os resultados produzidos, e servindo também de documentação técnica de referência para o portal GTFShift/TML.</p>
+<p><em>(Esta secção será desenvolvida numa fase posterior.)</em></p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
-<div id="ref-arasan-2010" class="csl-entry" role="listitem">
-Arasan, V. Thamizh, and P. Vedagiri. 2010. <span>“<span class="nocase">Study of the impact of exclusive bus lane under highly heterogeneous traffic condition</span>.”</span> <em>Public Transport</em> 2 (1-2): 135–55. <a href="https://doi.org/10.1007/s12469-010-0021-x">https://doi.org/10.1007/s12469-010-0021-x</a>.
-</div>
-<div id="ref-basso-2011" class="csl-entry" role="listitem">
-Basso, Leonardo J., Cristián Angelo Guevara, Antonio Gschwender, and Marcelo Fuster. 2011. <span>“<span class="nocase">Congestion pricing, transit subsidies and dedicated bus lanes: Efficient and practical solutions to congestion</span>.”</span> <em>Transport Policy</em> 18 (5): 676–84. <a href="https://doi.org/10.1016/j.tranpol.2011.01.002">https://doi.org/10.1016/j.tranpol.2011.01.002</a>.
-</div>
-<div id="ref-batty-2014" class="csl-entry" role="listitem">
-Batty, Paul, Roberto Palacin, and Arturo González-Gil. 2014. <span>“<span class="nocase">Challenges and opportunities in developing urban modal shift</span>.”</span> <em>Travel Behaviour and Society</em> 2 (2): 109–23. <a href="https://doi.org/10.1016/j.tbs.2014.12.001">https://doi.org/10.1016/j.tbs.2014.12.001</a>.
-</div>
-<div id="ref-carris_metropolitana_dados_abertos_2026" class="csl-entry" role="listitem">
-Carris Metropolitana. 2026. <span>“<span>CMetropolitana</span>: Dados Abertos.”</span> <a href="https://carrismetropolitana.pt/open-data">https://carrismetropolitana.pt/open-data</a>.
-</div>
-<div id="ref-cesme2018" class="csl-entry" role="listitem">
-Cesme, Burak, Richard Roisman, Ramona Burns, et al. 2018. <span>“Strategies and Barriers in Effective Bus Lane Implementation and Management: Best Practices for Use in the Greater Washington, d.c. Region.”</span> <em>Transportation Research Record: Journal of the Transportation Research Board</em> 2672 (8): 29–40. <a href="https://doi.org/10.1177/0361198118791914">https://doi.org/10.1177/0361198118791914</a>.
-</div>
-<div id="ref-matos_gtfshift_tml_2026" class="csl-entry" role="listitem">
-Matos, Gonçalo F., and Rosa Félix. 2026a. <em><span>GTFShift</span>: Bus Lane Prioritisation &amp; Operational Analysis Tool</em>. V. 1.0. Released September. <a href="https://github.com/U-Shift/GTFShift-DI">https://github.com/U-Shift/GTFShift-DI</a>.
-</div>
-<div id="ref-matos_gtfshift_dashboard_2026" class="csl-entry" role="listitem">
-Matos, Gonçalo F., and Rosa Félix. 2026b. <em><span>GTFShift</span>: Bus Lane Prioritization Tool</em>. V. 1.1. Released May. <a href="https://github.com/U-Shift/GTFShift-web">https://github.com/U-Shift/GTFShift-web</a>.
-</div>
-<div id="ref-matos_gtfshift_2026" class="csl-entry" role="listitem">
-Matos, Gonçalo F., Rosa Félix, and Miguel Relvas Pires. 2026. <em><span>GTFShift</span>: Explore and Analyse General Transit Feed Specification (<span>GTFS</span>) Files with a Focus on Urban Mobility</em>. V. 1.0.0. Released September 27. <a href="https://cloud.r-project.org/web/packages/GTFShift/index.html">https://cloud.r-project.org/web/packages/GTFShift/index.html</a>.
-</div>
-<div id="ref-surprenant-legault-2011" class="csl-entry" role="listitem">
-Surprenant-Legault, Julien, and Ahmed M. El-Geneidy. 2011. <span>“<span class="nocase">Introduction of reserved bus lane</span>.”</span> <em>Transportation Research Record Journal of the Transportation Research Board</em> 2218 (1): 10–18. <a href="https://doi.org/10.3141/2218-02">https://doi.org/10.3141/2218-02</a>.
-</div>
-<div id="ref-uitp_regions_2025" class="csl-entry" role="listitem">
-UITP. 2025. <em>Regions Thrive with Congestion-Free Bus Networks</em>. <a href="https://www.uitp.org/wp-content/uploads/sites/7/2025/08/20250820_Congestion-free-Bus-Network_Action-Points_WEB.pdf">https://www.uitp.org/wp-content/uploads/sites/7/2025/08/20250820_Congestion-free-Bus-Network_Action-Points_WEB.pdf</a>.
-</div>
-<div id="ref-vuchic1981" class="csl-entry" role="listitem">
-Vuchic, Vukan R. 1981. <em><span class="nocase">Urban Public Transportation - Systems and Technology</span></em>. Prentice-Hall, Inc.
-</div>
-</div>
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -926,10 +837,13 @@ Vuchic, Vukan R. 1981. <em><span class="nocase">Urban Public Transportation - Sy
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./metodologia_priorizacao.html" class="pagination-link" aria-label="Priorização de Corredores *Bus*">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Priorização de Corredores <em>Bus</em></span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./dados_fontes.html" class="pagination-link" aria-label="Fontes de dados e período de análise">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Fontes de dados e período de análise</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./references.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

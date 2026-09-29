@@ -1,0 +1,27 @@
+# Faixas de Estacionamento {#sec-faixas-estacionamento}
+
+A camada de faixas de estacionamento identifica os segmentos de via com serviço de transporte público onde existem faixas de estacionamento junto à faixa de rodagem, representando potencial para reconversão em faixas bus.
+
+## Extração dos dados OSM
+
+O número de faixas de estacionamento (`n_lanes_parking`) é extraído das *tags* OSM durante a execução de `GTFShift::prioritise_lanes()`. As *tags* OSM relevantes são:
+
+| *Tag* OSM | Descrição |
+|---|---|
+| `parking:lane:right` | Estacionamento à direita da via |
+| `parking:lane:left` | Estacionamento à esquerda da via |
+| `parking:lane:both` | Estacionamento em ambos os lados |
+
+Cada faixa de estacionamento identificada é contabilizada no campo `n_lanes_parking`, que representa o número total de faixas de estacionamento na via (independentemente do sentido).
+
+A camada **apenas visualiza segmentos com pelo menos 1 faixa de estacionamento** (`n_lanes_parking > 0`), uma vez que o objetivo é identificar potencial para reconversão.
+
+## Visualização
+
+O número de faixas de estacionamento é representado por uma escala de cor contínua (gradiente teal). Os valores de referência para a escala são obtidos do `data_census` do `metadata_*.json` (campo `parking_lanes_length`). Em modo `percentile` (padrão), a escala usa o P5 como mínimo e o P95 como máximo; no modo `minmax`, são usados o mínimo e o máximo absolutos.
+
+## Interpretação
+
+A existência de faixas de estacionamento junto a segmentos com elevada frequência de serviço representa uma oportunidade de implementação de faixas bus sem reduzir as faixas de circulação. A reconversão de faixas de estacionamento em faixas bus é uma das estratégias mais comuns e menos controversas de priorização do transporte público, pois não implica perda de capacidade de circulação para veículos privados.
+
+Esta camada é especialmente útil para identificar oportunidades de implementação em contexto urbano denso, onde o espaço viário é limitado.

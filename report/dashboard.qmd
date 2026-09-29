@@ -1,0 +1,3 @@
+# Dashboard {#sec-dashboard}
+
+*(Esta secção será desenvolvida numa fase posterior.)*

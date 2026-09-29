@@ -1,0 +1,113 @@
+# Preparação de dados {#sec-preparacao}
+
+Antes de avançar para a análise, os dados recolhidos passam por um conjunto de etapas de preparação e validação, que garantem a consistência e qualidade da informação utilizada.
+
+> Os procedimentos descritos nesta secção cobrem a parte inicial do código disponível em [`scripts/02_prioritise`](https://github.com/U-Shift/GTFShift-DI/tree/main/scripts/02_prioritise){target="_blank"}.
+
+## Filtragem temporal do GTFS
+
+O feed GTFS completo abrange tipicamente vários meses ou anos de operação. Para a análise, foi selecionado um dia de referência que representa as condições típicas de operação (neste caso, uma quarta-feira útil de um período sem feriados ou condições especiais). A filtragem é feita com recurso à biblioteca `tidytransit` [@poletti_tidytransit_2026]:
+
+```r
+gtfs <- tidytransit::filter_feed_by_date(gtfs, extract_date = region$gtfs_day)
+```
+
+Esta operação retém apenas as viagens, paragens e percursos operacionais no dia selecionado, reduzindo significativamente a dimensão dos dados e tornando a análise mais focada.
+
+## Manipulação customizada do GTFS
+
+Quando os dados de origem apresentam inconsistências ou requerem ajustes específicos (e.g., correção de identificadores, remoção de serviços especiais, ou unificação de feeds de múltiplos operadores), é aplicada uma função de manipulação customizada, definida no ficheiro de parâmetros como `gtfs_manipulate`. O feed resultante, já manipulado e filtrado, é guardado separadamente para referência.
+
+No caso da Carris Metropolitana, foi aplicada uma função para filtrar o *feed* por área de operação [`GTFShift::filter_by_agency()`](https://u-shift.github.io/GTFShift/reference/filter_by_agency.html){target=blank} e remover os identificadores associados aos planos de operação, para permitir a associação com as geometrias OSM (que não têm este identificador).
+
+```r
+manipulate_carris_met <- function(gtfs) {
+  # Remove all text from [ to ] from gtfs$shape_ids, which are present in Carris Metropolitana feed and cause issues in matching with OSM shapes
+  gtfs$shapes$shape_id <- stringr::str_replace_all(gtfs$shapes$shape_id, "\\[.*\\]", "")
+  gtfs$trips$shape_id <- stringr::str_replace_all(gtfs$trips$shape_id, "\\[.*\\]", "")
+  gtfs$trips$trip_id <- stringr::str_replace_all(gtfs$trips$trip_id, "\\[.*\\]", "")
+  gtfs$stop_times$trip_id <- stringr::str_replace_all(gtfs$stop_times$trip_id, "\\[.*\\]", "")
+  return(gtfs)
+}
+
+manipulate_carris_met_area_1 <- function(gtfs) {
+  gtfs <- manipulate_carris_met(gtfs)
+  gtfs <- GTFShift::filter_by_agency(gtfs, id = 41)
+  return(gtfs)
+}
+
+manipulate_carris_met_area_2 <- function(gtfs) {
+  gtfs <- manipulate_carris_met(gtfs)
+  gtfs <- GTFShift::filter_by_agency(gtfs, id = 42)
+  return(gtfs)
+}
+
+manipulate_carris_met_area_3 <- function(gtfs) {
+  gtfs <- manipulate_carris_met(gtfs)
+  gtfs <- GTFShift::filter_by_agency(gtfs, id = 43)
+  return(gtfs)
+}
+
+manipulate_carris_met_area_4 <- function(gtfs) {
+  gtfs <- manipulate_carris_met(gtfs)
+  gtfs <- GTFShift::filter_by_agency(gtfs, id = 44)
+  return(gtfs)
+}
+```
+
+## Associação GTFS–OSM
+
+A associação entre as geometrias GTFS e a rede viária OSM é o núcleo metodológico do processo de preparação. Apesar de existirem atributos nas relações OSM `gtfs:shape_id` e `gtfs:route_id` que permitem esta correspondência direta, estes não estavam definidos na rede da Carris Metropolitana. Para ultrapassar esta lacuna, foi aplicado o algoritmo de correspondência geométrica [`GTFShift::osm_shapes_match_routes()`](https://u-shift.github.io/GTFShift/reference/osm_shapes_match_routes.html){target=blank}, utilizando o código disponível em [`scripts/01_osm_match`](https://github.com/U-Shift/GTFShift-DI/tree/main/scripts/01_osm_match){target="_blank"}.
+
+Foi possível obter uma correspondência para 98,96% das geometrias GTFS (*shapes*), que correspondem a 96,76% das viagens realizadas em hora de ponta. Os resultados desta correspondência estão disponíveis em [U-Shift/busclar](https://github.com/U-Shift/busclar/releases/tag/0.9){target=blank}. Posteriormente, estes resultados foram utilizados para atualizar o OSM com os atributos em falta, utilizando o código documentado em [GTFShift: Update OSM data](https://u-shift.github.io/GTFShift/articles/osm_update.html){target=blank}.
+
+Uma vez estabelecida a ligação entre as geometrias GTFS e a rede viária OSM e atualizada a última fonte com os identificadores correspondentes, foi aplicado o método [`GTFShift::prioritise_lanes()`](https://u-shift.github.io/GTFShift/reference/prioritise_lanes.html){target=blank}, que permite calcular, para cada segmento de via e hora do dia, os seguintes indicadores:
+
+1. **Atributos da infraestrutura**, extraídos de cada *way* (segmento da via), como número de faixas, existência de faixa bus, estacionamento;
+2. **Frequência**, calculada por hora e por segmento de via, agregando todas as linhas e percursos que o percorrem.
+
+O resultado é um conjunto de dados com uma linha por combinação de segmento de via (`way_osm_id`) e hora do dia, contendo os atributos de infraestrutura e os indicadores de serviço correspondentes.
+
+## Filtragem e validação dos dados GTFS-RT
+
+Os dados de GTFS-RT são submetidos a um conjunto de filtros de qualidade antes de serem utilizados no cálculo de velocidades. A validação é feita utilizando o método [`rt_collection_speed_from_shape_distance_progression()`](https://github.com/U-Shift/GTFShift-DI/blob/main/scripts/02_prioritise/prioritise_parameters.R#L373){target=blank}, em três fases sequenciais:
+
+**1.ª validação — por atualização individual:**
+
+| Parâmetro | Descrição | Valor |
+|---|---|---|
+| `THRESHOLD_TIME_BETWEEN_UPDATES_MAX` | Intervalo máximo aceitável entre duas atualizações consecutivas da mesma viagem | 90 s |
+| `THRESHOLD_DISTANCE_TO_GEOMETRY_MAX` | Distância máxima entre a posição GPS reportada e a geometria da rota (descarta posições com erro elevado) | 50 m |
+| `THRESHOLD_SPEED_MAX` | Velocidade máxima aceitável (descarta valores físicamente impossíveis) | 140 km/h |
+
+**2.ª validação — por viagem:**
+
+| Parâmetro | Descrição | Valor |
+|---|---|---|
+| `THRESHOLD_UPDATES_PER_TRIP_MIN_MARGIN` | Rácio mínimo entre atualizações recebidas e atualizações esperadas (duração da viagem ÷ intervalo máximo). Garante que a viagem tem cobertura temporal suficiente para estimar velocidade | 0,7 (70%) |
+
+**3.ª validação — posição ao longo do percurso:**
+
+| Parâmetro | Descrição | Valor |
+|---|---|---|
+| `THRESHOLD_EDGE_DISTANCE_DISCARD` | Margem de exclusão nas extremidades do percurso: são descartadas as atualizações nos primeiros e últimos metros do trajeto, onde o veículo está tipicamente em arranque ou em paragem terminal | 100 m |
+
+
+Após aplicação de todos os filtros, as atualizações GTFS-RT válidas são projetadas na rede viária OSM e associadas aos segmentos de via correspondentes ([`GTFShift::project_points_along_geometry()`](https://u-shift.github.io/GTFShift/reference/project_points_along_geometry.html){target=blank}), para posterior cálculo das métricas de velocidade ao nível do segmento ([`GTFShift::rt_average_speed()`](https://u-shift.github.io/GTFShift/reference/rt_average_speed.html){target=blank}) e das viagens (velocidade comercial, [`GTFShift::get_trip_speed_profile()`](https://u-shift.github.io/GTFShift/reference/get_trip_speed_profile.html){target=blank}). Os dois primeiros métodos enumerados anteriormente são encapsulados pelo método [`GTFShift::rt_extend_prioritisation()`](https://u-shift.github.io/GTFShift/reference/rt_extend_prioritisation.html){target=blank}.
+
+## Associação de dados de procura
+
+Os dados de procura de passageiros são associados à rede viária através de uma junção entre as linhas GTFS e os segmentos de via. Para cada segmento (`way_osm_id`) e hora, é calculada a procura total como a soma da procura de todas as linhas que o percorrem:
+
+```r
+priotitization_demand <- prioritisation |>
+  st_drop_geometry() |>
+  select(way_osm_id, hour, routes) |>
+  tidyr::unnest(routes) |>
+  left_join(route_demand |> select(route_id, demand),
+            by = c("routes" = "route_id")) |>
+  group_by(way_osm_id, hour) |>
+  summarise(demand = sum(demand, na.rm = TRUE), .groups = "drop")
+```
+
+Como a procura é um valor diário (não horário) e para a totalidade da linha é possível que este valor sobreestime o número de passageiros que efetivamente atravessa cada segmento num autocarro, uma vez que nem todos os passageiros frequentam a totalidade da linha, podendo embarcar ou desembarcar nas suas paragens intermédias, o que não é capturado pelos dados disponíveis.

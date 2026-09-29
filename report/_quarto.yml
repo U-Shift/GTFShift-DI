@@ -8,18 +8,33 @@ project:
 book:
   title: "Relatório Metodológico"
   favicon: "images/favicon.ico"
-  subtitle: "GTFShift: Ferramenta de priorização de corredores bus e análise de operações"
+  subtitle: "GTFShift Edição TML: Ferramenta de priorização de corredores bus e análise de operações"
   author: "U-Shift Lab, Instituto Superior Técnico"
   date: today
   date-format: "MMMM YYYY"
   chapters:
     - index.qmd
-    # - part: "**Data**"
+    - part: "**Dados**"
+      chapters:
+        - dados_fontes.qmd
+        - dados_preparacao.qmd
+    - part: "**Metodologia e visualização**"
+      chapters:
+        - metodologia.qmd
+        - metodologia_indice_perturbacao.qmd
+        - metodologia_priorizacao.qmd
+        # - metodologia_frequencia.qmd
+        # - metodologia_faixas_rodagem.qmd
+        # - metodologia_faixas_estacionamento.qmd
+        # - metodologia_faixas_bus.qmd
+        # - metodologia_velocidade_rt.qmd
+        # - metodologia_procura.qmd
+        # - metodologia_paragens_terminais.qmd
+        # - resultados.qmd
+    # - part: "**Dashboard**"
     #  chapters:
-    #    - data_sources.qmd
-  # appendices:
-  #  - metadata.qmd
-  #  - pca_results.qmd
+    #    - dashboard.qmd
+    - references.qmd
   sidebar:
     tools:
     - icon: github

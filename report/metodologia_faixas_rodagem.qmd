@@ -1,0 +1,33 @@
+# Faixas de Rodagem {#sec-faixas-rodagem}
+
+A camada de número de faixas de rodagem visualiza, para cada segmento de via com serviço de transporte público, o número de faixas de circulação no sentido do serviço (`n_lanes_circulation_direction`).
+
+## Extração dos dados OSM
+
+O número de faixas de rodagem é extraído automaticamente das *tags* OSM de cada *way* durante a execução de `GTFShift::prioritise_lanes()`. As *tags* OSM relevantes utilizadas são:
+
+| *Tag* OSM | Descrição |
+|---|---|
+| `lanes` | Número total de faixas de circulação (ambos os sentidos) |
+| `lanes:forward` | Faixas no sentido direto |
+| `lanes:backward` | Faixas no sentido inverso |
+| `oneway` | Indica se a via é de sentido único |
+
+A partir destas *tags*, é calculado o número de faixas por sentido (`n_lanes_circulation_direction`), considerando a direcionalidade do serviço. Em vias de dois sentidos sem indicação explícita por sentido, o número total de faixas é dividido igualmente.
+
+O resultado inclui também:
+
+- `n_lanes_circulation`: número total de faixas de circulação na via;
+- `n_directions`: número de sentidos de circulação (1 ou 2).
+
+## Visualização
+
+O número de faixas por sentido é representado através de uma escala de cor contínua (gradiente teal), usando os percentis P5 e P95 da distribuição da rede como extremos da escala (modo `percentile`, padrão). Os valores de referência são obtidos do `data_census` do `metadata_*.json`.
+
+A espessura das linhas pode refletir a frequência de serviço ou a procura de passageiros.
+
+## Interpretação
+
+A informação sobre o número de faixas é um critério essencial na avaliação do potencial para implementação de faixas bus. Segmentos com apenas 1 faixa por sentido têm menor viabilidade de implementação, pois a criação de uma faixa bus eliminaria o espaço disponível para veículos privados. Segmentos com 2 ou mais faixas por sentido são candidatos mais adequados, pois a reconversão de uma faixa mantém ainda capacidade para outros modos.
+
+Esta camada é complementar à camada de priorização, onde o número de faixas por sentido é um dos critérios de filtragem configuráveis pelo utilizador.

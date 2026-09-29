@@ -5,9 +5,31 @@ format:
 ---
 # Introdução {#sec-introduction}
 
-...
+Este relatório descreve a metodologia aplicada, os resultados obtidos e documenta o portal interativo desenvolvido no âmbito da adaptação e extensão da ferramenta GTFShift às necessidades operacionais da Transportes Metropolitanos de Lisboa (TML), que deu origem ao portal interativo [**GTFShift/TML**](https://ushift.pt/apps/gtfshift-tml){target="_blank"}. 
 
+As secções **Dados** e **Metodologia** descrevem a recolha e métodos de processamento e análise dos dados utilizados, seguindo-se a apresentação e documentação do **Portal interativo**, que permite a sua visualização de forma simples e intuitiva. 
 
+Antes de entrar em detalhe, é importante contextualizar o âmbito do GTFShift e das suas variantes, que se apresentam em seguida.
 
+## GTFShift: pacote de código R
 
+O **GTFShift** [@matos_gtfshift_2026] é um pacote de código em R focado na harmonização de dados de operação de transporte público (GTFS) com a infraestrutura viária (OpenStreetMap, OSM) que permite uma análise integrada dos sistemas de transporte, disponibilizando métodos de recolha e processamento de dados relativos a elementos urbanos, operação planeada e a sua execução. A junção destas dimensões permite um estudo aprofundado sobre o funcionamento e o desempenho dos vários modos que compõe o esqueleto da mobilidade nas nossas cidades, assim como o diagonóstico dos principais constrangimentos como auxílio aos processos de tomada de decisão em políticas públicas. 
+
+## GTFShift: ferramenta de priorização de corredores bus
+
+Um exemplo da sua aplicação é a priorização de vias de trânsito para a implementação de corredores *bus*. Uma intervenção urbana com forte evidência científica sobre os seus potenciais de melhoria da fiabilidade das operações de autocarros urbanos através da redução dos impactos negativos do congestionamento [@cesme2018], da variabilidade dos tempos de viagem [@surprenant-legault-2011], do aumento da velocidade comercial [@basso-2011] e até da equidade na utilização do espaço público [@uitp_regions_2025; @vuchic1981]. A sua implementação, é, no entanto, limitada pela escassez do espaço físico em ambiente urbano, cuja alocação ao transporte público pode levar a uma redução da qualidade de serviço de outros modos [@arasan-2010], com potencial para prejudicar a aceitação pública [@batty-2014]. 
+
+Basear estas decisões em evidências robustas e territorialmente situadas é, por isso, essencial. Para responder a este problema, foi desenvolvido o portal interativo **GTFShift: ferramenta de priorização de corredores bus** [@matos_gtfshift_dashboard_2026], que aplica a metodologia desenvolvida no âmbito do pacote GTFShift a um caso de estudo concreto e disponibiliza os resultados de forma transparente, acessível e aberta a qualquer um, sem necessidade de conhecimentos profundos de programação ou análise de dados. Esta ferramenta permite uma análise detalhada das vias de trânsito, do seu desempenho operacional e das suas características urbanas e de mobilidade, permitindo uma melhor compreensão dos constrangimentos que afetam o serviço de transporte público e a identificação e priorização de potenciais corredores de *bus*. 
+
+O desenvolvimento de ambos os projetos descritos anteriormente foi realizado no âmbito da atividade de investigação do grupo de investigação U-Shift, parte do CERIS (*Civil Engineering Research and Innovation for Sustainability*), no Departamento de Engenharia Civil do Instituto Superior Técnico, Universidade de Lisboa, e disponibilizados de forma aberta segundo a licença GPL-3.0.
+
+## GTFShift/TML
+
+Após a disponibilização das ferramentas atrás referidas, a TML manifestou interesse na extensão do âmbito das análises realizadas ao nível da infraestrutura com uma componente mais operacional, focada não apenas na análise e diagnóstico de intervenções ao nível da infraestrutura, mas também do desempenho operacional da Carris Metropolitana, operador de transporte público rodoviário metropolitano sob sua gestão.
+
+O portal interativo **GTFShift/TML** [@matos_gtfshift_tml_2026] nasce então desta colaboração, procurando implementar um protótipo funcional com vista à validação dos requisitos definidos pela TML, para posterior avaliação interna e eventual incorporação nos sistemas internos da empresa. 
+
+Seguindo a lógica da transferência de conhecimento da academia para a sociedade e em linha com a política de dados abertos praticada pela TML [@carris_metropolitana_dados_abertos_2026], este projeto foi também disponibilizado de forma aberta segundo a licença GPL-3.0.
+
+O presente relatório descreve em detalhe a metodologia de análise implementada para o caso de estudo da Carris Metropolitana, enumerando os dados utilizados, os resultados produzidos, e servindo também de documentação técnica de referência para o portal GTFShift/TML.
 

@@ -1,0 +1,42 @@
+# Procura de Passageiros {#sec-procura}
+
+A camada de procura de passageiros visualiza o volume diário estimado de passageiros transportados por cada segmento de via, permitindo ponderar as análises de priorização pelo impacto potencial em termos de utilizadores beneficiados.
+
+Esta camada é opcional e apenas está disponível quando são fornecidos dados de procura pelo operador de transporte.
+
+## Metodologia de cálculo
+
+Os dados de procura são fornecidos ao nível da linha de transporte público (`route_short_name`), em número de passageiros por dia. A associação destes valores à rede viária segue os seguintes passos:
+
+1. **Associação GTFS**: os dados de procura são cruzados com o ficheiro `routes.txt` do GTFS para obter o `route_id` correspondente a cada `route_short_name`;
+
+2. **Desagregação por segmento**: para cada combinação de segmento de via (`way_osm_id`) e hora do dia, é somada a procura de todas as linhas que percorrem esse segmento:
+
+$$
+d_{w,h} = \sum_{r \in R_{w,h}} d_r
+$$
+
+onde $d_{w,h}$ é a procura no segmento $w$ à hora $h$, $R_{w,h}$ é o conjunto de linhas que percorrem $w$ à hora $h$, e $d_r$ é a procura diária da linha $r$.
+
+3. **Valor representativo por segmento**: como a procura é um valor diário (sem desagregação horária), o valor associado a cada segmento no *dashboard* é o **máximo observado ao longo das horas do dia**, correspondente ao momento em que mais linhas passam simultaneamente pelo segmento:
+
+```r
+static_df$demand <- max(df$demand, na.rm = TRUE)
+```
+
+Esta abordagem é conservadora — o valor representa o potencial máximo de passageiros que passam pelo segmento, mas não todos ao mesmo tempo.
+
+## Visualização
+
+A procura é representada por uma escala de cor contínua (gradiente teal), onde tonalidades mais escuras indicam maior volume de passageiros. A escala é calibrada usando os percentis P5 e P95 da distribuição de procura para o conjunto da rede (modo `percentile`, padrão), com recurso aos valores do `data_census.demand_length` do `metadata_*.json`.
+
+Apenas são visualizados os segmentos com dados de procura disponíveis (valor numérico válido).
+
+## Interpretação
+
+Segmentos com elevada procura têm maior impacto potencial de uma faixa bus, pois um número maior de passageiros beneficia de melhores condições de operação (maior regularidade, menor tempo de espera). A procura é particularmente relevante quando combinada com os outros critérios:
+
+- **Alta procura + alta frequência + baixa velocidade** → máxima prioridade;
+- **Alta procura + faixa bus existente** → monitorização e manutenção da qualidade da infraestrutura.
+
+A procura de passageiros complementa a análise baseada em frequência de serviço, pois dois segmentos com a mesma frequência podem ter populações de passageiros muito diferentes, especialmente em redes com linhas de muito diferentes dimensões e níveis de serviço.

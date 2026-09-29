@@ -1,0 +1,48 @@
+# Paragens Terminais {#sec-paragens-terminais}
+
+A camada de paragens terminais visualiza as paragens de início e fim de percurso (*shape*) de cada linha de transporte público, fornecendo contexto geográfico sobre a cobertura e os extremos da rede de serviço.
+
+## Dados de origem
+
+As paragens terminais são derivadas diretamente do GTFS. Para cada percurso (*shape*), são identificadas:
+
+- **Paragem de partida** (*departure stop*): a primeira paragem do percurso, segundo a sequência de `stop_times`;
+- **Paragem de chegada** (*arrival stop*): a última paragem do percurso.
+
+O processo de extração das paragens por percurso é o seguinte:
+
+1. Para cada `shape_id`, é selecionada a viagem representativa com maior número de paragens (*trip* com mais entradas em `stop_times`), garantindo que se obtém a sequência completa de paragens do percurso;
+2. As coordenadas geográficas (`stop_lat`, `stop_lon`) e o nome da paragem (`stop_name`) são obtidos do ficheiro `stops.txt` do GTFS;
+3. As paragens são ordenadas pela coluna `stop_sequence`.
+
+```r
+shape_stops <- gtfs$stop_times |>
+  select(trip_id, stop_sequence, stop_id) |>
+  inner_join(shape_trips, by = "trip_id") |>
+  left_join(stops_info, by = "stop_id") |>
+  arrange(shape_id, stop_sequence)
+```
+
+Os dados de todas as paragens (incluindo intermédias) são armazenados no campo `stops` do `shape_data_*.json`, disponibilizando também coordenadas e nomes para uso no *dashboard*.
+
+## Visualização
+
+A camada apresenta três tipos de marcadores:
+
+| Marcador | Cor | Descrição |
+|---|---|---|
+| ⚪ Com bordo verde | Verde (#16a34a) | Paragem de partida (*From*) |
+| ⚪ Com bordo vermelho | Vermelho (#dc2626) | Paragem de chegada (*To*) |
+| ⚪ Pequeno com bordo cinza | Cinza | Paragens intermédias |
+
+As paragens terminais têm maior destaque visual (ícone maior, 14×14 px) face às paragens intermédias (8×8 px). Ao passar o cursor sobre qualquer paragem, é apresentado um *tooltip* com o nome da paragem e, para paragens terminais, a indicação *From* ou *To*.
+
+Esta camada é ativada contexto-dependente — é apresentada quando o utilizador seleciona um percurso (*shape*) específico no painel lateral do *dashboard*, complementando a visualização do traçado da linha no mapa.
+
+## Interpretação
+
+As paragens terminais fornecem contexto geográfico essencial para a análise de priorização, pois:
+
+- Permitem compreender a área de influência de cada linha e o seu alcance territorial;
+- Facilitam a identificação de corredores de entrada/saída na área urbana central, onde a implementação de faixas bus pode ter impacto mais significativo na fiabilidade do serviço;
+- Ajudam a contextualizar os dados de velocidade comercial, que tendem a ser mais elevados nas extremidades dos percursos (zonas periféricas) e mais baixos nas zonas centrais.

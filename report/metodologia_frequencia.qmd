@@ -1,0 +1,33 @@
+# Frequência de Serviço {#sec-frequencia}
+
+A camada de frequência de serviço visualiza o número de serviços de transporte público (autocarros ou elétricos) que percorrem cada segmento de via por hora, para a hora de análise selecionada.
+
+## Cálculo da frequência
+
+A frequência por segmento e por hora é calculada durante a geração dos indicadores base com `GTFShift::prioritise_lanes()`. Para cada *way* OSM e cada hora do dia (0–23), é somado o número de viagens programadas de todas as linhas e percursos que passam pelo segmento nessa hora:
+
+$$
+f_{w,h} = \sum_{r \in R_{w,h}} f_{r,h}
+$$
+
+onde $f_{w,h}$ é a frequência no segmento $w$ à hora $h$, $R_{w,h}$ é o conjunto de percursos que percorrem $w$ à hora $h$, e $f_{r,h}$ é o número de viagens do percurso $r$ à hora $h$.
+
+O resultado é armazenado no ficheiro `way_data_*.json` como um objeto de mapeamento `hour_frequency`, com chaves de 0 a 23, permitindo que o *dashboard* filtre e visualize rapidamente a frequência para qualquer hora selecionada sem recálculo.
+
+## Visualização
+
+A frequência é representada através de uma escala de cor contínua (gradiente teal), que mapeia os valores entre o percentil 5 e o percentil 95 da distribuição de frequências para a hora selecionada (modo `percentile`, padrão). Alternativamente, pode ser usada a escala mínimo-máximo (`minmax`).
+
+Os estatísticos de referência são calculados a partir do `data_census`, armazenado no ficheiro `metadata_*.json`:
+
+```json
+"frequency_hour": {
+  "8": { "p5": 2, "p95": 24, "mean": 8.3, "median": 6.0, ... }
+}
+```
+
+A espessura das linhas no mapa reflete a frequência ou a procura de passageiros, conforme configurado pelo utilizador.
+
+## Interpretação
+
+Segmentos com frequência elevada têm maior potencial de benefício com a implementação de uma faixa bus, uma vez que um maior número de veículos e passageiros beneficia de melhores condições de circulação. Frequências abaixo de 2–4 serviços/hora geralmente não justificam a implementação de infraestrutura dedicada.

@@ -1,0 +1,66 @@
+# Priorização de Corredores *Bus* {#sec-priorizacao-corredores}
+
+A camada de priorização de corredores *bus* integra múltiplos critérios para identificar os segmentos de via com maior potencial para implementação ou manutenção de corredores bus.
+
+## Geração dos indicadores base
+
+O ponto de partida é a função `GTFShift::prioritise_lanes()`, que combina dados GTFS e OSM para gerar, para cada segmento de via com serviço de transporte público, os seguintes indicadores:
+
+| Campo | Descrição |
+|---|---|
+| `way_osm_id` | Identificador único do segmento de via no OSM |
+| `hour` | Hora do dia (0–23) |
+| `frequency` | Número de serviços por hora que percorrem o segmento nessa hora |
+| `is_bus_lane` | Indicador booleano: o segmento tem atualmente uma faixa bus? |
+| `n_lanes_circulation` | Número total de vias de circulação |
+| `n_lanes_circulation_direction` | Número de vias de circulação por sentido |
+| `n_lanes_parking` | Número de vias de estacionamento |
+| `n_directions` | Número de sentidos de circulação (1 ou 2) |
+| `routes` | Lista de `route_id` que percorrem o segmento |
+| `shapes` | Lista de `shape_id` que percorrem o segmento |
+
+A associação entre percursos GTFS e segmentos OSM é feita com base nas relações de rota OSM que têm correspondência com os percursos GTFS (através dos atributos `gtfs:*` do OSM). Os atributos de infraestrutura viária são extraídos diretamente das *tags* OSM dos segmentos identificados.
+
+## Critérios de priorização
+
+O utilizador pode definir os critérios de priorização para filtrar e visualizar os segmentos mais relevantes. Os critérios disponíveis são:
+
+### Frequência de serviço
+
+Define o limiar mínimo de serviços por hora para que um segmento seja considerado prioritário. Segmentos com frequência abaixo do limiar são excluídos da visualização (a menos que já tenham uma faixa bus, caso em que são sinalizados a amarelo).
+
+A frequência é calculada para a hora de análise selecionada, considerando todas as viagens (de todas as linhas) que passam pelo segmento nessa hora.
+
+Por omissão este valor é definido como a mediana das frequências abaixo do percentil 85.
+
+### Número de vias de circulação por sentido
+
+Define o limiar mínimo de vias de circulação por sentido. Segmentos com menos vias de circulação do que o limiar são excluídos da visualização.
+
+Por omissão este valor é definido como 2, assumindo uma postura conservadora, em que, ao implementar um corredor bus, é deixado pelo menos uma via de trânsito para a circulação de outros veículos.
+
+### Velocidade média
+
+Define o limiar máximo de velocidade média observada. Segmentos onde os autocarros circulam a velocidades acima do limiar são considerados menos urgentes para intervenção e excluidos da visualização. Este critério requer dados de GTFS-RT.
+
+Por omissão este valor é definido como a média das velocidades abaixo do percentil 85.
+
+### Procura de passageiros
+
+Define o limiar mínimo de procura diária de passageiros. Permite focar a análise nos segmentos com maior impacto potencial em termos de passageiros beneficiados.
+
+Por omissão este valor é definido como a média da procura abaixo do percentil 85.
+
+## Classificação e visualização
+
+Os segmentos são classificados e coloridos em três categorias:
+
+| Cor | Classificação | Condição |
+|---|---|---|
+| <span style="color: #3bc1a8;">__Verde__</span> | Faixa bus existente, cumpre critérios | Tem faixa bus **e** satisfaz todos os critérios ativos são satisfeitos |
+| <span style="color: #dad887;">__Amarelo__</span> | Faixa bus existente, não cumpre critérios | Tem faixa bus mas **não** satisfaz todos os critérios ativos |
+| <span style="color: #f63049;">__Vermelho__</span> | Prioritário para faixa bus | Não tem faixa bus mas satisfaz todos os critérios ativos |
+
+A espessura de cada segmento no mapa pode ser configurada para refletir a frequência de serviço ou a procura de passageiros, tornando visualmente mais proeminentes os segmentos mais relevantes.
+
+

@@ -1,0 +1,125 @@
+# Resultados: Dados Produzidos {#sec-resultados}
+
+O pipeline de processamento GTFShift-DI produz um conjunto de ficheiros de saída que constituem os dados base do *dashboard* interativo e que podem ser descarregados para análise independente.
+
+## Estrutura dos ficheiros de saída
+
+Os ficheiros são organizados por região e data de execução, seguindo a convenção de nomes:
+
+```
+<output>/<region>/<gtfs_date>/run_<timestamp>/
+```
+
+O arquivo ZIP disponível para *download* no *dashboard* contém os seguintes ficheiros:
+
+| Ficheiro | Formato | Descrição |
+|---|---|---|
+| `prioritisation_area_polygon_*.geojson` | GeoJSON | Polígono de envolvente convexa (*convex hull*) da área de análise |
+| `ways_*.geojson` / `.gpkg` | GeoJSON / GeoPackage | Geometrias dos segmentos de via com serviço de transporte |
+| `way_data_*.json` | JSON | Atributos, frequência horária, velocidades e procura por segmento |
+| `shape_data_*.json` | JSON | Metadados por percurso (*shape*): estatísticas, horário e paragens |
+| `route_data_*.json` | JSON | Metadados por linha: nome, cor, procura e perfil de velocidade |
+| `metadata_*.json` | JSON | Métricas globais de cobertura, censos de dados e configuração |
+| `gtfs_*.zip` | ZIP | Feed GTFS filtrado ao dia de análise |
+| `gtfs_*_manipulated.zip` | ZIP | Feed GTFS manipulado (quando aplicável) |
+| `prioritisation_*.csv` | CSV | Resultado completo de `GTFShift::prioritise_lanes()` e `rt_extend_prioritisation()` |
+
+Alguns ficheiros estão disponíveis em múltiplos formatos (GeoJSON e GeoPackage; JSON e CSV) para facilitar a integração com diferentes ferramentas de análise.
+
+## Modelo relacional dos dados
+
+O diagrama seguinte ilustra as relações entre os ficheiros de saída:
+
+```{mermaid}
+erDiagram
+    Prioritisation_Area_Polygon_GeoJSON {
+        Polygon geometry "Convex hull da área de análise"
+    }
+    Ways_GeoJSON {
+        string way_osm_id PK "Identificador OSM da via"
+        LineString geometry "Geometria do segmento de via"
+    }
+    Way_Data_JSON {
+        string way_osm_id PK "Identificador OSM (chave do dicionário)"
+        string name "Nome da rua"
+        float length_m "Comprimento em metros"
+        boolean is_bus_lane "Tem faixa bus?"
+        int n_lanes_parking "Nº de faixas de estacionamento"
+        int n_lanes_circulation "Nº total de faixas de circulação"
+        int n_directions "Nº de sentidos"
+        float n_lanes_circulation_direction "Faixas por sentido"
+        float speed_avg "Velocidade média (se RT disponível)"
+        float speed_median "Velocidade mediana (se RT disponível)"
+        float speed_p85 "Velocidade P85 (se RT disponível)"
+        int demand "Procura diária (se disponível)"
+        string_array routes FK "Lista de route_id que percorrem esta via"
+        string_array shapes FK "Lista de shape_id que percorrem esta via"
+        object hour_frequency "Frequência por hora (0-23)"
+        object hour_speed_avg "Velocidade média por hora (se RT disponível)"
+        object hour_speed_median "Velocidade mediana por hora (se RT disponível)"
+        object hour_disturbance_index "Índice de perturbação por hora (se RT disponível)"
+    }
+    Shape_Data_JSON {
+        string shape_id PK "GTFS shape_id (chave do dicionário)"
+        string route_id FK "GTFS route_id"
+        string route_short_name "Nome curto da linha"
+        string route_long_name "Nome completo da linha"
+        int direction_id "Sentido GTFS (0 ou 1)"
+        string route_color "Cor hex da linha"
+        object stats "Estatísticas de priorização ponderadas"
+        object schedule "Frequência horária do percurso"
+        array stops "Lista de paragens (sequência, id, nome, lat, lon)"
+    }
+    Route_Data_JSON {
+        string route_id PK "GTFS route_id (chave do dicionário)"
+        string route_short_name "Nome curto da linha"
+        string route_long_name "Nome completo da linha"
+        string route_color "Cor hex da linha"
+        int demand "Procura diária (se disponível)"
+    }
+    Metadata_JSON {
+        string region "Nome da região analisada"
+        object gtfs "Metadados GTFS (data, URL)"
+        array osm_query "Consulta OSM utilizada"
+        object prioritisation "Métricas de cobertura globais"
+        object prioritisation_hour "Métricas de cobertura por hora"
+        object data_census "Estatísticas descritivas da rede"
+        object rt "Metadados GTFS-RT (se disponível)"
+        object demand "Metadados de procura (se disponível)"
+        object execution "Momento de execução e versão do código"
+        object environment "Versões do R e dos pacotes"
+    }
+
+    Prioritisation_Area_Polygon_GeoJSON ||--o{ Ways_GeoJSON : "contém espacialmente"
+    Ways_GeoJSON ||--|| Way_Data_JSON : "ligado 1:1 por way_osm_id"
+    Way_Data_JSON }o--o{ Route_Data_JSON : "referenciado via routes"
+    Way_Data_JSON }o--o{ Shape_Data_JSON : "referenciado via shapes"
+    Shape_Data_JSON }o--|| Route_Data_JSON : "pertence a route_id"
+```
+
+## Estatísticas de cobertura
+
+O ficheiro `metadata_*.json` inclui métricas que permitem avaliar a cobertura da análise — a proporção de percursos e linhas GTFS que foram associados com sucesso à rede viária OSM:
+
+- `shapes_total`: número total de percursos GTFS no dia de análise;
+- `shapes_found_n`: número de percursos com pelo menos um segmento de via identificado;
+- `shapes_missing_n`: número de percursos sem correspondência OSM;
+- `shapes_found_frequency`: frequência total associada a percursos encontrados;
+- `shapes_missing_frequency`: frequência total associada a percursos não encontrados.
+
+Estes valores são também calculados por hora do dia (`prioritisation_hour`), permitindo identificar períodos com menor cobertura (e.g., serviços noturnos com menor representação no OSM).
+
+## Censos de dados (*data_census*)
+
+O `metadata_*.json` inclui ainda um censo descritivo das métricas calculadas para o conjunto da rede, com estatísticas ponderadas pelo comprimento e pela frequência dos segmentos:
+
+```json
+"data_census": {
+  "frequency": { "mean": 8.3, "median": 6.0, "p5": 1.0, "p95": 24.0, ... },
+  "speed_avg_length": { "mean": 14.2, "p85": 19.1, ... },
+  "disturbance_index_length": { "mean": -0.12, "median": -0.09, ... },
+  ...
+}
+```
+
+Estes valores são utilizados pelo *dashboard* para calibrar as escalas de cor das camadas de visualização.

@@ -264,16 +264,22 @@
             </div>
 
             <!-- Terminal Stops (Departure & Arrival) -->
-            {#if shape?.departure_stop || shape?.arrival_stop}
-                <div
-                    class="px-1 py-0.5 text-xs {isExpanded
-                        ? 'flex items-center gap-4 flex-wrap bg-muted/20 p-2.5 rounded-lg border border-border/30'
-                        : 'space-y-1'}"
-                >
-                    {#if shape.departure_stop}
+            {#if (shape?.stops && shape.stops.length > 0) || shape?.departure_stop || shape?.arrival_stop}
+                {@const depStop = shape?.stops?.[0] || shape?.departure_stop}
+                {@const arrStop =
+                    (shape?.stops && shape.stops.length > 1
+                        ? shape.stops[shape.stops.length - 1]
+                        : undefined) || shape?.arrival_stop}
+                {#if depStop || arrStop}
+                    <div
+                        class="px-1 py-0.5 text-xs {isExpanded
+                            ? 'flex items-center gap-4 flex-wrap bg-muted/20 p-2.5 rounded-lg border border-border/30'
+                            : 'space-y-1'}"
+                    >
+                    {#if depStop}
                         {@const depName =
-                            toCapitalCase(shape.departure_stop.stop_name) ||
-                            shape.departure_stop.stop_id}
+                            toCapitalCase(depStop.stop_name) ||
+                            depStop.stop_id}
                         <div class="flex items-center gap-2">
                             <span
                                 class="w-2.5 h-2.5 rounded-full border-2 border-emerald-600 bg-background shrink-0"
@@ -291,7 +297,7 @@
                             </div>
                         </div>
                     {/if}
-                    {#if shape.departure_stop && shape.arrival_stop}
+                    {#if depStop && arrStop}
                         {#if isExpanded}
                             <i
                                 class="fas fa-arrow-right text-[11px] text-muted-foreground/60 hidden sm:inline"
@@ -302,10 +308,10 @@
                             ></div>
                         {/if}
                     {/if}
-                    {#if shape.arrival_stop}
+                    {#if arrStop}
                         {@const arrName =
-                            toCapitalCase(shape.arrival_stop.stop_name) ||
-                            shape.arrival_stop.stop_id}
+                            toCapitalCase(arrStop.stop_name) ||
+                            arrStop.stop_id}
                         <div class="flex items-center gap-2">
                             <span
                                 class="w-2.5 h-2.5 rounded-full border-2 border-red-600 bg-background shrink-0"
@@ -325,6 +331,7 @@
                     {/if}
                 </div>
             {/if}
+        {/if}
 
             <!-- Sections Accordion -->
             <Accordion.Root

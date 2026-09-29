@@ -93,6 +93,14 @@ export interface GeoPrioritisation {
                 [hour: string]: number;
             };
             stats: PrioritisationStats;
+            stops?: Array<{
+                stop_sequence: number;
+                stop_id: string;
+                stop_name?: string;
+                lat: number;
+                lon: number;
+                departure_time?: string;
+            }>;
             departure_stop?: {
                 stop_id: string;
                 stop_name?: string;

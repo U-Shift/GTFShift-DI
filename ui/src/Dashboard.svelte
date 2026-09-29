@@ -3043,9 +3043,10 @@
 
     {#if selected_shape_id && selected_shape_id !== "all" && geoData.shapes?.[selected_shape_id]}
         {@const selectedShape = geoData.shapes[selected_shape_id]}
-        {#if selectedShape.departure_stop || selectedShape.arrival_stop}
+        {#if (selectedShape.stops && selectedShape.stops.length > 0) || selectedShape.departure_stop || selectedShape.arrival_stop}
             <LayerTerminalStops
                 {map}
+                stops={selectedShape.stops}
                 departureStop={selectedShape.departure_stop}
                 arrivalStop={selectedShape.arrival_stop}
                 routeColor={selectedShape.route_color}

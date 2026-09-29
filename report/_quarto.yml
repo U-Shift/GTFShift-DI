@@ -38,7 +38,7 @@ book:
   sidebar:
     tools:
     - icon: github
-      href: https://github.com/U-Shift/GTFShift-DI/
+      href: https://github.com/U-Shift/GTFShift-TML/
       text: "GitHub Repository"
       target: _blank
     - icon: map-fill

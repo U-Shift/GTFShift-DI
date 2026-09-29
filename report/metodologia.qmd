@@ -1,6 +1,6 @@
 # Metodologia {#sec-metodologia}
 
-A metodologia, ilustrada em @fig-methodology, é implementada pelo ficheiro [`prioritise.R`](https://github.com/U-Shift/GTFShift-DI/blob/main/scripts/02_prioritise/prioritise.R){target="_blank"}, que orquestra todas as etapas de processamento de dados e geração dos resultados para o portal interativo. Este processamento é por sua vez parametrizado no ficheiro [`prioritise_parameters.R`](https://github.com/U-Shift/GTFShift-DI/blob/main/scripts/02_prioritise/prioritise_parameters.R){target="_blank"}, que define as configurações específicas para as áreas da Carris Metropolitana.
+A metodologia, ilustrada em @fig-methodology, é implementada pelo ficheiro [`prioritise.R`](https://github.com/U-Shift/GTFShift-TML/blob/main/scripts/02_prioritise/prioritise.R){target="_blank"}, que orquestra todas as etapas de processamento de dados e geração dos resultados para o portal interativo. Este processamento é por sua vez parametrizado no ficheiro [`prioritise_parameters.R`](https://github.com/U-Shift/GTFShift-TML/blob/main/scripts/02_prioritise/prioritise_parameters.R){target="_blank"}, que define as configurações específicas para as áreas da Carris Metropolitana.
 
 ![Quadro metodológico](images/methods/methodology.png){#fig-methodology}
 

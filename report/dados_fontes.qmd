@@ -38,7 +38,7 @@ O GTFS-RT (*General Transit Feed Specification - Real Time*) é uma extensão do
 
 Os dados de GTFS-RT foram recolhidos de forma periódica (uma vez por minuto) nos dias úteis entre 13 e 30 de abril de 2026 (14 dias). A recolha foi feita através da API oficial da Carris Metropolitana [@carris_metropolitana_carrismetropolitanaapi_2026].
 
-O código utilizado para a recolha e agregação destes dados está disponível em [github.com/U-Shift/GTFShift-DI/tree/main/scripts/00_fetch_rt](https://github.com/U-Shift/GTFShift-DI/tree/main/scripts/00_fetch_rt){target=blank}.
+O código utilizado para a recolha e agregação destes dados está disponível em [github.com/U-Shift/GTFShift-DI/tree/main/scripts/00_fetch_rt](https://github.com/U-Shift/GTFShift-TML/tree/main/scripts/00_fetch_rt){target=blank}.
 
 ## Dados de procura de passageiros
 
@@ -46,4 +46,4 @@ Obtiveram-se dados de procura através da API de métricas da Carris Metropolita
 
 Estes dados permitem ponderar a análise de priorização pelo volume de passageiros transportados, identificando os segmentos onde o impacto potencial de uma faixa de bus seria maior. A associação entre dados de procura e a rede viária é feita através do identificador de linha (`route_short_name`), que é cruzado com o GTFS para obter o `route_id` correspondente.
 
-O código utilizado para a recolha destes dados está disponível em [github.com/U-Shift/GTFShift-DI/blob/main/scripts/00_demand/carris_metropolitana.R](https://github.com/U-Shift/GTFShift-DI/blob/main/scripts/00_demand/carris_metropolitana.R){target=blank}.
+O código utilizado para a recolha destes dados está disponível em [github.com/U-Shift/GTFShift-DI/blob/main/scripts/00_demand/carris_metropolitana.R](https://github.com/U-Shift/GTFShift-TML/blob/main/scripts/00_demand/carris_metropolitana.R){target=blank}.

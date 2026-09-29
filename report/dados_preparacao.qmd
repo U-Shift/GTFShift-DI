@@ -2,7 +2,7 @@
 
 Antes de avançar para a análise, os dados recolhidos passam por um conjunto de etapas de preparação e validação, que garantem a consistência e qualidade da informação utilizada.
 
-> Os procedimentos descritos nesta secção cobrem a parte inicial do código disponível em [`scripts/02_prioritise`](https://github.com/U-Shift/GTFShift-DI/tree/main/scripts/02_prioritise){target="_blank"}.
+> Os procedimentos descritos nesta secção cobrem a parte inicial do código disponível em [`scripts/02_prioritise`](https://github.com/U-Shift/GTFShift-TML/tree/main/scripts/02_prioritise){target="_blank"}.
 
 ## Filtragem temporal do GTFS
 
@@ -57,7 +57,7 @@ manipulate_carris_met_area_4 <- function(gtfs) {
 
 ## Associação GTFS–OSM
 
-A associação entre as geometrias GTFS e a rede viária OSM é o núcleo metodológico do processo de preparação. Apesar de existirem atributos nas relações OSM `gtfs:shape_id` e `gtfs:route_id` que permitem esta correspondência direta, estes não estavam definidos na rede da Carris Metropolitana. Para ultrapassar esta lacuna, foi aplicado o algoritmo de correspondência geométrica [`GTFShift::osm_shapes_match_routes()`](https://u-shift.github.io/GTFShift/reference/osm_shapes_match_routes.html){target=blank}, utilizando o código disponível em [`scripts/01_osm_match`](https://github.com/U-Shift/GTFShift-DI/tree/main/scripts/01_osm_match){target="_blank"}.
+A associação entre as geometrias GTFS e a rede viária OSM é o núcleo metodológico do processo de preparação. Apesar de existirem atributos nas relações OSM `gtfs:shape_id` e `gtfs:route_id` que permitem esta correspondência direta, estes não estavam definidos na rede da Carris Metropolitana. Para ultrapassar esta lacuna, foi aplicado o algoritmo de correspondência geométrica [`GTFShift::osm_shapes_match_routes()`](https://u-shift.github.io/GTFShift/reference/osm_shapes_match_routes.html){target=blank}, utilizando o código disponível em [`scripts/01_osm_match`](https://github.com/U-Shift/GTFShift-TML/tree/main/scripts/01_osm_match){target="_blank"}.
 
 Foi possível obter uma correspondência para 98,96% das geometrias GTFS (*shapes*), que correspondem a 96,76% das viagens realizadas em hora de ponta. Os resultados desta correspondência estão disponíveis em [U-Shift/busclar](https://github.com/U-Shift/busclar/releases/tag/0.9){target=blank}. Posteriormente, estes resultados foram utilizados para atualizar o OSM com os atributos em falta, utilizando o código documentado em [GTFShift: Update OSM data](https://u-shift.github.io/GTFShift/articles/osm_update.html){target=blank}.
 
@@ -70,7 +70,7 @@ O resultado é um conjunto de dados com uma linha por combinação de segmento d
 
 ## Filtragem e validação dos dados GTFS-RT
 
-Os dados de GTFS-RT são submetidos a um conjunto de filtros de qualidade antes de serem utilizados no cálculo de velocidades. A validação é feita utilizando o método [`rt_collection_speed_from_shape_distance_progression()`](https://github.com/U-Shift/GTFShift-DI/blob/main/scripts/02_prioritise/prioritise_parameters.R#L373){target=blank}, em três fases sequenciais:
+Os dados de GTFS-RT são submetidos a um conjunto de filtros de qualidade antes de serem utilizados no cálculo de velocidades. A validação é feita utilizando o método [`rt_collection_speed_from_shape_distance_progression()`](https://github.com/U-Shift/GTFShift-TML/blob/main/scripts/02_prioritise/prioritise_parameters.R#L373){target=blank}, em três fases sequenciais:
 
 **1.ª validação — por atualização individual:**
 

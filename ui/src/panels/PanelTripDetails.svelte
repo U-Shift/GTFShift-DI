@@ -799,9 +799,10 @@
                                         Departure
                                     </th>
                                     <td
-                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary font-mono"
+                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary font-mono whitespace-nowrap"
+                                        title={depTime ? `${depTime} (planned)` : undefined}
                                     >
-                                        -
+                                        {depTime ? `${depTime} (planned)` : "-"}
                                     </td>
                                     {#each sortedTripDays as d}
                                         <td
@@ -814,6 +815,31 @@
                                                 (d.hour != null
                                                     ? `${d.hour}:00`
                                                     : "-")}
+                                        </td>
+                                    {/each}
+                                </tr>
+
+                                <!-- Arrival -->
+                                <tr>
+                                    <th
+                                        class="text-[9px] font-semibold text-muted-foreground text-left px-2 py-1 whitespace-nowrap sticky left-0 bg-background/95 backdrop-blur z-10"
+                                    >
+                                        Arrival
+                                    </th>
+                                    <td
+                                        class="text-[10px] font-bold text-center px-1.5 py-1 rounded bg-muted/30 border border-border/40 text-primary font-mono whitespace-nowrap"
+                                        title={arrTime ? `${arrTime} (planned)` : undefined}
+                                    >
+                                        {arrTime ? `${arrTime} (planned)` : "-"}
+                                    </td>
+                                    {#each sortedTripDays as d}
+                                        <td
+                                            class="text-[10px] font-mono text-center px-1.5 py-1 rounded bg-background/70 border border-border/30 whitespace-nowrap text-muted-foreground"
+                                            title="{formatDayFull(
+                                                d.day,
+                                            )} arrival"
+                                        >
+                                            {formatTime(d.timestamp_max) ?? "-"}
                                         </td>
                                     {/each}
                                 </tr>

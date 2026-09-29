@@ -444,8 +444,6 @@ for (i in 1:nrow(regions)) { # i =1
           group_by(shape_id, trip_id, route_id) |>
           summarise(
             n_days = n(),
-            departure_time = if ("departure_time" %in% names(trip_profiles)) dplyr::first(departure_time) else NA_character_,
-            arrival_time = if ("arrival_time" %in% names(trip_profiles)) dplyr::first(arrival_time) else NA_character_,
             commercial_speed_avg = round(mean(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_median = round(median(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),

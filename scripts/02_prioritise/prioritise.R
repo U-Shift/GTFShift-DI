@@ -209,16 +209,20 @@ for (i in 1:nrow(regions)) { # i =1
           trip_profiles$shape_id <- NA_character_
         }
 
-        # Link scheduled departure_time (first stop) and arrival_time (last stop departure_time) from gtfs$stop_times
+        # Link scheduled departure_time (first stop) and arrival_time (last stop) from gtfs$stop_times
         if (!is.null(gtfs$stop_times) && all(c("trip_id", "stop_sequence", "departure_time") %in% colnames(gtfs$stop_times))) {
+          has_arrival <- "arrival_time" %in% colnames(gtfs$stop_times)
           trip_times <- gtfs$stop_times |>
-            select(trip_id, stop_sequence, departure_time) |>
+            select(trip_id, stop_sequence, departure_time, any_of("arrival_time")) |>
             filter(!is.na(trip_id) & trip_id != "") |>
             mutate(
               trip_id = as.character(trip_id),
               stop_sequence = as.integer(stop_sequence),
               departure_time = as.character(departure_time),
-              arrival_time = as.character(arrival_time)
+              arrival_time = as.character(if (has_arrival) arrival_time else departure_time)
+            ) |>
+            mutate(
+              arrival_time = dplyr::coalesce(arrival_time, departure_time)
             ) |>
             arrange(trip_id, stop_sequence) |>
             group_by(trip_id) |>

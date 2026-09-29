@@ -217,13 +217,14 @@ for (i in 1:nrow(regions)) { # i =1
             mutate(
               trip_id = as.character(trip_id),
               stop_sequence = as.integer(stop_sequence),
-              departure_time = as.character(departure_time)
+              departure_time = as.character(departure_time),
+              arrival_time = as.character(arrival_time)
             ) |>
             arrange(trip_id, stop_sequence) |>
             group_by(trip_id) |>
             summarise(
               departure_time = dplyr::first(departure_time),
-              arrival_time = dplyr::last(departure_time),
+              arrival_time = dplyr::last(arrival_time),
               .groups = "drop"
             )
           trip_profiles <- trip_profiles |>
@@ -294,8 +295,6 @@ for (i in 1:nrow(regions)) { # i =1
           group_by(trip_id, route_id) |>
           summarise(
             n_days = n(),
-            departure_time = if ("departure_time" %in% names(trip_profiles)) dplyr::first(departure_time) else NA_character_,
-            arrival_time = if ("arrival_time" %in% names(trip_profiles)) dplyr::first(arrival_time) else NA_character_,
             commercial_speed_avg = round(mean(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_median = round(median(commercial_speed, na.rm = TRUE), 2),
             commercial_speed_alt = round(mean(commercial_speed_alt, na.rm = TRUE), 2),

@@ -121,6 +121,8 @@
     {@const tripDays = rawTripDays.filter(
         (d: TripDaySpeedProfile) => d.trip_id === selectedTripId,
     )}
+    {@const depTime = tripDays[0]?.departure_time}
+    {@const arrTime = tripDays[0]?.arrival_time}
     {@const sortedTripDays = [...tripDays].sort((a, b) =>
         String(a.day).localeCompare(String(b.day)),
     )}
@@ -214,13 +216,23 @@
                         </button>
                     </div>
 
-                    {@const depTime = tripDays.find((d) => d.departure_time)?.departure_time ?? trip?.departure_time}
-                    {@const arrTime = tripDays.find((d) => d.arrival_time)?.arrival_time ?? trip?.arrival_time}
                     {#if depTime || arrTime}
-                        <p class="text-xs text-muted-foreground font-medium flex items-center gap-1.5 pt-0.5">
-                            <span>Departure: <span class="font-mono text-foreground">{depTime ?? "-"}</span></span>
+                        <p
+                            class="text-xs text-muted-foreground font-medium flex items-center gap-1.5 pt-0.5"
+                        >
+                            <span
+                                >Departure: <span
+                                    class="font-mono text-foreground"
+                                    >{depTime ?? "-"}</span
+                                ></span
+                            >
                             <span>•</span>
-                            <span>Arrival: <span class="font-mono text-foreground">{arrTime ?? "-"}</span></span>
+                            <span
+                                >Arrival: <span
+                                    class="font-mono text-foreground"
+                                    >{arrTime ?? "-"}</span
+                                ></span
+                            >
                         </p>
                     {/if}
                 </div>

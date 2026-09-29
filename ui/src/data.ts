@@ -133,13 +133,13 @@ export const DB_REGIONS: DataRegion[] = [
                 demand_data: true,
                 matched_frequencies_peak: 99.7,
                 files: {
-                    ways: BASE_URL + '/data/aml_3/run_20260928_162034/ways_aml_rt_area_3_gtfs20260520_run20260928.geojson',
-                    boundaries: BASE_URL + '/data/aml_3/run_20260928_162034/prioritisation_area_polygon_aml_rt_area_3_gtfs20260520_run20260928.geojson',
-                    way_data: BASE_URL + '/data/aml_3/run_20260928_162034/way_data_aml_rt_area_3_gtfs20260520_run20260928.json',
-                    metadata: BASE_URL + '/data/aml_3/run_20260928_162034/metadata_aml_rt_area_3_gtfs20260520_run20260928.json',
-                    route_data: BASE_URL + '/data/aml_3/run_20260928_162034/route_data_aml_rt_area_3_gtfs20260520_run20260928.json',
-                    shape_data: BASE_URL + '/data/aml_3/run_20260928_162034/shape_data_aml_rt_area_3_gtfs20260520_run20260928.json',
-                    zip: BASE_URL + '/data/aml_3/run_20260928_162034/aml_3.zip'
+                    ways: BASE_URL + '/data/aml_3/run_20260929_081552/ways_aml_rt_area_3_gtfs20260520_run20260929.geojson',
+                    boundaries: BASE_URL + '/data/aml_3/run_20260929_081552/prioritisation_area_polygon_aml_rt_area_3_gtfs20260520_run20260929.geojson',
+                    way_data: BASE_URL + '/data/aml_3/run_20260929_081552/way_data_aml_rt_area_3_gtfs20260520_run20260929.json',
+                    metadata: BASE_URL + '/data/aml_3/run_20260929_081552/metadata_aml_rt_area_3_gtfs20260520_run20260929.json',
+                    route_data: BASE_URL + '/data/aml_3/run_20260929_081552/route_data_aml_rt_area_3_gtfs20260520_run20260929.json',
+                    shape_data: BASE_URL + '/data/aml_3/run_20260929_081552/shape_data_aml_rt_area_3_gtfs20260520_run20260929.json',
+                    zip: BASE_URL + '/data/aml_3/run_20260929_081552/aml_3.zip'
                 }
             },
             /*

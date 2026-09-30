@@ -1,0 +1,78 @@
+# Análise ao nível da linha {#sec-dashboard-linhas}
+
+O painel de detalhes de linha é ativado ao selecionar uma linha no seletor *Filter by Route* da barra lateral. Apresenta-se no lado direito do ecrã e agrega toda a informação disponível para a linha selecionada: caracterização da rota, perfil de velocidade comercial e respetivo índice de perturbação, decomposição por hora do dia e listagem das viagens individuais.
+
+O painel pode ser expandido para ecrã completo com o botão no canto superior direito.
+
+## Cabeçalho da linha
+
+O cabeçalho apresenta o **número da linha** (em destaque, com a cor GTFS), o **nome** e a **direção** (Ascendente / Descendente). Inclui ainda uma etiqueta com o `shape_id` e o sentido de circulação.
+
+## Visão geral da linha
+
+A visão geral da linha organiza-se em dois grupos expansíveis:
+
+### Procura e partidas (*Demand & Departures*)
+
+Este grupo apresenta:
+
+- **Route Demand**: procura diária da linha, em passageiros/dia;
+- **Scheduled Departures / Hour**: gráfico de barras com as partidas programadas hora a hora (0h–23h), com a cor da linha e uma linha a tracejado a indicar a média diária. A hora de critério aparece destacada com um contorno.
+
+### Indicadores por segmento de via (*Road Segment Indicators*)
+
+Este grupo agrega, ponderado pelo comprimento de cada segmento percorrido pela linha, os seguintes indicadores da infraestrutura viária associada:
+
+| Indicador | Descrição |
+|-----------|-----------|
+| **Min/Avg/Max Speed** | Velocidades mínima, média e máxima observadas nos segmentos da linha (km/h), agregadas a partir dos dados GTFS-RT dos segmentos percorridos. Os valores de velocidade consideram todas as linhas que atravessam cada segmento. |
+| **Min/Avg/Max Lanes/Dir** | Número mínimo, médio e máximo de vias de circulação por sentido nos segmentos da linha |
+| **Route Extension** | Extensão total da linha (km), decomposta em: comprimento com corredor *bus* dedicado e comprimento sem corredor *bus*, com barras de progresso e percentagens. |
+
+
+
+## Indicadores de velocidade comercial {#sec-route-speed-profile}
+
+Esta secção apresenta indicadores relacionados com a velocidade comercial (@sec-velocidade-comercial), calculada ao nível das viagens individuais e agregada ao nível da linha selecionada.
+
+### Cartões de resumo
+
+Um conjunto de indicadores com as seguintes estatísticas agregadas para **todo o período de análise**:
+
+| Indicador | Descrição |
+|-----------|-----------|
+| **Min Speed** | Velocidade comercial mínima observada entre as viagens da linha (km/h) |
+| **Avg Speed** | Velocidade comercial média (km/h) |
+| **Max Speed** | Velocidade comercial máxima (km/h) |
+| **Median Speed** | Velocidade comercial mediana (km/h) |
+| **P85 Speed** | Percentil 85 da velocidade comercial (km/h) |
+| **DI (Period)** | Índice de perturbação do período completo, calculado como a diferença relativa entre a velocidade mediana e o P85 (ver @sec-indice-perturbacao), com indicação da categoria de perturbação |
+
+Abaixo dos cartões são também apresentados o número de viagens amostradas (*Trips sampled*) e o número de dias observados (*Days observed*).
+
+### Gráfico de velocidade comercial horária (*Hourly Commercial Speed*)
+
+Gráfico de barras com a velocidade comercial média por hora do dia (0h–23h), com a cor da linha. Uma linha a tracejado assinala a velocidade média diária (*Daily Avg*). A hora de critério aparece destacada com um contorno. O *tooltip* de cada barra apresenta a velocidade média para essa hora.
+
+### Gráfico do índice de perturbação horário (*Disturbance Index per Hour*)
+
+Gráfico de barras divergente com o índice de perturbação por hora: barras acima da linha central (DI positivo) indicam que as viagens desta linha circularam mais rapidamente do que a velocidade de referência; barras abaixo (DI negativo) indicam perturbação. Uma linha a tracejado assinala o DI do período completo. As cores seguem as categorias do índice de perturbação (ver @sec-indice-perturbacao).
+
+## Viagens (*Trips*) {#sec-route-trips}
+
+Esta secção lista todas as viagens da linha que dispõem de dados de velocidade. Para cada viagem são apresentados:
+
+- O `trip_id` (identificador único da viagem no GTFS);
+- A **velocidade comercial média** observada;
+- O **índice de perturbação** (DI) com a cor da categoria correspondente.
+
+Os controlos disponíveis permitem:
+
+- **Pesquisar** viagens por `trip_id`;
+- **Ordenar** a lista por ID, velocidade (crescente ou decrescente) ou DI (crescente ou decrescente).
+
+Ao clicar numa viagem, esta é selecionada e abre-se o [painel de detalhes da viagem](#sec-dashboard-viagens) no ecrã.
+
+## Variantes da rota (*Route Variants*)
+
+Esta secção lista todas as **variantes de traçado** (*shapes*) associadas à linha selecionada. Cada variante é identificada pelo seu número de linha, nome e direção (Ascendente/Descendente). Ao clicar numa variante, a visualização no mapa é atualizada para o traçado da variante selecionada.

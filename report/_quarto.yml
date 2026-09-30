@@ -23,15 +23,19 @@ book:
         - metodologia.qmd
         - metodologia_indice_perturbacao.qmd
         - metodologia_priorizacao.qmd
+        - metodologia_corredores_bus.qmd
         - metodologia_frequencia.qmd
         - metodologia_nr_vias.qmd
-        - metodologia_corredores_bus.qmd
         - metodologia_velocidade_rt.qmd
+        - metodologia_velocidade_comercial.qmd
         - metodologia_procura.qmd
         - resultados.qmd
     - part: "**Painel interativo**"
       chapters:
         - dashboard.qmd
+        - dashboard_infraestrutura.qmd
+        - dashboard_linhas.qmd
+        - dashboard_viagens.qmd
     - references.qmd
   sidebar:
     tools:

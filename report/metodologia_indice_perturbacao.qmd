@@ -8,7 +8,7 @@ $$ {#eq-di-tml}
 
 onde $\Delta t^{(i)} = \text{stop\_observed\_time\_end}^{(i)} - \text{stop\_observed\_time\_start}^{(i)}$ corresponde ao tempo de viagem observado no segmento para a viagem $i$, e $Q_{1,\text{shape}}(\Delta t)$ denota o primeiro quartil dos tempos de viagem observados nesse percurso.
 
-No contexto do GTFShift, foi aplicada uma adaptação deste índice, ao nível do segmento da rede viária, com o objetivo de desbloquear uma análise mais fina da perturbação operacional e numa perspetiva de infraestrutura. Esta adaptação consistiu em quantifica o grau de degradação da velocidade comercial das viagens realizadas em relação à sua velocidade de referência (velocidade em condições favoráveis, assumida como sendo a velocidade no percentil 85), identificando os segmentos onde a operação é mais afetada pelo congestionamento rodoviário.
+No contexto do GTFShift, foi aplicada uma adaptação deste índice, ao nível do segmento da rede viária, com o objetivo de desbloquear uma análise mais fina da perturbação operacional e numa perspetiva de infraestrutura. Esta adaptação consistiu em quantifica o grau de degradação da velocidade mediana em relação à velocidade de referência (velocidade em condições favoráveis, assumida como sendo a velocidade no percentil 85), identificando os segmentos e as linhas onde a operação é mais afetada pelo congestionamento rodoviário.
 
 Esta camada requer dados de GTFS-RT.
 
@@ -17,7 +17,7 @@ Esta camada requer dados de GTFS-RT.
 O índice de perturbação é formulado de acordo com a escala de agregação espacial:
 
 **Nível de segmento da rede viária (*way*):**
-Avalia a perturbação horária $h$ num dado segmento $s$, comparando a velocidade mediana observada nessa hora com a velocidade de referência P85 do segmento ao longo de todo o período:
+Avalia a perturbação horária $h$ num dado segmento $s$, comparando a velocidade mediana (@sec-velocidade-rt)  observada nessa hora com a velocidade de referência P85 do segmento ao longo de todo o período:
 
 $$
 DI_{s,h} = \frac{v_{\text{mediana},s,h} - v_{P85,s}}{v_{P85,s}}
@@ -29,7 +29,7 @@ onde:
 - $v_{P85,s}$ é o percentil 85 da velocidade no segmento $s$, calculado sobre todas as observações do período de análise.
 
 **Nível de linha (*route*) ou percurso (*shape*):**
-Avalia a perturbação da velocidade comercial ao nível de cada viagem individual realizada, comparando a velocidade comercial observada na viagem $i$ com a velocidade de referência P85 da respetiva linha ou percurso (calculada sobre todas as viagens do período):
+Avalia a perturbação da velocidade comercial (@sec-velocidade-comercial) ao nível de cada viagem individual realizada, comparando a velocidade comercial observada na viagem $i$ com a velocidade de referência P85 da respetiva linha ou percurso (calculada sobre todas as viagens do período):
 
 $$
 DI_{r,i} = \frac{v_{\text{comercial},r,i} - v_{P85,r}}{v_{P85,r}}
@@ -50,17 +50,17 @@ Para cada segmento de via (*way*), o DI horário é calculado comparando a veloc
 disturbance_index = (hour_speed_median - speed_p85) / speed_p85
 ```
 
-### Nível de viagem e linha (*route*)
+### Nível de viagem e linha 
 
-Para cada viagem individual de uma linha ou percurso, o DI é calculado comparando a velocidade comercial dessa realização com a velocidade P85 global da respetiva linha (`route_speed_p85`):
+Para cada viagem individual de uma linha ou percurso, o DI é calculado comparando a velocidade comercial dessa realização com a velocidade P85 global da respetiva linha:
 
 ```r
 disturbance_index = (commercial_speed - route_speed_p85) / route_speed_p85
 ```
 
-### Nível de percurso (*shape*)
+### Nível de percurso 
 
-Analogamente, para cada percurso (*shape*), o DI é calculado com a velocidade P85 global do percurso como referência:
+Analogamente, para cada percurso, o DI é calculado com a velocidade P85 global do percurso como referência:
 
 ```r
 disturbance_index = (commercial_speed_avg - shape_speed_p85) / shape_speed_p85

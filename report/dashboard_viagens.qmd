@@ -1,0 +1,29 @@
+# Análise ao nível da viagem {#sec-dashboard-viagens}
+
+O painel de detalhes de viagem é ativado ao selecionar uma viagem na secção [Trips](#sec-route-trips) do painel de detalhes da linha. Apresenta-se no lado direito do ecrã, e centra-se na análise da **variação dia a dia** do desempenho de uma viagem específica.
+
+O painel pode ser expandido para ecrã completo com o botão no canto superior direito.
+
+## Cabeçalho da viagem
+
+O cabeçalho apresenta o `trip_id` da viagem selecionada, assim como as horas planeadas de partida da origem e chegada ao destino.
+
+## Visão geral (*Commercial speed metrics*)
+
+Esta secção apresenta os indicadores de desempenho da viagem em cartões métricos:
+
+| Indicador | Descrição |
+|-----------|-----------|
+| **Avg Speed** | Velocidade comercial média agregada de todas as observações disponíveis da viagem (km/h) |
+| **Median Speed** | Velocidade comercial mediana (km/h) |
+| **P85 Speed** | Percentil 85 da distribuição de velocidade (km/h) |
+| **Disturbance Index** | Índice de perturbação global da viagem (DI), expresso em percentagem e classificado na categoria correspondente |
+| **Days sampled** | Número de dias em que a viagem foi observada com dados de velocidade válidos |
+
+## Variação dia a dia {#sec-trip-day-variation}
+
+Apresentam-se, para cada dia em que a viagem foi observada, os valores de velocidade e índice de perturbação, permitindo identificar padrões temporais e anomalias pontuais. Os valores são apresentados em gráficos e em tabela. Na última, para além de serem mostrados os valores para as métricas calculadas, é também apresentada a hora de partida e chegada monitorizada de acordo com o GTFS-RT.
+
+## Relação com as métricas de linha
+
+As métricas apresentadas no painel de viagem são calculadas a partir do conjunto de dias observados e são consistentes com as reportadas no [painel de linha](#sec-route-speed-profile). A velocidade comercial usada corresponde à **velocidade comercial calculada pelo método [`GTFShift::get_trip_speed_profile()`](https://u-shift.github.io/GTFShift/reference/get_trip_speed_profile.html){target=_blank}** (ver @sec-velocidade-comercial), que considera a distância percorrida ao longo da geometria da rota e o tempo entre a primeira e última atualização GTFS-RT. O índice de perturbação (DI) é calculado comparando a velocidade comercial mediana com a velocidade de referência P85 para todos os dias (ver @sec-indice-perturbacao).

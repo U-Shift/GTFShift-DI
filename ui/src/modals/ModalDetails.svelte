@@ -538,7 +538,7 @@
                                         </td>
                                     </tr>
                                 {/if}
-                                {#if geoData.metadata.rt && geoData.metadata.rt.notes}
+                                {#if geoData.metadata.rt && geoData.metadata.rt.notes && (typeof geoData.metadata.rt.notes !== "object" || Object.keys(geoData.metadata.rt.notes).length > 0)}
                                     <tr class="bg-muted/30">
                                         <th
                                             class="px-4 py-2 text-left font-medium text-muted-foreground"
@@ -553,7 +553,7 @@
                                         >
                                     </tr>
                                 {/if}
-                                {#if geoData.metadata.demand && geoData.metadata.demand.notes}
+                                {#if geoData.metadata.demand && geoData.metadata.demand.notes && (typeof geoData.metadata.demand.notes !== "object" || Object.keys(geoData.metadata.demand.notes).length > 0)}
                                     <tr>
                                         <th
                                             class="px-4 py-2 text-left font-medium text-muted-foreground"

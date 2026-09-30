@@ -1,3 +1,15 @@
-# Dashboard {#sec-dashboard}
+# Introdução {#sec-dashboard}
 
-*(Esta secção será desenvolvida numa fase posterior.)*
+Os resultados da aplicação do GTFShift à rede de autocarros da Carris Metropolitana encontram-se disponíveis de forma interativa no painel [**GTFShift/TML**](https://ushift.pt/apps/gtfshift-tml){target="_blank"}.
+
+![Visualização do painel interativo para a área 3 (camada índice de perturbação)](images/dashboard/area3.png){#fig-dashboard}
+
+Este painel permite visualizar todas as análises realizadas em cada uma das dimensões documentadas neste relatório, para cada uma das quatro áreas de operação da Carris Metropolitana, permitindo uma análise espacializada detalhada e sem a necessidade de conhecimentos de programação ou manipulação de dados.
+
+## Experiência de utilização
+
+O painel interativo dispõe de três grandes vertentes de análise, que são documentadas nos próximos capítulos: 
+
+- Ao nível da infraestrutura viária;
+- Ao nível da linha de transporte público;
+- Ao nível da viagem de transporte público.

@@ -29,9 +29,9 @@ book:
         - metodologia_velocidade_rt.qmd
         - metodologia_procura.qmd
         - resultados.qmd
-    # - part: "**Dashboard**"
-    #  chapters:
-    #    - dashboard.qmd
+    - part: "**Painel interativo**"
+      chapters:
+        - dashboard.qmd
     - references.qmd
   sidebar:
     tools:

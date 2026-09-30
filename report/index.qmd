@@ -3,7 +3,7 @@ format:
   html:
     css: "styles/index.css"
 ---
-# Introdução {#sec-introduction}
+# Introdução {#sec-introduction .unnumbered}
 
 Este relatório descreve a metodologia aplicada, os resultados obtidos e documenta o painel interativo desenvolvido no âmbito da adaptação e extensão da ferramenta GTFShift às necessidades operacionais da Transportes Metropolitanos de Lisboa (TML), que deu origem ao painel interativo [**GTFShift/TML**](https://ushift.pt/apps/gtfshift-tml){target="_blank"}. 
 

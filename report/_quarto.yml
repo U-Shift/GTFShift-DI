@@ -43,17 +43,19 @@ book:
     tools:
     - icon: github
       href: https://github.com/U-Shift/GTFShift-TML/
-      text: "GitHub Repository"
+      text: "Repositório GitHub"
       target: _blank
     - icon: map-fill
       href: https://ushift.pt/apps/gtfshift-tml
-      text: "Interactive Dashboard"
+      text: "Painel interativo"
       target: _blank
   page-footer:
     left: "&copy; 2026, U-Shift, CERIS, Instituto Superior Técnico, University of Lisbon"
     right: "September 2026"
     
 bibliography: references.bib
+
+lang: pt-pt
 
 format:
   html:

@@ -1,10 +1,10 @@
-# Priorização de Corredores *Bus* {#sec-priorizacao-corredores}
+# Priorização de corredores *bus* {#sec-priorizacao-corredores}
 
 A camada de priorização de corredores *bus* integra múltiplos critérios para identificar os segmentos de via com maior potencial para implementação ou manutenção de corredores bus.
 
 ## Geração dos indicadores base
 
-O ponto de partida é a função `GTFShift::prioritise_lanes()`, que combina dados GTFS e OSM para gerar, para cada segmento de via com serviço de transporte público, os seguintes indicadores:
+O ponto de partida é a função [`GTFShift::prioritise_lanes()`](https://u-shift.github.io/GTFShift/reference/prioritise_lanes.html){target=blank}, que combina dados GTFS e OSM para gerar, para cada segmento de via com serviço de transporte público, os seguintes indicadores:
 
 | Campo | Descrição |
 |---|---|

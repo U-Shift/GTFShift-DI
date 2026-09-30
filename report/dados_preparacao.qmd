@@ -68,7 +68,7 @@ Uma vez estabelecida a ligação entre as geometrias GTFS e a rede viária OSM e
 
 O resultado é um conjunto de dados com uma linha por combinação de segmento de via (`way_osm_id`) e hora do dia, contendo os atributos de infraestrutura e os indicadores de serviço correspondentes.
 
-## Filtragem e validação dos dados GTFS-RT
+## Filtragem e validação dos dados GTFS-RT {#sec-dados-rt}
 
 Os dados de GTFS-RT são submetidos a um conjunto de filtros de qualidade antes de serem utilizados no cálculo de velocidades. A validação é feita utilizando o método [`rt_collection_speed_from_shape_distance_progression()`](https://github.com/U-Shift/GTFShift-TML/blob/main/scripts/02_prioritise/prioritise_parameters.R#L373){target=blank}, em três fases sequenciais:
 
@@ -110,4 +110,4 @@ priotitization_demand <- prioritisation |>
   summarise(demand = sum(demand, na.rm = TRUE), .groups = "drop")
 ```
 
-Como a procura é um valor diário (não horário) e para a totalidade da linha é possível que este valor sobreestime o número de passageiros que efetivamente atravessa cada segmento num autocarro, uma vez que nem todos os passageiros frequentam a totalidade da linha, podendo embarcar ou desembarcar nas suas paragens intermédias, o que não é capturado pelos dados disponíveis.
+Como a procura é um valor diário (não horário) e para a totalidade da linha (em ambos os sentidos), este valor sobrestima o número de passageiros que efetivamente atravessa cada segmento, uma vez que nem todos os passageiros frequentam a totalidade da linha, podendo embarcar ou desembarcar nas suas paragens intermédias, o que não é capturado pelos dados disponíveis.

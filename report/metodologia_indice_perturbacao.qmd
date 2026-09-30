@@ -1,4 +1,4 @@
-# Índice de Perturbação {#sec-indice-perturbacao}
+# Índice de perturbação {#sec-indice-perturbacao}
 
 A camada de índice de perturbação (*Disturbance Index*, DI) é adaptada do índice desenvolvido pela Carris Metropolitana para analisar a fiabilidade da sua operação no cumprimento de horários no âmbito do projeto *deployEMDS* [@carris_metropolitana_carrismetropolitanadeploy_emds_2026]. Apresentado em @eq-di-tml, este relaciona, para cada segmento entre duas paragens, o tempo de viagem mediano e o primeiro quartil (Q1, assumido como o tempo de viagem de referência) dos tempos de viagem observados, de forma a quantificar o grau de degradação face a condições favoráveis de circulação e identificar os segmentos onde a operação é mais afetada por constrangimentos operacionais.
 
@@ -12,7 +12,7 @@ No contexto do GTFShift, foi aplicada uma adaptação deste índice, ao nível d
 
 Esta camada requer dados de GTFS-RT.
 
-## Definição do índice
+## Cálculo
 
 O índice de perturbação é formulado de acordo com a escala de agregação espacial:
 
@@ -66,7 +66,9 @@ Analogamente, para cada percurso (*shape*), o DI é calculado com a velocidade P
 disturbance_index = (commercial_speed_avg - shape_speed_p85) / shape_speed_p85
 ```
 
-## Categorias de perturbação
+## Visualização
+
+### Categorias de perturbação
 
 No modo de visualização categorizado (adaptado de @carris_metropolitana_carrismetropolitanadeploy_emds_2026), os segmentos são classificados em cinco categorias com base nos limiares `diThresholdLow` e `diThresholdHigh`. Por omissão, estes limiares são calibrados automaticamente a partir da distribuição estatística do DI: o limiar inferior é definido com o P85 e o limiar superior com o P25, procurando criar uma distribuição uniforme dos segmentos pelas diferentes categorias.
 
@@ -80,11 +82,11 @@ No modo de visualização categorizado (adaptado de @carris_metropolitana_carris
 
 Alternativamente, o modo de visualização divergente usa uma paleta de cores contínua centrada em zero, permitindo uma melhor visualização da magnitude da perturbação (positiva ou negativa) em cada segmento.
 
-## Filtragem por comprimento mínimo
+### Filtragem por comprimento mínimo
 
 Para evitar que segmentos muito curtos (e.g., interseções, entradas de parques) dominem visualmente a análise, é disponibilizado um filtro opcional por comprimento mínimo. Quando ativado, apenas segmentos com comprimento igual ou superior a `diMinLength` metros são incluídos na visualização.
 
-## Filtros top-N
+### Filtros top-N
 
 É também possível filtrar os segmentos mais perturbados ("worst N") ou os menos perturbados ("best N"), facilitando a identificação rápida dos locais críticos ou de boa performance. O número de segmentos filtrados em cada categoria é parametrizável.
 

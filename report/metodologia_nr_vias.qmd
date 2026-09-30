@@ -1,0 +1,28 @@
+# Número de vias {#sec-faixas-rodagem}
+
+A camada número de vias apresenta, para cada segmento de via com serviço de transporte público, o número de vias de circulação por sentido.
+
+## Extração dos dados OSM
+
+O número de vias e de sentidos para cada segmento é extraído automaticamente das *tags* de cada *way* do OSM durante a execução do método [`GTFShift::prioritise_lanes()`](https://u-shift.github.io/GTFShift/reference/prioritise_lanes.html){target=blank}. As *tags* OSM relevantes utilizadas são:
+
+| *Tag* OSM | Descrição |
+|---|---|
+| `lanes` | Número total de vias (ambos os sentidos) |
+| `lanes:forward` | Número de vias no sentido direto |
+| `lanes:backward` | Número de vias no sentido inverso |
+| `oneway` | Indica se a via é de sentido único |
+
+A partir destas *tags*, é calculado o número de vias por sentido. Em vias de dois sentidos sem indicação explícita por sentido, o número total de vias é dividido igualmente.
+
+## Visualização
+
+O número de vias por sentido é representado por uma escala de cor contínua, usando os percentis P5 e P95 da distribuição como extremos da escala (modo por omissão). Alternativamente, pode ser usada a escala mínimo-máximo.
+
+## Interpretação
+
+O número de vias por sentido é um critério essencial na avaliação do potencial para implementação de medidas de priorização do transporte público, nomeadamente de corredores *bus*. 
+
+Segmentos com apenas 1 via por sentido têm menor viabilidade de implementação, pois a eliminação do espaço disponível para veículos privados seria total. Segmentos com 2 ou mais vias por sentido são candidatos mais conciliadores, pois a reconversão de uma via para corredor exclusivo mantém ainda capacidade para outros modos.
+
+Esta camada é complementar à camada de priorização (@sec-priorizacao-corredores), onde o número de vias por sentido é um dos critérios de filtragem configuráveis pelo utilizador.

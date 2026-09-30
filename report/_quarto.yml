@@ -23,12 +23,11 @@ book:
         - metodologia.qmd
         - metodologia_indice_perturbacao.qmd
         - metodologia_priorizacao.qmd
-        # - metodologia_frequencia.qmd
-        # - metodologia_faixas_rodagem.qmd
-        # - metodologia_faixas_estacionamento.qmd
-        # - metodologia_faixas_bus.qmd
-        # - metodologia_velocidade_rt.qmd
-        # - metodologia_procura.qmd
+        - metodologia_frequencia.qmd
+        - metodologia_nr_vias.qmd
+        - metodologia_corredores_bus.qmd
+        - metodologia_velocidade_rt.qmd
+        - metodologia_procura.qmd
         # - metodologia_paragens_terminais.qmd
         # - resultados.qmd
     # - part: "**Dashboard**"

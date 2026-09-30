@@ -1,51 +1,35 @@
-# Velocidade Comercial (Tempo Real) {#sec-velocidade-rt}
+# Velocidade {#sec-velocidade-rt}
 
-As camadas de velocidade comercial em tempo real visualizam, para cada segmento de via, as velocidades observadas dos autocarros com base em dados de posicionamento GPS recolhidos via GTFS-RT. Estas camadas são opcionais e apenas estão disponíveis quando existem dados de GTFS-RT para a região de análise.
+As camadas de velocidade apresentam, para cada segmento de via, diferentes medidas de velocidade observada nos autocarros que as percorreram no período em análise, inferidas a partir de dados de posicionamento GPS recolhidos via GTFS-RT. 
 
-Estão disponíveis três variantes desta camada:
+Estão disponíveis duas camadas (horária e para todo o dia) e para cada uma, três dimensões:
 
-- **Velocidade Média Global** (`speed_avg`): média das velocidades observadas em todas as atualizações GTFS-RT do segmento, ao longo de todo o período de recolha;
-- **Velocidade Mediana Global** (`speed_median`): mediana das velocidades observadas;
-- **Velocidade no Percentil 85 (P85) Global** (`speed_p85`): 85.º percentil da distribuição de velocidades, que representa uma estimativa da velocidade máxima em condições de tráfego moderado.
+- **Velocidade média**: média das velocidades observadas em todas as atualizações GTFS-RT no segmento;
+- **Velocidade mediana**: mediana das velocidades observadas no segmento;
+- **Velocidade no percentil 85**: 85.º percentil da distribuição de velocidades.
 
-## Metodologia de cálculo
+## Cálculo
 
-A velocidade comercial em cada segmento de via é calculada pela função `GTFShift::rt_extend_prioritisation()`, que associa as posições GPS dos veículos aos *ways* OSM da rede viária e calcula métricas de velocidade para cada segmento.
+As métricas de velocidade por segmento de via são calculadas pela função [`GTFShift::rt_extend_prioritisation()`](https://u-shift.github.io/GTFShift/reference/rt_extend_prioritisation.html){target=blank}, que recebe como entrada o resultado da priorização de faixas (`lane_prioritisation`, gerado por [`GTFShift::prioritise_lanes()`](https://u-shift.github.io/GTFShift/reference/prioritise_lanes.html){target=blank}) e a coleção de atualizações GTFS-RT já filtradas e com velocidade calculada (ver @sec-dados-rt).
 
 O processo é o seguinte:
 
-1. **Projeção GPS**: cada atualização de posição GTFS-RT é projetada no segmento de via OSM mais próximo, dentro de uma distância máxima definida pelo parâmetro `THRESHOLD_DISTANCE_TO_GEOMETRY_MAX`;
-2. **Cálculo de velocidade por atualização**: se o veículo não reporta velocidade diretamente, a velocidade é inferida a partir da distância percorrida entre atualizações consecutivas e o intervalo temporal correspondente;
-3. **Filtragem de qualidade**: são excluídas atualizações com:
-   - Velocidade acima de `THRESHOLD_SPEED_MAX` (valores fisicamente impossíveis);
-   - Intervalo temporal entre atualizações acima de `THRESHOLD_TIME_BETWEEN_UPDATES_MAX`;
-   - Posições nas extremidades do percurso (`THRESHOLD_EDGE_DISTANCE_DISCARD`), para evitar efeitos de arranque e paragem nos terminais;
-4. **Agregação por segmento**: para cada *way* OSM, são calculadas as métricas de velocidade (`speed_avg`, `speed_median`, `speed_p85`, `speed_count`) a partir de todas as atualizações filtradas associadas ao segmento, ao longo de todo o período de recolha.
+1. **Filtragem por estado do veículo**: são consideradas apenas as atualizações com estado `IN_TRANSIT_TO`, excluindo registos em paragem ou com estado indeterminado;
+2. **Criação de *buffer* espacial**: para cada segmento de via (*way*), é criado um *buffer* geométrico (por omissão, `lane_buffer` = 15 m) em torno da geometria do segmento, utilizando um sistema de coordenadas projetado (`metric_crs`) para garantir precisão métrica;
+3. **Junção espacial**: os pontos GPS da coleção GTFS-RT são associados aos segmentos de via através de uma junção espacial ([`sf::st_within`](https://r-spatial.github.io/sf/reference/geos_binary_pred.html){target=blank}), identificando quais atualizações estão dentro do *buffer* de cada segmento;
+4. **Agregação por segmento**: para cada `way_osm_id`, são calculadas medidas de tendência central e dispersão a partir das velocidades dos pontos associados: `speed_avg` (média), `speed_median` (mediana), `speed_p15`, `speed_p25`, `speed_p75`, `speed_p85` (percentis) e `speed_count` (número de observações);
+5. **Junção com a priorização**: as métricas calculadas são unidas à tabela `lane_prioritisation` original por `way_osm_id`, enriquecendo-a com a informação de velocidade.
 
-Um segmento só é incluído na visualização se tiver um número mínimo de atualizações suficientes (`THRESHOLD_MIN_UPDATES_PER_ROAD_SEGMENT_FOR_SPEED`), garantindo que as estimativas de velocidade são estatisticamente robustas.
-
-## Velocidade por hora (camada horária)
-
-Para além das métricas globais, quando o parâmetro `rt_collection_per_hour` está ativo, são também calculadas métricas de velocidade por hora do dia para cada segmento (`hour_speed_avg`, `hour_speed_median`, `hour_speed_p85`). Estas métricas são armazenadas no `way_data_*.json` como objetos de mapeamento hora→valor, permitindo que o *dashboard* visualize a variação da velocidade ao longo do dia para a hora selecionada.
-
-A **camada de velocidade horária** (`LayerRTSpeedHourly`) utiliza estas métricas, suportando as três variantes (média, mediana, P85) e permitindo ao utilizador selecionar a métrica de interesse.
+Um segmento só é incluído na visualização se tiver um número mínimo de três observações, garantindo que as estimativas de velocidade são estatisticamente significativas.
 
 ## Visualização
 
-A velocidade é representada por uma escala de cor contínua invertida (gradiente vermelho), onde:
+A velocidade é representada por uma escala de cor contínua, onde <span style="color: #990000;">__Vermelho escuro__</span> representa velocidades baixas e <span style="color: #FF9999;">__Vermelho claro__</span>/__Branco__ representa velocidades altas.
 
-- **Vermelho escuro** → velocidades baixas (operação condicionada pelo tráfego);
-- **Verde claro / branco** → velocidades altas (operação fluída).
-
-A escala é calibrada usando os percentis P5 e P95 da distribuição de velocidades para o conjunto da rede (modo `percentile`, padrão), com recurso aos valores do `data_census` do `metadata_*.json`.
+A escala é calibrada usando os percentis P5 e P95 da distribuição de velocidades para o conjunto da rede (modo por omissão). Alternativamente, pode ser usada a escala mínimo-máximo
 
 ## Interpretação
 
-A velocidade comercial observada é um indicador direto do impacto do congestionamento rodoviário na operação do transporte público. Segmentos com velocidade baixa indicam constrangimentos recorrentes que afetam a regularidade e fiabilidade do serviço.
+A velocidade média é um indicador direto da eficiência operacional da rede de transporte público. Segmentos com velocidade baixa indicam constrangimentos recorrentes que afetam a regularidade e fiabilidade do serviço, que podem ter origem em fatores internos à operação, como tempos excessivos de serviço às paragens, ou externos, como congestimento do tráfego.
 
-A combinação desta camada com a camada de frequência de serviço e o número de faixas de rodagem permite identificar os segmentos onde a implementação de uma faixa bus teria maior impacto positivo:
-
-- Alta frequência + baixa velocidade + faixas disponíveis → alto potencial para faixa bus;
-- Baixa velocidade mas baixa frequência → impacto limitado da faixa bus.
-
-O percentil P85 é a métrica mais relevante para identificar o potencial de melhoria, pois representa a velocidade que os autocarros conseguem atingir em condições de tráfego moderado — e que seria potencialmente atingível de forma mais consistente com a implementação de uma faixa bus.
+O percentil P85 é a métrica mais relevante para identificar o potencial de melhoria, pois é uma aproximação para a velocidade que os veículos conseguem atingir em condições normais de circulação (sem constrangimentos severos).

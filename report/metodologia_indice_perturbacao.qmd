@@ -92,6 +92,6 @@ Para evitar que segmentos muito curtos (e.g., interseções, entradas de parques
 
 ## Interpretação
 
-Um índice de perturbação negativo indica que os autocarros circulam significativamente abaixo da sua velocidade de referência, sugerindo congestionamento recorrente ou outro tipo de perturbação operacional. Pelo contrário, um valor positivo indica que os autocarros circulam acima da sua velocidade de referência, sugerindo que o horário pode estar desajustado face às condições normais de circulação.
+Um índice de perturbação negativo indica que os autocarros circulam significativamente abaixo da sua velocidade de referência (neste contexto, assumida como velocidade P85), sugerindo congestionamento recorrente ou outro tipo de perturbação operacional. Pelo contrário, um valor positivo indica que os autocarros circulam acima da sua velocidade de referência, sugerindo que o horário pode estar desajustado face às condições normais de circulação.
 
 A diferença metodológica face ao uso direto da velocidade é que o DI normaliza os valores pelo P85 de cada percurso/segmento, tornando a comparação válida entre elementos com diferentes características geográficas e operacionais (isto é, zonas de periferia vs. zonas centrais têm velocidades absolutas muito diferentes, mas podem ter perturbações similares).

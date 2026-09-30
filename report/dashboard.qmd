@@ -10,6 +10,9 @@ Os resultados da aplicação do GTFShift à rede de autocarros da Carris Metropo
 
 Este painel permite visualizar todas as análises realizadas em cada uma das dimensões documentadas neste relatório, para cada uma das quatro áreas de operação da Carris Metropolitana, permitindo uma análise espacializada detalhada e sem a necessidade de conhecimentos de programação ou manipulação de dados.
 
+Importa ressalvar que a interface do painel interativo se encontra atualmente desenvolvida apenas em língua inglesa, pelo que os nomes de menus, botões, camadas e elementos visuais são apresentados na sua denominação original em inglês ao longo dos capítulos seguintes.
+
+
 ## Experiência de utilização
 
 O painel interativo dispõe de três grandes vertentes de análise, que são documentadas nos próximos capítulos: 
@@ -22,7 +25,7 @@ Antes de mergulhar nas diferentes análises, importa referir que o painel intera
 
 ### Detalhes técnicos {#sec-modal-details}
 
-Acessível através do segundo ícone, **Details**, esta janela apresenta metadados técnicos sobre a execução da análise para o conjunto de dados carregado:
+Acessível através do segundo ícone, ***Details***, esta janela apresenta metadados técnicos sobre a execução da análise para o conjunto de dados carregado:
 
 - **Região** e **data do serviço GTFS** considerados;
 - **Shapes e frequências consideradas** — número de geometrias encontradas no OSM relativamente ao total disponível no GTFS, com indicação das geometrias e linhas em falta (acessível via *tooltip*), e a distribuição horária da cobertura;
@@ -35,7 +38,7 @@ Acessível através do segundo ícone, **Details**, esta janela apresenta metada
 
 ### Download de dados {#sec-modal-download}
 
-Acessível através do ícone último ícone, **Download**, esta janela permite descarregar os resultados em bruto para a região selecionada. Inclui:
+Acessível através do ícone último ícone, ***Download***, esta janela permite descarregar os resultados em bruto para a região selecionada. Inclui:
 
 - **Botão de download** do arquivo ZIP com todos os ficheiros processados para a região/área selecionada;
 - **Tabela de estrutura do dataset** com a descrição de cada ficheiro incluído no arquivo;

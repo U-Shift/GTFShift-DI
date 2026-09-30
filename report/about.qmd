@@ -11,7 +11,7 @@ Esta investigação foi conduzida pelo U-Shift Lab do Instituto Superior Técnic
 -   **Gonçalo F. Matos**\
     [goncaloafmatos\@tecnico.pt](mailto:goncaloafmatos@tecnico.pt){.email} \| [🌐](https://gmatos.pt/) \| [![](images/logo/orcid.svg){.orcid-icon}](https://orcid.org/0009-0001-3489-1732)
 
--   **Rosa Félix** – Co-Investigadora Principal\
+-   **Rosa Félix** \
     [rosamfelix\@tecnico.pt](mailto:rosamfelix@tecnico.pt){.email} \| [🌐](https://www.rosafelix.bike) \| [![](images/logo/orcid.svg){.orcid-icon}](https://orcid.org/0000-0002-5642-6006)
 
 ### Transportes Metropolitanos de Lisboa (TML) {.unnumbered}

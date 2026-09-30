@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-pt" xml:lang="pt-pt"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>11&nbsp; Velocidade Comercial (Tempo Real) – Relatório Metodológico</title>
+<title>9&nbsp; Velocidade – Relatório Metodológico</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -33,8 +33,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./metodologia_indice_perturbacao.html" rel="next">
-<link href="./metodologia_faixas_bus.html" rel="prev">
+<link href="./metodologia_velocidade_comercial.html" rel="next">
+<link href="./metodologia_nr_vias.html" rel="prev">
 <link href="./images/favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -42,14 +42,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8ab289ace2306a5122bd960e1f76d011.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-804d1e1f93fb37f161424342551ac533.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-8ab289ace2306a5122bd960e1f76d011.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1639bb64a19928aae5da347f8145b16e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-fb756cd849a2431fe15fcc9ff42bf5e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-1639bb64a19928aae5da347f8145b16e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -64,24 +64,46 @@ ul.task-list li input[type="checkbox"] {
   ],
   "show-item-context": false,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
     "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
   }
 }</script>
 
 
 <link rel="stylesheet" href="styles/global.css">
-<meta name="citation_title" content="[[11]{.chapter-number}&nbsp; [Velocidade Comercial (Tempo Real)]{.chapter-title}]{#sec-velocidade-rt .quarto-section-identifier}">
-<meta name="citation_language" content="en">
+<meta name="citation_title" content="[[9]{.chapter-number}&nbsp; [Velocidade]{.chapter-title}]{#sec-velocidade-rt .quarto-section-identifier}">
+<meta name="citation_language" content="pt-pt">
+<meta name="citation_reference" content="citation_title=GTFShift: Explore and analyse general transit feed specification (GTFS) files with a focus on urban mobility;,citation_abstract=A bundle of methods to harmonize GTFS and OSM data, enabling the integration and exploration of different layers of transit data, starting with the planned operations (GTFS), but also the infrastructure topology (OSM) and real-time information (GTFS-RT).;,citation_author=Gonçalo F. Matos;,citation_author=Rosa Félix;,citation_author=Miguel Relvas Pires;,citation_publication_date=2026-09-27;,citation_cover_date=2026-09-27;,citation_year=2026;,citation_fulltext_html_url=https://cloud.r-project.org/web/packages/GTFShift/index.html;">
+<meta name="citation_reference" content="citation_title=GTFShift: Bus lane prioritization tool;,citation_abstract=Interactive dashboard for GTFShift R package;,citation_author=Gonçalo F. Matos;,citation_author=Rosa Félix;,citation_publication_date=2026-05;,citation_cover_date=2026-05;,citation_year=2026;,citation_fulltext_html_url=https://github.com/U-Shift/GTFShift-web;">
+<meta name="citation_reference" content="citation_title=GTFShift: Bus lane prioritisation &amp;amp;amp; operational analysis tool;,citation_author=Gonçalo F. Matos;,citation_author=Rosa Félix;,citation_publication_date=2026-09;,citation_cover_date=2026-09;,citation_year=2026;,citation_fulltext_html_url=https://github.com/U-Shift/GTFShift-TML;">
+<meta name="citation_reference" content="citation_title=Regions thrive with congestion-free bus networks;,citation_author=UITP;,citation_publication_date=2025-08;,citation_cover_date=2025-08;,citation_year=2025;,citation_fulltext_html_url=https://www.uitp.org/wp-content/uploads/sites/7/2025/08/20250820_Congestion-free-Bus-Network_Action-Points_WEB.pdf;">
+<meta name="citation_reference" content="citation_title=Urban Public Transportation - Systems and Technology;,citation_author=Vukan R Vuchic;,citation_publication_date=1981;,citation_cover_date=1981;,citation_year=1981;,citation_isbn=0-13-939496-6;">
+<meta name="citation_reference" content="citation_title=Transit Street Design Guide;,citation_author=undefined NACTO;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_isbn=978-1-61091-747-6;">
+<meta name="citation_reference" content="citation_title=Strategies and barriers in effective bus lane implementation and management: Best practices for use in the greater washington, d.c. region;,citation_author=Burak Cesme;,citation_author=Richard Roisman;,citation_author=Ramona Burns;,citation_author=Katie List;,citation_author=Arrianna Koudounas;,citation_author=Jesus Cuellar;,citation_author=Meredyth Sanders;,citation_author=Kevin Lee;,citation_author=David Miller;,citation_publication_date=2018-12;,citation_cover_date=2018-12;,citation_year=2018;,citation_issue=8;,citation_doi=10.1177/0361198118791914;,citation_volume=2672;,citation_language=en;,citation_journal_title=Transportation Research Record: Journal of the Transportation Research Board;">
+<meta name="citation_reference" content="citation_title=Introduction of reserved bus lane;,citation_author=Julien Surprenant-Legault;,citation_author=Ahmed M. El-Geneidy;,citation_publication_date=2011-01;,citation_cover_date=2011-01;,citation_year=2011;,citation_issue=1;,citation_doi=10.3141/2218-02;,citation_volume=2218;,citation_journal_title=Transportation Research Record Journal of the Transportation Research Board;">
+<meta name="citation_reference" content="citation_title=Congestion pricing, transit subsidies and dedicated bus lanes: Efficient and practical solutions to congestion;,citation_author=Leonardo J. Basso;,citation_author=Cristián Angelo Guevara;,citation_author=Antonio Gschwender;,citation_author=Marcelo Fuster;,citation_publication_date=2011-02;,citation_cover_date=2011-02;,citation_year=2011;,citation_issue=5;,citation_doi=10.1016/j.tranpol.2011.01.002;,citation_volume=18;,citation_journal_title=Transport Policy;">
+<meta name="citation_reference" content="citation_title=Study of the impact of exclusive bus lane under highly heterogeneous traffic condition;,citation_author=V. Thamizh Arasan;,citation_author=P. Vedagiri;,citation_publication_date=2010-05;,citation_cover_date=2010-05;,citation_year=2010;,citation_issue=1-2;,citation_doi=10.1007/s12469-010-0021-x;,citation_volume=2;,citation_journal_title=Public Transport;">
+<meta name="citation_reference" content="citation_title=Challenges and opportunities in developing urban modal shift;,citation_author=Paul Batty;,citation_author=Roberto Palacin;,citation_author=Arturo González-Gil;,citation_publication_date=2014-12;,citation_cover_date=2014-12;,citation_year=2014;,citation_issue=2;,citation_doi=10.1016/j.tbs.2014.12.001;,citation_volume=2;,citation_journal_title=Travel Behaviour and Society;">
+<meta name="citation_reference" content="citation_title=CMetropolitana: Dados Abertos;,citation_abstract=Horários e Paragens em Tempo Real;,citation_author=Carris Metropolitana;,citation_publication_date=2026;,citation_cover_date=2026;,citation_year=2026;,citation_fulltext_html_url=https://carrismetropolitana.pt/open-data;,citation_language=pt-PT;">
+<meta name="citation_reference" content="citation_title=Carrismetropolitana/gtfs;,citation_abstract=GTFS oficial da Carris Metropolitana.;,citation_author=Carris Metropolitana;,citation_publication_date=2026-09-15;,citation_cover_date=2026-09-15;,citation_year=2026;,citation_fulltext_html_url=https://github.com/carrismetropolitana/gtfs;,citation_publisher=Carris Metropolitana;">
+<meta name="citation_reference" content="citation_title=General transit feed specification (GTFS);,citation_author=MobilityData;,citation_fulltext_html_url=https://gtfs.org/documentation/overview/;">
+<meta name="citation_reference" content="citation_title=Carris metropolitana GTFS schedule feed. Mobility database;,citation_abstract=Explore the Carris Metropolitana GTFS Schedule feed details with access to a quality data insights;,citation_author=MobilityData;,citation_publication_date=2026;,citation_cover_date=2026;,citation_year=2026;,citation_fulltext_html_url=https://mobilitydatabase.org/feeds/gtfs/mdb-2027;,citation_language=en-US;">
+<meta name="citation_reference" content="citation_title=OpenStreetMap: About. OpenStreetMap;,citation_abstract=O OpenStreetMap é um mapa do mundo, criado por pessoas como tu e de uso livre sob uma licença aberta.;,citation_author=OpenStreetMap;,citation_fulltext_html_url=https://www.openstreetmap.org/about;,citation_language=pt-PT;">
+<meta name="citation_reference" content="citation_title=Osmextract: Download and import open street map data extracts;,citation_abstract=Match, download, convert and import Open Street Map data extracts obtained from several providers.;,citation_author=Andrea Gilardi;,citation_author=Robin Lovelace;,citation_author=Barry Rowlingson;,citation_author=Salva Fernández (Salva reviewed the package (v 0 1) for rOpenSci;,citation_author=undefined {\textless}https://github.com/ropensci/software-review/issues/395{\textgreater});,citation_author=Nicholas Potter (Nicholas reviewed the package (v 0 1) for rOpenSci;,citation_author=undefined {\textless}https://github.com/ropensci/software-review/issues/395{\textgreater});,citation_publication_date=2026-04-14;,citation_cover_date=2026-04-14;,citation_year=2026;,citation_fulltext_html_url=https://cran.r-project.org/web/packages/osmextract/index.html;">
+<meta name="citation_reference" content="citation_title=Osmdata: Import ’OpenStreetMap’ data as simple features or spatial objects;,citation_abstract=Download and import of ’OpenStreetMap’ (’OSM’) data as ’sf’ or ’sp’ objects. ’OSM’ data are extracted from the ’Overpass’ web server (&amp;amp;amp;lt;https://overpass-api.de/&amp;gt;) and processed with very fast ’C++’ routines for return to ’R’.;,citation_author=Joan Maspons;,citation_author=Mark Padgham;,citation_author=Bob Rudis;,citation_author=Robin Lovelace;,citation_author=Maëlle Salmon;,citation_author=Andrew Smith;,citation_author=James Smith;,citation_author=Andrea Gilardi;,citation_author=Enrico Spinielli;,citation_author=Anthony North;,citation_author=Martin Machyna;,citation_author=Marcin Kalicinski (Author of included RapidXML code);,citation_author=Eli Pousson;,citation_author=Claudiu Forgaci;,citation_publication_date=2026-09-01;,citation_cover_date=2026-09-01;,citation_year=2026;,citation_fulltext_html_url=https://cran.r-project.org/web/packages/osmdata/index.html;">
+<meta name="citation_reference" content="citation_title=Carrismetropolitana/api;,citation_abstract=Carris Metropolitana schedules in JSON.;,citation_author=Carris Metropolitana;,citation_publication_date=2026-09-29;,citation_cover_date=2026-09-29;,citation_year=2026;,citation_fulltext_html_url=https://github.com/carrismetropolitana/api;,citation_publisher=Carris Metropolitana;">
+<meta name="citation_reference" content="citation_title=Tidytransit: Read, validate, analyze, and map GTFS feeds;,citation_abstract=Read General Transit Feed Specification (GTFS) zipfiles into a list of R dataframes. Perform validation of the data structure against the specification. Analyze the headways and frequencies at routes and stops. Create maps and perform spatial analysis on the routes and stops. Please see the GTFS documentation here for more detail: &amp;amp;amp;lt;https://gtfs.org/&amp;gt;.;,citation_author=Flavio Poletti;,citation_author=Daniel Herszenhut;,citation_author=Mark Padgham;,citation_author=Tom Buckley;,citation_author=Danton Noriega-Goodwin;,citation_author=Angela Li;,citation_author=Elaine McVey;,citation_author=Charles Hans Thompson;,citation_author=Michael Sumner;,citation_author=Patrick Hausmann;,citation_author=Bob Rudis;,citation_author=James Lamb;,citation_author=Alexandra Kapp;,citation_author=Kearey Smith;,citation_author=Dave Vautin;,citation_author=Kyle Walker;,citation_author=Davis Vaughan;,citation_author=Ryan Rymarczyk;,citation_author=Kirill Müller;,citation_publication_date=2026-01-26;,citation_cover_date=2026-01-26;,citation_year=2026;,citation_fulltext_html_url=https://cran.r-project.org/web/packages/tidytransit/index.html;">
+<meta name="citation_reference" content="citation_title=Carrismetropolitana/deploy-emds;,citation_author=Carris Metropolitana;,citation_publication_date=2026-08-07;,citation_cover_date=2026-08-07;,citation_year=2026;,citation_fulltext_html_url=https://github.com/carrismetropolitana/deploy-emds;,citation_publisher=Carris Metropolitana;">
+<meta name="citation_reference" content="citation_title=Exploring multiplier effects generated by bus lane combinations;,citation_abstract=Numerous studies have explored design and evaluation of bus lane priority by using empirical, analytical, and simulation approaches. However, none attempted to understand how different bus lane combinations, such as continuous and discontinuous bus lane sections, and a different number of bus lane sections, affect bus performance and general traffic. This paper investigates operational effects of bus lane combinations to establish whether multiple bus lane sections create a multiplier effect in which a series of continuous bus lane sections creates more benefits than several single-lane sections. If a multiplier effect exists, it suggests scale economies in wider implementation of bus priority on a networkwide scale. Overall, results confirm that there is a multiplier effect; thus bus travel time benefits and general traffic travel time disbenefits are proportional to the number of links with a bus lane. The effect suggests a constant return to scale on continuous multiple sections. The results also suggest that converting a traffic lane to a bus lane when the upstream traffic volume exceeds the capacity of the remaining traffic lanes causes significant negative effects for buses and general traffic. In addition, negative general traffic effects of continuous bus lane combinations are lower than those for a similar number of discontinuous bus lanes. Bus delays at intersections approaching the bus lane tend to improve when upstream traffic volume does not exceed the capacity of remaining downstream traffic lanes. Policy implications and areas for future research are suggested.;,citation_author=Long Tien Truong;,citation_author=Majid Sarvi;,citation_author=Graham Currie;,citation_publication_date=2015-01-01;,citation_cover_date=2015-01-01;,citation_year=2015;,citation_fulltext_html_url=https://doi.org/10.3141/2533-08;,citation_issue=1;,citation_doi=10.3141/2533-08;,citation_issn=0361-1981;,citation_volume=2533;,citation_journal_title=Transportation Research Record;">
 </head>
 
 <body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -252,13 +274,13 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./metodologia.html"><strong>Metodologia</strong></a></li><li class="breadcrumb-item"><a href="./metodologia_velocidade_rt.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Velocidade Comercial (Tempo Real)</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./metodologia.html"><strong>Metodologia e visualização</strong></a></li><li class="breadcrumb-item"><a href="./metodologia_velocidade_rt.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Velocidade</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -272,15 +294,15 @@ ul.task-list li input[type="checkbox"] {
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Relatório Metodológico</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/U-Shift/GTFShift-DI/" title="GitHub Repository" class="quarto-navigation-tool px-1" aria-label="GitHub Repository" target="_blank"><i class="bi bi-github"></i></a>
-    <a href="https://ushift.pt/apps/gtfshift-tml" title="Interactive Dashboard" class="quarto-navigation-tool px-1" aria-label="Interactive Dashboard" target="_blank"><i class="bi bi-map-fill"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+    <a href="https://github.com/U-Shift/GTFShift-TML/" title="Repositório GitHub" class="quarto-navigation-tool px-1" aria-label="Repositório GitHub" target="_blank"><i class="bi bi-github"></i></a>
+    <a href="https://ushift.pt/apps/gtfshift-tml" title="Painel interativo" class="quarto-navigation-tool px-1" aria-label="Painel interativo" target="_blank"><i class="bi bi-map-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
 </div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
+        <div id="quarto-search" class="" title="Procurar"></div>
         </div>
         </div>
     <div class="sidebar-menu-container"> 
@@ -288,14 +310,14 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introdução</span></span></a>
+ <span class="menu-text">Introdução</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text"><strong>Dados</strong></span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -303,19 +325,13 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dados_fontes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Fontes de dados</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./dados_recolha.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Recolha de dados</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Fontes de dados e período de análise</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dados_preparacao.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Preparação de dados</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Preparação de dados</span></span></a>
   </div>
 </li>
       </ul>
@@ -323,8 +339,8 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>Metodologia</strong></span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text"><strong>Metodologia e visualização</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar seção">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -332,67 +348,61 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Metodologia</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./metodologia_priorizacao.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Priorização de Faixas Bus</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./metodologia_frequencia.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de Serviço</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./metodologia_faixas_rodagem.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Faixas de Rodagem</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./metodologia_faixas_estacionamento.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Faixas de Estacionamento</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./metodologia_faixas_bus.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Faixas Bus Existentes</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./metodologia_velocidade_rt.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Velocidade Comercial (Tempo Real)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introdução</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_indice_perturbacao.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Índice de Perturbação</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Índice de perturbação</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./metodologia_priorizacao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Priorização de corredores <em>bus</em></span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./metodologia_corredores_bus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Corredores <em>bus</em> existentes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./metodologia_frequencia.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de serviço</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./metodologia_nr_vias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Número de vias</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./metodologia_velocidade_rt.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Velocidade</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./metodologia_velocidade_comercial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Velocidade comercial</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_procura.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Procura de Passageiros</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./metodologia_paragens_terminais.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Paragens Terminais</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura de passageiros</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resultados.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Resultados: Dados Produzidos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Resultados</span></span></a>
   </div>
 </li>
       </ul>
@@ -400,8 +410,8 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>Dashboard</strong></span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text"><strong>Painel interativo</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar seção">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -409,11 +419,47 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dashboard.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Dashboard</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introdução</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dashboard_infraestrutura.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Análise ao nível da infraestrutura viária</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dashboard_linhas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível da linha</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dashboard_viagens.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Análise ao nível da viagem</span></span></a>
   </div>
 </li>
       </ul>
   </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./conclusao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Conclusão</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sobre</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referências</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -421,13 +467,12 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
+    <h2 id="toc-title">Índice</h2>
    
   <ul>
-  <li><a href="#metodologia-de-cálculo" id="toc-metodologia-de-cálculo" class="nav-link active" data-scroll-target="#metodologia-de-cálculo"><span class="header-section-number">11.1</span> Metodologia de cálculo</a></li>
-  <li><a href="#velocidade-por-hora-camada-horária" id="toc-velocidade-por-hora-camada-horária" class="nav-link" data-scroll-target="#velocidade-por-hora-camada-horária"><span class="header-section-number">11.2</span> Velocidade por hora (camada horária)</a></li>
-  <li><a href="#visualização" id="toc-visualização" class="nav-link" data-scroll-target="#visualização"><span class="header-section-number">11.3</span> Visualização</a></li>
-  <li><a href="#interpretação" id="toc-interpretação" class="nav-link" data-scroll-target="#interpretação"><span class="header-section-number">11.4</span> Interpretação</a></li>
+  <li><a href="#cálculo" id="toc-cálculo" class="nav-link active" data-scroll-target="#cálculo"><span class="header-section-number">9.1</span> Cálculo</a></li>
+  <li><a href="#visualização" id="toc-visualização" class="nav-link" data-scroll-target="#visualização"><span class="header-section-number">9.2</span> Visualização</a></li>
+  <li><a href="#interpretação" id="toc-interpretação" class="nav-link" data-scroll-target="#interpretação"><span class="header-section-number">9.3</span> Interpretação</a></li>
   </ul>
 </nav>
     </div>
@@ -435,9 +480,9 @@ ul.task-list li input[type="checkbox"] {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./metodologia.html"><strong>Metodologia</strong></a></li><li class="breadcrumb-item"><a href="./metodologia_velocidade_rt.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Velocidade Comercial (Tempo Real)</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./metodologia.html"><strong>Metodologia e visualização</strong></a></li><li class="breadcrumb-item"><a href="./metodologia_velocidade_rt.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Velocidade</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-velocidade-rt" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Velocidade Comercial (Tempo Real)</span></span></h1>
+<h1 class="title"><span id="sec-velocidade-rt" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Velocidade</span></span></h1>
 </div>
 
 
@@ -454,53 +499,35 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>As camadas de velocidade comercial em tempo real visualizam, para cada segmento de via, as velocidades observadas dos autocarros com base em dados de posicionamento GPS recolhidos via GTFS-RT. Estas camadas são opcionais e apenas estão disponíveis quando existem dados de GTFS-RT para a região de análise.</p>
-<p>Estão disponíveis três variantes desta camada:</p>
+<p>As camadas de velocidade apresentam, para cada segmento de via, diferentes medidas de velocidade observada nos autocarros que as percorreram no período em análise, inferidas a partir de dados de posicionamento GPS recolhidos via GTFS-RT.</p>
+<p>Estão disponíveis duas camadas (horária e para todo o dia) e para cada uma, três dimensões:</p>
 <ul>
-<li><strong>Velocidade Média Global</strong> (<code>speed_avg</code>): média das velocidades observadas em todas as atualizações GTFS-RT do segmento, ao longo de todo o período de recolha;</li>
-<li><strong>Velocidade Mediana Global</strong> (<code>speed_median</code>): mediana das velocidades observadas;</li>
-<li><strong>Velocidade no Percentil 85 (P85) Global</strong> (<code>speed_p85</code>): 85.º percentil da distribuição de velocidades, que representa uma estimativa da velocidade máxima em condições de tráfego moderado.</li>
+<li><strong>Velocidade média</strong>: média das velocidades observadas em todas as atualizações GTFS-RT no segmento;</li>
+<li><strong>Velocidade mediana</strong>: mediana das velocidades observadas no segmento;</li>
+<li><strong>Velocidade no percentil 85</strong>: 85.º percentil da distribuição de velocidades.</li>
 </ul>
-<section id="metodologia-de-cálculo" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="metodologia-de-cálculo"><span class="header-section-number">11.1</span> Metodologia de cálculo</h2>
-<p>A velocidade comercial em cada segmento de via é calculada pela função <code>GTFShift::rt_extend_prioritisation()</code>, que associa as posições GPS dos veículos aos <em>ways</em> OSM da rede viária e calcula métricas de velocidade para cada segmento.</p>
+<section id="cálculo" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="cálculo"><span class="header-section-number">9.1</span> Cálculo</h2>
+<p>As métricas de velocidade por segmento de via são calculadas pela função <a href="https://u-shift.github.io/GTFShift/reference/rt_extend_prioritisation.html" target="blank"><code>GTFShift::rt_extend_prioritisation()</code></a>, que recebe como entrada o resultado da priorização de faixas (<code>lane_prioritisation</code>, gerado por <a href="https://u-shift.github.io/GTFShift/reference/prioritise_lanes.html" target="blank"><code>GTFShift::prioritise_lanes()</code></a>) e a coleção de atualizações GTFS-RT já filtradas e com velocidade calculada (ver <a href="dados_preparacao.html#sec-dados-rt" class="quarto-xref"><span>Seção 2.4</span></a>).</p>
 <p>O processo é o seguinte:</p>
 <ol type="1">
-<li><strong>Projeção GPS</strong>: cada atualização de posição GTFS-RT é projetada no segmento de via OSM mais próximo, dentro de uma distância máxima definida pelo parâmetro <code>THRESHOLD_DISTANCE_TO_GEOMETRY_MAX</code>;</li>
-<li><strong>Cálculo de velocidade por atualização</strong>: se o veículo não reporta velocidade diretamente, a velocidade é inferida a partir da distância percorrida entre atualizações consecutivas e o intervalo temporal correspondente;</li>
-<li><strong>Filtragem de qualidade</strong>: são excluídas atualizações com:
-<ul>
-<li>Velocidade acima de <code>THRESHOLD_SPEED_MAX</code> (valores fisicamente impossíveis);</li>
-<li>Intervalo temporal entre atualizações acima de <code>THRESHOLD_TIME_BETWEEN_UPDATES_MAX</code>;</li>
-<li>Posições nas extremidades do percurso (<code>THRESHOLD_EDGE_DISTANCE_DISCARD</code>), para evitar efeitos de arranque e paragem nos terminais;</li>
-</ul></li>
-<li><strong>Agregação por segmento</strong>: para cada <em>way</em> OSM, são calculadas as métricas de velocidade (<code>speed_avg</code>, <code>speed_median</code>, <code>speed_p85</code>, <code>speed_count</code>) a partir de todas as atualizações filtradas associadas ao segmento, ao longo de todo o período de recolha.</li>
+<li><strong>Filtragem por estado do veículo</strong>: são consideradas apenas as atualizações com estado <code>IN_TRANSIT_TO</code>, excluindo registos em paragem ou com estado indeterminado;</li>
+<li><strong>Criação de <em>buffer</em> espacial</strong>: para cada segmento de via (<em>way</em>), é criado um <em>buffer</em> geométrico (por omissão, <code>lane_buffer</code> = 15 m) em torno da geometria do segmento, utilizando um sistema de coordenadas projetado (<code>metric_crs</code>) para garantir precisão métrica;</li>
+<li><strong>Junção espacial</strong>: os pontos GPS da coleção GTFS-RT são associados aos segmentos de via através de uma junção espacial (<a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html" target="blank"><code>sf::st_within</code></a>), identificando quais atualizações estão dentro do <em>buffer</em> de cada segmento;</li>
+<li><strong>Agregação por segmento</strong>: para cada <code>way_osm_id</code>, são calculadas medidas de tendência central e dispersão a partir das velocidades dos pontos associados: <code>speed_avg</code> (média), <code>speed_median</code> (mediana), <code>speed_p15</code>, <code>speed_p25</code>, <code>speed_p75</code>, <code>speed_p85</code> (percentis) e <code>speed_count</code> (número de observações);</li>
+<li><strong>Junção com a priorização</strong>: as métricas calculadas são unidas à tabela <code>lane_prioritisation</code> original por <code>way_osm_id</code>, enriquecendo-a com a informação de velocidade.</li>
 </ol>
-<p>Um segmento só é incluído na visualização se tiver um número mínimo de atualizações suficientes (<code>THRESHOLD_MIN_UPDATES_PER_ROAD_SEGMENT_FOR_SPEED</code>), garantindo que as estimativas de velocidade são estatisticamente robustas.</p>
+<p>Um segmento só é incluído na visualização se tiver um número mínimo de três observações, garantindo que as estimativas de velocidade são estatisticamente significativas.</p>
 </section>
-<section id="velocidade-por-hora-camada-horária" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="velocidade-por-hora-camada-horária"><span class="header-section-number">11.2</span> Velocidade por hora (camada horária)</h2>
-<p>Para além das métricas globais, quando o parâmetro <code>rt_collection_per_hour</code> está ativo, são também calculadas métricas de velocidade por hora do dia para cada segmento (<code>hour_speed_avg</code>, <code>hour_speed_median</code>, <code>hour_speed_p85</code>). Estas métricas são armazenadas no <code>way_data_*.json</code> como objetos de mapeamento hora→valor, permitindo que o <em>dashboard</em> visualize a variação da velocidade ao longo do dia para a hora selecionada.</p>
-<p>A <strong>camada de velocidade horária</strong> (<code>LayerRTSpeedHourly</code>) utiliza estas métricas, suportando as três variantes (média, mediana, P85) e permitindo ao utilizador selecionar a métrica de interesse.</p>
+<section id="visualização" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="visualização"><span class="header-section-number">9.2</span> Visualização</h2>
+<p>A velocidade é representada por uma escala de cor contínua, onde <span style="color: #990000;"><strong>Vermelho escuro</strong></span> representa velocidades baixas e <span style="color: #FF9999;"><strong>Vermelho claro</strong></span>/<strong>Branco</strong> representa velocidades altas.</p>
+<p>A escala é calibrada usando os percentis P5 e P95 da distribuição de velocidades para o conjunto da rede (modo por omissão). Alternativamente, pode ser usada a escala mínimo-máximo</p>
 </section>
-<section id="visualização" class="level2" data-number="11.3">
-<h2 data-number="11.3" class="anchored" data-anchor-id="visualização"><span class="header-section-number">11.3</span> Visualização</h2>
-<p>A velocidade é representada por uma escala de cor contínua invertida (gradiente vermelho), onde:</p>
-<ul>
-<li><strong>Vermelho escuro</strong> → velocidades baixas (operação condicionada pelo tráfego);</li>
-<li><strong>Verde claro / branco</strong> → velocidades altas (operação fluída).</li>
-</ul>
-<p>A escala é calibrada usando os percentis P5 e P95 da distribuição de velocidades para o conjunto da rede (modo <code>percentile</code>, padrão), com recurso aos valores do <code>data_census</code> do <code>metadata_*.json</code>.</p>
-</section>
-<section id="interpretação" class="level2" data-number="11.4">
-<h2 data-number="11.4" class="anchored" data-anchor-id="interpretação"><span class="header-section-number">11.4</span> Interpretação</h2>
-<p>A velocidade comercial observada é um indicador direto do impacto do congestionamento rodoviário na operação do transporte público. Segmentos com velocidade baixa indicam constrangimentos recorrentes que afetam a regularidade e fiabilidade do serviço.</p>
-<p>A combinação desta camada com a camada de frequência de serviço e o número de faixas de rodagem permite identificar os segmentos onde a implementação de uma faixa bus teria maior impacto positivo:</p>
-<ul>
-<li>Alta frequência + baixa velocidade + faixas disponíveis → alto potencial para faixa bus;</li>
-<li>Baixa velocidade mas baixa frequência → impacto limitado da faixa bus.</li>
-</ul>
-<p>O percentil P85 é a métrica mais relevante para identificar o potencial de melhoria, pois representa a velocidade que os autocarros conseguem atingir em condições de tráfego moderado — e que seria potencialmente atingível de forma mais consistente com a implementação de uma faixa bus.</p>
+<section id="interpretação" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="interpretação"><span class="header-section-number">9.3</span> Interpretação</h2>
+<p>A velocidade média é um indicador direto da eficiência operacional da rede de transporte público. Segmentos com velocidade baixa indicam constrangimentos recorrentes que afetam a regularidade e fiabilidade do serviço, que podem ter origem em fatores internos à operação, como tempos excessivos de serviço às paragens, ou externos, como congestimento do tráfego.</p>
+<p>O percentil P85 é a métrica mais relevante para identificar o potencial de melhoria, pois é uma aproximação para a velocidade que os veículos conseguem atingir em condições normais de circulação (sem constrangimentos severos).</p>
 
 
 </section>
@@ -544,12 +571,12 @@ ul.task-list li input[type="checkbox"] {
       // flash "checked"
       button.classList.add('code-copy-button-checked');
       var currentTitle = button.getAttribute("title");
-      button.setAttribute("title", "Copied!");
+      button.setAttribute("title", "Copiada");
       let tooltip;
       if (window.bootstrap) {
         button.setAttribute("data-bs-toggle", "tooltip");
         button.setAttribute("data-bs-placement", "left");
-        button.setAttribute("data-bs-title", "Copied!");
+        button.setAttribute("data-bs-title", "Copiada");
         tooltip = new bootstrap.Tooltip(button, 
           { trigger: "manual", 
             customClass: "code-copy-button-tooltip",
@@ -921,13 +948,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./metodologia_faixas_bus.html" class="pagination-link" aria-label="Faixas Bus Existentes">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Faixas Bus Existentes</span></span>
+      <a href="./metodologia_nr_vias.html" class="pagination-link" aria-label="Número de vias">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Número de vias</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./metodologia_indice_perturbacao.html" class="pagination-link" aria-label="Índice de Perturbação">
-        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Índice de Perturbação</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./metodologia_velocidade_comercial.html" class="pagination-link" aria-label="Velocidade comercial">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Velocidade comercial</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

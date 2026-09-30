@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>5&nbsp; Priorização de corredores bus – Relatório Metodológico</title>
+<title>8&nbsp; Número de vias – Relatório Metodológico</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -33,8 +33,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./metodologia_corredores_bus.html" rel="next">
-<link href="./metodologia_indice_perturbacao.html" rel="prev">
+<link href="./metodologia_velocidade_rt.html" rel="next">
+<link href="./metodologia_frequencia.html" rel="prev">
 <link href="./images/favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -80,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles/global.css">
-<meta name="citation_title" content="[[5]{.chapter-number}&nbsp; [Priorização de corredores *bus*]{.chapter-title}]{#sec-priorizacao-corredores .quarto-section-identifier}">
+<meta name="citation_title" content="[[8]{.chapter-number}&nbsp; [Número de vias]{.chapter-title}]{#sec-faixas-rodagem .quarto-section-identifier}">
 <meta name="citation_language" content="pt-pt">
 <meta name="citation_reference" content="citation_title=GTFShift: Explore and analyse general transit feed specification (GTFS) files with a focus on urban mobility;,citation_abstract=A bundle of methods to harmonize GTFS and OSM data, enabling the integration and exploration of different layers of transit data, starting with the planned operations (GTFS), but also the infrastructure topology (OSM) and real-time information (GTFS-RT).;,citation_author=Gonçalo F. Matos;,citation_author=Rosa Félix;,citation_author=Miguel Relvas Pires;,citation_publication_date=2026-09-27;,citation_cover_date=2026-09-27;,citation_year=2026;,citation_fulltext_html_url=https://cloud.r-project.org/web/packages/GTFShift/index.html;">
 <meta name="citation_reference" content="citation_title=GTFShift: Bus lane prioritization tool;,citation_abstract=Interactive dashboard for GTFShift R package;,citation_author=Gonçalo F. Matos;,citation_author=Rosa Félix;,citation_publication_date=2026-05;,citation_cover_date=2026-05;,citation_year=2026;,citation_fulltext_html_url=https://github.com/U-Shift/GTFShift-web;">
@@ -277,7 +277,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./metodologia.html"><strong>Metodologia e visualização</strong></a></li><li class="breadcrumb-item"><a href="./metodologia_priorizacao.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Priorização de corredores <em>bus</em></span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./metodologia.html"><strong>Metodologia e visualização</strong></a></li><li class="breadcrumb-item"><a href="./metodologia_nr_vias.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Número de vias</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
@@ -359,7 +359,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./metodologia_priorizacao.html" class="sidebar-item-text sidebar-link active">
+  <a href="./metodologia_priorizacao.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Priorização de corredores <em>bus</em></span></span></a>
   </div>
 </li>
@@ -377,7 +377,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./metodologia_nr_vias.html" class="sidebar-item-text sidebar-link">
+  <a href="./metodologia_nr_vias.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Número de vias</span></span></a>
   </div>
 </li>
@@ -470,15 +470,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Índice</h2>
    
   <ul>
-  <li><a href="#geração-dos-indicadores-base" id="toc-geração-dos-indicadores-base" class="nav-link active" data-scroll-target="#geração-dos-indicadores-base"><span class="header-section-number">5.1</span> Geração dos indicadores base</a></li>
-  <li><a href="#critérios-de-priorização" id="toc-critérios-de-priorização" class="nav-link" data-scroll-target="#critérios-de-priorização"><span class="header-section-number">5.2</span> Critérios de priorização</a>
-  <ul class="collapse">
-  <li><a href="#frequência-de-serviço" id="toc-frequência-de-serviço" class="nav-link" data-scroll-target="#frequência-de-serviço"><span class="header-section-number">5.2.1</span> Frequência de serviço</a></li>
-  <li><a href="#número-de-vias-de-circulação-por-sentido" id="toc-número-de-vias-de-circulação-por-sentido" class="nav-link" data-scroll-target="#número-de-vias-de-circulação-por-sentido"><span class="header-section-number">5.2.2</span> Número de vias de circulação por sentido</a></li>
-  <li><a href="#velocidade-média" id="toc-velocidade-média" class="nav-link" data-scroll-target="#velocidade-média"><span class="header-section-number">5.2.3</span> Velocidade média</a></li>
-  <li><a href="#procura-de-passageiros" id="toc-procura-de-passageiros" class="nav-link" data-scroll-target="#procura-de-passageiros"><span class="header-section-number">5.2.4</span> Procura de passageiros</a></li>
-  </ul></li>
-  <li><a href="#classificação-e-visualização" id="toc-classificação-e-visualização" class="nav-link" data-scroll-target="#classificação-e-visualização"><span class="header-section-number">5.3</span> Classificação e visualização</a></li>
+  <li><a href="#extração-dos-dados-osm" id="toc-extração-dos-dados-osm" class="nav-link active" data-scroll-target="#extração-dos-dados-osm"><span class="header-section-number">8.1</span> Extração dos dados OSM</a></li>
+  <li><a href="#visualização" id="toc-visualização" class="nav-link" data-scroll-target="#visualização"><span class="header-section-number">8.2</span> Visualização</a></li>
+  <li><a href="#interpretação" id="toc-interpretação" class="nav-link" data-scroll-target="#interpretação"><span class="header-section-number">8.3</span> Interpretação</a></li>
   </ul>
 </nav>
     </div>
@@ -486,9 +480,9 @@ ul.task-list li input[type="checkbox"] {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./metodologia.html"><strong>Metodologia e visualização</strong></a></li><li class="breadcrumb-item"><a href="./metodologia_priorizacao.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Priorização de corredores <em>bus</em></span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./metodologia.html"><strong>Metodologia e visualização</strong></a></li><li class="breadcrumb-item"><a href="./metodologia_nr_vias.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Número de vias</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-priorizacao-corredores" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Priorização de corredores <em>bus</em></span></span></h1>
+<h1 class="title"><span id="sec-faixas-rodagem" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Número de vias</span></span></h1>
 </div>
 
 
@@ -505,126 +499,47 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>A camada de priorização de corredores <em>bus</em> integra múltiplos critérios para identificar os segmentos de via com maior potencial para implementação ou manutenção de corredores bus.</p>
-<section id="geração-dos-indicadores-base" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="geração-dos-indicadores-base"><span class="header-section-number">5.1</span> Geração dos indicadores base</h2>
-<p>O ponto de partida é a função <a href="https://u-shift.github.io/GTFShift/reference/prioritise_lanes.html" target="blank"><code>GTFShift::prioritise_lanes()</code></a>, que combina dados GTFS e OSM para gerar, para cada segmento de via com serviço de transporte público, os seguintes indicadores:</p>
+<p>A camada número de vias apresenta, para cada segmento de via com serviço de transporte público, o número de vias de circulação por sentido.</p>
+<section id="extração-dos-dados-osm" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="extração-dos-dados-osm"><span class="header-section-number">8.1</span> Extração dos dados OSM</h2>
+<p>O número de vias e de sentidos para cada segmento é extraído automaticamente das <em>tags</em> de cada <em>way</em> do OSM durante a execução do método <a href="https://u-shift.github.io/GTFShift/reference/prioritise_lanes.html" target="blank"><code>GTFShift::prioritise_lanes()</code></a>. As <em>tags</em> OSM relevantes utilizadas são:</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Campo</th>
+<th><em>Tag</em> OSM</th>
 <th>Descrição</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>way_osm_id</code></td>
-<td>Identificador único do segmento de via no OSM</td>
+<td><code>lanes</code></td>
+<td>Número total de vias (ambos os sentidos)</td>
 </tr>
 <tr class="even">
-<td><code>hour</code></td>
-<td>Hora do dia (0–23)</td>
+<td><code>lanes:forward</code></td>
+<td>Número de vias no sentido direto</td>
 </tr>
 <tr class="odd">
-<td><code>frequency</code></td>
-<td>Número de serviços por hora que percorrem o segmento nessa hora</td>
+<td><code>lanes:backward</code></td>
+<td>Número de vias no sentido inverso</td>
 </tr>
 <tr class="even">
-<td><code>is_bus_lane</code></td>
-<td>Indicador booleano: o segmento tem atualmente uma faixa bus?</td>
-</tr>
-<tr class="odd">
-<td><code>n_lanes_circulation</code></td>
-<td>Número total de vias de circulação</td>
-</tr>
-<tr class="even">
-<td><code>n_lanes_circulation_direction</code></td>
-<td>Número de vias de circulação por sentido</td>
-</tr>
-<tr class="odd">
-<td><code>n_lanes_parking</code></td>
-<td>Número de vias de estacionamento</td>
-</tr>
-<tr class="even">
-<td><code>n_directions</code></td>
-<td>Número de sentidos de circulação (1 ou 2)</td>
-</tr>
-<tr class="odd">
-<td><code>routes</code></td>
-<td>Lista de <code>route_id</code> que percorrem o segmento</td>
-</tr>
-<tr class="even">
-<td><code>shapes</code></td>
-<td>Lista de <code>shape_id</code> que percorrem o segmento</td>
+<td><code>oneway</code></td>
+<td>Indica se a via é de sentido único</td>
 </tr>
 </tbody>
 </table>
-<p>A associação entre percursos GTFS e segmentos OSM é feita com base nas relações de rota OSM que têm correspondência com os percursos GTFS (através dos atributos <code>gtfs:*</code> do OSM). Os atributos de infraestrutura viária são extraídos diretamente das <em>tags</em> OSM dos segmentos identificados.</p>
+<p>A partir destas <em>tags</em>, é calculado o número de vias por sentido. Em vias de dois sentidos sem indicação explícita por sentido, o número total de vias é dividido igualmente.</p>
 </section>
-<section id="critérios-de-priorização" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="critérios-de-priorização"><span class="header-section-number">5.2</span> Critérios de priorização</h2>
-<p>O utilizador pode definir os critérios de priorização para filtrar e visualizar os segmentos mais relevantes. Os critérios disponíveis são:</p>
-<section id="frequência-de-serviço" class="level3" data-number="5.2.1">
-<h3 data-number="5.2.1" class="anchored" data-anchor-id="frequência-de-serviço"><span class="header-section-number">5.2.1</span> Frequência de serviço</h3>
-<p>Define o limiar mínimo de serviços por hora para que um segmento seja considerado prioritário. Segmentos com frequência abaixo do limiar são excluídos da visualização (a menos que já tenham uma faixa bus, caso em que são sinalizados a amarelo).</p>
-<p>A frequência é calculada para a hora de análise selecionada, considerando todas as viagens (de todas as linhas) que passam pelo segmento nessa hora.</p>
-<p>Por omissão este valor é definido como a mediana das frequências abaixo do percentil 85.</p>
+<section id="visualização" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="visualização"><span class="header-section-number">8.2</span> Visualização</h2>
+<p>O número de vias por sentido é representado por uma escala de cor contínua, usando os percentis P5 e P95 da distribuição como extremos da escala (modo por omissão). Alternativamente, pode ser usada a escala mínimo-máximo.</p>
 </section>
-<section id="número-de-vias-de-circulação-por-sentido" class="level3" data-number="5.2.2">
-<h3 data-number="5.2.2" class="anchored" data-anchor-id="número-de-vias-de-circulação-por-sentido"><span class="header-section-number">5.2.2</span> Número de vias de circulação por sentido</h3>
-<p>Define o limiar mínimo de vias de circulação por sentido. Segmentos com menos vias de circulação do que o limiar são excluídos da visualização.</p>
-<p>Por omissão este valor é definido como 2, assumindo uma postura conservadora, em que, ao implementar um corredor bus, é deixado pelo menos uma via de trânsito para a circulação de outros veículos.</p>
-</section>
-<section id="velocidade-média" class="level3" data-number="5.2.3">
-<h3 data-number="5.2.3" class="anchored" data-anchor-id="velocidade-média"><span class="header-section-number">5.2.3</span> Velocidade média</h3>
-<p>Define o limiar máximo de velocidade média observada. Segmentos onde os autocarros circulam a velocidades acima do limiar são considerados menos urgentes para intervenção e excluidos da visualização. Este critério requer dados de GTFS-RT.</p>
-<p>Por omissão este valor é definido como a média das velocidades abaixo do percentil 85.</p>
-</section>
-<section id="procura-de-passageiros" class="level3" data-number="5.2.4">
-<h3 data-number="5.2.4" class="anchored" data-anchor-id="procura-de-passageiros"><span class="header-section-number">5.2.4</span> Procura de passageiros</h3>
-<p>Define o limiar mínimo de procura diária de passageiros. Permite focar a análise nos segmentos com maior impacto potencial em termos de passageiros beneficiados.</p>
-<p>Por omissão este valor é definido como a média da procura abaixo do percentil 85.</p>
-</section>
-</section>
-<section id="classificação-e-visualização" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="classificação-e-visualização"><span class="header-section-number">5.3</span> Classificação e visualização</h2>
-<p>Os segmentos são classificados e coloridos em três categorias:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Cor</th>
-<th>Classificação</th>
-<th>Condição</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span style="color: #3bc1a8;"><strong>Verde</strong></span></td>
-<td>Faixa bus existente, cumpre critérios</td>
-<td>Tem faixa bus <strong>e</strong> satisfaz todos os critérios ativos são satisfeitos</td>
-</tr>
-<tr class="even">
-<td><span style="color: #dad887;"><strong>Amarelo</strong></span></td>
-<td>Faixa bus existente, não cumpre critérios</td>
-<td>Tem faixa bus mas <strong>não</strong> satisfaz todos os critérios ativos</td>
-</tr>
-<tr class="odd">
-<td><span style="color: #f63049;"><strong>Vermelho</strong></span></td>
-<td>Prioritário para faixa bus</td>
-<td>Não tem faixa bus mas satisfaz todos os critérios ativos</td>
-</tr>
-</tbody>
-</table>
-<p>A espessura de cada segmento no mapa pode ser configurada para refletir a frequência de serviço ou a procura de passageiros, tornando visualmente mais proeminentes os segmentos mais relevantes.</p>
+<section id="interpretação" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="interpretação"><span class="header-section-number">8.3</span> Interpretação</h2>
+<p>O número de vias por sentido é um critério essencial na avaliação do potencial para implementação de medidas de priorização do transporte público, nomeadamente de corredores <em>bus</em>.</p>
+<p>Segmentos com apenas 1 via por sentido têm menor viabilidade de implementação, pois a eliminação do espaço disponível para veículos privados seria total. Segmentos com 2 ou mais vias por sentido são candidatos mais conciliadores, pois a reconversão de uma via para corredor exclusivo mantém ainda capacidade para outros modos.</p>
+<p>Esta camada é complementar à camada de priorização (<a href="metodologia_priorizacao.html" class="quarto-xref"><span>Capítulo 5</span></a>), onde o número de vias por sentido é um dos critérios de filtragem configuráveis pelo utilizador.</p>
 
 
 </section>
@@ -1045,13 +960,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./metodologia_indice_perturbacao.html" class="pagination-link" aria-label="Índice de perturbação">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Índice de perturbação</span></span>
+      <a href="./metodologia_frequencia.html" class="pagination-link" aria-label="Frequência de serviço">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de serviço</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./metodologia_corredores_bus.html" class="pagination-link" aria-label="Corredores *bus* existentes">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Corredores <em>bus</em> existentes</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./metodologia_velocidade_rt.html" class="pagination-link" aria-label="Velocidade">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Velocidade</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

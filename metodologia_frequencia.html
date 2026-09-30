@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-pt" xml:lang="pt-pt"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>7&nbsp; Frequência de Serviço – Relatório Metodológico</title>
+<title>7&nbsp; Frequência de serviço – Relatório Metodológico</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,42 +23,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
 }
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
 }
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
 }
-</style>
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -68,8 +52,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./metodologia_faixas_rodagem.html" rel="next">
-<link href="./metodologia_priorizacao.html" rel="prev">
+<link href="./metodologia_nr_vias.html" rel="next">
+<link href="./metodologia_corredores_bus.html" rel="prev">
 <link href="./images/favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -77,14 +61,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8ab289ace2306a5122bd960e1f76d011.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-804d1e1f93fb37f161424342551ac533.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-8ab289ace2306a5122bd960e1f76d011.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1639bb64a19928aae5da347f8145b16e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-fb756cd849a2431fe15fcc9ff42bf5e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-1639bb64a19928aae5da347f8145b16e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -99,17 +86,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   ],
   "show-item-context": false,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
     "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
   }
 }</script>
 
@@ -144,28 +131,30 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles/global.css">
-<meta name="citation_title" content="[[7]{.chapter-number}&nbsp; [Frequência de Serviço]{.chapter-title}]{#sec-frequencia .quarto-section-identifier}">
-<meta name="citation_language" content="en">
-<meta name="citation_reference" content="citation_title=GTFShift: Explore and Analyse General Transit Feed Specification (GTFS) Files with a Focus on Urban Mobility;,citation_abstract=A bundle of methods to harmonize GTFS and OSM data, enabling the integration and exploration of different layers of transit data, starting with the planned operations (GTFS), but also the infrastructure topology (OSM) and real-time information (GTFS-RT).;,citation_author=Gonçalo F. Matos;,citation_author=Rosa Félix;,citation_author=Miguel Relvas Pires;,citation_publication_date=2026-09-27;,citation_cover_date=2026-09-27;,citation_year=2026;,citation_fulltext_html_url=https://cloud.r-project.org/web/packages/GTFShift/index.html;">
+<meta name="citation_title" content="[[7]{.chapter-number}&nbsp; [Frequência de serviço]{.chapter-title}]{#sec-frequencia .quarto-section-identifier}">
+<meta name="citation_language" content="pt-pt">
+<meta name="citation_reference" content="citation_title=GTFShift: Explore and analyse general transit feed specification (GTFS) files with a focus on urban mobility;,citation_abstract=A bundle of methods to harmonize GTFS and OSM data, enabling the integration and exploration of different layers of transit data, starting with the planned operations (GTFS), but also the infrastructure topology (OSM) and real-time information (GTFS-RT).;,citation_author=Gonçalo F. Matos;,citation_author=Rosa Félix;,citation_author=Miguel Relvas Pires;,citation_publication_date=2026-09-27;,citation_cover_date=2026-09-27;,citation_year=2026;,citation_fulltext_html_url=https://cloud.r-project.org/web/packages/GTFShift/index.html;">
 <meta name="citation_reference" content="citation_title=GTFShift: Bus lane prioritization tool;,citation_abstract=Interactive dashboard for GTFShift R package;,citation_author=Gonçalo F. Matos;,citation_author=Rosa Félix;,citation_publication_date=2026-05;,citation_cover_date=2026-05;,citation_year=2026;,citation_fulltext_html_url=https://github.com/U-Shift/GTFShift-web;">
-<meta name="citation_reference" content="citation_title=GTFShift: Bus lane prioritisation &amp;amp;amp; operational analysis tool;,citation_author=Gonçalo F. Matos;,citation_author=Rosa Félix;,citation_publication_date=2026-09;,citation_cover_date=2026-09;,citation_year=2026;,citation_fulltext_html_url=https://github.com/U-Shift/GTFShift-DI;">
+<meta name="citation_reference" content="citation_title=GTFShift: Bus lane prioritisation &amp;amp;amp; operational analysis tool;,citation_author=Gonçalo F. Matos;,citation_author=Rosa Félix;,citation_publication_date=2026-09;,citation_cover_date=2026-09;,citation_year=2026;,citation_fulltext_html_url=https://github.com/U-Shift/GTFShift-TML;">
 <meta name="citation_reference" content="citation_title=Regions thrive with congestion-free bus networks;,citation_author=UITP;,citation_publication_date=2025-08;,citation_cover_date=2025-08;,citation_year=2025;,citation_fulltext_html_url=https://www.uitp.org/wp-content/uploads/sites/7/2025/08/20250820_Congestion-free-Bus-Network_Action-Points_WEB.pdf;">
 <meta name="citation_reference" content="citation_title=Urban Public Transportation - Systems and Technology;,citation_author=Vukan R Vuchic;,citation_publication_date=1981;,citation_cover_date=1981;,citation_year=1981;,citation_isbn=0-13-939496-6;">
-<meta name="citation_reference" content="citation_title=Strategies and Barriers in Effective Bus Lane Implementation and Management: Best Practices for Use in the Greater Washington, D.C. Region;,citation_author=Burak Cesme;,citation_author=Richard Roisman;,citation_author=Ramona Burns;,citation_author=Katie List;,citation_author=Arrianna Koudounas;,citation_author=Jesus Cuellar;,citation_author=Meredyth Sanders;,citation_author=Kevin Lee;,citation_author=David Miller;,citation_publication_date=2018-12;,citation_cover_date=2018-12;,citation_year=2018;,citation_issue=8;,citation_doi=10.1177/0361198118791914;,citation_volume=2672;,citation_language=en;,citation_journal_title=Transportation Research Record: Journal of the Transportation Research Board;">
+<meta name="citation_reference" content="citation_title=Transit Street Design Guide;,citation_author=undefined NACTO;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_isbn=978-1-61091-747-6;">
+<meta name="citation_reference" content="citation_title=Strategies and barriers in effective bus lane implementation and management: Best practices for use in the greater washington, d.c. region;,citation_author=Burak Cesme;,citation_author=Richard Roisman;,citation_author=Ramona Burns;,citation_author=Katie List;,citation_author=Arrianna Koudounas;,citation_author=Jesus Cuellar;,citation_author=Meredyth Sanders;,citation_author=Kevin Lee;,citation_author=David Miller;,citation_publication_date=2018-12;,citation_cover_date=2018-12;,citation_year=2018;,citation_issue=8;,citation_doi=10.1177/0361198118791914;,citation_volume=2672;,citation_language=en;,citation_journal_title=Transportation Research Record: Journal of the Transportation Research Board;">
 <meta name="citation_reference" content="citation_title=Introduction of reserved bus lane;,citation_author=Julien Surprenant-Legault;,citation_author=Ahmed M. El-Geneidy;,citation_publication_date=2011-01;,citation_cover_date=2011-01;,citation_year=2011;,citation_issue=1;,citation_doi=10.3141/2218-02;,citation_volume=2218;,citation_journal_title=Transportation Research Record Journal of the Transportation Research Board;">
 <meta name="citation_reference" content="citation_title=Congestion pricing, transit subsidies and dedicated bus lanes: Efficient and practical solutions to congestion;,citation_author=Leonardo J. Basso;,citation_author=Cristián Angelo Guevara;,citation_author=Antonio Gschwender;,citation_author=Marcelo Fuster;,citation_publication_date=2011-02;,citation_cover_date=2011-02;,citation_year=2011;,citation_issue=5;,citation_doi=10.1016/j.tranpol.2011.01.002;,citation_volume=18;,citation_journal_title=Transport Policy;">
 <meta name="citation_reference" content="citation_title=Study of the impact of exclusive bus lane under highly heterogeneous traffic condition;,citation_author=V. Thamizh Arasan;,citation_author=P. Vedagiri;,citation_publication_date=2010-05;,citation_cover_date=2010-05;,citation_year=2010;,citation_issue=1-2;,citation_doi=10.1007/s12469-010-0021-x;,citation_volume=2;,citation_journal_title=Public Transport;">
 <meta name="citation_reference" content="citation_title=Challenges and opportunities in developing urban modal shift;,citation_author=Paul Batty;,citation_author=Roberto Palacin;,citation_author=Arturo González-Gil;,citation_publication_date=2014-12;,citation_cover_date=2014-12;,citation_year=2014;,citation_issue=2;,citation_doi=10.1016/j.tbs.2014.12.001;,citation_volume=2;,citation_journal_title=Travel Behaviour and Society;">
 <meta name="citation_reference" content="citation_title=CMetropolitana: Dados Abertos;,citation_abstract=Horários e Paragens em Tempo Real;,citation_author=Carris Metropolitana;,citation_publication_date=2026;,citation_cover_date=2026;,citation_year=2026;,citation_fulltext_html_url=https://carrismetropolitana.pt/open-data;,citation_language=pt-PT;">
-<meta name="citation_reference" content="citation_title=carrismetropolitana/gtfs;,citation_abstract=GTFS oficial da Carris Metropolitana.;,citation_author=Carris Metropolitana;,citation_publication_date=2026-09-15;,citation_cover_date=2026-09-15;,citation_year=2026;,citation_fulltext_html_url=https://github.com/carrismetropolitana/gtfs;,citation_publisher=Carris Metropolitana;">
-<meta name="citation_reference" content="citation_title=General Transit Feed Specification (GTFS);,citation_author=MobilityData;,citation_fulltext_html_url=https://gtfs.org/documentation/overview/;">
-<meta name="citation_reference" content="citation_title=Carris Metropolitana GTFS Schedule Feed. Mobility Database;,citation_abstract=Explore the Carris Metropolitana GTFS Schedule feed details with access to a quality data insights;,citation_author=MobilityData;,citation_publication_date=2026;,citation_cover_date=2026;,citation_year=2026;,citation_fulltext_html_url=https://mobilitydatabase.org/feeds/gtfs/mdb-2027;,citation_language=en-US;">
+<meta name="citation_reference" content="citation_title=Carrismetropolitana/gtfs;,citation_abstract=GTFS oficial da Carris Metropolitana.;,citation_author=Carris Metropolitana;,citation_publication_date=2026-09-15;,citation_cover_date=2026-09-15;,citation_year=2026;,citation_fulltext_html_url=https://github.com/carrismetropolitana/gtfs;,citation_publisher=Carris Metropolitana;">
+<meta name="citation_reference" content="citation_title=General transit feed specification (GTFS);,citation_author=MobilityData;,citation_fulltext_html_url=https://gtfs.org/documentation/overview/;">
+<meta name="citation_reference" content="citation_title=Carris metropolitana GTFS schedule feed. Mobility database;,citation_abstract=Explore the Carris Metropolitana GTFS Schedule feed details with access to a quality data insights;,citation_author=MobilityData;,citation_publication_date=2026;,citation_cover_date=2026;,citation_year=2026;,citation_fulltext_html_url=https://mobilitydatabase.org/feeds/gtfs/mdb-2027;,citation_language=en-US;">
 <meta name="citation_reference" content="citation_title=OpenStreetMap: About. OpenStreetMap;,citation_abstract=O OpenStreetMap é um mapa do mundo, criado por pessoas como tu e de uso livre sob uma licença aberta.;,citation_author=OpenStreetMap;,citation_fulltext_html_url=https://www.openstreetmap.org/about;,citation_language=pt-PT;">
-<meta name="citation_reference" content="citation_title=osmextract: Download and Import Open Street Map Data Extracts;,citation_abstract=Match, download, convert and import Open Street Map data extracts obtained from several providers.;,citation_author=Andrea Gilardi;,citation_author=Robin Lovelace;,citation_author=Barry Rowlingson;,citation_author=Salva Fernández (Salva reviewed the package (v 0 1) for rOpenSci;,citation_author=undefined {\textless}https://github.com/ropensci/software-review/issues/395{\textgreater});,citation_author=Nicholas Potter (Nicholas reviewed the package (v 0 1) for rOpenSci;,citation_author=undefined {\textless}https://github.com/ropensci/software-review/issues/395{\textgreater});,citation_publication_date=2026-04-14;,citation_cover_date=2026-04-14;,citation_year=2026;,citation_fulltext_html_url=https://cran.r-project.org/web/packages/osmextract/index.html;">
-<meta name="citation_reference" content="citation_title=osmdata: Import ’OpenStreetMap’ Data as Simple Features or Spatial Objects;,citation_abstract=Download and import of ’OpenStreetMap’ (’OSM’) data as ’sf’ or ’sp’ objects. ’OSM’ data are extracted from the ’Overpass’ web server (&amp;amp;amp;lt;https://overpass-api.de/&amp;gt;) and processed with very fast ’C++’ routines for return to ’R’.;,citation_author=Joan Maspons;,citation_author=Mark Padgham;,citation_author=Bob Rudis;,citation_author=Robin Lovelace;,citation_author=Maëlle Salmon;,citation_author=Andrew Smith;,citation_author=James Smith;,citation_author=Andrea Gilardi;,citation_author=Enrico Spinielli;,citation_author=Anthony North;,citation_author=Martin Machyna;,citation_author=Marcin Kalicinski (Author of included RapidXML code);,citation_author=Eli Pousson;,citation_author=Claudiu Forgaci;,citation_publication_date=2026-09-01;,citation_cover_date=2026-09-01;,citation_year=2026;,citation_fulltext_html_url=https://cran.r-project.org/web/packages/osmdata/index.html;">
-<meta name="citation_reference" content="citation_title=carrismetropolitana/api;,citation_abstract=Carris Metropolitana schedules in JSON.;,citation_author=Carris Metropolitana;,citation_publication_date=2026-09-29;,citation_cover_date=2026-09-29;,citation_year=2026;,citation_fulltext_html_url=https://github.com/carrismetropolitana/api;,citation_publisher=Carris Metropolitana;">
-<meta name="citation_reference" content="citation_title=tidytransit: Read, Validate, Analyze, and Map GTFS Feeds;,citation_abstract=Read General Transit Feed Specification (GTFS) zipfiles into a list of R dataframes. Perform validation of the data structure against the specification. Analyze the headways and frequencies at routes and stops. Create maps and perform spatial analysis on the routes and stops. Please see the GTFS documentation here for more detail: &amp;amp;amp;lt;https://gtfs.org/&amp;gt;.;,citation_author=Flavio Poletti;,citation_author=Daniel Herszenhut;,citation_author=Mark Padgham;,citation_author=Tom Buckley;,citation_author=Danton Noriega-Goodwin;,citation_author=Angela Li;,citation_author=Elaine McVey;,citation_author=Charles Hans Thompson;,citation_author=Michael Sumner;,citation_author=Patrick Hausmann;,citation_author=Bob Rudis;,citation_author=James Lamb;,citation_author=Alexandra Kapp;,citation_author=Kearey Smith;,citation_author=Dave Vautin;,citation_author=Kyle Walker;,citation_author=Davis Vaughan;,citation_author=Ryan Rymarczyk;,citation_author=Kirill Müller;,citation_publication_date=2026-01-26;,citation_cover_date=2026-01-26;,citation_year=2026;,citation_fulltext_html_url=https://cran.r-project.org/web/packages/tidytransit/index.html;">
-<meta name="citation_reference" content="citation_title=carrismetropolitana/deploy-emds;,citation_author=Carris Metropolitana;,citation_publication_date=2026-08-07;,citation_cover_date=2026-08-07;,citation_year=2026;,citation_fulltext_html_url=https://github.com/carrismetropolitana/deploy-emds;,citation_publisher=Carris Metropolitana;">
+<meta name="citation_reference" content="citation_title=Osmextract: Download and import open street map data extracts;,citation_abstract=Match, download, convert and import Open Street Map data extracts obtained from several providers.;,citation_author=Andrea Gilardi;,citation_author=Robin Lovelace;,citation_author=Barry Rowlingson;,citation_author=Salva Fernández (Salva reviewed the package (v 0 1) for rOpenSci;,citation_author=undefined {\textless}https://github.com/ropensci/software-review/issues/395{\textgreater});,citation_author=Nicholas Potter (Nicholas reviewed the package (v 0 1) for rOpenSci;,citation_author=undefined {\textless}https://github.com/ropensci/software-review/issues/395{\textgreater});,citation_publication_date=2026-04-14;,citation_cover_date=2026-04-14;,citation_year=2026;,citation_fulltext_html_url=https://cran.r-project.org/web/packages/osmextract/index.html;">
+<meta name="citation_reference" content="citation_title=Osmdata: Import ’OpenStreetMap’ data as simple features or spatial objects;,citation_abstract=Download and import of ’OpenStreetMap’ (’OSM’) data as ’sf’ or ’sp’ objects. ’OSM’ data are extracted from the ’Overpass’ web server (&amp;amp;amp;lt;https://overpass-api.de/&amp;gt;) and processed with very fast ’C++’ routines for return to ’R’.;,citation_author=Joan Maspons;,citation_author=Mark Padgham;,citation_author=Bob Rudis;,citation_author=Robin Lovelace;,citation_author=Maëlle Salmon;,citation_author=Andrew Smith;,citation_author=James Smith;,citation_author=Andrea Gilardi;,citation_author=Enrico Spinielli;,citation_author=Anthony North;,citation_author=Martin Machyna;,citation_author=Marcin Kalicinski (Author of included RapidXML code);,citation_author=Eli Pousson;,citation_author=Claudiu Forgaci;,citation_publication_date=2026-09-01;,citation_cover_date=2026-09-01;,citation_year=2026;,citation_fulltext_html_url=https://cran.r-project.org/web/packages/osmdata/index.html;">
+<meta name="citation_reference" content="citation_title=Carrismetropolitana/api;,citation_abstract=Carris Metropolitana schedules in JSON.;,citation_author=Carris Metropolitana;,citation_publication_date=2026-09-29;,citation_cover_date=2026-09-29;,citation_year=2026;,citation_fulltext_html_url=https://github.com/carrismetropolitana/api;,citation_publisher=Carris Metropolitana;">
+<meta name="citation_reference" content="citation_title=Tidytransit: Read, validate, analyze, and map GTFS feeds;,citation_abstract=Read General Transit Feed Specification (GTFS) zipfiles into a list of R dataframes. Perform validation of the data structure against the specification. Analyze the headways and frequencies at routes and stops. Create maps and perform spatial analysis on the routes and stops. Please see the GTFS documentation here for more detail: &amp;amp;amp;lt;https://gtfs.org/&amp;gt;.;,citation_author=Flavio Poletti;,citation_author=Daniel Herszenhut;,citation_author=Mark Padgham;,citation_author=Tom Buckley;,citation_author=Danton Noriega-Goodwin;,citation_author=Angela Li;,citation_author=Elaine McVey;,citation_author=Charles Hans Thompson;,citation_author=Michael Sumner;,citation_author=Patrick Hausmann;,citation_author=Bob Rudis;,citation_author=James Lamb;,citation_author=Alexandra Kapp;,citation_author=Kearey Smith;,citation_author=Dave Vautin;,citation_author=Kyle Walker;,citation_author=Davis Vaughan;,citation_author=Ryan Rymarczyk;,citation_author=Kirill Müller;,citation_publication_date=2026-01-26;,citation_cover_date=2026-01-26;,citation_year=2026;,citation_fulltext_html_url=https://cran.r-project.org/web/packages/tidytransit/index.html;">
+<meta name="citation_reference" content="citation_title=Carrismetropolitana/deploy-emds;,citation_author=Carris Metropolitana;,citation_publication_date=2026-08-07;,citation_cover_date=2026-08-07;,citation_year=2026;,citation_fulltext_html_url=https://github.com/carrismetropolitana/deploy-emds;,citation_publisher=Carris Metropolitana;">
+<meta name="citation_reference" content="citation_title=Exploring multiplier effects generated by bus lane combinations;,citation_abstract=Numerous studies have explored design and evaluation of bus lane priority by using empirical, analytical, and simulation approaches. However, none attempted to understand how different bus lane combinations, such as continuous and discontinuous bus lane sections, and a different number of bus lane sections, affect bus performance and general traffic. This paper investigates operational effects of bus lane combinations to establish whether multiple bus lane sections create a multiplier effect in which a series of continuous bus lane sections creates more benefits than several single-lane sections. If a multiplier effect exists, it suggests scale economies in wider implementation of bus priority on a networkwide scale. Overall, results confirm that there is a multiplier effect; thus bus travel time benefits and general traffic travel time disbenefits are proportional to the number of links with a bus lane. The effect suggests a constant return to scale on continuous multiple sections. The results also suggest that converting a traffic lane to a bus lane when the upstream traffic volume exceeds the capacity of the remaining traffic lanes causes significant negative effects for buses and general traffic. In addition, negative general traffic effects of continuous bus lane combinations are lower than those for a similar number of discontinuous bus lanes. Bus delays at intersections approaching the bus lane tend to improve when upstream traffic volume does not exceed the capacity of remaining downstream traffic lanes. Policy implications and areas for future research are suggested.;,citation_author=Long Tien Truong;,citation_author=Majid Sarvi;,citation_author=Graham Currie;,citation_publication_date=2015-01-01;,citation_cover_date=2015-01-01;,citation_year=2015;,citation_fulltext_html_url=https://doi.org/10.3141/2533-08;,citation_issue=1;,citation_doi=10.3141/2533-08;,citation_issn=0361-1981;,citation_volume=2533;,citation_journal_title=Transportation Research Record;">
 </head>
 
 <body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -336,13 +325,13 @@ window.Quarto = {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./metodologia.html"><strong>Metodologia</strong></a></li><li class="breadcrumb-item"><a href="./metodologia_frequencia.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de Serviço</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./metodologia.html"><strong>Metodologia e visualização</strong></a></li><li class="breadcrumb-item"><a href="./metodologia_frequencia.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de serviço</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -356,15 +345,15 @@ window.Quarto = {
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Relatório Metodológico</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/U-Shift/GTFShift-DI/" title="GitHub Repository" class="quarto-navigation-tool px-1" aria-label="GitHub Repository" target="_blank"><i class="bi bi-github"></i></a>
-    <a href="https://ushift.pt/apps/gtfshift-tml" title="Interactive Dashboard" class="quarto-navigation-tool px-1" aria-label="Interactive Dashboard" target="_blank"><i class="bi bi-map-fill"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+    <a href="https://github.com/U-Shift/GTFShift-TML/" title="Repositório GitHub" class="quarto-navigation-tool px-1" aria-label="Repositório GitHub" target="_blank"><i class="bi bi-github"></i></a>
+    <a href="https://ushift.pt/apps/gtfshift-tml" title="Painel interativo" class="quarto-navigation-tool px-1" aria-label="Painel interativo" target="_blank"><i class="bi bi-map-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
 </div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
+        <div id="quarto-search" class="" title="Procurar"></div>
         </div>
         </div>
     <div class="sidebar-menu-container"> 
@@ -372,14 +361,14 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introdução</span></span></a>
+ <span class="menu-text">Introdução</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text"><strong>Dados</strong></span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -387,13 +376,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dados_fontes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Fontes de dados e período de análise</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Fontes de dados e período de análise</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dados_preparacao.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Preparação de dados</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Preparação de dados</span></span></a>
   </div>
 </li>
       </ul>
@@ -401,8 +390,8 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>Metodologia</strong></span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text"><strong>Metodologia e visualização</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar seção">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -410,67 +399,61 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Metodologia</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introdução</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_indice_perturbacao.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Índice de Perturbação</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Índice de perturbação</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_priorizacao.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Priorização de Corredores <em>Bus</em></span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Priorização de corredores <em>bus</em></span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./metodologia_corredores_bus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Corredores <em>bus</em> existentes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_frequencia.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de Serviço</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de serviço</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./metodologia_faixas_rodagem.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Faixas de Rodagem</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./metodologia_faixas_estacionamento.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Faixas de Estacionamento</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./metodologia_faixas_bus.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Faixas Bus Existentes</span></span></a>
+  <a href="./metodologia_nr_vias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Número de vias</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_velocidade_rt.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Velocidade Comercial (Tempo Real)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Velocidade</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./metodologia_velocidade_comercial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Velocidade comercial</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_procura.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Procura de Passageiros</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./metodologia_paragens_terminais.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Paragens Terminais</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura de passageiros</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resultados.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Resultados: Dados Produzidos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Resultados</span></span></a>
   </div>
 </li>
       </ul>
@@ -478,8 +461,8 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>Dashboard</strong></span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text"><strong>Painel interativo</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar seção">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -487,15 +470,45 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dashboard.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Dashboard</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introdução</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dashboard_infraestrutura.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Análise ao nível da infraestrutura viária</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dashboard_linhas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível da linha</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dashboard_viagens.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Análise ao nível da viagem</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./conclusao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Conclusão</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sobre</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+ <span class="menu-text">Referências</span></a>
   </div>
 </li>
     </ul>
@@ -505,10 +518,10 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
+    <h2 id="toc-title">Índice</h2>
    
   <ul>
-  <li><a href="#cálculo-da-frequência" id="toc-cálculo-da-frequência" class="nav-link active" data-scroll-target="#cálculo-da-frequência"><span class="header-section-number">7.1</span> Cálculo da frequência</a></li>
+  <li><a href="#cálculo" id="toc-cálculo" class="nav-link active" data-scroll-target="#cálculo"><span class="header-section-number">7.1</span> Cálculo</a></li>
   <li><a href="#visualização" id="toc-visualização" class="nav-link" data-scroll-target="#visualização"><span class="header-section-number">7.2</span> Visualização</a></li>
   <li><a href="#interpretação" id="toc-interpretação" class="nav-link" data-scroll-target="#interpretação"><span class="header-section-number">7.3</span> Interpretação</a></li>
   </ul>
@@ -518,9 +531,9 @@ window.Quarto = {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./metodologia.html"><strong>Metodologia</strong></a></li><li class="breadcrumb-item"><a href="./metodologia_frequencia.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de Serviço</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./metodologia.html"><strong>Metodologia e visualização</strong></a></li><li class="breadcrumb-item"><a href="./metodologia_frequencia.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de serviço</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-frequencia" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de Serviço</span></span></h1>
+<h1 class="title"><span id="sec-frequencia" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de serviço</span></span></h1>
 </div>
 
 
@@ -537,30 +550,43 @@ window.Quarto = {
 </header>
 
 
-<p>A camada de frequência de serviço visualiza o número de serviços de transporte público (autocarros ou elétricos) que percorrem cada segmento de via por hora, para a hora de análise selecionada.</p>
-<section id="cálculo-da-frequência" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="cálculo-da-frequência"><span class="header-section-number">7.1</span> Cálculo da frequência</h2>
-<p>A frequência por segmento e por hora é calculada durante a geração dos indicadores base com <code>GTFShift::prioritise_lanes()</code>. Para cada <em>way</em> OSM e cada hora do dia (0–23), é somado o número de viagens programadas de todas as linhas e percursos que passam pelo segmento nessa hora:</p>
+<p>A camada de frequência de serviço permite visualizar o número de viagens de transporte público que percorrem cada segmento de via por hora, para a hora de análise selecionada.</p>
+<section id="cálculo" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="cálculo"><span class="header-section-number">7.1</span> Cálculo</h2>
+<p>A frequência por segmento e por hora é calculada durante a geração dos indicadores base, através do método <a href="https://u-shift.github.io/GTFShift/reference/get_way_frequency_hourly.html" target="blank"><code>GTFShift::get_way_frequency_hourly()</code></a>. Para cada segmento de via OSM e cada hora do dia (0–23), é somado o número de viagens programadas de todas as linhas que passam pelo segmento nessa hora:</p>
 <p><span class="math display">\[
 f_{w,h} = \sum_{r \in R_{w,h}} f_{r,h}
 \]</span></p>
-<p>onde <span class="math inline">\(f_{w,h}\)</span> é a frequência no segmento <span class="math inline">\(w\)</span> à hora <span class="math inline">\(h\)</span>, <span class="math inline">\(R_{w,h}\)</span> é o conjunto de percursos que percorrem <span class="math inline">\(w\)</span> à hora <span class="math inline">\(h\)</span>, e <span class="math inline">\(f_{r,h}\)</span> é o número de viagens do percurso <span class="math inline">\(r\)</span> à hora <span class="math inline">\(h\)</span>.</p>
-<p>O resultado é armazenado no ficheiro <code>way_data_*.json</code> como um objeto de mapeamento <code>hour_frequency</code>, com chaves de 0 a 23, permitindo que o <em>dashboard</em> filtre e visualize rapidamente a frequência para qualquer hora selecionada sem recálculo.</p>
+<p>onde <span class="math inline">\(f_{w,h}\)</span> é a frequência no segmento <span class="math inline">\(w\)</span> à hora <span class="math inline">\(h\)</span>, <span class="math inline">\(R_{w,h}\)</span> é o conjunto de linhas que percorrem <span class="math inline">\(w\)</span> à hora <span class="math inline">\(h\)</span>, e <span class="math inline">\(f_{r,h}\)</span> é o número de viagens do percurso <span class="math inline">\(r\)</span> à hora <span class="math inline">\(h\)</span>.</p>
 </section>
 <section id="visualização" class="level2" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="visualização"><span class="header-section-number">7.2</span> Visualização</h2>
-<p>A frequência é representada através de uma escala de cor contínua (gradiente teal), que mapeia os valores entre o percentil 5 e o percentil 95 da distribuição de frequências para a hora selecionada (modo <code>percentile</code>, padrão). Alternativamente, pode ser usada a escala mínimo-máximo (<code>minmax</code>).</p>
-<p>Os estatísticos de referência são calculados a partir do <code>data_census</code>, armazenado no ficheiro <code>metadata_*.json</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="st">"frequency_hour"</span><span class="er">:</span> <span class="fu">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"8"</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">"p5"</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span> <span class="dt">"p95"</span><span class="fu">:</span> <span class="dv">24</span><span class="fu">,</span> <span class="dt">"mean"</span><span class="fu">:</span> <span class="fl">8.3</span><span class="fu">,</span> <span class="dt">"median"</span><span class="fu">:</span> <span class="fl">6.0</span><span class="fu">,</span> <span class="er">...</span> <span class="fu">}</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>A espessura das linhas no mapa reflete a frequência ou a procura de passageiros, conforme configurado pelo utilizador.</p>
+<p>A frequência é representada através de uma escala de cor contínua, que mapeia os valores entre o percentil 5 e o percentil 95 da distribuição de frequências para a hora selecionada (modo por omissão). Alternativamente, pode ser usada a escala mínimo-máximo.</p>
 </section>
 <section id="interpretação" class="level2" data-number="7.3">
 <h2 data-number="7.3" class="anchored" data-anchor-id="interpretação"><span class="header-section-number">7.3</span> Interpretação</h2>
-<p>Segmentos com frequência elevada têm maior potencial de benefício com a implementação de uma faixa bus, uma vez que um maior número de veículos e passageiros beneficia de melhores condições de circulação. Frequências abaixo de 2–4 serviços/hora geralmente não justificam a implementação de infraestrutura dedicada.</p>
+<p>Segmentos com frequência elevada têm maior potencial de benefício com a implementação de medidas de priorização do transporte público, uma vez que gera benefícios para um maior número de viagens.</p>
+<p>O critério mínimo para justificar a implementação de medidas não é consensual na literatura. <span class="citation" data-cites="nacto2016transit">NACTO (<a href="references.html#ref-nacto2016transit" role="doc-biblioref">2016</a>)</span> recomenda a implementação de corredores <em>bus</em> “nas principais rotas com intervalos frequentes (10 minutos em hora de ponta)”. De forma análoga, <span class="citation" data-cites="vuchic1981">Vuchic (<a href="references.html#ref-vuchic1981" role="doc-biblioref">1981</a>)</span> propõe um critério que conjuga a frequência com o volume de tráfego, representado na <a href="#fig-vuchic-criteria" class="quarto-xref">Figura&nbsp;<span>7.1</span></a>, onde por exemplo, para um volume de 400 veículos/hora/via e duas vias por sentido, 12 autocarros/hora seriam suficientes para justificar a implementação de um corredor prioritário.</p>
+<div id="fig-vuchic-criteria" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vuchic-criteria-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/lr/vuchinc.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figura&nbsp;7.1: Volume de tráfego e número de vias para justificar corredores bus [@vuchic1981]"><img src="images/lr/vuchinc.png" class="img-fluid figure-img" style="width:65.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vuchic-criteria-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;7.1: Volume de tráfego e número de vias para justificar corredores <em>bus</em> <span class="citation" data-cites="vuchic1981">(<a href="references.html#ref-vuchic1981" role="doc-biblioref">Vuchic 1981</a>)</span>
+</figcaption>
+</figure>
+</div>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-nacto2016transit" class="csl-entry" role="listitem">
+NACTO. 2016. <em><span>Transit Street Design Guide</span></em>. Island Press.
+</div>
+<div id="ref-vuchic1981" class="csl-entry" role="listitem">
+Vuchic, Vukan R. 1981. <em><span>Urban Public Transportation - Systems and Technology</span></em>. Prentice-Hall, Inc.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -602,12 +628,12 @@ f_{w,h} = \sum_{r \in R_{w,h}} f_{r,h}
       // flash "checked"
       button.classList.add('code-copy-button-checked');
       var currentTitle = button.getAttribute("title");
-      button.setAttribute("title", "Copied!");
+      button.setAttribute("title", "Copiada");
       let tooltip;
       if (window.bootstrap) {
         button.setAttribute("data-bs-toggle", "tooltip");
         button.setAttribute("data-bs-placement", "left");
-        button.setAttribute("data-bs-title", "Copied!");
+        button.setAttribute("data-bs-title", "Copiada");
         tooltip = new bootstrap.Tooltip(button, 
           { trigger: "manual", 
             customClass: "code-copy-button-tooltip",
@@ -979,13 +1005,13 @@ f_{w,h} = \sum_{r \in R_{w,h}} f_{r,h}
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./metodologia_priorizacao.html" class="pagination-link" aria-label="Priorização de Corredores *Bus*">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Priorização de Corredores <em>Bus</em></span></span>
+      <a href="./metodologia_corredores_bus.html" class="pagination-link" aria-label="Corredores *bus* existentes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Corredores <em>bus</em> existentes</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./metodologia_faixas_rodagem.html" class="pagination-link" aria-label="Faixas de Rodagem">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Faixas de Rodagem</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./metodologia_nr_vias.html" class="pagination-link" aria-label="Número de vias">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Número de vias</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1004,6 +1030,38 @@ f_{w,h} = \sum_{r \in R_{w,h}} f_{r,h}
   </div>
 </footer>
 <script src="styles/global.js"></script>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

@@ -36,6 +36,8 @@ book:
         - dashboard_infraestrutura.qmd
         - dashboard_linhas.qmd
         - dashboard_viagens.qmd
+    - conclusao.qmd
+    - about.qmd
     - references.qmd
   sidebar:
     tools:

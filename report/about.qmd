@@ -1,0 +1,39 @@
+# Sobre {#sec-about .unnumbered}
+
+## Autores
+
+Esta investigação foi conduzida pelo U-Shift Lab do Instituto Superior Técnico - Universidade de Lisboa, em colaboração com os Transportes Metropolitanos de Lisboa (TML).
+
+![](images/logo/logo_acknowledgement_tml.png){width="100%"}
+
+### U-Shift Lab, Instituto Superior Técnico {.unnumbered}
+
+-   **Gonçalo F. Matos**\
+    [goncaloafmatos\@tecnico.pt](mailto:goncaloafmatos@tecnico.pt){.email} \| [🌐](https://gmatos.pt/) \| [![](images/logo/orcid.svg){.orcid-icon}](https://orcid.org/0009-0001-3489-1732)
+
+-   **Rosa Félix** – Co-Investigadora Principal\
+    [rosamfelix\@tecnico.pt](mailto:rosamfelix@tecnico.pt){.email} \| [🌐](https://www.rosafelix.bike) \| [![](images/logo/orcid.svg){.orcid-icon}](https://orcid.org/0000-0002-5642-6006)
+
+### Transportes Metropolitanos de Lisboa (TML) {.unnumbered}
+
+-   **Bernardo Alves** – Departamento de Estudos e Planeamento\
+    [bernardo.alves\@tmlmobilidade.pt](mailto:bernardo.alves@tmlmobilidade.pt){.email}
+
+## Como citar
+
+``` bibtex
+@techreport{gtfshift_tml_report_2026,
+  author    = {Félix, Rosa and Matos, Gonçalo F. and Alves, Bernardo},
+  title     = {GTFShift Edição TML: Ferramenta de priorização de corredores bus e análise de operações},
+  year      = {2026},
+  month     = {September},
+  institution = {CERIS, Instituto Superior Técnico - University of Lisbon, Lisbon},
+  url       = {https://u-shift.github.io/GTFShift-TML}
+}
+```
+
+## Financiamento
+
+O pacote de código em R GTFShift [@matos_gtfshift_2026] e o painel interativo de priorização de corredores *bus* [@matos_gtfshift_dashboard_2026] foram desenvolvidos no âmbito da atividade de investigação do grupo de investigação U-Shift, parte do CERIS (*Civil Engineering Research and Innovation for Sustainability*), no Departamento de Engenharia Civil do Instituto Superior Técnico, Universidade de Lisboa.
+
+A adaptação e extensão das funcionalidades ao domínio operacional da Carris Metropolitana, que deu origem ao painel interativo [**GTFShift/TML**](https://ushift.pt/apps/gtfshift-tml){target="_blank"} [@matos_gtfshift_tml_2026], foi desenvolvida em colaboração com os Transportes Metropolitanos de Lisboa (TML) e financiado por esta entidade, em regime de prestação de serviços.

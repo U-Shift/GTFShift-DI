@@ -1,0 +1,24 @@
+# Conclusão {#sec-conclusao .unnumbered}
+
+Este relatório documenta a aplicação do GTFShift à rede de autocarros da Carris Metropolitana, integrando num único fluxo de processamento aberto e reprodutível a priorização de infraestrutura e a análise operacional da rede.
+
+A metodologia desenvolvida, implementada em R com recurso ao pacote [`GTFShift`](https://u-shift.github.io/GTFShift/){target=_blank}, permite identificar de forma sistemática e reprodutível os segmentos da rede viária mais críticos para a operação do transporte público, quantificando o grau de perturbação ao nível do segmento de via e ao nível da linha e da viagem individual. 
+
+A disponibilização dos resultados através do painel interativo [**GTFShift/TML**](https://ushift.pt/apps/gtfshift-tml){target="_blank"} permite dotar os decidores com uma ferramenta de análise e priorização para a intervenção na infraestrutura viária e para o ajuste da operação. O painel permite a exploração sem necessidade de conhecimentos de programação, e os dados processados podem ser descarregados para análise independente.
+
+## Trabalho futuro {#sec-future-work}
+
+A presente análise abre diversas linhas de desenvolvimento que poderão ampliar o alcance e a profundidade deste projeto:
+
+**Análise operacional entre paragens.** A velocidade é atualmente calculada para cada segmento da rede viária e para as viagens completas (velocidade comercial). Para permitir ajustes aos horários, seria interessante calcular a velocidade entre paragens, permitindo identificar com maior precisão os troços (conjuntos de segmentos) que mais contribuem para os atrasos e comparar o desempenho com os tempos de percurso programados no GTFS.
+
+**Comparação com o desempenho planeado.** O índice de perturbação atual compara a velocidade observada com a velocidade P85, uma referência baseada nos próprios dados observados. Uma abordagem complementar consiste em comparar diretamente a velocidade comercial com o desempenho planeado (ou seja, os tempos de percurso definidos no GTFS) tal como proposto pelo índice de perturbação desenvolvido no âmbito do sistema de monitorização operacional da Carris Metropolitana [@carris_metropolitana_carrismetropolitanadeploy_emds_2026]. 
+
+**Agregação da operação das quatro áreas.** A análise é atualmente realizada de forma independente para cada uma das quatro áreas de operação da Carris Metropolitana. A integração dos dados de todas as áreas numa visão única da rede permitiria comparações transversais entre áreas e a identificação de corredores com maior impacto na qualidade global do serviço.
+
+**Painel dedicado à análise da operação das linhas e viagens.** O painel interativo atual centra-se na visualização da infraestrutura viária. Com a disponibilização de dados de velocidade comercial e índice de perturbação ao nível das viagens individuais, justifica-se o desenvolvimento de um painel dedicado à análise da operação das linhas e viagens, com funcionalidades específicas para a monitorização do desempenho ao longo do tempo e a identificação de padrões de irregularidade.
+
+**Automatização e execução periódica.** O fluxo de processamento é atualmente executado manualmente para um período de tempo limitado. A automatização processo, por exemplo, com execução semanal ou mensal, permitiria monitorizar a evolução do desempenho da rede ao longo do tempo de forma contínua, sem intervenção humana, e detetar tendências ou degradações progressivas na qualidade do serviço.
+
+**Suporte a múltiplos intervalos temporais e tipos de serviço.** O painel exibe atualmente os resultados para um único período de análise. A extensão do modelo de dados e da interface para suportar múltiplos intervalos temporais permitiria comparar o desempenho entre períodos (por exemplo, antes e depois de uma intervenção na infraestrutura). Adicionalmente, a separação da análise por tipo de dia (por exemplo, dias úteis e fins de semana) permitiria identificar padrões específicos de cada regime de operação e ajustar a priorização de acordo com a variação da procura e do congestionamento ao longo da semana.
+

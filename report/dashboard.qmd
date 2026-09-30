@@ -1,6 +1,10 @@
 # Introdução {#sec-dashboard}
 
-Os resultados da aplicação do GTFShift à rede de autocarros da Carris Metropolitana encontram-se disponíveis de forma interativa no painel [**GTFShift/TML**](https://ushift.pt/apps/gtfshift-tml){target="_blank"}.
+Os resultados da aplicação do GTFShift à rede de autocarros da Carris Metropolitana encontram-se disponíveis de forma interativa no painel [**GTFShift/TML**](https://ushift.pt/apps/gtfshift-tml){target="_blank"}, disponível em:
+
+<div style="font-size: 1.5em; text-align: center; margin: 1em 0;">
+[ushift.pt/apps/gtfshift-tml](https://ushift.pt/apps/gtfshift-tml){target=blank}
+</div>
 
 ![Visualização do painel interativo para a área 3 (camada índice de perturbação)](images/dashboard/area3.png){#fig-dashboard}
 
@@ -11,8 +15,8 @@ Este painel permite visualizar todas as análises realizadas em cada uma das dim
 O painel interativo dispõe de três grandes vertentes de análise, que são documentadas nos próximos capítulos: 
 
 - Ao nível da infraestrutura viária (@sec-dashboard-infra);
-- Ao nível da linha de transporte público (@sec-dashboard-line);
-- Ao nível da viagem de transporte público (@sec-dashboard-trip).
+- Ao nível da linha de transporte público (@sec-dashboard-linhas);
+- Ao nível da viagem de transporte público (@sec-dashboard-viagens).
 
 Antes de mergulhar nas diferentes análises, importa referir que o painel interativo dispõe de duas janelas de contexto global acessíveis através dos ícones superiores da barra lateral:
 

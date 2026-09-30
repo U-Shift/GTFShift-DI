@@ -126,7 +126,7 @@ export const DB_REGIONS: DataRegion[] = [
             {
                 id: 'aml_a4',
                 name: 'Area 4',
-                date: 'Jul 2026',
+                date: 'May 2026',
                 rt_data: true,
                 demand_data: true,
                 matched_frequencies_peak: 98.3,

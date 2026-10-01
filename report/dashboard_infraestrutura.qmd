@@ -35,8 +35,8 @@ As camadas disponíveis são apresentadas em seguida e permitem alternar a dimen
 | Camada | Descrição |
 |--------|-----------|
 | **Disturbance index** | Índice de perturbação por segmento de via para a hora de critério (ver @sec-indice-perturbacao) |
-| **Prioritisation** | Resultado da priorização de corredores bus (ver @sec-priorizacao-corredores) |
-| **Bus lanes** | Segmentos com corredor bus dedicado (ver @sec-corredores-bus) |
+| **Prioritisation** | Resultado da priorização de corredores *bus* (ver @sec-priorizacao-corredores) |
+| **Bus lanes** | Segmentos com corredor *bus* dedicado (ver @sec-corredores-bus) |
 | **Transit frequency** | Frequência de autocarros por hora (ver @sec-frequencia) |
 | **Number of lanes** | Número de vias de circulação por direção (ver @sec-faixas-rodagem) |
 | **Parking lanes** | Número de vias de estacionamento (ver @sec-faixas-rodagem) |
@@ -58,7 +58,7 @@ O ícone de tabela na zona superior da barra lateral abre a **tabela de atributo
 
 - Nome da via e identificador OSM;
 - Frequência na hora de critério (autocarros/hora);
-- Presença de corredor bus;
+- Presença de corredor *bus*;
 - Número de vias de circulação;
 - Velocidades;
 - Índice de perturbação;

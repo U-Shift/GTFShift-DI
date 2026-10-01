@@ -14,8 +14,8 @@ O arquivo ZIP disponível para descarregar no painel contém os seguintes fichei
 | `shape_data_*.json` | JSON | Metadados por percurso (*shape*): estatísticas, horário e paragens |
 | `route_data_*.json` | JSON | Metadados por linha: nome, cor, procura e perfil de velocidade |
 | `metadata_*.json` | JSON | Métricas globais de cobertura, censos de dados e configuração |
-| `gtfs_*.zip` | ZIP | Feed GTFS filtrado ao dia de análise |
-| `gtfs_*_manipulated.zip` | ZIP | Feed GTFS manipulado (quando aplicável) |
+| `gtfs_*.zip` | ZIP | *Feed*  GTFS filtrado ao dia de análise |
+| `gtfs_*_manipulated.zip` | ZIP | *Feed*  GTFS manipulado (quando aplicável) |
 | `prioritisation_*.csv` | CSV | Resultado completo de [`GTFShift::prioritise_lanes()`](https://rdrr.io/github/U-Shift/GTFShift-TML/src/R/prioritise.R){target="_blank"} e [`rt_extend_prioritisation()`](https://rdrr.io/github/U-Shift/GTFShift-TML/src/R/prioritise.R){target="_blank"} |
 
 Alguns ficheiros estão disponíveis em múltiplos formatos (GeoJSON e GeoPackage; JSON e CSV) para facilitar a integração com diferentes ferramentas de análise.

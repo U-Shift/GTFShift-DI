@@ -1,6 +1,6 @@
-# Frequência de serviço {#sec-frequencia}
+# Frequência de autocarros {#sec-frequencia}
 
-A camada de frequência de serviço permite visualizar o número de viagens de transporte público que percorrem cada segmento de via por hora, para a hora de análise selecionada.
+Esta camada permite visualizar o número de autocarros que percorrem cada segmento de via por hora, para a hora selecionada.
 
 ## Cálculo
 
@@ -18,9 +18,10 @@ A frequência é representada através de uma escala de cor contínua, que mapei
 
 ## Interpretação
 
-Segmentos com frequência elevada têm maior potencial de benefício com a implementação de medidas de priorização do transporte público, uma vez que gera benefícios para um maior número de viagens. 
+Segmentos com frequência elevada têm maior benefício potencial com a implementação de medidas de priorização do transporte público, uma vez que impactam um maior número de linhas e viagens, podendo contribuir para ganhos maiores ao nível da rede. 
 
 O critério mínimo para justificar a implementação de medidas não é consensual na literatura. @nacto2016transit recomenda a implementação de corredores *bus* "nas principais rotas com intervalos frequentes (10 minutos em hora de ponta)". De forma análoga, @vuchic1981 propõe um critério que conjuga a frequência com o volume de tráfego, representado na @fig-vuchic-criteria, onde por exemplo, para um volume de 400 veículos/hora/via e duas vias por sentido, 12 autocarros/hora seriam suficientes para justificar a implementação de um corredor prioritário. 
 
 ![Volume de tráfego e número de vias para justificar corredores *bus* [@vuchic1981]](images/lr/vuchinc.png){#fig-vuchic-criteria width=65%}
 
+Esta camada é complementar à camada de priorização (@sec-priorizacao-corredores), onde o número de vias por sentido é um dos critérios de filtragem configuráveis pelo utilizador.

@@ -28,4 +28,4 @@ A procura é representada por uma escala de cor contínua, onde tonalidades mais
 
 Segmentos com elevada procura têm maior impacto potencial em melhorias no desempenho operacional, uma vez que um maior número de passageiros irá beneficiar de melhores condições de operação (maior regularidade, menor tempo de espera). A procura é particularmente relevante quando combinada com os outros critérios, como a frequência e a velocidade.
 
-A procura de passageiros complementa a análise baseada em frequência de serviço, pois dois segmentos com a mesma frequência podem ter populações de passageiros muito diferentes, especialmente em redes com linhas de muito diferentes dimensões e níveis de serviço.
+Esta camada é complementar à camada de priorização (@sec-priorizacao-corredores), onde o número de vias por sentido é um dos critérios de filtragem configuráveis pelo utilizador.

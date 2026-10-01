@@ -10,7 +10,7 @@ book:
   favicon: "images/favicon.ico"
   subtitle: "GTFShift Edição TML: Ferramenta de priorização de corredores bus e análise de operações"
   author: "U-Shift Lab, Instituto Superior Técnico"
-  date: today
+  date: "2026-09-30"
   date-format: "MMMM YYYY"
   chapters:
     - index.qmd

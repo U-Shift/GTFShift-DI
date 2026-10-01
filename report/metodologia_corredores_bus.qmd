@@ -1,6 +1,6 @@
 # Corredores *bus* existentes {#sec-corredores-bus}
 
-Esta camada permite visualizar os segmentos de via da rede de transporte público onde já existe um corredor *bus* dedicado, de acordo com a base de dados do OpenStreetMap (OSM).
+Esta camada permite visualizar os segmentos de via da rede de transporte público onde já existe um corredor *bus* dedicado, de acordo com a base de dados do OSM.
 
 ## Identificação dos corredores *bus*
 
@@ -15,7 +15,7 @@ A existência de um corredor *bus* num segmento é determinada durante a execuç
 
 O resultado é o campo booleano, que indica se o segmento possui atualmente um corredor *bus*.
 
-A qualidade desta informação depende do nível de atualização do OpenStreetMap para a região em análise. Recomenda-se verificar e atualizar as *tags* OSM antes de executar a análise, para garantir que o repositório de faixas bus reflete a realidade atual.
+A qualidade desta informação depende do nível de atualização do OpenStreetMap para a região em análise. Recomenda-se verificar e atualizar as *tags* OSM antes de executar a análise, para garantir que as faixas *bus* extraídas refletem a realidade.
 
 ## Visualização
 
@@ -24,6 +24,6 @@ Todos os segmentos com corredor *bus* são visualizados em <span style="color: #
 
 ## Interpretação
 
-Esta camada serve como referência espacial para compreender a distribuição atual da infraestrutura de faixas bus na rede, complementando a análise de priorização. 
+Esta camada serve como referência espacial para compreender a distribuição atual da infraestrutura de corredores *bus* na rede, complementando a camada da priorização. 
 
 Através da sua análise é possível ao utilizador verificar a continuidade da rede, um fator que a literatura considera como multiplicador no que toca à eficiência operacional. @truong_exploring_2015 verificou uma relação linear na melhoria da performance operacional com a agregação de corredores *bus*.

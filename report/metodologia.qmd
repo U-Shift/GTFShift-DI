@@ -4,7 +4,7 @@ A metodologia, ilustrada na @fig-methodology, é implementada pelo ficheiro [`pr
 
 ![Quadro metodológico](images/methods/methodology.png){#fig-methodology}
 
-É importante ressalvar que o processamento aqui descrito implica a recolha e preparação antecipada de alguns dados, nomeadamente a recolha de dados GTFS-RT e a harmomização das geometrias do GTFS e OSM, com atualização do último com os identificadores correspondentes. Todos os detalhes destes procedimentos estão descritos no @sec-preparacao.
+É importante ressalvar que o processamento aqui descrito implica a recolha e preparação antecipada de alguns dados, nomeadamente a recolha de dados GTFS-RT e a harmonização entre as geometrias do GTFS e OSM, com atualização dos identificadores correspondentes no último. Todos os detalhes destes procedimentos estão descritos no @sec-preparacao.
 
 O fluxo de processamento segue então a seguinte sequência lógica:
 

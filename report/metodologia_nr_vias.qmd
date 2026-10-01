@@ -1,6 +1,7 @@
 # Número de vias {#sec-faixas-rodagem}
 
-A camada número de vias apresenta, para cada segmento de via com serviço de transporte público, o número de vias de circulação por sentido.
+
+A camada número de vias, apresenta, para cada segmento de via com serviço de transporte público, o número de vias de circulação por sentido.
 
 ## Extração dos dados OSM
 
@@ -13,7 +14,7 @@ O número de vias e de sentidos para cada segmento é extraído automaticamente 
 | `lanes:backward` | Número de vias no sentido inverso |
 | `oneway` | Indica se a via é de sentido único |
 
-A partir destas *tags*, é calculado o número de vias por sentido. Em vias de dois sentidos sem indicação explícita por sentido, o número total de vias é dividido igualmente.
+A partir destas *tags*, é calculado o número de vias por sentido. Em vias de dois sentidos sem indicação explícita da repartição por sentido, o número total de vias é dividido igualmente entre ambos.
 
 ## Visualização
 
@@ -23,6 +24,6 @@ O número de vias por sentido é representado por uma escala de cor contínua, u
 
 O número de vias por sentido é um critério essencial na avaliação do potencial para implementação de medidas de priorização do transporte público, nomeadamente de corredores *bus*. 
 
-Segmentos com apenas 1 via por sentido têm menor viabilidade de implementação, pois a eliminação do espaço disponível para veículos privados seria total. Segmentos com 2 ou mais vias por sentido são candidatos mais conciliadores, pois a reconversão de uma via para corredor exclusivo mantém ainda capacidade para outros modos.
+Segmentos com apenas uma via por sentido têm menor viabilidade de implementação, pois a eliminação do espaço disponível para veículos privados seria total. Segmentos com duas ou mais vias por sentido são candidatos mais conciliadores, pois a reconversão de uma via para corredor exclusivo mantém ainda alguma capacidade para outros modos.
 
 Esta camada é complementar à camada de priorização (@sec-priorizacao-corredores), onde o número de vias por sentido é um dos critérios de filtragem configuráveis pelo utilizador.

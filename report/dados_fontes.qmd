@@ -1,51 +1,51 @@
 # Fontes de dados e período de análise {#sec-fontes-dados}
 
-A metodologia aplicada assenta na combinação de três conjuntos de dados, que permitem analisar as várias dimensões do problema em estudo: dados de oferta planeada de transporte público (GTFS), de operação em tempo real (GTFS-RT) e de infraestrutura viária (OpenStreetMap). 
+A metodologia aplicada assenta na combinação de quatro conjuntos de dados, que permitem analisar as várias dimensões do problema em estudo: dados de oferta planeada de transporte público (GTFS), de operação em tempo real (GTFS-RT), de infraestrutura viária (OpenStreetMap) e de procura de passageiros. 
 
-O período de análise para a oferta planeada e para a procura (número de passageiros) é uma quarta-feira útil (20/05/2026), por ser considerado um dia típico de operação. Para a monitorização em tempo real da performance operacional, por ser uma análise mais fina que chega ao nível de cada viagem individual, foi considerado um período mais alargado, de duas semanas úteis, entre 13 e 30/04/2026 (14 dias), de forma a conseguir capturar várias amostras para a mesma viagem.
+O período de análise para a oferta planeada e para a procura (número de passageiros) é uma quarta-feira útil (20/05/2026), por ser considerado um dia típico de operação. Para a monitorização em tempo real da performance operacional, por ser uma análise mais fina com detalhe ao nível da viagem individual, foi considerado um período mais alargado, de duas semanas úteis, entre 13 e 30/04/2026 (14 dias), de forma a conseguir capturar várias amostras para a mesma viagem.
 
 ## GTFS (*General Transit Feed Specification*)
 
-O GTFS [@mobilitydata_general_nodate] é um formato aberto e padronizado para representar a oferta programada de transporte público. Um *feed* GTFS é composto por um conjunto de ficheiros CSV comprimidos num arquivo `.zip`, descrevendo rotas, geometrias (*shapes*), paragens, e os horários de todas as viagens planeadas para um ou vários operadores de transporte.
+O GTFS [@mobilitydata_general_nodate] é um formato aberto e padronizado para representar a oferta programada de transporte público. Um *feed* GTFS é composto por um conjunto de ficheiros CSV comprimidos num arquivo `.zip`, descrevendo paragens (*stops*), linhas (*routes*) e as suas geometrias (*shapes*), viagens (*trips*) e horários (*stop times*) planeados, para um ou vários operadores de transporte (*agencies*).
 
 No contexto desta análise, os dados GTFS são a principal fonte de informação sobre a oferta de serviço planeada. Os principais ficheiros utilizados são:
 
 | Ficheiro | Descrição |
 |---|---|
-| `routes.txt` | Identificação e metadados das linhas (*route_id*, *route_short_name*, *route_long_name*, *route_color*) |
-| `trips.txt` | Associação de viagens a linhas e percursos (*shape_id*) |
-| `shapes.txt` | Geometria espacial dos percursos |
-| `stop_times.txt` | Horários programados por paragem para cada viagem |
-| `stops.txt` | Coordenadas geográficas e identificadores das paragens |
+| `stops.txt` | Coordenadas geográficas e identificadores das paragens (`stop_id`) |
+| `routes.txt` | Identificação (`route_id`) e metadados das linhas |
+| `shapes.txt` | Geometria espacial dos vários percursos de cada linha (`shape_id`) |
+| `trips.txt` | Associação de viagens (`trip_id`) a linhas (`route_id`) e percursos (`shape_id`) |
+| `stop_times.txt` | Horários programados por paragem (`stop_id`) para cada viagem (`trip_id`) |
 | `calendar.txt` / `calendar_dates.txt` | Calendário de operação por dias da semana e exceções |
 
 O *feed* atualizado da GTFS da Carris Metropolitana está disponível de forma aberta na sua API própria [@carris_metropolitana_carrismetropolitanagtfs_2026]. Foi utilizada a versão descarregada a 19/05/2026, o dia anterior ao período de análise (20/05/2026). Esta versão está disponível no repositório histórico de GTFS da MobilityData [@mobilitydata_carris_2026], em [https://files.mobilitydatabase.org/mdb-2027/mdb-2027-202605190105/mdb-2027-202605190105.zip](https://files.mobilitydatabase.org/mdb-2027/mdb-2027-202605190105/mdb-2027-202605190105.zip){target=blank}.
 
 ## Dados de operação em tempo real (GTFS-RT)
 
-O GTFS-RT (*General Transit Feed Specification - Real Time*) é uma extensão do protocolo GTFS que permite a partilha de informação em tempo real sobre a operação de veículos, incluindo posições GPS, atrasos e alertas de serviço. Nesta análise, são utilizados dados de posicionamento de veículos (*VehiclePosition*) para calcular métricas de velocidade comercial observada em cada segmento de via.
+O GTFS-RT (*General Transit Feed Specification - Real Time*) é uma extensão do protocolo GTFS que permite a partilha de informação sobre a execução da operação em tempo real, incluindo posições GPS dos veículos, atrasos e alertas de serviço. 
 
-Os dados de GTFS-RT foram recolhidos de forma periódica (uma vez por minuto) nos dias úteis entre 13 e 30 de abril de 2026 (14 dias). A recolha foi feita através da API oficial da Carris Metropolitana [@carris_metropolitana_carrismetropolitanaapi_2026].
+No contexto desta análise, são utilizados os dados de posicionamento de veículos (`VehiclePosition`) para calcular métricas de velocidade observada em cada segmento de via.
 
-O código utilizado para a recolha e agregação destes dados está disponível em [github.com/U-Shift/GTFShift-DI/tree/main/scripts/00_fetch_rt](https://github.com/U-Shift/GTFShift-TML/tree/main/scripts/00_fetch_rt){target=blank}.
+Os dados resultam de uma recolha executada de forma periódica (uma vez por minuto) nos dias úteis entre 13 e 30 de abril de 2026 (14 dias), utilizando a API oficial da Carris Metropolitana [@carris_metropolitana_carrismetropolitanaapi_2026]. O código utilizado para a coleta e agregação destes dados está disponível em [github.com/U-Shift/GTFShift-DI/tree/main/scripts/00_fetch_rt](https://github.com/U-Shift/GTFShift-TML/tree/main/scripts/00_fetch_rt){target=blank}.
 
 ## OpenStreetMap (OSM)
 
 O OpenStreetMap [@openstreetmap_openstreetmap_nodate] é uma base de dados geográfica colaborativa e de acesso livre, utilizada nesta análise como fonte de informação sobre a infraestrutura viária. Em particular, são recolhidos dados sobre:
 
-- **Rotas de transporte público** (*relations* OSM com `route = bus | tram`), que permitem associar os percursos GTFS a segmentos de via (*ways* OSM);
-- **Número de vias de trânsito** por sentido (`lanes`, `lanes:forward`, `lanes:backward`);
-- **Existência de corredores *bus*** (`busway`, `lanes:bus`);
-- **Existência de estacionamento** (`parking:lane`).
+- **Linhas de transporte público** (*relations* OSM com `route = bus`), que listam, para cada linha de transporte público, o conjunto de vias (*ways* OSM) e paragens (*nodes* OSM) que a compõem;
+- **Número de vias de trânsito** por sentido (`lanes`, `lanes:forward`, `lanes:backward`, ...);
+- **Existência de corredores *bus*** (`lanes:psv`, `lanes:bus`, ...);
+- **Existência de estacionamento** (`parking:lane`, ...).
 
-Para obter esta informação são utilizadas as bibliotecas de R `osmdata` [@maspons_osmdata_2026] e `osmextract` [@gilardi_osmextract_2026].
+Para extrair esta informação do OSM são utilizadas as bibliotecas de R `osmdata` [@maspons_osmdata_2026] e `osmextract` [@gilardi_osmextract_2026].
 
 
 ## Dados de procura de passageiros
 
 Obtiveram-se dados de procura através da API de métricas da Carris Metropolitana [@carris_metropolitana_carrismetropolitanaapi_2026]. Foi recolhido o número de passageiros agregados por linha e por dia, considerando o dia 20/05/2026.
 
-Estes dados permitem ponderar a análise de priorização pelo volume de passageiros transportados, identificando os segmentos onde o impacto potencial de uma faixa de bus seria maior. A associação entre dados de procura e a rede viária é feita através do identificador de linha (`route_short_name`), que é cruzado com o GTFS para obter o `route_id` correspondente.
+Estes dados permitem ponderar a análise de priorização pelo volume de passageiros transportados, identificando os segmentos onde o impacto de medidas de priorização do transporte público poderia ser maior. A associação entre dados de procura e a rede viária é feita através do identificador de linha (`route_short_name`), que é cruzado com o GTFS para obter o `route_id` correspondente.
 
 O código utilizado para a recolha destes dados está disponível em [github.com/U-Shift/GTFShift-DI/blob/main/scripts/00_demand/carris_metropolitana.R](https://github.com/U-Shift/GTFShift-TML/blob/main/scripts/00_demand/carris_metropolitana.R){target=blank}.
 

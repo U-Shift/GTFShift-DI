@@ -1,12 +1,12 @@
 # Velocidade {#sec-velocidade-rt}
 
-As camadas de velocidade apresentam, para cada segmento de via, diferentes medidas de velocidade observada nos autocarros que as percorreram no período em análise, inferidas a partir de dados de posicionamento GPS recolhidos via GTFS-RT. 
+As camadas de velocidade apresentam, para cada segmento de via, diferentes medidas de velocidade dos autocarros que as percorreram no período em análise, inferidas a partir de dados de posicionamento GPS recolhidos via GTFS-RT. 
 
 Estão disponíveis duas camadas (horária e para todo o dia) e para cada uma, três dimensões:
 
-- **Velocidade média**: média das velocidades observadas em todas as atualizações GTFS-RT no segmento;
-- **Velocidade mediana**: mediana das velocidades observadas no segmento;
-- **Velocidade no percentil 85**: 85.º percentil da distribuição de velocidades.
+- **Velocidade média**: média das velocidades no segmento;
+- **Velocidade mediana**: mediana das velocidades no segmento;
+- **Velocidade no percentil 85**: 85.º percentil da distribuição de velocidades no segmento.
 
 ## Cálculo
 
@@ -33,3 +33,5 @@ A escala é calibrada usando os percentis P5 e P95 da distribuição de velocida
 A velocidade média é um indicador direto da eficiência operacional da rede de transporte público. Segmentos com velocidade baixa indicam constrangimentos recorrentes que afetam a regularidade e fiabilidade do serviço, que podem ter origem em fatores internos à operação, como tempos excessivos de serviço às paragens, ou externos, como congestimento do tráfego.
 
 O percentil P85 é a métrica mais relevante para identificar o potencial de melhoria, pois é uma aproximação para a velocidade que os veículos conseguem atingir em condições normais de circulação (sem constrangimentos severos).
+
+Esta camada é complementar à camada de priorização (@sec-priorizacao-corredores), onde o número de vias por sentido é um dos critérios de filtragem configuráveis pelo utilizador.

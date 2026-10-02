@@ -6,24 +6,17 @@ library(osmdata)
 
 # Run with: $ Rscript 01_osm_match/osm_match.R
 
-# get_overpass_url()
-# set_overpass_url("https://maps.mail.ru/osm/tools/overpass/api/interpreter")
-# set_overpass_url("https://overpass.private.coffee/api/interpreter") # 4 servers with 20 cores, 256GB RAM, SSD each
-# set_overpass_url("https://overpass-api.de/api/interpreter")
-# get_overpass_url()
-
 # Refer to osm_match_parameters.R to define parameters before running this script!
 source("01_osm_match/osm_match_parameters.R")
 
 regions <- regions |>
-  # filter(name %in% c("lisboa_trams", "lisboa_funiculars", "cp_lisboa", "cp_pt"))
-  filter(name %in% c("metroLisboa"))
+  filter(name %in% c("AML"))
 
 # main()
 for (i in 1:nrow(regions)) {
   region <- regions[i, ]
   gtfs_day_str <- gsub("-", "", region$gtfs_day)
-  run_day = gsub("-", "", Sys.Date())
+  run_day <- gsub("-", "", Sys.Date())
   output_region <- sprintf("%s/%s/gtfs_%s", output_root, tolower(region$name), gtfs_day_str)
   output <- sprintf("%s/run_%s", output_region, format(Sys.time(), "%Y%m%d_%H%M%S"))
   if (!dir.exists(output)) {
@@ -46,8 +39,8 @@ for (i in 1:nrow(regions)) {
   if (!is.na(region$gtfs_manipulate) && !is.na(region$gtfs_manipulate) || !is.na(region$gtfs_day) && !is.na(region$gtfs_day_filter)) {
     if (!is.na(region$gtfs_day) && !is.na(region$gtfs_day_filter)) {
       message(sprintf("Filter gtfs for %s...", region$gtfs_day))
-      gtfs = tidytransit::filter_feed_by_date(gtfs, extract_date = region$gtfs_day)
-    } 
+      gtfs <- tidytransit::filter_feed_by_date(gtfs, extract_date = region$gtfs_day)
+    }
     if (!is.na(region$gtfs_manipulate) && !is.na(region$gtfs_manipulate)) {
       message("Manipulating gtfs...")
       gtfs <- get(region$gtfs_manipulate)(gtfs)
@@ -74,8 +67,8 @@ for (i in 1:nrow(regions)) {
   # assign(sprintf("q_%s_gtfs%s", region$name, region$gtfs_day), q)
 
   # Get OSM extract to avoid API call
-  # Increase timeout 
-  options(timeout=1000)
+  # Increase timeout
+  options(timeout = 1000)
   # osmextract::oe_download_directory()
   if (is.na(region$geofabrik_region)) {
     stop("Please define the geofabrik_region for this region in osm_match_parameters.R")

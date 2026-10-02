@@ -20,7 +20,7 @@ This platform combines **infrastructure prioritisation** with in-depth **route- 
 
 Developed by the **U-Shift** research group (CERIS, Instituto Superior Técnico) in collaboration with **Transportes Metropolitanos de Lisboa (TML)**, this edition adapts and extends the GTFShift tool to the operational reality of Carris Metropolitana, bridging academic research and transit management through open data and open-source software. 
 
-## Acknowledgement
+## Funding & Acknowledgements
 
 **GTFShift** is developed and maintained by the [U-Shift](https://ushift.tecnico.ulisboa.pt) urban mobility research group, part of [CERIS](https://ceris.pt/) research unit (*Civil Engineering Research and Innovation for Sustainability*), at [Instituto Superior Técnico](https://tecnico.ulisboa.pt/pt/), Universidade de Lisboa.
 

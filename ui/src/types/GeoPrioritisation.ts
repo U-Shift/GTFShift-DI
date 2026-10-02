@@ -197,6 +197,10 @@ export interface GeoPrioritisation {
             disturbance_index_frequency?: StatisticsBundle | undefined;
             disturbance_index_hour_length?: HourlyFrequency;
             disturbance_index_hour_frequency?: HourlyFrequency;
+            disturbance_index_abs_length?: StatisticsBundle | undefined;
+            disturbance_index_abs_frequency?: StatisticsBundle | undefined;
+            disturbance_index_abs_hour_length?: HourlyFrequency;
+            disturbance_index_abs_hour_frequency?: HourlyFrequency;
             demand_length?: StatisticsBundle | undefined;
             demand_frequency?: StatisticsBundle | undefined;
             lanes_length: StatisticsBundle | undefined;

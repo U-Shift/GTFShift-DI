@@ -1039,6 +1039,8 @@ for (i in 1:nrow(regions)) { # i =1
   census_speed_p85_hour_frequency <- list()
   census_disturbance_index_hour_length <- list()
   census_disturbance_index_hour_frequency <- list()
+  census_disturbance_index_abs_hour_length <- list()
+  census_disturbance_index_abs_hour_frequency <- list()
 
   for (h in 0:23) {
     prioritisation_h <- prioritisation |> filter(hour == h)
@@ -1084,6 +1086,11 @@ for (i in 1:nrow(regions)) { # i =1
         census_di_freq <- dataCensus(prioritisation_h_di$disturbance_index, prioritisation_h_di$frequency)
         if (!is.na(census_di_len$mean)) census_disturbance_index_hour_length[[as.character(h)]] <- census_di_len
         if (!is.na(census_di_freq$mean)) census_disturbance_index_hour_frequency[[as.character(h)]] <- census_di_freq
+
+        census_di_abs_len <- dataCensus(abs(prioritisation_h_di$disturbance_index), prioritisation_h_di$length_m)
+        census_di_abs_freq <- dataCensus(abs(prioritisation_h_di$disturbance_index), prioritisation_h_di$frequency)
+        if (!is.na(census_di_abs_len$mean)) census_disturbance_index_abs_hour_length[[as.character(h)]] <- census_di_abs_len
+        if (!is.na(census_di_abs_freq$mean)) census_disturbance_index_abs_hour_frequency[[as.character(h)]] <- census_di_abs_freq
       }
     }
   }
@@ -1188,6 +1195,10 @@ for (i in 1:nrow(regions)) { # i =1
       metadata$data_census$disturbance_index_frequency <- dataCensus(valid_di$disturbance_index, valid_di$frequency)
       metadata$data_census$disturbance_index_hour_length <- census_disturbance_index_hour_length
       metadata$data_census$disturbance_index_hour_frequency <- census_disturbance_index_hour_frequency
+      metadata$data_census$disturbance_index_abs_length <- dataCensus(abs(valid_di$disturbance_index), valid_di$length_m)
+      metadata$data_census$disturbance_index_abs_frequency <- dataCensus(abs(valid_di$disturbance_index), valid_di$frequency)
+      metadata$data_census$disturbance_index_abs_hour_length <- census_disturbance_index_abs_hour_length
+      metadata$data_census$disturbance_index_abs_hour_frequency <- census_disturbance_index_abs_hour_frequency
     }
   }
   if ("demand" %in% colnames(prioritisation_infrastructure)) {

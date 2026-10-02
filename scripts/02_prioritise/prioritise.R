@@ -592,20 +592,36 @@ for (i in 1:nrow(regions)) { # i =1
       right_join(gtfs$routes |> select(route_id, route_short_name), by = "route_short_name") |>
       filter(!is.na(demand))
 
-    # For each prioritisation row, sum route_demand$demand for all routes with route_id in prioritisation$routes list
-    priotitization_demand <- prioritisation |>
+    # Divide demand equally by the number of shape_ids of each route_id
+    route_shapes <- gtfs$trips |>
+      filter(!is.na(shape_id) & shape_id != "") |>
+      mutate(route_id = as.character(route_id), shape_id = as.character(shape_id)) |>
+      distinct(route_id, shape_id)
+
+    shape_demand <- route_shapes |>
+      inner_join(route_demand |> mutate(route_id = as.character(route_id)) |> select(route_id, demand), by = "route_id") |>
+      group_by(route_id) |>
+      mutate(demand = demand / n_distinct(shape_id)) |>
+      ungroup() |>
+      group_by(shape_id) |>
+      summarise(demand = sum(demand, na.rm = TRUE), .groups = "drop")
+
+    # For each prioritisation row, sum shape_demand$demand for all shapes with shape_id in prioritisation$shapes list
+    prioritisation_demand <- prioritisation |>
       st_drop_geometry() |>
-      select(way_osm_id, hour, routes) |>
-      # Split routes list column in rows
-      tidyr::unnest(routes) |>
+      select(way_osm_id, hour, shapes) |>
+      # Split shapes list column in rows
+      tidyr::unnest(shapes) |>
+      mutate(shapes = as.character(shapes)) |>
+      distinct(way_osm_id, hour, shapes) |>
       # Get demand
-      left_join(route_demand |> select(route_id, demand), by = c("routes" = "route_id")) |>
+      left_join(shape_demand |> select(shape_id, demand), by = c("shapes" = "shape_id")) |>
       # Group back by way_osm_id and hour, summing demand
       group_by(way_osm_id, hour) |>
       summarise(demand = sum(demand, na.rm = TRUE), .groups = "drop")
 
     prioritisation <- prioritisation |>
-      left_join(priotitization_demand, by = c("way_osm_id", "hour"))
+      left_join(prioritisation_demand, by = c("way_osm_id", "hour"))
   }
   write.csv(
     prioritisation |>

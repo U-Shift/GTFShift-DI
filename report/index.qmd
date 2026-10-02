@@ -7,7 +7,7 @@ format:
 
 Este relatório descreve a metodologia aplicada, os resultados obtidos e documenta o painel interativo desenvolvido no âmbito da adaptação e extensão da ferramenta GTFShift às necessidades operacionais da Transportes Metropolitanos de Lisboa (TML), que deu origem ao painel interativo [**GTFShift/TML**](https://ushift.pt/apps/gtfshift-tml){target="_blank"}. 
 
-A secção **Dados** descreve as fontes e a preparação dos dados utilizados. A secção **Metodologia e visualização** documenta os métodos de processamento e análise, bem como a forma como os resultados são apresentados no painel interativo. A secção **Painel interativo**, por sua vez, documenta em detalhe as funcionalidades disponíveis. O relatório termina com uma **Conclusão** e perspetivas de desenvolvimento futuro.
+Este documento organiza-se em três grandes blocos. O primeiro, intitulado **Dados**, descreve as fontes e os procedimentos de preparação dos mesmos. Segue-se **Metodologia e visualização**, que documenta os métodos de processamento e análise, bem como a forma como os resultados são apresentados no painel interativo. Por fim, o bloco **Painel interativo** documenta em detalhe a dimensão funcional da ferramenta criada. O relatório termina com uma **Conclusão** e perspetivas de desenvolvimento futuro.
 
 Antes de apresentar o detalhe da metodologia aplicada e do funcionamento do painel interativo, importa contextualizar o âmbito do GTFShift e das suas variantes, que se apresentam em seguida.
 

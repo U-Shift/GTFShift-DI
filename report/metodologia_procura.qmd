@@ -8,7 +8,7 @@ Os dados de procura são fornecidos ao nível da linha de transporte público (`
 
 1. **Associação GTFS**: os dados de procura são cruzados com o ficheiro `routes.txt` do GTFS para obter o `route_id` correspondente a cada `route_short_name`;
 
-2. **Desagregação por segmento**: para cada combinação de segmento de via (*OSM way*) e hora do dia, é somada a procura de todas as linhas que percorrem esse segmento:
+2. **Desagregação por segmento**: para cada combinação de segmento de via (OSM) e hora do dia, é somada a procura de todas as linhas que percorrem esse segmento:
 
 $$
 d_{w,h} = \sum_{r \in R_{w,h}} d_r

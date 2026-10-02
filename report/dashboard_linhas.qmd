@@ -73,6 +73,6 @@ Os controlos disponíveis permitem:
 
 Ao clicar numa viagem, esta é selecionada e abre-se o [painel de detalhes da viagem](#sec-dashboard-viagens) no ecrã.
 
-## Variantes da rota (*Route Variants*)
+## Variantes do percurso (*Route Variants*)
 
-Esta secção lista todos os **percursos** (GTFS *shapes*) alternativos para a linha selecionada. Cada variante é identificada pelo seu número de linha, nome e direção (Ascendente/Descendente).
+Esta secção lista todos os outros **percursos** (GTFS *shapes*) disponíveis para a linha do percurso selecionado. Cada variante é identificada pelo seu número de linha, nome e direção (Ascendente/Descendente).

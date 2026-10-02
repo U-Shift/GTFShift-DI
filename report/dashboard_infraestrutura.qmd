@@ -1,6 +1,6 @@
 # Análise ao nível da infraestrutura viária {#sec-dashboard-infra}
 
-A **infraestrutura viária** é a base do modelo de dados disponível no painel interativo, sendo composta por segmentos de via (*ways*) extraídos do OSM que integram a rede de transporte público. Independentemente da camada ou filtro selecionado, serão sempre estas as geometrias que serão mostradas no mapa.
+A **infraestrutura viária** é a base do modelo de dados disponível no painel interativo, sendo composta por segmentos de via extraídos do OSM que integram a rede de transporte público. Independentemente da camada ou filtro selecionado, serão sempre estas as geometrias que serão mostradas no mapa.
 
 A interação com o painel inicia-se com a seleção de uma região para análise. Uma vez selecionada, são carregados os dados pré-processados associados à mesma, que são apresentados no mapa e na barra lateral esquerda.
 

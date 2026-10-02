@@ -5,7 +5,7 @@ A camada número de vias, apresenta, para cada segmento de via com serviço de t
 
 ## Extração dos dados OSM
 
-O número de vias e de sentidos para cada segmento é extraído automaticamente das *tags* de cada *way* do OSM durante a execução do método [`GTFShift::prioritise_lanes()`](https://u-shift.github.io/GTFShift/reference/prioritise_lanes.html){target=blank}. As *tags* OSM relevantes utilizadas são:
+O número de vias e de sentidos para cada segmento é extraído automaticamente das etiquetas de cada segmento do OSM durante a execução do método [`GTFShift::prioritise_lanes()`](https://u-shift.github.io/GTFShift/reference/prioritise_lanes.html){target=blank}. As etiquetas OSM relevantes utilizadas são:
 
 | *Tag* OSM | Descrição |
 |---|---|
@@ -14,7 +14,7 @@ O número de vias e de sentidos para cada segmento é extraído automaticamente 
 | `lanes:backward` | Número de vias no sentido inverso |
 | `oneway` | Indica se a via é de sentido único |
 
-A partir destas *tags*, é calculado o número de vias por sentido. Em vias de dois sentidos sem indicação explícita da repartição por sentido, o número total de vias é dividido igualmente entre ambos.
+A partir destas etiquetas, é calculado o número de vias por sentido. Em vias de dois sentidos sem indicação explícita da repartição por sentido, o número total de vias é dividido igualmente entre ambos.
 
 ## Visualização
 

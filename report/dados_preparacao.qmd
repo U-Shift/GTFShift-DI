@@ -63,10 +63,10 @@ Foi possível obter uma correspondência para 98,96% das geometrias GTFS (*shape
 
 Uma vez estabelecida a ligação entre as geometrias GTFS e a rede viária OSM e atualizada a última fonte com os identificadores correspondentes, foi aplicado o método [`GTFShift::prioritise_lanes()`](https://u-shift.github.io/GTFShift/reference/prioritise_lanes.html){target=blank}, que permite calcular, para cada segmento de via e hora do dia, os seguintes indicadores:
 
-1. **Atributos da infraestrutura**, extraídos de cada *way* do OSM (segmento da via), como número de vias, existência de coredor *bus*, ou existência de vias para estacionamento;
+1. **Atributos da infraestrutura**, extraídos de cada segmento do OSM (segmento da via), como número de vias, existência de coredor *bus*, ou existência de vias para estacionamento;
 2. **Frequência de serviço**, calculada por hora e por segmento de via, agregando todas as linhas e percursos que o percorrem.
 
-O resultado é um conjunto de dados com a combinação entre segmentos de via (*OSM way*) e as horas do dia, contendo os atributos de infraestrutura e os indicadores de serviço correspondentes.
+O resultado é um conjunto de dados com a combinação entre segmentos de via e as horas do dia, contendo os atributos de infraestrutura e os indicadores de serviço correspondentes.
 
 ## Filtragem e validação dos dados GTFS-RT {#sec-dados-rt}
 

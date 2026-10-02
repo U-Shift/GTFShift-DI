@@ -11,14 +11,14 @@ O ponto de partida é a função [`GTFShift::prioritise_lanes()`](https://u-shif
 | `way_osm_id` | Identificador único do segmento de via no OSM |
 | `hour` | Hora do dia (0–23) |
 | `frequency` | Número de autocarros que percorrem o segmento por hora |
-| `is_bus_lane` | Indicador booleano: o segmento tem atualmente uma faixa bus? |
+| `is_bus_lane` | Indicador booleano: o segmento tem atualmente um corredor *bus*? |
 | `n_lanes_circulation` | Número total de vias de circulação |
 | `n_lanes_circulation_direction` | Número de vias de circulação por sentido |
 | `n_directions` | Número de sentidos de circulação (1 ou 2) |
 | `routes` | Lista de linhas (GTFS `route_id`) que percorrem o segmento |
 | `shapes` | Lista de percursos (GTFS `shape_id`) que percorrem o segmento |
 
-A associação entre percursos GTFS e os segmentos do OSM é feita com base nas relações de rota OSM (através dos atributos `gtfs:*` do OSM), que listam os segmentos associados a cada percurso. Os atributos de infraestrutura viária são extraídos diretamente das *tags* OSM dos segmentos identificados.
+A associação entre percursos GTFS e os segmentos do OSM é feita com base nas relações do OSM (através dos atributos `gtfs:*` do OSM), que listam os segmentos associados a cada percurso. Os atributos de infraestrutura viária são extraídos diretamente das etiquetas OSM dos segmentos identificados.
 
 ## Critérios de priorização
 
@@ -28,7 +28,7 @@ O utilizador pode definir os critérios de priorização para filtrar e visualiz
 
 Define o limiar mínimo de autocarros por hora para que um segmento seja considerado prioritário. Segmentos com frequência abaixo do limiar são excluídos da visualização (a menos que já tenham um corredor *bus*, caso em que são sinalizados a amarelo).
 
-A frequência é calculada para a hora de análise selecionada, considerando todas as viagens (de todos os percursos de todas as linhas) que passam pelo segmento nessa hora.
+A frequência considerada tem em conta todas as viagens (de todos os percursos de todas as linhas) que passam pelo segmento na hora selecionada.
 
 Por omissão este valor é definido como a mediana das frequências abaixo do percentil 85.
 
@@ -64,9 +64,9 @@ Os segmentos são classificados e coloridos em três categorias:
 
 | Cor | Classificação | Condição |
 |---|---|---|
-| <span style="color: #3bc1a8;">__Verde__</span> | Faixa *bus* existente, cumpre critérios | Tem faixa *bus* **e** satisfaz todos os critérios ativos são satisfeitos |
-| <span style="color: #dad887;">__Amarelo__</span> | Faixa *bus* existente, não cumpre critérios | Tem faixa *bus* mas **não** satisfaz todos os critérios ativos |
-| <span style="color: #f63049;">__Vermelho__</span> | Prioritário para faixa *bus* | Não tem faixa *bus* mas satisfaz todos os critérios ativos |
+| <span style="color: #3bc1a8;">__Verde__</span> | Corredor *bus* existente, cumpre critérios | Tem corredor *bus* **e** satisfaz todos os critérios ativos são satisfeitos |
+| <span style="color: #dad887;">__Amarelo__</span> | Corredor *bus* existente, não cumpre critérios | Tem corredor *bus* mas **não** satisfaz todos os critérios ativos |
+| <span style="color: #f63049;">__Vermelho__</span> | Prioritário para corredor *bus* | Não tem corredor *bus* mas satisfaz todos os critérios ativos |
 
 A espessura de cada segmento no mapa pode ser configurada para refletir a frequência de serviço ou a procura, tornando visualmente mais proeminentes os segmentos mais relevantes.
 

@@ -4,7 +4,7 @@ Esta camada permite visualizar os segmentos de via da rede de transporte públic
 
 ## Identificação dos corredores *bus*
 
-A existência de um corredor *bus* num segmento é determinada durante a execução de [`GTFShift::prioritise_lanes()`](https://u-shift.github.io/GTFShift/reference/prioritise_lanes.html){target=blank}, através da análise das *tags* OSM dos *ways* percorridos pelos serviços de transporte público. Em alternativa, pode ser utilizado o método [`GTFShift::osm_bus_lanes()`](https://u-shift.github.io/GTFShift/reference/osm_bus_lanes.html){target=blank}. As *tags* OSM relevantes são:
+A existência de um corredor *bus* num segmento é determinada durante a execução de [`GTFShift::prioritise_lanes()`](https://u-shift.github.io/GTFShift/reference/prioritise_lanes.html){target=blank}, através da análise das etiquetas dos segmentos do OSM percorridos pelos serviços de transporte público. Em alternativa, pode ser utilizado o método [`GTFShift::osm_bus_lanes()`](https://u-shift.github.io/GTFShift/reference/osm_bus_lanes.html){target=blank}. As etiquetas OSM relevantes são:
 
 | *Tag* OSM | Descrição |
 |---|---|
@@ -15,7 +15,7 @@ A existência de um corredor *bus* num segmento é determinada durante a execuç
 
 O resultado é o campo booleano, que indica se o segmento possui atualmente um corredor *bus*.
 
-A qualidade desta informação depende do nível de atualização do OpenStreetMap para a região em análise. Recomenda-se verificar e atualizar as *tags* OSM antes de executar a análise, para garantir que as faixas *bus* extraídas refletem a realidade.
+A qualidade desta informação depende do nível de atualização do OpenStreetMap para a região em análise. Recomenda-se verificar e atualizar as etiquetas do OSM antes de executar a análise, para garantir que os corredores *bus* extraídos refletem a realidade.
 
 ## Visualização
 

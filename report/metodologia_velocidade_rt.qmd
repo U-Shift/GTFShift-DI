@@ -1,6 +1,6 @@
 # Velocidade {#sec-velocidade-rt}
 
-As camadas de velocidade apresentam, para cada segmento de via, diferentes medidas de velocidade dos autocarros que as percorreram no período em análise, inferidas a partir de dados de posicionamento GPS recolhidos via GTFS-RT. 
+As camadas de velocidade apresentam, para cada segmento de via, diferentes medidas de velocidade dos autocarros que as percorreram no período de análise, inferidas a partir de dados de posicionamento GPS recolhidos via GTFS-RT. 
 
 Estão disponíveis duas camadas (horária e para todo o dia) e para cada uma, três dimensões:
 
@@ -15,7 +15,7 @@ As métricas de velocidade por segmento de via são calculadas pela função [`G
 O processo descreve-se da seguinte forma:
 
 1. **Filtragem por estado do veículo**: são consideradas apenas as atualizações com estado `IN_TRANSIT_TO`, excluindo registos em paragem ou com estado indeterminado;
-2. **Criação de *buffer* espacial**: para cada segmento de via (*OSM way*), é criado um *buffer* geométrico (por omissão, `lane_buffer` = 15 m) em torno da geometria do segmento, utilizando um sistema de coordenadas projetado (3763) para garantir precisão métrica;
+2. **Criação de *buffer* espacial**: para cada segmento de via (OSM), é criado um *buffer* geométrico (por omissão, `lane_buffer` = 15 m) em torno da geometria do segmento, utilizando um sistema de coordenadas projetado (3763) para garantir precisão métrica;
 3. **Junção espacial**: as atualizações GTFS-RT são associados aos segmentos de via através de uma junção espacial ([`sf::st_within`](https://r-spatial.github.io/sf/reference/geos_binary_pred.html){target=blank}), identificando quais atualizações estão dentro do *buffer* de cada segmento;
 4. **Agregação por segmento**: para cada segmento, são calculadas medidas de tendência central e dispersão a partir das velocidades associadas: `speed_avg` (média), `speed_median` (mediana), `speed_p15`, `speed_p25`, `speed_p75`, `speed_p85` (percentis) e `speed_count` (número de observações);
 5. **Junção com a priorização**: as métricas calculadas são unidas à priorização original, enriquecendo-a com a informação de velocidade.

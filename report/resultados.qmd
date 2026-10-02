@@ -9,7 +9,7 @@ O arquivo ZIP disponível para descarregar no painel (@sec-modal-download) cont�
 | Ficheiro | Formato | Descrição |
 |---|---|---|
 | `prioritisation_area_polygon_*.geojson` | GeoJSON | Perímetro externo da área em análise |
-| `ways_*.geojson` / `.gpkg` | GeoJSON / GeoPackage | Geometrias dos segmentos (*OSM way*) de via com serviço de transporte público |
+| `ways_*.geojson` / `.gpkg` | GeoJSON / GeoPackage | Geometrias dos segmentos de via (OSM) com serviço de transporte público |
 | `way_data_*.json` | JSON | Atributos, frequência horária, velocidades e procura por segmento |
 | `shape_data_*.json` | JSON | Metadados por percurso (GTFS *shape*): estatísticas, horário e paragens |
 | `route_data_*.json` | JSON | Metadados por linha (GTFS *route*): nome, cor, procura e perfil de velocidade |
@@ -27,7 +27,7 @@ O diagrama seguinte ilustra as relações entre os ficheiros de saída:
 ```{mermaid}
 erDiagram
     Prioritisation_Area_Polygon_GeoJSON {
-        Polygon geometry "Convex hull da área de análise"
+        Polygon geometry "Convex hull da área em análise"
     }
     Ways_GeoJSON {
         string way_osm_id PK "Identificador OSM da via"

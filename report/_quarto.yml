@@ -50,8 +50,8 @@ book:
       text: "Painel interativo"
       target: _blank
   page-footer:
-    left: "&copy; 2026, U-Shift, CERIS, Instituto Superior Técnico, University of Lisbon"
-    right: "September 2026"
+    left: "&copy; 2026, U-Shift, CERIS, Instituto Superior Técnico, Universidade de Lisboa"
+    right: "Setembro 2026"
     
 bibliography: references.bib
 

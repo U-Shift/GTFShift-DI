@@ -31,12 +31,12 @@ Os dados resultam de uma recolha executada de forma periódica (uma vez por minu
 
 ## OpenStreetMap (OSM)
 
-O OpenStreetMap [@openstreetmap_openstreetmap_nodate] é uma base de dados geográfica colaborativa e de acesso livre, utilizada nesta análise como fonte de informação sobre a infraestrutura viária. Em particular, são recolhidos dados sobre:
+O OpenStreetMap [@openstreetmap_openstreetmap_nodate] é uma base de dados geográfica colaborativa e de acesso livre, utilizada nesta análise como fonte de informação sobre a infraestrutura viária. O OSM tem por base três estruturas de dados: **nós** [OSM *nodes*, @openstreetmap_wiki_ptno_nodate], **segmentos**^[Apesar da tradução oficial para o termo inglês "way" na documentação do OSM ser "linha" ou "caminho", para efeitos deste relatório utiliza-se a tradução "segmento", de forma a evitar a sobreposição com o mesmo termo aplicado a uma linha de transporte público (GTFS *route*).] [OSM *ways*, @openstreetmap_wiki_ptlinha_nodate] e **relações** [OSM *relations*, @openstreetmap_wiki_ptrelacao_nodate]. Por sua vez, cada uma tem-lhe associada um conjunto de etiquetas (*tags*) que permitem descrever as características destes elementos. Desta base de dados são recolhidas as seguintes informações:
 
-- **Linhas de transporte público** (*relations* OSM com `route = bus`), que listam, para cada linha de transporte público, o conjunto de vias (*ways* OSM) e paragens (*nodes* OSM) que a compõem;
-- **Número de vias de trânsito** por sentido (`lanes`, `lanes:forward`, `lanes:backward`, ...);
-- **Existência de corredores *bus*** (`lanes:psv`, `lanes:bus`, ...);
-- **Existência de estacionamento** (`parking:lane`, ...).
+- **Relações** com `route = bus`: listam, para cada linha de transporte público, o conjunto de **segmentos** (da via) e **nós** (paragens) que a compõem, sendo utilizadas para associar os percursos GTFS à rede viária;
+- **Número de vias de trânsito** por sentido, extraído das etiquetas dos segmentos (`lanes`, `lanes:forward`, `lanes:backward`, ...);
+- **Existência de corredores *bus***, extraída das etiquetas dos segmentos (`lanes:psv`, `lanes:bus`, ...);
+- **Existência de estacionamento**, extraída das etiquetas dos segmentos (`parking:lane`, ...).
 
 Para extrair esta informação do OSM são utilizadas as bibliotecas de R `osmdata` [@maspons_osmdata_2026] e `osmextract` [@gilardi_osmextract_2026].
 

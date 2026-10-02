@@ -30,3 +30,4 @@ flowchart TD
 O fluxo é executado para cada região definida, produzindo um conjunto de ficheiros de saída organizados por região e data de análise. 
 
 Em seguida, descrevem-se as diferentes camadas de análise disponíveis no painel interativo, correspondendo a várias dimensões da rede de transporte público e da infraestrutura viária. Para cada uma, apresentam-se a sua metodologia de cálculo e documentação sobre a sua visualização e interpretação.
+

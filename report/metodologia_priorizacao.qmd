@@ -24,7 +24,7 @@ A associação entre percursos GTFS e os segmentos do OSM é feita com base nas 
 
 O utilizador pode definir os critérios de priorização para filtrar e visualizar os segmentos mais relevantes. Os critérios disponíveis são:
 
-### Frequência de autocarros
+### Frequência
 
 Define o limiar mínimo de autocarros por hora para que um segmento seja considerado prioritário. Segmentos com frequência abaixo do limiar são excluídos da visualização (a menos que já tenham um corredor *bus*, caso em que são sinalizados a amarelo).
 
@@ -32,7 +32,7 @@ A frequência é calculada para a hora de análise selecionada, considerando tod
 
 Por omissão este valor é definido como a mediana das frequências abaixo do percentil 85.
 
-A metodologia utilizada para calcular a frequência de autocarros está documentada no @sec-frequencia.
+A metodologia utilizada para calcular a frequência está documentada no @sec-frequencia.
 
 ### Número de vias de circulação por sentido
 
@@ -50,13 +50,13 @@ Por omissão este valor é definido como a média das velocidades abaixo do perc
 
 A metodologia utilizada para calcular a velocidade média está documentada no @sec-velocidade-rt.
 
-### Procura de passageiros
+### Procura
 
 Define o limiar mínimo de procura diária de passageiros. Permite focar a análise nos segmentos com maior impacto potencial em termos de passageiros beneficiados.
 
 Por omissão este valor é definido como a média da procura abaixo do percentil 85.
 
-A metodologia utilizada para calcular a procura de passageiros está documentada no @sec-procura.
+A metodologia utilizada para calcular a procura está documentada no @sec-procura.
 
 ## Classificação e visualização
 
@@ -68,7 +68,7 @@ Os segmentos são classificados e coloridos em três categorias:
 | <span style="color: #dad887;">__Amarelo__</span> | Faixa *bus* existente, não cumpre critérios | Tem faixa *bus* mas **não** satisfaz todos os critérios ativos |
 | <span style="color: #f63049;">__Vermelho__</span> | Prioritário para faixa *bus* | Não tem faixa *bus* mas satisfaz todos os critérios ativos |
 
-A espessura de cada segmento no mapa pode ser configurada para refletir a frequência de serviço ou a procura de passageiros, tornando visualmente mais proeminentes os segmentos mais relevantes.
+A espessura de cada segmento no mapa pode ser configurada para refletir a frequência de serviço ou a procura, tornando visualmente mais proeminentes os segmentos mais relevantes.
 
 
 

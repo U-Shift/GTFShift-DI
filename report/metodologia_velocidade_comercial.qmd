@@ -1,8 +1,8 @@
 # Velocidade comercial {#sec-velocidade-comercial}
 
-A **velocidade comercial** expressa a velocidade média de uma viagem, considerando todo o tempo consumido para realizar a distância da linha. Ao contrário da velocidade de ponta (instantânea), a velocidade comercial integra todos os fatores que afetam a progressão do veículo ao longo da linha: paragens, tempos em interseções, congestionamento e outros constrangimentos operacionais.
+A **velocidade comercial** expressa a velocidade média de uma viagem, considerando todo o tempo consumido para realizar a extensão do seu percurso. Ao contrário da velocidade de ponta (instantânea), a velocidade comercial integra todos os fatores que afetam a progressão do veículo ao longo da linha: paragens, tempos em interseções, congestionamento e outros constrangimentos operacionais.
 
-No contexto deste painel, a velocidade comercial é calculada ao nível da **viagem individual** e depois agregada para cada variante de **linha** (considerando cada geometria uma variante). Este indicador é apenas visível nos painéis de detalhes da linha e da viagem. 
+No contexto deste painel, a velocidade comercial é calculada ao nível da **viagem individual** e depois agregada para cada **percurso** da linha (considerando cada geometria um percurso). Este indicador é apenas visível nos painéis de detalhes do percurso e da viagem. 
 
 ## Método de cálculo {#sec-velocidade-rt-metodo}
 
@@ -10,17 +10,17 @@ A função [`GTFShift::get_trip_speed_profile()`](https://u-shift.github.io/GTFS
 
 1. **Ordenação temporal**: as atualizações de cada grupo são ordenadas por `timestamp`;
 
-2. **Velocidade comercial**: calculada como a distância entre a **primeira e a última** atualização do grupo ao longo da geometria, dividida pelo tempo decorrido:
+2. **Velocidade comercial**: calculada como a distância entre a **primeira e a última** atualização registadas ao longo da geometria, dividida pelo tempo decorrido:
 $$v_{\text{commercial}} = \frac{|d_n - d_1| / 1000}{(t_n - t_1) / 3600} \quad \text{(km/h)}$$
 
-4. **Métricas de dispersão das velocidades instantâneas**: calculadas sobre os valores válidos de `speed_kmh` dentro do grupo: `speed_avg`, `speed_median`, `speed_p15`, `speed_p25`, `speed_p75`, `speed_p85`, `speed_sd`, `speed_min`, `speed_max`, `speed_iqr` e `speed_count`.
+4. **Métricas de dispersão das velocidades instantâneas**: calculadas sobre os valores válidos de `speed_kmh` dentro do grupo: `speed_avg` (média), `speed_median` (mediana), `speed_p15`, `speed_p25`, `speed_p75`, `speed_p85`, (percentis), `speed_sd` (desvio padrão), `speed_min` (mínimo), `speed_max` (máximo), `speed_iqr` (IQR) e `speed_count` (número de observações).
 
-### Agregação por linha
+### Agregação por percurso
 
-Após o cálculo ao nível da viagem, as métricas são agregadas para cada variante da linha (geometria), calculando a velocidade comercial média, mediana e P85 de todas as viagens em cada hora do dia e para o dia completo, bem como o número de viagens amostradas.
+Após o cálculo ao nível da viagem, as métricas são agregadas para cada percurso da linha (geometria), calculando a velocidade comercial média, mediana e P85 de todas as viagens em cada hora do dia e para o dia completo, bem como o número de viagens amostradas.
 
 ## Interpretação
 
-A velocidade comercial é um indicador direto da eficiência operacional do sistema de transportes públicos. Valores baixos indicam constrangimentos que afetam a regularidade e fiabilidade do serviço. Estes constrangimentos podem ser internos à operação (tempos excessivos de serviço às paragens, comportamento do condutor) ou externos (congestionamento, ausência de prioridade semafórica, excesso de veículos estacionados em faixa de rodagem).
+A velocidade comercial é um indicador global da eficiência de uma linha ou percurso, refletindo o tempo real de viagem do passageiro (incluindo paragens e atrasos). Valores baixos afetam a fiabilidade do serviço e aumentam os custos de operação. Estes constrangimentos podem ser internos (tempos excessivos de serviço às paragens) ou externos (congestionamento, ausência de prioridade semafórica e excesso de conflitos com outros veículos ao longo do trajeto).
 
-O **Percentil 85** é considerado a métrica mais relevante para identificar o potencial de melhoria, uma vez que representa a velocidade que os veículos conseguem atingir em condições normais de circulação, sem constrangimentos severos.
+O Percentil 85 é considerado uma métrica relevante para identificar o potencial de melhoria, uma vez que representa a velocidade que os veículos conseguem atingir em condições normais de circulação, sem constrangimentos severos.

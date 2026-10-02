@@ -15,31 +15,31 @@ Importa ressalvar que a interface do painel interativo se encontra atualmente de
 
 ## Experiência de utilização
 
-O painel interativo dispõe de três grandes vertentes de análise, que são documentadas nos próximos capítulos: 
+O painel interativo dispõe de três tipos de análise, que são documentadas nos próximos capítulos: 
 
 - Ao nível da infraestrutura viária (@sec-dashboard-infra);
-- Ao nível da linha de transporte público (@sec-dashboard-linhas);
-- Ao nível da viagem de transporte público (@sec-dashboard-viagens).
+- Ao nível do percurso de uma linha (@sec-dashboard-linhas);
+- Ao nível da viagem (@sec-dashboard-viagens).
 
-Antes de mergulhar nas diferentes análises, importa referir que o painel interativo dispõe de duas janelas de contexto global acessíveis através dos ícones superiores da barra lateral:
+Antes de entrar em detalhe sobre as diferentes análises, importa referir que o painel interativo dispõe de duas janelas de contexto global acessíveis através dos ícones superiores da barra lateral:
 
 ### Detalhes técnicos {#sec-modal-details}
 
 Acessível através do segundo ícone, ***Details***, esta janela apresenta metadados técnicos sobre a execução da análise para o conjunto de dados carregado:
 
-- **Região** e **data do serviço GTFS** considerados;
-- **Shapes e frequências consideradas** — número de geometrias encontradas no OSM relativamente ao total disponível no GTFS, com indicação das geometrias e linhas em falta (acessível via *tooltip*), e a distribuição horária da cobertura;
-- **OSM query** utilizada para extrair a rede viária e as relações de transporte público do OSM;
+- **Região** e **data do serviço GTFS** analisada;
+- **Percursos e frequências consideradas**: número de percursos GTFS cujas geometrias foram encontradas no OSM relativamente ao total disponível no GTFS, com indicação dos percursos e linhas em falta (acessível via *tooltip*), e a distribuição horária da cobertura;
+- **OSM *query*** utilizada para extrair a rede viária e as relações de transporte público do OSM;
 - **Intervalo dos dados GTFS-RT**;
-- **Metodologia de cálculo de velocidade** — descrição do método utilizado, com os limiares de filtragem utilizados;
-- **Notas sobre dados RT e procura**;
-- **Ambiente de execução** — versão do GTFShift, R e sistema operativo;
-- **Código R simplificado** que reproduz a análise simplificada, com ligação ao tutorial completo.
+- **Metodologia de cálculo de velocidade**: descrição do método utilizado, com os limiares de filtragem utilizados;
+- **Notas sobre dados GTFS-RT e procura**;
+- **Ambiente de execução**: versão do GTFShift, R e sistema operativo;
+- **Código R simplificado** que reproduz a análise simplificada, com ligação para o tutorial completo.
 
-### Download de dados {#sec-modal-download}
+### *Download* de dados {#sec-modal-download}
 
 Acessível através do ícone último ícone, ***Download***, esta janela permite descarregar os resultados em bruto para a região selecionada. Inclui:
 
-- **Botão de download** do arquivo ZIP com todos os ficheiros processados para a região/área selecionada;
-- **Tabela de estrutura do dataset** com a descrição de cada ficheiro incluído no arquivo;
-- **Diagrama relacional** (entidade-relacionamento) que ilustra os esquemas dos ficheiros JSON/GeoJSON e as suas relações.
+- **Botão de download** do arquivo ZIP com todos os ficheiros resultantes da análise para a região/área selecionada;
+- **Tabela de estrutura dos ficheiros de saída** com a descrição de cada ficheiro incluído no arquivo;
+- **Diagrama relacional** que ilustra os esquemas dos ficheiros resultantes e as suas relações.

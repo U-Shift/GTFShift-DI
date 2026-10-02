@@ -10,15 +10,15 @@ Estão disponíveis duas camadas (horária e para todo o dia) e para cada uma, t
 
 ## Cálculo
 
-As métricas de velocidade por segmento de via são calculadas pela função [`GTFShift::rt_extend_prioritisation()`](https://u-shift.github.io/GTFShift/reference/rt_extend_prioritisation.html){target=blank}, que recebe como entrada o resultado da priorização de faixas (`lane_prioritisation`, gerado por [`GTFShift::prioritise_lanes()`](https://u-shift.github.io/GTFShift/reference/prioritise_lanes.html){target=blank}) e a coleção de atualizações GTFS-RT já filtradas e com velocidade calculada (ver @sec-dados-rt).
+As métricas de velocidade por segmento de via são calculadas pela função [`GTFShift::rt_extend_prioritisation()`](https://u-shift.github.io/GTFShift/reference/rt_extend_prioritisation.html){target=blank}, com base na coleção de atualizações GTFS-RT já filtradas e com velocidade calculada (ver @sec-dados-rt).
 
-O processo é o seguinte:
+O processo descreve-se da seguinte forma:
 
 1. **Filtragem por estado do veículo**: são consideradas apenas as atualizações com estado `IN_TRANSIT_TO`, excluindo registos em paragem ou com estado indeterminado;
-2. **Criação de *buffer* espacial**: para cada segmento de via (*way*), é criado um *buffer* geométrico (por omissão, `lane_buffer` = 15 m) em torno da geometria do segmento, utilizando um sistema de coordenadas projetado (`metric_crs`) para garantir precisão métrica;
-3. **Junção espacial**: os pontos GPS da coleção GTFS-RT são associados aos segmentos de via através de uma junção espacial ([`sf::st_within`](https://r-spatial.github.io/sf/reference/geos_binary_pred.html){target=blank}), identificando quais atualizações estão dentro do *buffer* de cada segmento;
-4. **Agregação por segmento**: para cada `way_osm_id`, são calculadas medidas de tendência central e dispersão a partir das velocidades dos pontos associados: `speed_avg` (média), `speed_median` (mediana), `speed_p15`, `speed_p25`, `speed_p75`, `speed_p85` (percentis) e `speed_count` (número de observações);
-5. **Junção com a priorização**: as métricas calculadas são unidas à tabela `lane_prioritisation` original por `way_osm_id`, enriquecendo-a com a informação de velocidade.
+2. **Criação de *buffer* espacial**: para cada segmento de via (*OSM way*), é criado um *buffer* geométrico (por omissão, `lane_buffer` = 15 m) em torno da geometria do segmento, utilizando um sistema de coordenadas projetado (3763) para garantir precisão métrica;
+3. **Junção espacial**: as atualizações GTFS-RT são associados aos segmentos de via através de uma junção espacial ([`sf::st_within`](https://r-spatial.github.io/sf/reference/geos_binary_pred.html){target=blank}), identificando quais atualizações estão dentro do *buffer* de cada segmento;
+4. **Agregação por segmento**: para cada segmento, são calculadas medidas de tendência central e dispersão a partir das velocidades associadas: `speed_avg` (média), `speed_median` (mediana), `speed_p15`, `speed_p25`, `speed_p75`, `speed_p85` (percentis) e `speed_count` (número de observações);
+5. **Junção com a priorização**: as métricas calculadas são unidas à priorização original, enriquecendo-a com a informação de velocidade.
 
 Um segmento só é incluído na visualização se tiver um número mínimo de três observações, garantindo que as estimativas de velocidade são estatisticamente significativas.
 
@@ -32,6 +32,6 @@ A escala é calibrada usando os percentis P5 e P95 da distribuição de velocida
 
 A velocidade média é um indicador direto da eficiência operacional da rede de transporte público. Segmentos com velocidade baixa indicam constrangimentos recorrentes que afetam a regularidade e fiabilidade do serviço, que podem ter origem em fatores internos à operação, como tempos excessivos de serviço às paragens, ou externos, como congestimento do tráfego.
 
-O percentil P85 é a métrica mais relevante para identificar o potencial de melhoria, pois é uma aproximação para a velocidade que os veículos conseguem atingir em condições normais de circulação (sem constrangimentos severos).
+O percentil P85 é uma métrica relevante para identificar o potencial de melhoria, pois é uma aproximação para a velocidade que os veículos conseguem atingir em condições normais de circulação (sem constrangimentos severos).
 
-Esta camada é complementar à camada de priorização (@sec-priorizacao-corredores), onde o número de vias por sentido é um dos critérios de filtragem configuráveis pelo utilizador.
+Esta camada é complementar à camada de priorização (@sec-priorizacao-corredores), onde a velocidade média do segmento é um dos critérios de filtragem configuráveis pelo utilizador.

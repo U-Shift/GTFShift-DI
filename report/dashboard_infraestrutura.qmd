@@ -1,65 +1,66 @@
 # Análise ao nível da infraestrutura viária {#sec-dashboard-infra}
 
-A **infraestrutura viária** é a base do modelo de dados disponíveis no painel interativo, sendo composta por segmentos de via (*ways*) extraídos do OpenStreetMap (OSM) que integram a rede de transporte público. Independentemente da camada ou filtro selecionado, serão sempre estas as geometrias que serão mostradas no mapa.
+A **infraestrutura viária** é a base do modelo de dados disponível no painel interativo, sendo composta por segmentos de via (*ways*) extraídos do OSM que integram a rede de transporte público. Independentemente da camada ou filtro selecionado, serão sempre estas as geometrias que serão mostradas no mapa.
 
-A interação com o painel inicia-se com a seleção de uma região de análise. Uma vez selecionada, são carregados os dados pré-processados associados à região, que são mostrados no mapa e na barra lateral esquerda, onde se encontram os controlos da análise, explorados em detalhe em seguida.
+A interação com o painel inicia-se com a seleção de uma região para análise. Uma vez selecionada, são carregados os dados pré-processados associados à mesma, que são apresentados no mapa e na barra lateral esquerda.
 
-O utilizador pode ainda interagir com o mapa para selecionar um segmento de via e abrir o painel de detalhes da via, que agrega num só lugar os indicadores físicos, operacionais e de velocidade do segmento selecionado. Este painel está disponível no lado direito do ecrã.
+O utilizador pode ainda interagir com o mapa para selecionar um segmento de via e abrir o painel de detalhes, que agrega num só lugar os indicadores físicos, operacionais e de velocidade do segmento selecionado. Este painel é apresentado no lado direito do ecrã.
 
 ## Barra lateral esquerda {#sec-infra-sidebar}
 
-A barra lateral esquerda (painel de controlo) é o ponto de partida para toda a interação com o mapa. Está sempre visível e organiza-se nas seguintes secções:
+A barra lateral esquerda é o ponto de partida para toda a interação com o mapa. Está sempre visível e organiza-se nas seguintes secções:
 
 ### Seleção de região e camada
 
 Ao abrir o painel pela primeira vez, é apresentada uma lista de regiões disponíveis para análise. Ao selecionar uma região, serão carregados os seus dados pré-processados, que são mostrados no mapa. A barra lateral esquerda passa a apresentar os controlos da análise.
 
-### Filtro por linha
+### Filtro por percurso
 
-O seletor **Filter by Route** permite restringir a visualização no mapa a uma variante de uma linha de transporte público específica (geometria). Ao selecionar uma variante de linha, os critérios de priorização são temporariamente desativados e o mapa destaca apenas os segmentos percorridos por essa variante. A opção *All Network* repõe a visualização para a rede completa.
+O seletor **Filter by Route** permite restringir a visualização no mapa a um percurso de uma linha de transporte público específica. Ao selecionar um percurso, os critérios de priorização são temporariamente desativados e o mapa destaca apenas os segmentos percorridos por esse percurso. A opção *All Network* repõe a visualização para a rede completa.
 
 ### Espessura das linhas
 
 O seletor **Line Weight** controla a variável usada para escalar a espessura dos segmentos no mapa. As opções incluem:
 
 - **None**: espessura uniforme;
-- **Bus frequency**: proporcional à frequência de autocarros na hora de critério;
-- **Number of lanes**: proporcional ao número de vias de circulação;
-- **Average/Median/P85 speed**: proporcional à velocidade agregada ao segmento (sentido crescente ou decrescente);
+- **Bus frequency**: proporcional à frequência na hora selecionada;
+- **Number of lanes**: proporcional ao número de vias de circulação por sentido;
+- **Average/Median/P85 speed**: proporcional à velocidade média do segmento;
 - **Disturbance index**: proporcional ao valor absoluto do índice de perturbação.
 
 ### Camadas de visualização {#sec-infra-layers}
 
 As camadas disponíveis são apresentadas em seguida e permitem alternar a dimensão representada no mapa. As camadas são organizadas nas seguintes categorias:
 
-| Camada | Descrição |
-|--------|-----------|
-| **Disturbance index** | Índice de perturbação por segmento de via para a hora de critério (ver @sec-indice-perturbacao) |
-| **Prioritisation** | Resultado da priorização de corredores *bus* (ver @sec-priorizacao-corredores) |
-| **Bus lanes** | Segmentos com corredor *bus* dedicado (ver @sec-corredores-bus) |
-| **Transit frequency** | Frequência de autocarros por hora (ver @sec-frequencia) |
-| **Number of lanes** | Número de vias de circulação por direção (ver @sec-faixas-rodagem) |
-| **Parking lanes** | Número de vias de estacionamento (ver @sec-faixas-rodagem) |
-| **RT speed (all-day)** | Velocidade média observada ao longo do dia (ver @sec-velocidade-rt) |
-| **RT speed (hourly)** | Velocidade média observada na hora de critério (ver @sec-velocidade-rt) |
-| **Demand** | Procura de passageiros por dia (ver @sec-procura) |
+| Camada | Descrição | Detalhes |
+|--------|-----------|--------|  
+| **Disturbance index** | Índice de perturbação por segmento de via para a hora selecionada | @sec-indice-perturbacao |
+| **Bus lane prioritisation** | Resultado da priorização de corredores *bus* | @sec-priorizacao-corredores |
+| **Existing bus lanes** | Segmentos com corredor *bus* dedicado | @sec-corredores-bus |
+| **Bus frequency** | Frequência de autocarros por hora | @sec-frequencia |
+| **Number of lanes** | Número de vias de circulação por sentido | @sec-faixas-rodagem |
+| **Speed (all-day)** | Velocidade média observada ao longo do dia | @sec-velocidade-rt |
+| **Speed (hourly)** | Velocidade média observada na hora selecionada | @sec-velocidade-rt |
+| **Passenger demand** | Procura diária de passageiros | @sec-procura |
+
 
 Cada camada dispõe de controlos específicos, como:
 
-- **Criteria hour**: hora (0–23) usada como referência para as camadas horárias (frequência, velocidade, índice de perturbação);
-- **Speed metric**: dimensão de velocidade a utilizar (Média, Mediana, Percentil 85);
-- **Scale mode**: escala de cor com base nos percentis P5–P95 da rede (*percentile*) ou no mínimo-máximo (*minmax*);
+- **Filtro horário**: hora (0–23) usada como referência para as camadas horárias (frequência, velocidade, índice de perturbação);
+- **Métrica de velocidade**: dimensão de velocidade a utilizar (Média, Mediana, Percentil 85);
+- **Modo de escala**: escala de cor com base nos percentis P5–P95 da rede (*percentile*) ou no mínimo-máximo (*minmax*);
 - Controlos de **priorização de corredores *bus***, permitindo ativar e desativar critérios, assim como editar os limites de elegibilidade para frequência mínima, número de vias, velocidade média e procura;
 - Controlos de filtragem do **índice de perturbação** (limiares, modo de paleta de cor, filtro pelos piores/melhores segmentos, extensão mínima).
+
 
 ### Tabela de atributos {#sec-attribute-table}
 
 O ícone de tabela na zona superior da barra lateral abre a **tabela de atributos**, que apresenta em formato tabular todos os segmentos de via visíveis no mapa, com as seguintes colunas:
 
 - Nome da via e identificador OSM;
-- Frequência na hora de critério (autocarros/hora);
-- Presença de corredor *bus*;
-- Número de vias de circulação;
+- Frequência na hora selecionada (autocarros/hora);
+- Existência de corredor *bus*;
+- Número de vias;
 - Velocidades;
 - Índice de perturbação;
 - Procura;
@@ -70,7 +71,7 @@ A tabela suporta ordenação por qualquer coluna e filtragem por texto e valor n
 
 ## Painel de detalhes da via {#sec-way-panel}
 
-Ao clicar sobre um segmento de via no mapa, é aberto o **painel de detalhes da via** no lado direito do ecrã. O painel apresenta o nome da via (proveniente do OSM) e o respetivo identificador OSM, com ligação direta à página do segmento no OpenStreetMap e um botão para copiar o identificador.
+Ao clicar sobre um segmento de via no mapa, é aberto o painel de detalhes da via no lado direito do ecrã. O painel apresenta o nome da via (proveniente do OSM) e o respetivo identificador OSM, com ligação direta à página do segmento no OpenStreetMap e um botão para copiar o identificador.
 
 O painel pode ser expandido para ecrã completo através do botão no canto superior direito.
 
@@ -82,7 +83,7 @@ Esta secção apresenta os principais indicadores do segmento:
 
 | Indicador | Descrição |
 |-----------|-----------|
-| **Buses/h** | Frequência de autocarros na hora de critério |
+| **Buses/h** | Frequência de autocarros na hora selecionada |
 | **Bus Lane** | Indica se o segmento dispõe de corredor *bus* dedicado |
 | **Lanes/Dir** | Número de vias de circulação por sentido |
 | **Demand** | Procura diária estimada de passageiros |
@@ -93,20 +94,20 @@ Esta secção apresenta os principais indicadores do segmento:
 
 ### Velocidade e índice de perturbação (*Speed & Disturbance Index*)
 
-Esta secção apresenta informação sobre as velocidades observadas no segmento na hora de critério e durante o dia, respetivas dispersões e índices de perturbação.
+Esta secção apresenta informação sobre as velocidades observadas no segmento na hora selecionada e durante o dia, respetivas dispersões e índice de perturbação. Ver @sec-velocidade-rt e @sec-indice-perturbacao para mais informações sobre o cálculo da velocidade e do índice de perturbação ao nível do segmento.
 
 ### Variações horárias (*Hourly Variations*)
 
-Esta secção apresenta gráficos de barras com a evolução ao longo das 24 horas do dia:
+Esta secção apresenta gráficos de barras com a evolução ao longo das 24 horas do dia, para as seguintes dimensões:
 
-- **Frequência horária programada**: número de autocarros por hora que percorrem o segmento. A hora de critério aparece destacada com um contorno, e uma linha a tracejado indica a média diária;
-- **Velocidade observada horária**: velocidade média observada por hora (se disponível). A linha a tracejado indica a velocidade média diária;
-- **Índice de perturbação horário**: gráfico de barras divergente: valores positivos (acima da linha central) indicam que o segmento circulou mais rapidamente do que a velocidade de referência nessa hora; valores negativos indicam perturbação. As cores seguem as categorias do índice de perturbação.
+- **Frequência horária programada**: número de autocarros por hora que percorrem o segmento. A hora selecionada aparece destacada com um contorno. A linha a tracejado indica a média diária;
+- **Velocidade observada horária**: velocidade média por hora. A linha a tracejado indica a velocidade média diária;
+- **Índice de perturbação horário**: gráfico de barras divergente: valores positivos (acima da linha central) indicam que a velocidade no segmento nessa hora é superior à velocidade de referência para todo o período de análise; valores negativos indicam perturbação. As cores seguem as categorias do índice de perturbação.
 
 Em modo expandido, os gráficos de frequência e velocidade são apresentados lado a lado.
 
-### Linhas associadas (*Routes*)
+### Percursos associados (*Routes*)
 
-Esta secção lista todas as linhas de transporte público que percorrem o segmento, com identificador, nome e direção. Clicar numa linha permite filtra a visualização do mapa para os segmentos percorridos por essa linha e abre automaticamente o painel de detalhes da linha.
+Esta secção lista todos os percursos de transporte público que percorrem o segmento, com identificador, nome e direção. Clicar num percurso permite filtrar a visualização do mapa para os segmentos percorridos pelo mesmo e abre automaticamente o painel de detalhes associado.
 
-Inclui ainda uma caixa de pesquisa para filtrar as linhas por nome quando o número de linhas associadas é elevado.
+Inclui ainda uma caixa de pesquisa para filtrar os percursos por nome quando o número de percursos associados é elevado.

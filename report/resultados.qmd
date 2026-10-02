@@ -1,24 +1,24 @@
 # Resultados {#sec-resultados}
 
-O fluxo de processamento documentado anteriormente produz um conjunto de ficheiros de saída que constituem os dados base do painel interativo e que podem ser descarregados para análise independente.
+O fluxo de processamento documentado produz um conjunto de ficheiros de saída que constituem os dados base do painel interativo e que podem ser descarregados para análises complementares.
 
 ## Estrutura dos ficheiros de saída
 
-O arquivo ZIP disponível para descarregar no painel contém os seguintes ficheiros:
+O arquivo ZIP disponível para descarregar no painel (@sec-modal-download) contém os seguintes ficheiros:
 
 | Ficheiro | Formato | Descrição |
 |---|---|---|
-| `prioritisation_area_polygon_*.geojson` | GeoJSON | Polígono de envolvente convexa (*convex hull*) da área de análise |
-| `ways_*.geojson` / `.gpkg` | GeoJSON / GeoPackage | Geometrias dos segmentos de via com serviço de transporte |
+| `prioritisation_area_polygon_*.geojson` | GeoJSON | Perímetro externo da área em análise |
+| `ways_*.geojson` / `.gpkg` | GeoJSON / GeoPackage | Geometrias dos segmentos (*OSM way*) de via com serviço de transporte público |
 | `way_data_*.json` | JSON | Atributos, frequência horária, velocidades e procura por segmento |
-| `shape_data_*.json` | JSON | Metadados por percurso (*shape*): estatísticas, horário e paragens |
-| `route_data_*.json` | JSON | Metadados por linha: nome, cor, procura e perfil de velocidade |
-| `metadata_*.json` | JSON | Métricas globais de cobertura, censos de dados e configuração |
-| `gtfs_*.zip` | ZIP | *Feed*  GTFS filtrado ao dia de análise |
-| `gtfs_*_manipulated.zip` | ZIP | *Feed*  GTFS manipulado (quando aplicável) |
-| `prioritisation_*.csv` | CSV | Resultado completo de [`GTFShift::prioritise_lanes()`](https://rdrr.io/github/U-Shift/GTFShift-TML/src/R/prioritise.R){target="_blank"} e [`rt_extend_prioritisation()`](https://rdrr.io/github/U-Shift/GTFShift-TML/src/R/prioritise.R){target="_blank"} |
+| `shape_data_*.json` | JSON | Metadados por percurso (GTFS *shape*): estatísticas, horário e paragens |
+| `route_data_*.json` | JSON | Metadados por linha (GTFS *route*): nome, cor, procura e perfil de velocidade |
+| `metadata_*.json` | JSON | Estatísticas de cobertura e descritivas dos indicadores e documentação dos parâmetros utilizados na análise |
+| `gtfs_*.zip` | ZIP | *Feed* GTFS filtrado ao dia de análise |
+| `gtfs_*_manipulated.zip` | ZIP | *Feed* GTFS manipulado (quando aplicável) |
+| `prioritisation_*.csv` | CSV | Resultado dos métodos de priorização aplicados ao nível do segmento |
 
-Alguns ficheiros estão disponíveis em múltiplos formatos (GeoJSON e GeoPackage; JSON e CSV) para facilitar a integração com diferentes ferramentas de análise.
+Foi dada primazia ao formato JSON para integração no painel interativo. No entanto, alguns ficheiros estão disponíveis noutros formatos (GeoJSON/GeoPackage e CSV) para facilitar a integração com diferentes ferramentas de análise.
 
 ## Modelo relacional dos dados
 
@@ -45,7 +45,7 @@ erDiagram
         float speed_avg "Velocidade média (se RT disponível)"
         float speed_median "Velocidade mediana (se RT disponível)"
         float speed_p85 "Velocidade P85 (se RT disponível)"
-        int demand "Procura diária (se disponível)"
+        int demand "Procura diária"
         string_array routes FK "Lista de route_id que percorrem esta via"
         string_array shapes FK "Lista de shape_id que percorrem esta via"
         object hour_frequency "Frequência por hora (0-23)"
@@ -69,7 +69,7 @@ erDiagram
         string route_short_name "Nome curto da linha"
         string route_long_name "Nome completo da linha"
         string route_color "Cor hex da linha"
-        int demand "Procura diária (se disponível)"
+        int demand "Procura diária"
     }
     Metadata_JSON {
         string region "Nome da região analisada"
@@ -78,8 +78,8 @@ erDiagram
         object prioritisation "Métricas de cobertura globais"
         object prioritisation_hour "Métricas de cobertura por hora"
         object data_census "Estatísticas descritivas da rede"
-        object rt "Metadados GTFS-RT (se disponível)"
-        object demand "Metadados de procura (se disponível)"
+        object rt "Metadados GTFS-RT"
+        object demand "Metadados de procura"
         object execution "Momento de execução e versão do código"
         object environment "Versões do R e dos pacotes"
     }
@@ -93,19 +93,19 @@ erDiagram
 
 ## Estatísticas de cobertura
 
-O ficheiro `metadata_*.json` inclui métricas que permitem avaliar a cobertura da análise, nomeadamente a proporção de geometrias e linhas GTFS que foram associados com sucesso à rede viária OSM:
+O ficheiro `metadata_*.json` inclui métricas que permitem avaliar a cobertura da análise, nomeadamente a proporção de percursos e linhas GTFS que foram associados com sucesso à rede viária OSM:
 
-- `shapes_total`: número total de geometrias GTFS no dia de análise;
-- `shapes_found_n`: número de geometrias com pelo menos um segmento de via identificado;
-- `shapes_missing_n`: número de geometrias sem correspondência OSM;
-- `shapes_found_frequency`: frequência total associada a geometrias encontrados;
-- `shapes_missing_frequency`: frequência total associada a geometrias não encontrados.
+- `shapes_total`: número total de percursos GTFS no dia de análise;
+- `shapes_found_n`: número de percursos com pelo menos um segmento de via identificado;
+- `shapes_missing_n`: número de percursos sem correspondência OSM;
+- `shapes_found_frequency`: frequência total associada a percursos encontrados;
+- `shapes_missing_frequency`: frequência total associada a percursos não encontrados.
 
 Estes valores são também calculados por hora do dia (`prioritisation_hour`), permitindo identificar períodos com menor cobertura (por exemplo, serviços noturnos com menor representação no OSM).
 
 ## Estatísticas descritivas
 
-O `metadata_*.json` inclui um conjunto de estatísticas descritivas das métricas calculadas para o conjunto da rede, com valores ponderados pelo comprimento e pela frequência dos segmentos:
+O `metadata_*.json` inclui um conjunto de estatísticas descritivas dos indicadores calculados, com valores ponderados pelo comprimento e pela frequência dos segmentos:
 
 ```json
 "data_census": {

@@ -1,6 +1,6 @@
-# Procura de passageiros {#sec-procura}
+# Procura {#sec-procura}
 
-A procura de passageiros permite visualizar o número de passageiros transportados por cada segmento de via ao longo de um dia, permitindo ponderar as análises de priorização pelo impacto potencial em termos de utilizadores beneficiados.
+A procura representa o número de passageiros transportados por cada segmento de via ao longo de um dia, permitindo ponderar as análises de priorização pelo impacto potencial em termos de utilizadores beneficiados.
 
 ## Cálculo
 
@@ -8,7 +8,7 @@ Os dados de procura são fornecidos ao nível da linha de transporte público (`
 
 1. **Associação GTFS**: os dados de procura são cruzados com o ficheiro `routes.txt` do GTFS para obter o `route_id` correspondente a cada `route_short_name`;
 
-2. **Desagregação por segmento**: para cada combinação de segmento de via (`way_osm_id`) e hora do dia, é somada a procura de todas as linhas que percorrem esse segmento:
+2. **Desagregação por segmento**: para cada combinação de segmento de via (*OSM way*) e hora do dia, é somada a procura de todas as linhas que percorrem esse segmento:
 
 $$
 d_{w,h} = \sum_{r \in R_{w,h}} d_r
@@ -28,4 +28,4 @@ A procura é representada por uma escala de cor contínua, onde tonalidades mais
 
 Segmentos com elevada procura têm maior impacto potencial em melhorias no desempenho operacional, uma vez que um maior número de passageiros irá beneficiar de melhores condições de operação (maior regularidade, menor tempo de espera). A procura é particularmente relevante quando combinada com os outros critérios, como a frequência e a velocidade.
 
-Esta camada é complementar à camada de priorização (@sec-priorizacao-corredores), onde o número de vias por sentido é um dos critérios de filtragem configuráveis pelo utilizador.
+Esta camada é complementar à camada de priorização (@sec-priorizacao-corredores), onde a procura é um dos critérios de filtragem configuráveis pelo utilizador.

@@ -1,8 +1,8 @@
 # Fontes de dados e período de análise {#sec-fontes-dados}
 
-A metodologia aplicada assenta na combinação de quatro conjuntos de dados, que permitem analisar as várias dimensões do problema em estudo: dados de oferta planeada de transporte público (GTFS), de operação em tempo real (GTFS-RT), de infraestrutura viária (OpenStreetMap) e de procura de passageiros. 
+A metodologia aplicada assenta na combinação de quatro conjuntos de dados, que permitem analisar as várias dimensões do problema em estudo: dados de oferta planeada de transporte público (GTFS), de operação em tempo real (GTFS-RT), de infraestrutura viária (OpenStreetMap) e de procura. 
 
-O período de análise para a oferta planeada e para a procura (número de passageiros) é uma quarta-feira útil (20/05/2026), por ser considerado um dia típico de operação. Para a monitorização em tempo real da performance operacional, por ser uma análise mais fina com detalhe ao nível da viagem individual, foi considerado um período mais alargado, de duas semanas úteis, entre 13 e 30/04/2026 (14 dias), de forma a conseguir capturar várias amostras para a mesma viagem.
+O período de análise para a oferta planeada e para a procura é uma quarta-feira útil (20/05/2026), por ser considerado um dia típico de operação. Para a monitorização em tempo real da performance operacional, por ser uma análise mais fina com detalhe ao nível da viagem individual, foi considerado um período mais alargado, de duas semanas úteis, entre 13 e 30/04/2026 (14 dias), de forma a conseguir capturar várias amostras para a mesma viagem.
 
 ## GTFS (*General Transit Feed Specification*)
 
@@ -41,9 +41,9 @@ O OpenStreetMap [@openstreetmap_openstreetmap_nodate] é uma base de dados geogr
 Para extrair esta informação do OSM são utilizadas as bibliotecas de R `osmdata` [@maspons_osmdata_2026] e `osmextract` [@gilardi_osmextract_2026].
 
 
-## Dados de procura de passageiros
+## Dados de procura
 
-Obtiveram-se dados de procura através da API de métricas da Carris Metropolitana [@carris_metropolitana_carrismetropolitanaapi_2026]. Foi recolhido o número de passageiros agregados por linha e por dia, considerando o dia 20/05/2026.
+Obtiveram-se dados de procura (número de passageiros) através da API de métricas da Carris Metropolitana [@carris_metropolitana_carrismetropolitanaapi_2026]. Foi recolhido o número de passageiros agregados por linha e por dia, considerando o dia 20/05/2026.
 
 Estes dados permitem ponderar a análise de priorização pelo volume de passageiros transportados, identificando os segmentos onde o impacto de medidas de priorização do transporte público poderia ser maior. A associação entre dados de procura e a rede viária é feita através do identificador de linha (`route_short_name`), que é cruzado com o GTFS para obter o `route_id` correspondente.
 

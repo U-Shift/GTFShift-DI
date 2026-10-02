@@ -1,6 +1,6 @@
-# Frequência de autocarros {#sec-frequencia}
+# Frequência {#sec-frequencia}
 
-Esta camada permite visualizar o número de autocarros que percorrem cada segmento de via por hora, para a hora selecionada.
+Esta camada permite visualizar o número de autocarros programados cada segmento de via por hora, para a hora selecionada, de acordo com o horário GTFS planeado.
 
 ## Cálculo
 
@@ -24,4 +24,4 @@ O critério mínimo para justificar a implementação de medidas não é consens
 
 ![Volume de tráfego e número de vias para justificar corredores *bus* [@vuchic1981]](images/lr/vuchinc.png){#fig-vuchic-criteria width=65%}
 
-Esta camada é complementar à camada de priorização (@sec-priorizacao-corredores), onde o número de vias por sentido é um dos critérios de filtragem configuráveis pelo utilizador.
+Esta camada é complementar à camada de priorização (@sec-priorizacao-corredores), onde a frequência é um dos critérios de filtragem configuráveis pelo utilizador.

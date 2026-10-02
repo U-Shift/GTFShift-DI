@@ -401,7 +401,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_frequencia.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de autocarros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -425,7 +425,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_procura.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura de passageiros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -460,7 +460,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dashboard_linhas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível da linha</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível do percurso</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -501,7 +501,7 @@ window.Quarto = {
   <ul>
   <li><a href="#sec-velocidade-rt-metodo" id="toc-sec-velocidade-rt-metodo" class="nav-link active" data-scroll-target="#sec-velocidade-rt-metodo"><span class="header-section-number">10.1</span> Método de cálculo</a>
   <ul class="collapse">
-  <li><a href="#agregação-por-linha" id="toc-agregação-por-linha" class="nav-link" data-scroll-target="#agregação-por-linha"><span class="header-section-number">10.1.1</span> Agregação por linha</a></li>
+  <li><a href="#agregação-por-percurso" id="toc-agregação-por-percurso" class="nav-link" data-scroll-target="#agregação-por-percurso"><span class="header-section-number">10.1.1</span> Agregação por percurso</a></li>
   </ul></li>
   <li><a href="#interpretação" id="toc-interpretação" class="nav-link" data-scroll-target="#interpretação"><span class="header-section-number">10.2</span> Interpretação</a></li>
   </ul>
@@ -530,25 +530,25 @@ window.Quarto = {
 </header>
 
 
-<p>A <strong>velocidade comercial</strong> expressa a velocidade média de uma viagem, considerando todo o tempo consumido para realizar a distância da linha. Ao contrário da velocidade de ponta (instantânea), a velocidade comercial integra todos os fatores que afetam a progressão do veículo ao longo da linha: paragens, tempos em interseções, congestionamento e outros constrangimentos operacionais.</p>
-<p>No contexto deste painel, a velocidade comercial é calculada ao nível da <strong>viagem individual</strong> e depois agregada para cada variante de <strong>linha</strong> (considerando cada geometria uma variante). Este indicador é apenas visível nos painéis de detalhes da linha e da viagem.</p>
+<p>A <strong>velocidade comercial</strong> expressa a velocidade média de uma viagem, considerando todo o tempo consumido para realizar a extensão do seu percurso. Ao contrário da velocidade de ponta (instantânea), a velocidade comercial integra todos os fatores que afetam a progressão do veículo ao longo da linha: paragens, tempos em interseções, congestionamento e outros constrangimentos operacionais.</p>
+<p>No contexto deste painel, a velocidade comercial é calculada ao nível da <strong>viagem individual</strong> e depois agregada para cada <strong>percurso</strong> da linha (considerando cada geometria um percurso). Este indicador é apenas visível nos painéis de detalhes do percurso e da viagem.</p>
 <section id="sec-velocidade-rt-metodo" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="sec-velocidade-rt-metodo"><span class="header-section-number">10.1</span> Método de cálculo</h2>
 <p>A função <a href="https://u-shift.github.io/GTFShift/reference/get_trip_speed_profile.html" target="blank"><code>GTFShift::get_trip_speed_profile()</code></a> é utilizada para agregar as atualizações GTFS-RT ao nível da viagem. O processo é:</p>
 <ol type="1">
 <li><p><strong>Ordenação temporal</strong>: as atualizações de cada grupo são ordenadas por <code>timestamp</code>;</p></li>
-<li><p><strong>Velocidade comercial</strong>: calculada como a distância entre a <strong>primeira e a última</strong> atualização do grupo ao longo da geometria, dividida pelo tempo decorrido: <span class="math display">\[v_{\text{commercial}} = \frac{|d_n - d_1| / 1000}{(t_n - t_1) / 3600} \quad \text{(km/h)}\]</span></p></li>
-<li><p><strong>Métricas de dispersão das velocidades instantâneas</strong>: calculadas sobre os valores válidos de <code>speed_kmh</code> dentro do grupo: <code>speed_avg</code>, <code>speed_median</code>, <code>speed_p15</code>, <code>speed_p25</code>, <code>speed_p75</code>, <code>speed_p85</code>, <code>speed_sd</code>, <code>speed_min</code>, <code>speed_max</code>, <code>speed_iqr</code> e <code>speed_count</code>.</p></li>
+<li><p><strong>Velocidade comercial</strong>: calculada como a distância entre a <strong>primeira e a última</strong> atualização registadas ao longo da geometria, dividida pelo tempo decorrido: <span class="math display">\[v_{\text{commercial}} = \frac{|d_n - d_1| / 1000}{(t_n - t_1) / 3600} \quad \text{(km/h)}\]</span></p></li>
+<li><p><strong>Métricas de dispersão das velocidades instantâneas</strong>: calculadas sobre os valores válidos de <code>speed_kmh</code> dentro do grupo: <code>speed_avg</code> (média), <code>speed_median</code> (mediana), <code>speed_p15</code>, <code>speed_p25</code>, <code>speed_p75</code>, <code>speed_p85</code>, (percentis), <code>speed_sd</code> (desvio padrão), <code>speed_min</code> (mínimo), <code>speed_max</code> (máximo), <code>speed_iqr</code> (IQR) e <code>speed_count</code> (número de observações).</p></li>
 </ol>
-<section id="agregação-por-linha" class="level3" data-number="10.1.1">
-<h3 data-number="10.1.1" class="anchored" data-anchor-id="agregação-por-linha"><span class="header-section-number">10.1.1</span> Agregação por linha</h3>
-<p>Após o cálculo ao nível da viagem, as métricas são agregadas para cada variante da linha (geometria), calculando a velocidade comercial média, mediana e P85 de todas as viagens em cada hora do dia e para o dia completo, bem como o número de viagens amostradas.</p>
+<section id="agregação-por-percurso" class="level3" data-number="10.1.1">
+<h3 data-number="10.1.1" class="anchored" data-anchor-id="agregação-por-percurso"><span class="header-section-number">10.1.1</span> Agregação por percurso</h3>
+<p>Após o cálculo ao nível da viagem, as métricas são agregadas para cada percurso da linha (geometria), calculando a velocidade comercial média, mediana e P85 de todas as viagens em cada hora do dia e para o dia completo, bem como o número de viagens amostradas.</p>
 </section>
 </section>
 <section id="interpretação" class="level2" data-number="10.2">
 <h2 data-number="10.2" class="anchored" data-anchor-id="interpretação"><span class="header-section-number">10.2</span> Interpretação</h2>
-<p>A velocidade comercial é um indicador direto da eficiência operacional do sistema de transportes públicos. Valores baixos indicam constrangimentos que afetam a regularidade e fiabilidade do serviço. Estes constrangimentos podem ser internos à operação (tempos excessivos de serviço às paragens, comportamento do condutor) ou externos (congestionamento, ausência de prioridade semafórica, excesso de veículos estacionados em faixa de rodagem).</p>
-<p>O <strong>Percentil 85</strong> é considerado a métrica mais relevante para identificar o potencial de melhoria, uma vez que representa a velocidade que os veículos conseguem atingir em condições normais de circulação, sem constrangimentos severos.</p>
+<p>A velocidade comercial é um indicador global da eficiência de uma linha ou percurso, refletindo o tempo real de viagem do passageiro (incluindo paragens e atrasos). Valores baixos afetam a fiabilidade do serviço e aumentam os custos de operação. Estes constrangimentos podem ser internos (tempos excessivos de serviço às paragens) ou externos (congestionamento, ausência de prioridade semafórica e excesso de conflitos com outros veículos ao longo do trajeto).</p>
+<p>O Percentil 85 é considerado uma métrica relevante para identificar o potencial de melhoria, uma vez que representa a velocidade que os veículos conseguem atingir em condições normais de circulação, sem constrangimentos severos.</p>
 
 
 </section>
@@ -974,8 +974,8 @@ window.Quarto = {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./metodologia_procura.html" class="pagination-link" aria-label="Procura de passageiros">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura de passageiros</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./metodologia_procura.html" class="pagination-link" aria-label="Procura">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

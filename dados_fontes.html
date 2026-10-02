@@ -391,7 +391,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_frequencia.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de autocarros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -415,7 +415,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_procura.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura de passageiros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -450,7 +450,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dashboard_linhas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível da linha</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível do percurso</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -492,7 +492,7 @@ div.csl-indent {
   <li><a href="#gtfs-general-transit-feed-specification" id="toc-gtfs-general-transit-feed-specification" class="nav-link active" data-scroll-target="#gtfs-general-transit-feed-specification"><span class="header-section-number">1.1</span> GTFS (<em>General Transit Feed Specification</em>)</a></li>
   <li><a href="#dados-de-operação-em-tempo-real-gtfs-rt" id="toc-dados-de-operação-em-tempo-real-gtfs-rt" class="nav-link" data-scroll-target="#dados-de-operação-em-tempo-real-gtfs-rt"><span class="header-section-number">1.2</span> Dados de operação em tempo real (GTFS-RT)</a></li>
   <li><a href="#openstreetmap-osm" id="toc-openstreetmap-osm" class="nav-link" data-scroll-target="#openstreetmap-osm"><span class="header-section-number">1.3</span> OpenStreetMap (OSM)</a></li>
-  <li><a href="#dados-de-procura-de-passageiros" id="toc-dados-de-procura-de-passageiros" class="nav-link" data-scroll-target="#dados-de-procura-de-passageiros"><span class="header-section-number">1.4</span> Dados de procura de passageiros</a></li>
+  <li><a href="#dados-de-procura" id="toc-dados-de-procura" class="nav-link" data-scroll-target="#dados-de-procura"><span class="header-section-number">1.4</span> Dados de procura</a></li>
   </ul>
 </nav>
     </div>
@@ -519,8 +519,8 @@ div.csl-indent {
 </header>
 
 
-<p>A metodologia aplicada assenta na combinação de quatro conjuntos de dados, que permitem analisar as várias dimensões do problema em estudo: dados de oferta planeada de transporte público (GTFS), de operação em tempo real (GTFS-RT), de infraestrutura viária (OpenStreetMap) e de procura de passageiros.</p>
-<p>O período de análise para a oferta planeada e para a procura (número de passageiros) é uma quarta-feira útil (20/05/2026), por ser considerado um dia típico de operação. Para a monitorização em tempo real da performance operacional, por ser uma análise mais fina com detalhe ao nível da viagem individual, foi considerado um período mais alargado, de duas semanas úteis, entre 13 e 30/04/2026 (14 dias), de forma a conseguir capturar várias amostras para a mesma viagem.</p>
+<p>A metodologia aplicada assenta na combinação de quatro conjuntos de dados, que permitem analisar as várias dimensões do problema em estudo: dados de oferta planeada de transporte público (GTFS), de operação em tempo real (GTFS-RT), de infraestrutura viária (OpenStreetMap) e de procura.</p>
+<p>O período de análise para a oferta planeada e para a procura é uma quarta-feira útil (20/05/2026), por ser considerado um dia típico de operação. Para a monitorização em tempo real da performance operacional, por ser uma análise mais fina com detalhe ao nível da viagem individual, foi considerado um período mais alargado, de duas semanas úteis, entre 13 e 30/04/2026 (14 dias), de forma a conseguir capturar várias amostras para a mesma viagem.</p>
 <section id="gtfs-general-transit-feed-specification" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="gtfs-general-transit-feed-specification"><span class="header-section-number">1.1</span> GTFS (<em>General Transit Feed Specification</em>)</h2>
 <p>O GTFS <span class="citation" data-cites="mobilitydata_general_nodate">(<a href="references.html#ref-mobilitydata_general_nodate" role="doc-biblioref">MobilityData, sem data</a>)</span> é um formato aberto e padronizado para representar a oferta programada de transporte público. Um <em>feed</em> GTFS é composto por um conjunto de ficheiros CSV comprimidos num arquivo <code>.zip</code>, descrevendo paragens (<em>stops</em>), linhas (<em>routes</em>) e as suas geometrias (<em>shapes</em>), viagens (<em>trips</em>) e horários (<em>stop times</em>) planeados, para um ou vários operadores de transporte (<em>agencies</em>).</p>
@@ -582,9 +582,9 @@ div.csl-indent {
 </ul>
 <p>Para extrair esta informação do OSM são utilizadas as bibliotecas de R <code>osmdata</code> <span class="citation" data-cites="maspons_osmdata_2026">(<a href="references.html#ref-maspons_osmdata_2026" role="doc-biblioref"><span class="nocase">Maspons et al.</span> 2026</a>)</span> e <code>osmextract</code> <span class="citation" data-cites="gilardi_osmextract_2026">(<a href="references.html#ref-gilardi_osmextract_2026" role="doc-biblioref"><span class="nocase">Gilardi et al.</span> 2026</a>)</span>.</p>
 </section>
-<section id="dados-de-procura-de-passageiros" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="dados-de-procura-de-passageiros"><span class="header-section-number">1.4</span> Dados de procura de passageiros</h2>
-<p>Obtiveram-se dados de procura através da API de métricas da Carris Metropolitana <span class="citation" data-cites="carris_metropolitana_carrismetropolitanaapi_2026">(<a href="references.html#ref-carris_metropolitana_carrismetropolitanaapi_2026" role="doc-biblioref">Carris Metropolitana 2026a</a>)</span>. Foi recolhido o número de passageiros agregados por linha e por dia, considerando o dia 20/05/2026.</p>
+<section id="dados-de-procura" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="dados-de-procura"><span class="header-section-number">1.4</span> Dados de procura</h2>
+<p>Obtiveram-se dados de procura (número de passageiros) através da API de métricas da Carris Metropolitana <span class="citation" data-cites="carris_metropolitana_carrismetropolitanaapi_2026">(<a href="references.html#ref-carris_metropolitana_carrismetropolitanaapi_2026" role="doc-biblioref">Carris Metropolitana 2026a</a>)</span>. Foi recolhido o número de passageiros agregados por linha e por dia, considerando o dia 20/05/2026.</p>
 <p>Estes dados permitem ponderar a análise de priorização pelo volume de passageiros transportados, identificando os segmentos onde o impacto de medidas de priorização do transporte público poderia ser maior. A associação entre dados de procura e a rede viária é feita através do identificador de linha (<code>route_short_name</code>), que é cruzado com o GTFS para obter o <code>route_id</code> correspondente.</p>
 <p>O código utilizado para a recolha destes dados está disponível em <a href="https://github.com/U-Shift/GTFShift-TML/blob/main/scripts/00_demand/carris_metropolitana.R" target="blank">github.com/U-Shift/GTFShift-DI/blob/main/scripts/00_demand/carris_metropolitana.R</a>.</p>
 

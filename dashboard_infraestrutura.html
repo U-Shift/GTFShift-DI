@@ -372,7 +372,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_frequencia.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de autocarros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -396,7 +396,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_procura.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura de passageiros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -431,7 +431,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dashboard_linhas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível da linha</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível do percurso</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -473,7 +473,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#sec-infra-sidebar" id="toc-sec-infra-sidebar" class="nav-link active" data-scroll-target="#sec-infra-sidebar"><span class="header-section-number">14.1</span> Barra lateral esquerda</a>
   <ul class="collapse">
   <li><a href="#seleção-de-região-e-camada" id="toc-seleção-de-região-e-camada" class="nav-link" data-scroll-target="#seleção-de-região-e-camada"><span class="header-section-number">14.1.1</span> Seleção de região e camada</a></li>
-  <li><a href="#filtro-por-linha" id="toc-filtro-por-linha" class="nav-link" data-scroll-target="#filtro-por-linha"><span class="header-section-number">14.1.2</span> Filtro por linha</a></li>
+  <li><a href="#filtro-por-percurso" id="toc-filtro-por-percurso" class="nav-link" data-scroll-target="#filtro-por-percurso"><span class="header-section-number">14.1.2</span> Filtro por percurso</a></li>
   <li><a href="#espessura-das-linhas" id="toc-espessura-das-linhas" class="nav-link" data-scroll-target="#espessura-das-linhas"><span class="header-section-number">14.1.3</span> Espessura das linhas</a></li>
   <li><a href="#sec-infra-layers" id="toc-sec-infra-layers" class="nav-link" data-scroll-target="#sec-infra-layers"><span class="header-section-number">14.1.4</span> Camadas de visualização</a></li>
   <li><a href="#sec-attribute-table" id="toc-sec-attribute-table" class="nav-link" data-scroll-target="#sec-attribute-table"><span class="header-section-number">14.1.5</span> Tabela de atributos</a></li>
@@ -483,7 +483,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#características-físicas-e-operacionais-physical-operational-overview" id="toc-características-físicas-e-operacionais-physical-operational-overview" class="nav-link" data-scroll-target="#características-físicas-e-operacionais-physical-operational-overview"><span class="header-section-number">14.2.1</span> Características físicas e operacionais (<em>Physical &amp; Operational Overview</em>)</a></li>
   <li><a href="#velocidade-e-índice-de-perturbação-speed-disturbance-index" id="toc-velocidade-e-índice-de-perturbação-speed-disturbance-index" class="nav-link" data-scroll-target="#velocidade-e-índice-de-perturbação-speed-disturbance-index"><span class="header-section-number">14.2.2</span> Velocidade e índice de perturbação (<em>Speed &amp; Disturbance Index</em>)</a></li>
   <li><a href="#variações-horárias-hourly-variations" id="toc-variações-horárias-hourly-variations" class="nav-link" data-scroll-target="#variações-horárias-hourly-variations"><span class="header-section-number">14.2.3</span> Variações horárias (<em>Hourly Variations</em>)</a></li>
-  <li><a href="#linhas-associadas-routes" id="toc-linhas-associadas-routes" class="nav-link" data-scroll-target="#linhas-associadas-routes"><span class="header-section-number">14.2.4</span> Linhas associadas (<em>Routes</em>)</a></li>
+  <li><a href="#percursos-associados-routes" id="toc-percursos-associados-routes" class="nav-link" data-scroll-target="#percursos-associados-routes"><span class="header-section-number">14.2.4</span> Percursos associados (<em>Routes</em>)</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -511,28 +511,28 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>A <strong>infraestrutura viária</strong> é a base do modelo de dados disponíveis no painel interativo, sendo composta por segmentos de via (<em>ways</em>) extraídos do OpenStreetMap (OSM) que integram a rede de transporte público. Independentemente da camada ou filtro selecionado, serão sempre estas as geometrias que serão mostradas no mapa.</p>
-<p>A interação com o painel inicia-se com a seleção de uma região de análise. Uma vez selecionada, são carregados os dados pré-processados associados à região, que são mostrados no mapa e na barra lateral esquerda, onde se encontram os controlos da análise, explorados em detalhe em seguida.</p>
-<p>O utilizador pode ainda interagir com o mapa para selecionar um segmento de via e abrir o painel de detalhes da via, que agrega num só lugar os indicadores físicos, operacionais e de velocidade do segmento selecionado. Este painel está disponível no lado direito do ecrã.</p>
+<p>A <strong>infraestrutura viária</strong> é a base do modelo de dados disponível no painel interativo, sendo composta por segmentos de via (<em>ways</em>) extraídos do OSM que integram a rede de transporte público. Independentemente da camada ou filtro selecionado, serão sempre estas as geometrias que serão mostradas no mapa.</p>
+<p>A interação com o painel inicia-se com a seleção de uma região para análise. Uma vez selecionada, são carregados os dados pré-processados associados à mesma, que são apresentados no mapa e na barra lateral esquerda.</p>
+<p>O utilizador pode ainda interagir com o mapa para selecionar um segmento de via e abrir o painel de detalhes, que agrega num só lugar os indicadores físicos, operacionais e de velocidade do segmento selecionado. Este painel é apresentado no lado direito do ecrã.</p>
 <section id="sec-infra-sidebar" class="level2" data-number="14.1">
 <h2 data-number="14.1" class="anchored" data-anchor-id="sec-infra-sidebar"><span class="header-section-number">14.1</span> Barra lateral esquerda</h2>
-<p>A barra lateral esquerda (painel de controlo) é o ponto de partida para toda a interação com o mapa. Está sempre visível e organiza-se nas seguintes secções:</p>
+<p>A barra lateral esquerda é o ponto de partida para toda a interação com o mapa. Está sempre visível e organiza-se nas seguintes secções:</p>
 <section id="seleção-de-região-e-camada" class="level3" data-number="14.1.1">
 <h3 data-number="14.1.1" class="anchored" data-anchor-id="seleção-de-região-e-camada"><span class="header-section-number">14.1.1</span> Seleção de região e camada</h3>
 <p>Ao abrir o painel pela primeira vez, é apresentada uma lista de regiões disponíveis para análise. Ao selecionar uma região, serão carregados os seus dados pré-processados, que são mostrados no mapa. A barra lateral esquerda passa a apresentar os controlos da análise.</p>
 </section>
-<section id="filtro-por-linha" class="level3" data-number="14.1.2">
-<h3 data-number="14.1.2" class="anchored" data-anchor-id="filtro-por-linha"><span class="header-section-number">14.1.2</span> Filtro por linha</h3>
-<p>O seletor <strong>Filter by Route</strong> permite restringir a visualização no mapa a uma variante de uma linha de transporte público específica (geometria). Ao selecionar uma variante de linha, os critérios de priorização são temporariamente desativados e o mapa destaca apenas os segmentos percorridos por essa variante. A opção <em>All Network</em> repõe a visualização para a rede completa.</p>
+<section id="filtro-por-percurso" class="level3" data-number="14.1.2">
+<h3 data-number="14.1.2" class="anchored" data-anchor-id="filtro-por-percurso"><span class="header-section-number">14.1.2</span> Filtro por percurso</h3>
+<p>O seletor <strong>Filter by Route</strong> permite restringir a visualização no mapa a um percurso de uma linha de transporte público específica. Ao selecionar um percurso, os critérios de priorização são temporariamente desativados e o mapa destaca apenas os segmentos percorridos por esse percurso. A opção <em>All Network</em> repõe a visualização para a rede completa.</p>
 </section>
 <section id="espessura-das-linhas" class="level3" data-number="14.1.3">
 <h3 data-number="14.1.3" class="anchored" data-anchor-id="espessura-das-linhas"><span class="header-section-number">14.1.3</span> Espessura das linhas</h3>
 <p>O seletor <strong>Line Weight</strong> controla a variável usada para escalar a espessura dos segmentos no mapa. As opções incluem:</p>
 <ul>
 <li><strong>None</strong>: espessura uniforme;</li>
-<li><strong>Bus frequency</strong>: proporcional à frequência de autocarros na hora de critério;</li>
-<li><strong>Number of lanes</strong>: proporcional ao número de vias de circulação;</li>
-<li><strong>Average/Median/P85 speed</strong>: proporcional à velocidade agregada ao segmento (sentido crescente ou decrescente);</li>
+<li><strong>Bus frequency</strong>: proporcional à frequência na hora selecionada;</li>
+<li><strong>Number of lanes</strong>: proporcional ao número de vias de circulação por sentido;</li>
+<li><strong>Average/Median/P85 speed</strong>: proporcional à velocidade média do segmento;</li>
 <li><strong>Disturbance index</strong>: proporcional ao valor absoluto do índice de perturbação.</li>
 </ul>
 </section>
@@ -541,59 +541,65 @@ ul.task-list li input[type="checkbox"] {
 <p>As camadas disponíveis são apresentadas em seguida e permitem alternar a dimensão representada no mapa. As camadas são organizadas nas seguintes categorias:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 42%">
-<col style="width: 57%">
+<col style="width: 29%">
+<col style="width: 40%">
+<col style="width: 29%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Camada</th>
 <th>Descrição</th>
+<th>Detalhes</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><strong>Disturbance index</strong></td>
-<td>Índice de perturbação por segmento de via para a hora de critério (ver <a href="metodologia_indice_perturbacao.html" class="quarto-xref"><span>Capítulo 4</span></a>)</td>
+<td>Índice de perturbação por segmento de via para a hora selecionada</td>
+<td><a href="metodologia_indice_perturbacao.html" class="quarto-xref"><span>Capítulo 4</span></a></td>
 </tr>
 <tr class="even">
-<td><strong>Prioritisation</strong></td>
-<td>Resultado da priorização de corredores <em>bus</em> (ver <a href="metodologia_priorizacao.html" class="quarto-xref"><span>Capítulo 5</span></a>)</td>
+<td><strong>Bus lane prioritisation</strong></td>
+<td>Resultado da priorização de corredores <em>bus</em></td>
+<td><a href="metodologia_priorizacao.html" class="quarto-xref"><span>Capítulo 5</span></a></td>
 </tr>
 <tr class="odd">
-<td><strong>Bus lanes</strong></td>
-<td>Segmentos com corredor <em>bus</em> dedicado (ver <a href="metodologia_corredores_bus.html" class="quarto-xref"><span>Capítulo 6</span></a>)</td>
+<td><strong>Existing bus lanes</strong></td>
+<td>Segmentos com corredor <em>bus</em> dedicado</td>
+<td><a href="metodologia_corredores_bus.html" class="quarto-xref"><span>Capítulo 6</span></a></td>
 </tr>
 <tr class="even">
-<td><strong>Transit frequency</strong></td>
-<td>Frequência de autocarros por hora (ver <a href="metodologia_frequencia.html" class="quarto-xref"><span>Capítulo 7</span></a>)</td>
+<td><strong>Bus frequency</strong></td>
+<td>Frequência de autocarros por hora</td>
+<td><a href="metodologia_frequencia.html" class="quarto-xref"><span>Capítulo 7</span></a></td>
 </tr>
 <tr class="odd">
 <td><strong>Number of lanes</strong></td>
-<td>Número de vias de circulação por direção (ver <a href="metodologia_nr_vias.html" class="quarto-xref"><span>Capítulo 8</span></a>)</td>
+<td>Número de vias de circulação por sentido</td>
+<td><a href="metodologia_nr_vias.html" class="quarto-xref"><span>Capítulo 8</span></a></td>
 </tr>
 <tr class="even">
-<td><strong>Parking lanes</strong></td>
-<td>Número de vias de estacionamento (ver <a href="metodologia_nr_vias.html" class="quarto-xref"><span>Capítulo 8</span></a>)</td>
+<td><strong>Speed (all-day)</strong></td>
+<td>Velocidade média observada ao longo do dia</td>
+<td><a href="metodologia_velocidade_rt.html" class="quarto-xref"><span>Capítulo 9</span></a></td>
 </tr>
 <tr class="odd">
-<td><strong>RT speed (all-day)</strong></td>
-<td>Velocidade média observada ao longo do dia (ver <a href="metodologia_velocidade_rt.html" class="quarto-xref"><span>Capítulo 9</span></a>)</td>
+<td><strong>Speed (hourly)</strong></td>
+<td>Velocidade média observada na hora selecionada</td>
+<td><a href="metodologia_velocidade_rt.html" class="quarto-xref"><span>Capítulo 9</span></a></td>
 </tr>
 <tr class="even">
-<td><strong>RT speed (hourly)</strong></td>
-<td>Velocidade média observada na hora de critério (ver <a href="metodologia_velocidade_rt.html" class="quarto-xref"><span>Capítulo 9</span></a>)</td>
-</tr>
-<tr class="odd">
-<td><strong>Demand</strong></td>
-<td>Procura de passageiros por dia (ver <a href="metodologia_procura.html" class="quarto-xref"><span>Capítulo 11</span></a>)</td>
+<td><strong>Passenger demand</strong></td>
+<td>Procura diária de passageiros</td>
+<td><a href="metodologia_procura.html" class="quarto-xref"><span>Capítulo 11</span></a></td>
 </tr>
 </tbody>
 </table>
 <p>Cada camada dispõe de controlos específicos, como:</p>
 <ul>
-<li><strong>Criteria hour</strong>: hora (0–23) usada como referência para as camadas horárias (frequência, velocidade, índice de perturbação);</li>
-<li><strong>Speed metric</strong>: dimensão de velocidade a utilizar (Média, Mediana, Percentil 85);</li>
-<li><strong>Scale mode</strong>: escala de cor com base nos percentis P5–P95 da rede (<em>percentile</em>) ou no mínimo-máximo (<em>minmax</em>);</li>
+<li><strong>Filtro horário</strong>: hora (0–23) usada como referência para as camadas horárias (frequência, velocidade, índice de perturbação);</li>
+<li><strong>Métrica de velocidade</strong>: dimensão de velocidade a utilizar (Média, Mediana, Percentil 85);</li>
+<li><strong>Modo de escala</strong>: escala de cor com base nos percentis P5–P95 da rede (<em>percentile</em>) ou no mínimo-máximo (<em>minmax</em>);</li>
 <li>Controlos de <strong>priorização de corredores <em>bus</em></strong>, permitindo ativar e desativar critérios, assim como editar os limites de elegibilidade para frequência mínima, número de vias, velocidade média e procura;</li>
 <li>Controlos de filtragem do <strong>índice de perturbação</strong> (limiares, modo de paleta de cor, filtro pelos piores/melhores segmentos, extensão mínima).</li>
 </ul>
@@ -603,9 +609,9 @@ ul.task-list li input[type="checkbox"] {
 <p>O ícone de tabela na zona superior da barra lateral abre a <strong>tabela de atributos</strong>, que apresenta em formato tabular todos os segmentos de via visíveis no mapa, com as seguintes colunas:</p>
 <ul>
 <li>Nome da via e identificador OSM;</li>
-<li>Frequência na hora de critério (autocarros/hora);</li>
-<li>Presença de corredor <em>bus</em>;</li>
-<li>Número de vias de circulação;</li>
+<li>Frequência na hora selecionada (autocarros/hora);</li>
+<li>Existência de corredor <em>bus</em>;</li>
+<li>Número de vias;</li>
 <li>Velocidades;</li>
 <li>Índice de perturbação;</li>
 <li>Procura;</li>
@@ -617,7 +623,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-way-panel" class="level2" data-number="14.2">
 <h2 data-number="14.2" class="anchored" data-anchor-id="sec-way-panel"><span class="header-section-number">14.2</span> Painel de detalhes da via</h2>
-<p>Ao clicar sobre um segmento de via no mapa, é aberto o <strong>painel de detalhes da via</strong> no lado direito do ecrã. O painel apresenta o nome da via (proveniente do OSM) e o respetivo identificador OSM, com ligação direta à página do segmento no OpenStreetMap e um botão para copiar o identificador.</p>
+<p>Ao clicar sobre um segmento de via no mapa, é aberto o painel de detalhes da via no lado direito do ecrã. O painel apresenta o nome da via (proveniente do OSM) e o respetivo identificador OSM, com ligação direta à página do segmento no OpenStreetMap e um botão para copiar o identificador.</p>
 <p>O painel pode ser expandido para ecrã completo através do botão no canto superior direito.</p>
 <p>O conteúdo do painel está organizado em quatro secções expansíveis:</p>
 <section id="características-físicas-e-operacionais-physical-operational-overview" class="level3" data-number="14.2.1">
@@ -637,7 +643,7 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><strong>Buses/h</strong></td>
-<td>Frequência de autocarros na hora de critério</td>
+<td>Frequência de autocarros na hora selecionada</td>
 </tr>
 <tr class="even">
 <td><strong>Bus Lane</strong></td>
@@ -672,22 +678,22 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="velocidade-e-índice-de-perturbação-speed-disturbance-index" class="level3" data-number="14.2.2">
 <h3 data-number="14.2.2" class="anchored" data-anchor-id="velocidade-e-índice-de-perturbação-speed-disturbance-index"><span class="header-section-number">14.2.2</span> Velocidade e índice de perturbação (<em>Speed &amp; Disturbance Index</em>)</h3>
-<p>Esta secção apresenta informação sobre as velocidades observadas no segmento na hora de critério e durante o dia, respetivas dispersões e índices de perturbação.</p>
+<p>Esta secção apresenta informação sobre as velocidades observadas no segmento na hora selecionada e durante o dia, respetivas dispersões e índice de perturbação. Ver <a href="metodologia_velocidade_rt.html" class="quarto-xref"><span>Capítulo 9</span></a> e <a href="metodologia_indice_perturbacao.html" class="quarto-xref"><span>Capítulo 4</span></a> para mais informações sobre o cálculo da velocidade e do índice de perturbação ao nível do segmento.</p>
 </section>
 <section id="variações-horárias-hourly-variations" class="level3" data-number="14.2.3">
 <h3 data-number="14.2.3" class="anchored" data-anchor-id="variações-horárias-hourly-variations"><span class="header-section-number">14.2.3</span> Variações horárias (<em>Hourly Variations</em>)</h3>
-<p>Esta secção apresenta gráficos de barras com a evolução ao longo das 24 horas do dia:</p>
+<p>Esta secção apresenta gráficos de barras com a evolução ao longo das 24 horas do dia, para as seguintes dimensões:</p>
 <ul>
-<li><strong>Frequência horária programada</strong>: número de autocarros por hora que percorrem o segmento. A hora de critério aparece destacada com um contorno, e uma linha a tracejado indica a média diária;</li>
-<li><strong>Velocidade observada horária</strong>: velocidade média observada por hora (se disponível). A linha a tracejado indica a velocidade média diária;</li>
-<li><strong>Índice de perturbação horário</strong>: gráfico de barras divergente: valores positivos (acima da linha central) indicam que o segmento circulou mais rapidamente do que a velocidade de referência nessa hora; valores negativos indicam perturbação. As cores seguem as categorias do índice de perturbação.</li>
+<li><strong>Frequência horária programada</strong>: número de autocarros por hora que percorrem o segmento. A hora selecionada aparece destacada com um contorno. A linha a tracejado indica a média diária;</li>
+<li><strong>Velocidade observada horária</strong>: velocidade média por hora. A linha a tracejado indica a velocidade média diária;</li>
+<li><strong>Índice de perturbação horário</strong>: gráfico de barras divergente: valores positivos (acima da linha central) indicam que a velocidade no segmento nessa hora é superior à velocidade de referência para todo o período de análise; valores negativos indicam perturbação. As cores seguem as categorias do índice de perturbação.</li>
 </ul>
 <p>Em modo expandido, os gráficos de frequência e velocidade são apresentados lado a lado.</p>
 </section>
-<section id="linhas-associadas-routes" class="level3" data-number="14.2.4">
-<h3 data-number="14.2.4" class="anchored" data-anchor-id="linhas-associadas-routes"><span class="header-section-number">14.2.4</span> Linhas associadas (<em>Routes</em>)</h3>
-<p>Esta secção lista todas as linhas de transporte público que percorrem o segmento, com identificador, nome e direção. Clicar numa linha permite filtra a visualização do mapa para os segmentos percorridos por essa linha e abre automaticamente o painel de detalhes da linha.</p>
-<p>Inclui ainda uma caixa de pesquisa para filtrar as linhas por nome quando o número de linhas associadas é elevado.</p>
+<section id="percursos-associados-routes" class="level3" data-number="14.2.4">
+<h3 data-number="14.2.4" class="anchored" data-anchor-id="percursos-associados-routes"><span class="header-section-number">14.2.4</span> Percursos associados (<em>Routes</em>)</h3>
+<p>Esta secção lista todos os percursos de transporte público que percorrem o segmento, com identificador, nome e direção. Clicar num percurso permite filtrar a visualização do mapa para os segmentos percorridos pelo mesmo e abre automaticamente o painel de detalhes associado.</p>
+<p>Inclui ainda uma caixa de pesquisa para filtrar os percursos por nome quando o número de percursos associados é elevado.</p>
 
 
 </section>
@@ -1114,8 +1120,8 @@ ul.task-list li input[type="checkbox"] {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./dashboard_linhas.html" class="pagination-link" aria-label="Análise ao nível da linha">
-        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível da linha</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./dashboard_linhas.html" class="pagination-link" aria-label="Análise ao nível do percurso">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível do percurso</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

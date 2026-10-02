@@ -372,7 +372,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_frequencia.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de autocarros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -396,7 +396,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_procura.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura de passageiros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -431,7 +431,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dashboard_linhas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível da linha</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível do percurso</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -473,10 +473,10 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#geração-dos-indicadores-base" id="toc-geração-dos-indicadores-base" class="nav-link active" data-scroll-target="#geração-dos-indicadores-base"><span class="header-section-number">5.1</span> Geração dos indicadores base</a></li>
   <li><a href="#critérios-de-priorização" id="toc-critérios-de-priorização" class="nav-link" data-scroll-target="#critérios-de-priorização"><span class="header-section-number">5.2</span> Critérios de priorização</a>
   <ul class="collapse">
-  <li><a href="#frequência-de-autocarros" id="toc-frequência-de-autocarros" class="nav-link" data-scroll-target="#frequência-de-autocarros"><span class="header-section-number">5.2.1</span> Frequência de autocarros</a></li>
+  <li><a href="#frequência" id="toc-frequência" class="nav-link" data-scroll-target="#frequência"><span class="header-section-number">5.2.1</span> Frequência</a></li>
   <li><a href="#número-de-vias-de-circulação-por-sentido" id="toc-número-de-vias-de-circulação-por-sentido" class="nav-link" data-scroll-target="#número-de-vias-de-circulação-por-sentido"><span class="header-section-number">5.2.2</span> Número de vias de circulação por sentido</a></li>
   <li><a href="#velocidade-média" id="toc-velocidade-média" class="nav-link" data-scroll-target="#velocidade-média"><span class="header-section-number">5.2.3</span> Velocidade média</a></li>
-  <li><a href="#procura-de-passageiros" id="toc-procura-de-passageiros" class="nav-link" data-scroll-target="#procura-de-passageiros"><span class="header-section-number">5.2.4</span> Procura de passageiros</a></li>
+  <li><a href="#procura" id="toc-procura" class="nav-link" data-scroll-target="#procura"><span class="header-section-number">5.2.4</span> Procura</a></li>
   </ul></li>
   <li><a href="#classificação-e-visualização" id="toc-classificação-e-visualização" class="nav-link" data-scroll-target="#classificação-e-visualização"><span class="header-section-number">5.3</span> Classificação e visualização</a></li>
   </ul>
@@ -564,12 +564,12 @@ ul.task-list li input[type="checkbox"] {
 <section id="critérios-de-priorização" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="critérios-de-priorização"><span class="header-section-number">5.2</span> Critérios de priorização</h2>
 <p>O utilizador pode definir os critérios de priorização para filtrar e visualizar os segmentos mais relevantes. Os critérios disponíveis são:</p>
-<section id="frequência-de-autocarros" class="level3" data-number="5.2.1">
-<h3 data-number="5.2.1" class="anchored" data-anchor-id="frequência-de-autocarros"><span class="header-section-number">5.2.1</span> Frequência de autocarros</h3>
+<section id="frequência" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="frequência"><span class="header-section-number">5.2.1</span> Frequência</h3>
 <p>Define o limiar mínimo de autocarros por hora para que um segmento seja considerado prioritário. Segmentos com frequência abaixo do limiar são excluídos da visualização (a menos que já tenham um corredor <em>bus</em>, caso em que são sinalizados a amarelo).</p>
 <p>A frequência é calculada para a hora de análise selecionada, considerando todas as viagens (de todos os percursos de todas as linhas) que passam pelo segmento nessa hora.</p>
 <p>Por omissão este valor é definido como a mediana das frequências abaixo do percentil 85.</p>
-<p>A metodologia utilizada para calcular a frequência de autocarros está documentada no <a href="metodologia_frequencia.html" class="quarto-xref"><span>Capítulo 7</span></a>.</p>
+<p>A metodologia utilizada para calcular a frequência está documentada no <a href="metodologia_frequencia.html" class="quarto-xref"><span>Capítulo 7</span></a>.</p>
 </section>
 <section id="número-de-vias-de-circulação-por-sentido" class="level3" data-number="5.2.2">
 <h3 data-number="5.2.2" class="anchored" data-anchor-id="número-de-vias-de-circulação-por-sentido"><span class="header-section-number">5.2.2</span> Número de vias de circulação por sentido</h3>
@@ -583,11 +583,11 @@ ul.task-list li input[type="checkbox"] {
 <p>Por omissão este valor é definido como a média das velocidades abaixo do percentil 85.</p>
 <p>A metodologia utilizada para calcular a velocidade média está documentada no <a href="metodologia_velocidade_rt.html" class="quarto-xref"><span>Capítulo 9</span></a>.</p>
 </section>
-<section id="procura-de-passageiros" class="level3" data-number="5.2.4">
-<h3 data-number="5.2.4" class="anchored" data-anchor-id="procura-de-passageiros"><span class="header-section-number">5.2.4</span> Procura de passageiros</h3>
+<section id="procura" class="level3" data-number="5.2.4">
+<h3 data-number="5.2.4" class="anchored" data-anchor-id="procura"><span class="header-section-number">5.2.4</span> Procura</h3>
 <p>Define o limiar mínimo de procura diária de passageiros. Permite focar a análise nos segmentos com maior impacto potencial em termos de passageiros beneficiados.</p>
 <p>Por omissão este valor é definido como a média da procura abaixo do percentil 85.</p>
-<p>A metodologia utilizada para calcular a procura de passageiros está documentada no <a href="metodologia_procura.html" class="quarto-xref"><span>Capítulo 11</span></a>.</p>
+<p>A metodologia utilizada para calcular a procura está documentada no <a href="metodologia_procura.html" class="quarto-xref"><span>Capítulo 11</span></a>.</p>
 </section>
 </section>
 <section id="classificação-e-visualização" class="level2" data-number="5.3">
@@ -624,7 +624,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>A espessura de cada segmento no mapa pode ser configurada para refletir a frequência de serviço ou a procura de passageiros, tornando visualmente mais proeminentes os segmentos mais relevantes.</p>
+<p>A espessura de cada segmento no mapa pode ser configurada para refletir a frequência de serviço ou a procura, tornando visualmente mais proeminentes os segmentos mais relevantes.</p>
 
 
 </section>

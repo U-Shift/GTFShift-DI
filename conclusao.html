@@ -391,7 +391,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_frequencia.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de autocarros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -415,7 +415,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_procura.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura de passageiros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -450,7 +450,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dashboard_linhas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível da linha</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível do percurso</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -517,14 +517,14 @@ div.csl-indent {
 
 
 <p>Este relatório documenta a aplicação do GTFShift à rede de autocarros da Carris Metropolitana, integrando num único fluxo de processamento aberto e reprodutível a priorização de infraestrutura e a análise operacional da rede.</p>
-<p>A metodologia desenvolvida, implementada em R com recurso ao pacote <a href="https://u-shift.github.io/GTFShift/" target="_blank"><code>GTFShift</code></a>, permite identificar de forma sistemática e reprodutível os segmentos da rede viária mais críticos para a operação do transporte público, quantificando o grau de perturbação ao nível do segmento de via e ao nível da linha e da viagem individual.</p>
-<p>A disponibilização dos resultados através do painel interativo <a href="https://ushift.pt/apps/gtfshift-tml" target="_blank"><strong>GTFShift/TML</strong></a> permite dotar os decidores com uma ferramenta de análise e priorização para a intervenção na infraestrutura viária e para o ajuste da operação. O painel permite a exploração sem necessidade de conhecimentos de programação, e os dados processados podem ser descarregados para análise independente.</p>
+<p>A metodologia desenvolvida, implementada em R com recurso ao pacote <a href="https://u-shift.github.io/GTFShift/" target="_blank">GTFShift</a>, permite identificar de forma sistemática os segmentos da rede viária mais críticos na operação do transporte público, quantificando o grau de perturbação ao nível do segmento de via e ao nível do percurso e da viagem individual.</p>
+<p>A disponibilização dos resultados através do painel interativo <a href="https://ushift.pt/apps/gtfshift-tml" target="_blank"><strong>GTFShift/TML</strong></a> permite dotar os técnicos e decidores com uma ferramenta de análise e priorização para a intervenção na infraestrutura viária e para o ajuste da operação. O painel permite a exploração sem necessidade de conhecimentos de programação e os dados processados podem ser descarregados para análises complementares.</p>
 <section id="sec-future-work" class="level2">
 <h2 class="anchored" data-anchor-id="sec-future-work">Trabalho futuro</h2>
 <p>O trabalho documentado neste relatório e materializado no painel interativo assume um cariz experimental, tendo sido desenvolvido como um protótipo funcional com vista à validação dos requisitos definidos pela TML. Esta fase piloto permite a exploração prática dos métodos, métricas e interfaces gerados, servindo de base para a avaliação interna da sua utilidade e para a sua eventual incorporação futura nos sistemas e rotinas de planeamento da empresa.</p>
 <p>Neste quadro exploratório, identificam-se diversas linhas de desenvolvimento que poderão consolidar, alargar e aprofundar o projeto em etapas subsequentes:</p>
-<p><strong>Tradução do painel.</strong> O painel interativo encontra-se atualmente desenvolvido em língua inglesa, reflexo da sua génese no contexto de investigação académica. A implementação de suporte multi-língua e a tradução integral da interface para português (PT-PT) constituem um passo natural para facilitar a sua apropriação direta por técnicos municipais, planeadores e decisores locais da Área Metropolitana de Lisboa.</p>
-<p><strong>Análise operacional entre paragens.</strong> A velocidade é atualmente calculada para cada segmento da rede viária e para as viagens completas (velocidade comercial). Para permitir ajustes aos horários, seria interessante calcular a velocidade entre paragens, permitindo identificar com maior precisão os troços (conjuntos de segmentos) que mais contribuem para os atrasos e comparar o desempenho com os tempos de percurso programados no GTFS.</p>
+<p><strong>Tradução do painel.</strong> O painel interativo encontra-se atualmente desenvolvido em língua inglesa, reflexo da sua génese no contexto de investigação académica. A implementação de suporte multi-língua e a tradução integral da interface para português constituem um passo natural para facilitar a sua utilização por técnicos municipais, planeadores e decisores locais da Área Metropolitana de Lisboa.</p>
+<p><strong>Análise operacional entre paragens.</strong> A velocidade é atualmente calculada para cada segmento da rede viária e para as viagens completas (velocidade comercial). O cálculo da velocidade entre paragens poderia ser uma abordagem complementar, identificando os troços que mais contribuem para os atrasos e comparando o desempenho com os tempos de percurso programados no GTFS. Esta abordagem poderia auxiliar no ajuste e otimização dos horários planeados.</p>
 <p><strong>Comparação com o desempenho planeado.</strong> O índice de perturbação atual compara a velocidade observada com a velocidade P85, uma referência baseada nos próprios dados observados. Uma abordagem complementar consiste em comparar diretamente a velocidade comercial com o desempenho planeado (ou seja, os tempos de percurso definidos no GTFS) tal como proposto pelo índice de perturbação desenvolvido no âmbito do sistema de monitorização operacional da Carris Metropolitana <span class="citation" data-cites="carris_metropolitana_carrismetropolitanadeploy_emds_2026">(<a href="references.html#ref-carris_metropolitana_carrismetropolitanadeploy_emds_2026" role="doc-biblioref">Carris Metropolitana 2026</a>)</span>.</p>
 <p><strong>Agregação da operação das quatro áreas.</strong> A análise é atualmente realizada de forma independente para cada uma das quatro áreas de operação da Carris Metropolitana. A integração dos dados de todas as áreas numa visão única da rede permitiria comparações transversais entre áreas e a identificação de corredores com maior impacto na qualidade global do serviço.</p>
 <p><strong>Painel dedicado à análise da operação das linhas e viagens.</strong> O painel interativo atual centra-se na visualização da infraestrutura viária. Com a disponibilização de dados de velocidade comercial e índice de perturbação ao nível das viagens individuais, justifica-se o desenvolvimento de um painel dedicado à análise da operação das linhas e viagens, com funcionalidades específicas para a monitorização do desempenho ao longo do tempo e a identificação de padrões de irregularidade.</p>

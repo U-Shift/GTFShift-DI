@@ -410,7 +410,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_frequencia.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de autocarros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -434,7 +434,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_procura.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura de passageiros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -469,7 +469,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dashboard_linhas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível da linha</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível do percurso</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -538,11 +538,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>O fluxo de processamento documentado anteriormente produz um conjunto de ficheiros de saída que constituem os dados base do painel interativo e que podem ser descarregados para análise independente.</p>
+<p>O fluxo de processamento documentado produz um conjunto de ficheiros de saída que constituem os dados base do painel interativo e que podem ser descarregados para análises complementares.</p>
 <section id="estrutura-dos-ficheiros-de-saída" class="level2" data-number="12.1">
 <h2 data-number="12.1" class="anchored" data-anchor-id="estrutura-dos-ficheiros-de-saída"><span class="header-section-number">12.1</span> Estrutura dos ficheiros de saída</h2>
-<p>O arquivo ZIP disponível para descarregar no painel contém os seguintes ficheiros:</p>
+<p>O arquivo ZIP disponível para descarregar no painel (<a href="dashboard.html#sec-modal-download" class="quarto-xref"><span>Seção 13.1.2</span></a>) contém os seguintes ficheiros:</p>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Ficheiro</th>
@@ -554,12 +559,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td><code>prioritisation_area_polygon_*.geojson</code></td>
 <td>GeoJSON</td>
-<td>Polígono de envolvente convexa (<em>convex hull</em>) da área de análise</td>
+<td>Perímetro externo da área em análise</td>
 </tr>
 <tr class="even">
 <td><code>ways_*.geojson</code> / <code>.gpkg</code></td>
 <td>GeoJSON / GeoPackage</td>
-<td>Geometrias dos segmentos de via com serviço de transporte</td>
+<td>Geometrias dos segmentos (<em>OSM way</em>) de via com serviço de transporte público</td>
 </tr>
 <tr class="odd">
 <td><code>way_data_*.json</code></td>
@@ -569,17 +574,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td><code>shape_data_*.json</code></td>
 <td>JSON</td>
-<td>Metadados por percurso (<em>shape</em>): estatísticas, horário e paragens</td>
+<td>Metadados por percurso (GTFS <em>shape</em>): estatísticas, horário e paragens</td>
 </tr>
 <tr class="odd">
 <td><code>route_data_*.json</code></td>
 <td>JSON</td>
-<td>Metadados por linha: nome, cor, procura e perfil de velocidade</td>
+<td>Metadados por linha (GTFS <em>route</em>): nome, cor, procura e perfil de velocidade</td>
 </tr>
 <tr class="even">
 <td><code>metadata_*.json</code></td>
 <td>JSON</td>
-<td>Métricas globais de cobertura, censos de dados e configuração</td>
+<td>Estatísticas de cobertura e descritivas dos indicadores e documentação dos parâmetros utilizados na análise</td>
 </tr>
 <tr class="odd">
 <td><code>gtfs_*.zip</code></td>
@@ -594,11 +599,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td><code>prioritisation_*.csv</code></td>
 <td>CSV</td>
-<td>Resultado completo de <a href="https://rdrr.io/github/U-Shift/GTFShift-TML/src/R/prioritise.R" target="_blank"><code>GTFShift::prioritise_lanes()</code></a> e <a href="https://rdrr.io/github/U-Shift/GTFShift-TML/src/R/prioritise.R" target="_blank"><code>rt_extend_prioritisation()</code></a></td>
+<td>Resultado dos métodos de priorização aplicados ao nível do segmento</td>
 </tr>
 </tbody>
 </table>
-<p>Alguns ficheiros estão disponíveis em múltiplos formatos (GeoJSON e GeoPackage; JSON e CSV) para facilitar a integração com diferentes ferramentas de análise.</p>
+<p>Foi dada primazia ao formato JSON para integração no painel interativo. No entanto, alguns ficheiros estão disponíveis noutros formatos (GeoJSON/GeoPackage e CSV) para facilitar a integração com diferentes ferramentas de análise.</p>
 </section>
 <section id="modelo-relacional-dos-dados" class="level2" data-number="12.2">
 <h2 data-number="12.2" class="anchored" data-anchor-id="modelo-relacional-dos-dados"><span class="header-section-number">12.2</span> Modelo relacional dos dados</h2>
@@ -628,7 +633,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         float speed_avg "Velocidade média (se RT disponível)"
         float speed_median "Velocidade mediana (se RT disponível)"
         float speed_p85 "Velocidade P85 (se RT disponível)"
-        int demand "Procura diária (se disponível)"
+        int demand "Procura diária"
         string_array routes FK "Lista de route_id que percorrem esta via"
         string_array shapes FK "Lista de shape_id que percorrem esta via"
         object hour_frequency "Frequência por hora (0-23)"
@@ -652,7 +657,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         string route_short_name "Nome curto da linha"
         string route_long_name "Nome completo da linha"
         string route_color "Cor hex da linha"
-        int demand "Procura diária (se disponível)"
+        int demand "Procura diária"
     }
     Metadata_JSON {
         string region "Nome da região analisada"
@@ -661,8 +666,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         object prioritisation "Métricas de cobertura globais"
         object prioritisation_hour "Métricas de cobertura por hora"
         object data_census "Estatísticas descritivas da rede"
-        object rt "Metadados GTFS-RT (se disponível)"
-        object demand "Metadados de procura (se disponível)"
+        object rt "Metadados GTFS-RT"
+        object demand "Metadados de procura"
         object execution "Momento de execução e versão do código"
         object environment "Versões do R e dos pacotes"
     }
@@ -681,19 +686,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="estatísticas-de-cobertura" class="level2" data-number="12.3">
 <h2 data-number="12.3" class="anchored" data-anchor-id="estatísticas-de-cobertura"><span class="header-section-number">12.3</span> Estatísticas de cobertura</h2>
-<p>O ficheiro <code>metadata_*.json</code> inclui métricas que permitem avaliar a cobertura da análise, nomeadamente a proporção de geometrias e linhas GTFS que foram associados com sucesso à rede viária OSM:</p>
+<p>O ficheiro <code>metadata_*.json</code> inclui métricas que permitem avaliar a cobertura da análise, nomeadamente a proporção de percursos e linhas GTFS que foram associados com sucesso à rede viária OSM:</p>
 <ul>
-<li><code>shapes_total</code>: número total de geometrias GTFS no dia de análise;</li>
-<li><code>shapes_found_n</code>: número de geometrias com pelo menos um segmento de via identificado;</li>
-<li><code>shapes_missing_n</code>: número de geometrias sem correspondência OSM;</li>
-<li><code>shapes_found_frequency</code>: frequência total associada a geometrias encontrados;</li>
-<li><code>shapes_missing_frequency</code>: frequência total associada a geometrias não encontrados.</li>
+<li><code>shapes_total</code>: número total de percursos GTFS no dia de análise;</li>
+<li><code>shapes_found_n</code>: número de percursos com pelo menos um segmento de via identificado;</li>
+<li><code>shapes_missing_n</code>: número de percursos sem correspondência OSM;</li>
+<li><code>shapes_found_frequency</code>: frequência total associada a percursos encontrados;</li>
+<li><code>shapes_missing_frequency</code>: frequência total associada a percursos não encontrados.</li>
 </ul>
 <p>Estes valores são também calculados por hora do dia (<code>prioritisation_hour</code>), permitindo identificar períodos com menor cobertura (por exemplo, serviços noturnos com menor representação no OSM).</p>
 </section>
 <section id="estatísticas-descritivas" class="level2" data-number="12.4">
 <h2 data-number="12.4" class="anchored" data-anchor-id="estatísticas-descritivas"><span class="header-section-number">12.4</span> Estatísticas descritivas</h2>
-<p>O <code>metadata_*.json</code> inclui um conjunto de estatísticas descritivas das métricas calculadas para o conjunto da rede, com valores ponderados pelo comprimento e pela frequência dos segmentos:</p>
+<p>O <code>metadata_*.json</code> inclui um conjunto de estatísticas descritivas dos indicadores calculados, com valores ponderados pelo comprimento e pela frequência dos segmentos:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="st">"data_census"</span><span class="er">:</span> <span class="fu">{</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"frequency"</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">"mean"</span><span class="fu">:</span> <span class="fl">8.3</span><span class="fu">,</span> <span class="dt">"median"</span><span class="fu">:</span> <span class="fl">6.0</span><span class="fu">,</span> <span class="dt">"p5"</span><span class="fu">:</span> <span class="fl">1.0</span><span class="fu">,</span> <span class="dt">"p95"</span><span class="fu">:</span> <span class="fl">24.0</span><span class="fu">,</span> <span class="er">...</span> <span class="fu">},</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"speed_avg_length"</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">"mean"</span><span class="fu">:</span> <span class="fl">14.2</span><span class="fu">,</span> <span class="dt">"p85"</span><span class="fu">:</span> <span class="fl">19.1</span><span class="fu">,</span> <span class="er">...</span> <span class="fu">},</span></span>
@@ -1121,8 +1126,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./metodologia_procura.html" class="pagination-link" aria-label="Procura de passageiros">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura de passageiros</span></span>
+      <a href="./metodologia_procura.html" class="pagination-link" aria-label="Procura">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

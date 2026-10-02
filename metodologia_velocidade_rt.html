@@ -372,7 +372,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_frequencia.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de autocarros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -396,7 +396,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_procura.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura de passageiros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -431,7 +431,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dashboard_linhas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível da linha</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível do percurso</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -508,14 +508,14 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <section id="cálculo" class="level2" data-number="9.1">
 <h2 data-number="9.1" class="anchored" data-anchor-id="cálculo"><span class="header-section-number">9.1</span> Cálculo</h2>
-<p>As métricas de velocidade por segmento de via são calculadas pela função <a href="https://u-shift.github.io/GTFShift/reference/rt_extend_prioritisation.html" target="blank"><code>GTFShift::rt_extend_prioritisation()</code></a>, que recebe como entrada o resultado da priorização de faixas (<code>lane_prioritisation</code>, gerado por <a href="https://u-shift.github.io/GTFShift/reference/prioritise_lanes.html" target="blank"><code>GTFShift::prioritise_lanes()</code></a>) e a coleção de atualizações GTFS-RT já filtradas e com velocidade calculada (ver <a href="dados_preparacao.html#sec-dados-rt" class="quarto-xref"><span>Seção 2.4</span></a>).</p>
-<p>O processo é o seguinte:</p>
+<p>As métricas de velocidade por segmento de via são calculadas pela função <a href="https://u-shift.github.io/GTFShift/reference/rt_extend_prioritisation.html" target="blank"><code>GTFShift::rt_extend_prioritisation()</code></a>, com base na coleção de atualizações GTFS-RT já filtradas e com velocidade calculada (ver <a href="dados_preparacao.html#sec-dados-rt" class="quarto-xref"><span>Seção 2.4</span></a>).</p>
+<p>O processo descreve-se da seguinte forma:</p>
 <ol type="1">
 <li><strong>Filtragem por estado do veículo</strong>: são consideradas apenas as atualizações com estado <code>IN_TRANSIT_TO</code>, excluindo registos em paragem ou com estado indeterminado;</li>
-<li><strong>Criação de <em>buffer</em> espacial</strong>: para cada segmento de via (<em>way</em>), é criado um <em>buffer</em> geométrico (por omissão, <code>lane_buffer</code> = 15 m) em torno da geometria do segmento, utilizando um sistema de coordenadas projetado (<code>metric_crs</code>) para garantir precisão métrica;</li>
-<li><strong>Junção espacial</strong>: os pontos GPS da coleção GTFS-RT são associados aos segmentos de via através de uma junção espacial (<a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html" target="blank"><code>sf::st_within</code></a>), identificando quais atualizações estão dentro do <em>buffer</em> de cada segmento;</li>
-<li><strong>Agregação por segmento</strong>: para cada <code>way_osm_id</code>, são calculadas medidas de tendência central e dispersão a partir das velocidades dos pontos associados: <code>speed_avg</code> (média), <code>speed_median</code> (mediana), <code>speed_p15</code>, <code>speed_p25</code>, <code>speed_p75</code>, <code>speed_p85</code> (percentis) e <code>speed_count</code> (número de observações);</li>
-<li><strong>Junção com a priorização</strong>: as métricas calculadas são unidas à tabela <code>lane_prioritisation</code> original por <code>way_osm_id</code>, enriquecendo-a com a informação de velocidade.</li>
+<li><strong>Criação de <em>buffer</em> espacial</strong>: para cada segmento de via (<em>OSM way</em>), é criado um <em>buffer</em> geométrico (por omissão, <code>lane_buffer</code> = 15 m) em torno da geometria do segmento, utilizando um sistema de coordenadas projetado (3763) para garantir precisão métrica;</li>
+<li><strong>Junção espacial</strong>: as atualizações GTFS-RT são associados aos segmentos de via através de uma junção espacial (<a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html" target="blank"><code>sf::st_within</code></a>), identificando quais atualizações estão dentro do <em>buffer</em> de cada segmento;</li>
+<li><strong>Agregação por segmento</strong>: para cada segmento, são calculadas medidas de tendência central e dispersão a partir das velocidades associadas: <code>speed_avg</code> (média), <code>speed_median</code> (mediana), <code>speed_p15</code>, <code>speed_p25</code>, <code>speed_p75</code>, <code>speed_p85</code> (percentis) e <code>speed_count</code> (número de observações);</li>
+<li><strong>Junção com a priorização</strong>: as métricas calculadas são unidas à priorização original, enriquecendo-a com a informação de velocidade.</li>
 </ol>
 <p>Um segmento só é incluído na visualização se tiver um número mínimo de três observações, garantindo que as estimativas de velocidade são estatisticamente significativas.</p>
 </section>
@@ -527,8 +527,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="interpretação" class="level2" data-number="9.3">
 <h2 data-number="9.3" class="anchored" data-anchor-id="interpretação"><span class="header-section-number">9.3</span> Interpretação</h2>
 <p>A velocidade média é um indicador direto da eficiência operacional da rede de transporte público. Segmentos com velocidade baixa indicam constrangimentos recorrentes que afetam a regularidade e fiabilidade do serviço, que podem ter origem em fatores internos à operação, como tempos excessivos de serviço às paragens, ou externos, como congestimento do tráfego.</p>
-<p>O percentil P85 é a métrica mais relevante para identificar o potencial de melhoria, pois é uma aproximação para a velocidade que os veículos conseguem atingir em condições normais de circulação (sem constrangimentos severos).</p>
-<p>Esta camada é complementar à camada de priorização (<a href="metodologia_priorizacao.html" class="quarto-xref"><span>Capítulo 5</span></a>), onde o número de vias por sentido é um dos critérios de filtragem configuráveis pelo utilizador.</p>
+<p>O percentil P85 é uma métrica relevante para identificar o potencial de melhoria, pois é uma aproximação para a velocidade que os veículos conseguem atingir em condições normais de circulação (sem constrangimentos severos).</p>
+<p>Esta camada é complementar à camada de priorização (<a href="metodologia_priorizacao.html" class="quarto-xref"><span>Capítulo 5</span></a>), onde a velocidade média do segmento é um dos critérios de filtragem configuráveis pelo utilizador.</p>
 
 
 </section>

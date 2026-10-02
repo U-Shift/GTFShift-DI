@@ -426,7 +426,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_frequencia.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de autocarros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -450,7 +450,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_procura.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura de passageiros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -485,7 +485,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dashboard_linhas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível da linha</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível do percurso</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -611,7 +611,7 @@ div.csl-indent {
 <li><strong>Atributos da infraestrutura</strong>, extraídos de cada <em>way</em> do OSM (segmento da via), como número de vias, existência de coredor <em>bus</em>, ou existência de vias para estacionamento;</li>
 <li><strong>Frequência de serviço</strong>, calculada por hora e por segmento de via, agregando todas as linhas e percursos que o percorrem.</li>
 </ol>
-<p>O resultado é um conjunto de dados com uma linha por combinação de segmento de via (<code>way_osm_id</code>) e hora do dia, contendo os atributos de infraestrutura e os indicadores de serviço correspondentes.</p>
+<p>O resultado é um conjunto de dados com a combinação entre segmentos de via (<em>OSM way</em>) e as horas do dia, contendo os atributos de infraestrutura e os indicadores de serviço correspondentes.</p>
 </section>
 <section id="sec-dados-rt" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="sec-dados-rt"><span class="header-section-number">2.4</span> Filtragem e validação dos dados GTFS-RT</h2>
@@ -692,11 +692,12 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-<p>Após aplicação de todos os filtros, as atualizações GTFS-RT válidas são projetadas na rede viária OSM e associadas aos segmentos de via correspondentes (<a href="https://u-shift.github.io/GTFShift/reference/project_points_along_geometry.html" target="blank"><code>GTFShift::project_points_along_geometry()</code></a>), para posterior cálculo das métricas de velocidade ao nível do segmento (<a href="https://u-shift.github.io/GTFShift/reference/rt_average_speed.html" target="blank"><code>GTFShift::rt_average_speed()</code></a>) e das viagens (velocidade comercial, <a href="https://u-shift.github.io/GTFShift/reference/get_trip_speed_profile.html" target="blank"><code>GTFShift::get_trip_speed_profile()</code></a>). Os dois primeiros métodos enumerados anteriormente são encapsulados pelo método <a href="https://u-shift.github.io/GTFShift/reference/rt_extend_prioritisation.html" target="blank"><code>GTFShift::rt_extend_prioritisation()</code></a>.</p>
+<p>Após aplicação de todos os filtros, as atualizações GTFS-RT válidas são projetadas na rede viária OSM e associadas aos segmentos de via correspondentes (<a href="https://u-shift.github.io/GTFShift/reference/project_points_along_geometry.html" target="blank"><code>GTFShift::project_points_along_geometry()</code></a>), para posterior cálculo das métricas de velocidade.</p>
+<p>Esta é calculada ao nível do segmento, considerando a relação entre a progressão em tempo e distância ao longo da geometria do percurso para cada atualização GTFS-RT (<a href="https://u-shift.github.io/GTFShift/reference/rt_average_speed.html" target="blank"><code>GTFShift::rt_average_speed()</code></a>), mas também ao nível das viagens, relacionando o tempo e a distância totais do percurso (velocidade comercial, <a href="https://u-shift.github.io/GTFShift/reference/get_trip_speed_profile.html" target="blank"><code>GTFShift::get_trip_speed_profile()</code></a>). Os dois primeiros métodos enumerados anteriormente são encapsulados pelo método <a href="https://u-shift.github.io/GTFShift/reference/rt_extend_prioritisation.html" target="blank"><code>GTFShift::rt_extend_prioritisation()</code></a>.</p>
 </section>
 <section id="associação-de-dados-de-procura" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="associação-de-dados-de-procura"><span class="header-section-number">2.5</span> Associação de dados de procura</h2>
-<p>Os dados de procura de passageiros são associados à rede viária através de uma junção entre as linhas GTFS e os segmentos de via. Para cada segmento (<code>way_osm_id</code>) e hora, é calculada a procura total como a soma da procura de todas as linhas que o percorrem:</p>
+<p>Os dados de procura são associados à rede viária através de uma junção entre as linhas GTFS e os segmentos de via. Para cada segmento (<code>way_osm_id</code>) e hora, é calculada a procura total como a soma da procura de todas as linhas que o percorrem:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>priotitization_demand <span class="ot">&lt;-</span> prioritisation <span class="sc">|&gt;</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(way_osm_id, hour, routes) <span class="sc">|&gt;</span></span>

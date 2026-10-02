@@ -455,7 +455,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_frequencia.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de autocarros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -479,7 +479,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_procura.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura de passageiros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -514,7 +514,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dashboard_linhas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível da linha</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível do percurso</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -611,7 +611,7 @@ DI_{s,h} = \frac{v_{\text{mediana},s,h} - v_{P85,s}}{v_{P85,s}}
 <li><span class="math inline">\(v_{\text{mediana},s,h}\)</span> é a velocidade mediana dos autocarros no segmento <span class="math inline">\(s\)</span> durante a hora <span class="math inline">\(h\)</span>;</li>
 <li><span class="math inline">\(v_{P85,s}\)</span> é o percentil 85 da velocidade no segmento <span class="math inline">\(s\)</span>, calculado sobre todas as observações do período de análise.</li>
 </ul>
-<p><strong>Nível do percurso (<em>GTFS shape</em>) ou viagem (<em>GTFS trip</em>):</strong> Avalia a perturbação da velocidade comercial (<a href="metodologia_velocidade_comercial.html" class="quarto-xref"><span>Capítulo 10</span></a>) ao nível de cada viagem individual realizada, comparando a velocidade comercial observada na viagem <span class="math inline">\(i\)</span> com a velocidade de referência P85 de todas as viagens desse percurso:</p>
+<p><strong>Nível do percurso (GTFS <em>shape</em>) ou viagem (GTFS <em>trip</em>):</strong> Avalia a perturbação da velocidade comercial (<a href="metodologia_velocidade_comercial.html" class="quarto-xref"><span>Capítulo 10</span></a>) ao nível de cada viagem individual realizada, comparando a velocidade comercial observada na viagem <span class="math inline">\(i\)</span> com a velocidade de referência P85 de todas as viagens desse percurso:</p>
 <p><span id="eq-di-linha"><span class="math display">\[
 DI_{r,i} = \frac{v_{\text{comercial},r,i} - v_{P85,r}}{v_{P85,r}}
 \tag{4.3}\]</span></span></p>
@@ -628,7 +628,7 @@ DI_{r,i} = \frac{v_{\text{comercial},r,i} - v_{P85,r}}{v_{P85,r}}
 </section>
 <section id="nível-da-viagem" class="level3" data-number="4.1.2">
 <h3 data-number="4.1.2" class="anchored" data-anchor-id="nível-da-viagem"><span class="header-section-number">4.1.2</span> Nível da viagem</h3>
-<p>Para cada viagem individual de um percurso (<em>GTFS shape</em>) de uma linha (<em>GTFS route</em>), o DI é calculado comparando a velocidade comercial dessa viagem com a velocidade P85 global (considerando todas as viagens desse percurso):</p>
+<p>Para cada viagem individual de um percurso (GTFS <em>shape</em>) de uma linha (GTFS <em>route</em>), o DI é calculado comparando a velocidade comercial dessa viagem com a velocidade P85 global (considerando todas as viagens desse percurso):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>disturbance_index <span class="ot">=</span> (commercial_speed <span class="sc">-</span> route_speed_p85) <span class="sc">/</span> route_speed_p85</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="nível-do-percurso" class="level3" data-number="4.1.3">

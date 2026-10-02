@@ -375,7 +375,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_frequencia.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência de autocarros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Frequência</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -399,7 +399,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodologia_procura.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura de passageiros</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Procura</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -434,7 +434,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dashboard_linhas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível da linha</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Análise ao nível do percurso</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -476,7 +476,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#experiência-de-utilização" id="toc-experiência-de-utilização" class="nav-link active" data-scroll-target="#experiência-de-utilização"><span class="header-section-number">13.1</span> Experiência de utilização</a>
   <ul class="collapse">
   <li><a href="#sec-modal-details" id="toc-sec-modal-details" class="nav-link" data-scroll-target="#sec-modal-details"><span class="header-section-number">13.1.1</span> Detalhes técnicos</a></li>
-  <li><a href="#sec-modal-download" id="toc-sec-modal-download" class="nav-link" data-scroll-target="#sec-modal-download"><span class="header-section-number">13.1.2</span> Download de dados</a></li>
+  <li><a href="#sec-modal-download" id="toc-sec-modal-download" class="nav-link" data-scroll-target="#sec-modal-download"><span class="header-section-number">13.1.2</span> <em>Download</em> de dados</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -522,34 +522,34 @@ Figura&nbsp;13.1: Visualização do painel interativo para a área 3 (camada ín
 <p>Importa ressalvar que a interface do painel interativo se encontra atualmente desenvolvida apenas em língua inglesa, pelo que os nomes de menus, botões, camadas e elementos visuais são apresentados na sua denominação original em inglês ao longo dos capítulos seguintes.</p>
 <section id="experiência-de-utilização" class="level2" data-number="13.1">
 <h2 data-number="13.1" class="anchored" data-anchor-id="experiência-de-utilização"><span class="header-section-number">13.1</span> Experiência de utilização</h2>
-<p>O painel interativo dispõe de três grandes vertentes de análise, que são documentadas nos próximos capítulos:</p>
+<p>O painel interativo dispõe de três tipos de análise, que são documentadas nos próximos capítulos:</p>
 <ul>
 <li>Ao nível da infraestrutura viária (<a href="dashboard_infraestrutura.html" class="quarto-xref"><span>Capítulo 14</span></a>);</li>
-<li>Ao nível da linha de transporte público (<a href="dashboard_linhas.html" class="quarto-xref"><span>Capítulo 15</span></a>);</li>
-<li>Ao nível da viagem de transporte público (<a href="dashboard_viagens.html" class="quarto-xref"><span>Capítulo 16</span></a>).</li>
+<li>Ao nível do percurso de uma linha (<a href="dashboard_linhas.html" class="quarto-xref"><span>Capítulo 15</span></a>);</li>
+<li>Ao nível da viagem (<a href="dashboard_viagens.html" class="quarto-xref"><span>Capítulo 16</span></a>).</li>
 </ul>
-<p>Antes de mergulhar nas diferentes análises, importa referir que o painel interativo dispõe de duas janelas de contexto global acessíveis através dos ícones superiores da barra lateral:</p>
+<p>Antes de entrar em detalhe sobre as diferentes análises, importa referir que o painel interativo dispõe de duas janelas de contexto global acessíveis através dos ícones superiores da barra lateral:</p>
 <section id="sec-modal-details" class="level3" data-number="13.1.1">
 <h3 data-number="13.1.1" class="anchored" data-anchor-id="sec-modal-details"><span class="header-section-number">13.1.1</span> Detalhes técnicos</h3>
 <p>Acessível através do segundo ícone, <strong><em>Details</em></strong>, esta janela apresenta metadados técnicos sobre a execução da análise para o conjunto de dados carregado:</p>
 <ul>
-<li><strong>Região</strong> e <strong>data do serviço GTFS</strong> considerados;</li>
-<li><strong>Shapes e frequências consideradas</strong> — número de geometrias encontradas no OSM relativamente ao total disponível no GTFS, com indicação das geometrias e linhas em falta (acessível via <em>tooltip</em>), e a distribuição horária da cobertura;</li>
-<li><strong>OSM query</strong> utilizada para extrair a rede viária e as relações de transporte público do OSM;</li>
+<li><strong>Região</strong> e <strong>data do serviço GTFS</strong> analisada;</li>
+<li><strong>Percursos e frequências consideradas</strong>: número de percursos GTFS cujas geometrias foram encontradas no OSM relativamente ao total disponível no GTFS, com indicação dos percursos e linhas em falta (acessível via <em>tooltip</em>), e a distribuição horária da cobertura;</li>
+<li><strong>OSM <em>query</em></strong> utilizada para extrair a rede viária e as relações de transporte público do OSM;</li>
 <li><strong>Intervalo dos dados GTFS-RT</strong>;</li>
-<li><strong>Metodologia de cálculo de velocidade</strong> — descrição do método utilizado, com os limiares de filtragem utilizados;</li>
-<li><strong>Notas sobre dados RT e procura</strong>;</li>
-<li><strong>Ambiente de execução</strong> — versão do GTFShift, R e sistema operativo;</li>
-<li><strong>Código R simplificado</strong> que reproduz a análise simplificada, com ligação ao tutorial completo.</li>
+<li><strong>Metodologia de cálculo de velocidade</strong>: descrição do método utilizado, com os limiares de filtragem utilizados;</li>
+<li><strong>Notas sobre dados GTFS-RT e procura</strong>;</li>
+<li><strong>Ambiente de execução</strong>: versão do GTFShift, R e sistema operativo;</li>
+<li><strong>Código R simplificado</strong> que reproduz a análise simplificada, com ligação para o tutorial completo.</li>
 </ul>
 </section>
 <section id="sec-modal-download" class="level3" data-number="13.1.2">
-<h3 data-number="13.1.2" class="anchored" data-anchor-id="sec-modal-download"><span class="header-section-number">13.1.2</span> Download de dados</h3>
+<h3 data-number="13.1.2" class="anchored" data-anchor-id="sec-modal-download"><span class="header-section-number">13.1.2</span> <em>Download</em> de dados</h3>
 <p>Acessível através do ícone último ícone, <strong><em>Download</em></strong>, esta janela permite descarregar os resultados em bruto para a região selecionada. Inclui:</p>
 <ul>
-<li><strong>Botão de download</strong> do arquivo ZIP com todos os ficheiros processados para a região/área selecionada;</li>
-<li><strong>Tabela de estrutura do dataset</strong> com a descrição de cada ficheiro incluído no arquivo;</li>
-<li><strong>Diagrama relacional</strong> (entidade-relacionamento) que ilustra os esquemas dos ficheiros JSON/GeoJSON e as suas relações.</li>
+<li><strong>Botão de download</strong> do arquivo ZIP com todos os ficheiros resultantes da análise para a região/área selecionada;</li>
+<li><strong>Tabela de estrutura dos ficheiros de saída</strong> com a descrição de cada ficheiro incluído no arquivo;</li>
+<li><strong>Diagrama relacional</strong> que ilustra os esquemas dos ficheiros resultantes e as suas relações.</li>
 </ul>
 
 

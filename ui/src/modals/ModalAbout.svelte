@@ -157,14 +157,15 @@
                     domain of Carris Metropolitana, which gave rise to the <strong
                         >GTFShift TML Edition</strong
                     >
-                    interactive dashboard, was developed in collaboration with
-                    and funded by
+                    interactive dashboard, was developed in collaboration with and
+                    funded by
                     <a
                         href="https://www.tmlmobilidade.pt"
                         target="_blank"
                         class="text-primary hover:underline"
                         >Transportes Metropolitanos de Lisboa (TML)</a
-                    > under a service provision agreement.
+                    > under a service provision agreement (Contrato de Aquisição
+                    de Serviços AD 17/2026).
                 </p>
                 <div class="pt-1">
                     <img
